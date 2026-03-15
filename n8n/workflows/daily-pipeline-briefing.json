@@ -1,0 +1,56 @@
+{
+  "name": "HOO — Daily Pipeline Briefing",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "hours", "hoursInterval": 24 }] },
+        "cronExpression": "0 7 * * *"
+      },
+      "name": "Every Day 7AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [200, 300],
+      "notes": "Fires every morning at 7am — before Matthew goes to work"
+    },
+    {
+      "parameters": {
+        "functionCode": "const fs = require('fs');\nconst path = require('path');\nconst LEADS_DIR = 'C:\\\\Users\\\\Matth\\\\hoo-workspace\\\\engine\\\\leads';\n\nconst today = new Date();\nconst todayStr = today.toISOString().split('T')[0];\n\nlet leads = [];\ntry {\n  const files = fs.readdirSync(LEADS_DIR).filter(f => f.endsWith('.json') && f.startsWith('LEAD-'));\n  leads = files.map(f => {\n    try { return JSON.parse(fs.readFileSync(path.join(LEADS_DIR, f))); }\n    catch { return null; }\n  }).filter(Boolean);\n} catch(e) { console.error(e); }\n\n// Categorize\nconst responded = leads.filter(l => l.stage === 'responded');\nconst overdue = leads.filter(l => {\n  if (l.stage !== 'contacted') return false;\n  const contactedDate = new Date(l.contacted_date || l.found_date);\n  const daysSince = (today - contactedDate) / (1000 * 60 * 60 * 24);\n  return daysSince >= 3;\n});\nconst hot = leads.filter(l => l.tier === 'HOT' && l.stage === 'found');\nconst needsCalls = leads.filter(l => l.phone && !l.email && l.stage === 'found').slice(0,5);\n\nconst total = leads.length;\nconst contacted = leads.filter(l => l.stage === 'contacted').length;\nconst closed = leads.filter(l => l.stage === 'closed_won').length;\n\nreturn [{ json: { responded, overdue, hot, needsCalls, total, contacted, closed, todayStr } }];"
+      },
+      "name": "Load Pipeline State",
+      "type": "n8n-nodes-base.function",
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const { responded, overdue, hot, needsCalls, total, contacted, closed, todayStr } = $json;\n\nlet lines = [];\nlines.push(`🌅 HOO DAILY BRIEFING — ${todayStr}`);\nlines.push(`${'─'.repeat(40)}`);\nlines.push(`📊 Pipeline: ${total} leads | ${contacted} contacted | ${closed} won`);\nlines.push('');\n\nif (responded.length > 0) {\n  lines.push(`🔥 REPLIES (${responded.length}) — ACT NOW:`);\n  responded.forEach(l => lines.push(`   → ${l.business} (${l.city}) — ${l.phone || 'no phone'}`));\n  lines.push('');\n}\n\nif (overdue.length > 0) {\n  lines.push(`⏰ FOLLOW-UPS DUE (${overdue.length}):`);\n  overdue.slice(0,5).forEach(l => lines.push(`   → ${l.business} — contacted ${l.contacted_date}`));\n  lines.push('');\n}\n\nif (needsCalls.length > 0) {\n  lines.push(`📞 CALL TODAY — phone only (${needsCalls.length}):`);\n  needsCalls.forEach(l => lines.push(`   → ${l.business} | ${l.phone} | ${l.city}`));\n  lines.push('');\n}\n\nif (hot.length > 0) {\n  lines.push(`⚡ NEW HOT LEADS (${hot.length} untouched):`);\n  hot.slice(0,3).forEach(l => lines.push(`   → ${l.business} | ${l.city} | Score:${l.score}`));\n  lines.push('');\n}\n\nlines.push(`─────────────────────────────────────`);\nlines.push(`herrmanonlineoutlook.com — build free, pay on approval`);\n\nreturn [{ json: { briefing: lines.join('\\n'), hasUrgent: responded.length > 0 || overdue.length > 0 } }];"
+      },
+      "name": "Build Briefing Message",
+      "type": "n8n-nodes-base.function",
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "message",
+        "operation": "sendAndWait",
+        "toEmail": "herrmanonlineoutlook@gmail.com",
+        "subject": "={{ $json.hasUrgent ? '🔥 HOO — ACTION NEEDED: ' : '📊 HOO Daily — ' }}{{ new Date().toLocaleDateString() }}",
+        "message": "={{ $json.briefing }}"
+      },
+      "name": "Email Briefing to Matthew",
+      "type": "n8n-nodes-base.gmail",
+      "position": [840, 300]
+    }
+  ],
+  "connections": {
+    "Every Day 7AM": { "main": [[{ "node": "Load Pipeline State", "type": "main", "index": 0 }]] },
+    "Load Pipeline State": { "main": [[{ "node": "Build Briefing Message", "type": "main", "index": 0 }]] },
+    "Build Briefing Message": { "main": [[{ "node": "Email Briefing to Matthew", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["HOO", "Pipeline", "Daily"],
+  "_meta": {
+    "description": "Every morning at 7am — emails Matthew a briefing: replies received, follow-ups due, hot leads to call, pipeline stats. Subject line flags urgent days.",
+    "install": "Import JSON into n8n. Connect Gmail. Set timezone to America/Chicago. Activate.",
+    "cost": "$0"
+  }
+}

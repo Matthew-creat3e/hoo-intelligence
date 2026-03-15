@@ -1,0 +1,85 @@
+{
+  "name": "HOO — Gmail Reply Detector",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": { "item": [{ "mode": "everyMinute" }] },
+        "filters": {
+          "readStatus": "unread",
+          "sender": ""
+        },
+        "format": "simple",
+        "dataPropertyName": "data"
+      },
+      "name": "Gmail — Watch Inbox",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "position": [200, 300],
+      "notes": "Polls every minute for new emails. Free self-hosted n8n — no execution limits."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Check if this email is from a known HOO lead\nconst fs = require('fs');\nconst path = require('path');\nconst LEADS_DIR = 'C:\\\\Users\\\\Matth\\\\hoo-workspace\\\\engine\\\\leads';\n\nconst senderEmail = $json.from?.toLowerCase() || '';\nconst subject = $json.subject || '';\nconst snippet = $json.snippet || '';\n\n// Load all lead JSONs\nlet matchedLead = null;\ntry {\n  const files = fs.readdirSync(LEADS_DIR).filter(f => f.endsWith('.json'));\n  for (const file of files) {\n    const lead = JSON.parse(fs.readFileSync(path.join(LEADS_DIR, file)));\n    if (lead.email && lead.email.toLowerCase() === senderEmail) {\n      matchedLead = lead;\n      matchedLead.filename = file;\n      break;\n    }\n  }\n} catch(e) { console.error(e); }\n\nreturn [{\n  json: {\n    matched: !!matchedLead,\n    lead: matchedLead,\n    sender: senderEmail,\n    subject,\n    snippet,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "name": "Match Email to Lead",
+      "type": "n8n-nodes-base.function",
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [{ "value1": "={{ $json.matched }}", "value2": true }]
+        }
+      },
+      "name": "Is Known Lead?",
+      "type": "n8n-nodes-base.if",
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Update lead stage to 'responded' and log reply\nconst fs = require('fs');\nconst path = require('path');\nconst LEADS_DIR = 'C:\\\\Users\\\\Matth\\\\hoo-workspace\\\\engine\\\\leads';\n\nconst lead = $json.lead;\nconst file = path.join(LEADS_DIR, lead.filename);\n\nif (fs.existsSync(file)) {\n  const data = JSON.parse(fs.readFileSync(file));\n  data.stage = 'responded';\n  data.responded_date = new Date().toISOString().split('T')[0];\n  data.reply_snippet = $json.snippet;\n  data.reply_subject = $json.subject;\n  fs.writeFileSync(file, JSON.stringify(data, null, 2));\n}\n\nreturn [{ json: { updated: true, lead: lead.business, stage: 'responded' } }];"
+      },
+      "name": "Update Lead → Responded",
+      "type": "n8n-nodes-base.function",
+      "position": [840, 200]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "message",
+        "operation": "sendAndWait",
+        "toEmail": "herrmanonlineoutlook@gmail.com",
+        "subject": "=🔥 HOO REPLY: {{ $json.lead.business }}",
+        "message": "={{ $json.lead.business }} ({{ $json.lead.city }}) replied to your outreach!\n\nSender: {{ $json.sender }}\nSubject: {{ $json.subject }}\nMessage preview: {{ $json.snippet }}\n\nLead file: {{ $json.lead.filename }}\nPhone: {{ $json.lead.phone || 'no phone' }}\n\nNEXT STEP: Reply to them within 1 hour. This is the hottest window.\n\nherrmanonlineoutlook.com — build free, pay on approval"
+      },
+      "name": "Alert Matthew — Reply Received",
+      "type": "n8n-nodes-base.gmail",
+      "position": [1040, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Log unmatched email for review\nconst fs = require('fs');\nconst LOG = 'C:\\\\Users\\\\Matth\\\\hoo-workspace\\\\engine\\\\data\\\\unmatched-emails.json';\nlet log = [];\ntry { log = JSON.parse(fs.readFileSync(LOG)); } catch {}\nlog.push({ date: new Date().toISOString(), sender: $json.sender, subject: $json.subject });\nfs.writeFileSync(LOG, JSON.stringify(log, null, 2));\nreturn [{ json: { logged: true } }];"
+      },
+      "name": "Log Unmatched",
+      "type": "n8n-nodes-base.function",
+      "position": [840, 400]
+    }
+  ],
+  "connections": {
+    "Gmail — Watch Inbox": { "main": [[{ "node": "Match Email to Lead", "type": "main", "index": 0 }]] },
+    "Match Email to Lead": { "main": [[{ "node": "Is Known Lead?", "type": "main", "index": 0 }]] },
+    "Is Known Lead?": {
+      "main": [
+        [{ "node": "Update Lead → Responded", "type": "main", "index": 0 }],
+        [{ "node": "Log Unmatched", "type": "main", "index": 0 }]
+      ]
+    },
+    "Update Lead → Responded": { "main": [[{ "node": "Alert Matthew — Reply Received", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["HOO", "Lead Engine", "Gmail"],
+  "_meta": {
+    "description": "HOO Gmail Reply Detector — polls every minute, matches sender to lead JSON, updates pipeline stage to responded, alerts Matthew immediately.",
+    "install": "1. Import this JSON into n8n (New Workflow → Import). 2. Connect your Gmail account under Credentials. 3. Activate workflow. Done — runs 24/7.",
+    "cost": "$0 — self-hosted n8n"
+  }
+}

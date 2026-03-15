@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HOO Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505;--card:#0D0D0D;--card2:#111;--border:#1C1C1C;--border2:#2A2A2A;
+  --gold:#C8952E;--gold2:#E8B84B;--text:#F0EAE0;--muted:#888880;--dim:#3A3A38;
+  --green:#4CAF50;--amber:#FF9800;--red:#EF5350;--blue:#42A5F5;
+  --fh:'Bebas Neue',sans-serif;--fb:'Syne',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);font-size:13px;overflow:hidden}
+
+/* APP SHELL */
+.app{display:grid;grid-template-rows:48px 1fr;height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:var(--card);-webkit-app-region:drag}
+.logo{font-family:var(--fh);font-size:24px;letter-spacing:3px;color:var(--gold)}
+.tagline{font-size:11px;color:var(--muted);margin-left:12px}
+.topbar-right{display:flex;align-items:center;gap:14px;-webkit-app-region:no-drag}
+#clock{font-size:12px;color:var(--muted)}
+.btn-sm{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 12px;border-radius:4px;cursor:pointer;font-family:var(--fb);font-size:11px;transition:all .2s}
+.btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+.btn-gold{border-color:var(--gold);color:var(--gold)}
+.btn-gold:hover{background:var(--gold);color:#000}
+
+.body{display:grid;grid-template-columns:210px 1fr;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{border-right:1px solid var(--border);padding:12px 0;overflow-y:auto;display:flex;flex-direction:column;gap:0}
+.nav-label{font-size:9px;letter-spacing:2.5px;color:var(--dim);padding:0 14px;margin:14px 0 4px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;color:var(--muted);font-size:12px;border-left:2px solid transparent;transition:all .15s}
+.nav-item:hover{color:var(--text);background:rgba(200,149,46,.04)}
+.nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(200,149,46,.07)}
+.nav-icon{font-size:14px;width:16px;text-align:center}
+.nav-badge{margin-left:auto;font-size:10px;background:var(--dim);padding:1px 7px;border-radius:10px}
+.nav-badge.alert{background:rgba(239,83,80,.2);color:var(--red)}
+.nav-badge.gold{background:rgba(200,149,46,.2);color:var(--gold)}
+
+.mrr-box{margin:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px}
+.mrr-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.mrr-val{font-family:var(--fh);font-size:32px;color:var(--gold);letter-spacing:1px;line-height:1.1}
+.mrr-goal{font-size:10px;color:var(--dim);margin-top:2px}
+.prog{background:var(--border);border-radius:4px;height:4px;margin-top:8px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width .8s}
+
+/* MAIN */
+.main{overflow-y:auto;padding:20px}
+.page{display:none}
+.page.active{display:block}
+.page-head{margin-bottom:20px}
+.page-title{font-family:var(--fh);font-size:34px;letter-spacing:2px;color:var(--text)}
+.page-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-label{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+
+/* METRICS */
+.metric{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.m-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.m-val{font-family:var(--fh);font-size:40px;letter-spacing:1px;line-height:1}
+.m-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.gold{color:var(--gold)}.red{color:var(--red)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}
+
+/* ALERTS */
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.alert-item:last-child{border-bottom:none}
+.badge{font-size:10px;padding:2px 9px;border-radius:10px;white-space:nowrap;font-weight:600;flex-shrink:0;margin-top:1px}
+.b-urgent{background:rgba(239,83,80,.15);color:var(--red);border:1px solid rgba(239,83,80,.3)}
+.b-today{background:rgba(255,152,0,.15);color:var(--amber);border:1px solid rgba(255,152,0,.3)}
+.b-engine{background:rgba(200,149,46,.15);color:var(--gold);border:1px solid rgba(200,149,46,.3)}
+.b-done{background:rgba(76,175,80,.12);color:var(--green);border:1px solid rgba(76,175,80,.3)}
+.alert-body{flex:1}
+.alert-text{color:var(--text);line-height:1.5}
+.alert-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* LEAD TABLE */
+.lead-tbl{width:100%}
+.lead-tbl th{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0 0 8px;font-weight:400;text-align:left}
+.lead-tbl td{padding:8px 0;border-bottom:1px solid var(--border);vertical-align:middle}
+.lead-tbl tr:last-child td{border-bottom:none}
+.score-pill{font-size:10px;font-weight:600;padding:2px 9px;border-radius:10px;display:inline-block}
+.s-hot{background:rgba(239,83,80,.15);color:var(--red)}
+.s-warm{background:rgba(255,152,0,.15);color:var(--amber)}
+.s-cold{background:rgba(136,136,128,.1);color:var(--muted)}
+.stage-pill{font-size:10px;padding:2px 9px;border-radius:10px;display:inline-block}
+.st-found{background:rgba(66,165,245,.12);color:var(--blue)}
+.st-emailed{background:rgba(255,152,0,.12);color:var(--amber)}
+.st-replied{background:rgba(76,175,80,.12);color:var(--green)}
+.st-closed{background:rgba(200,149,46,.2);color:var(--gold)}
+.phone-link{color:var(--blue);cursor:pointer;font-size:12px}
+.phone-link:hover{color:var(--gold2)}
+
+/* STORE STATUS */
+.store-block{margin-bottom:16px}
+.store-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.store-name{font-family:var(--fh);font-size:20px;letter-spacing:1px}
+.store-url{font-size:11px;color:var(--blue)}
+.sec-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)}
+.sec-row:last-child{border-bottom:none}
+.sec-name{font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;flex-shrink:0}
+.d-live{background:var(--green);box-shadow:0 0 6px rgba(76,175,80,.5)}
+.d-built{background:var(--amber)}
+.d-missing{background:var(--red)}
+.d-warn{background:var(--gold)}
+.sec-status{display:flex;align-items:center;font-size:11px;color:var(--muted)}
+
+/* SOCIAL QUEUE */
+.post-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+.post-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.plat{font-size:10px;font-weight:600;padding:2px 10px;border-radius:10px;border:1px solid}
+.p-fb{background:rgba(66,103,178,.15);color:#7B9FD4;border-color:rgba(66,103,178,.3)}
+.p-ig{background:rgba(225,48,108,.12);color:#E1306C;border-color:rgba(225,48,108,.3)}
+.p-tk{background:rgba(105,201,208,.1);color:#69C9D0;border-color:rgba(105,201,208,.2)}
+.post-cap{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.post-actions{display:flex;gap:8px}
+.btn-approve{background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.3);color:var(--green);padding:4px 14px;border-radius:4px;cursor:pointer;font-family:var(--fb);font-size:11px}
+.btn-approve:hover{background:rgba(76,175,80,.2)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:32px;margin-bottom:10px;opacity:.4}
+.empty-text{font-size:13px}
+.empty-sub{font-size:11px;margin-top:6px;color:var(--dim)}
+
+/* ENGINE STATUS */
+.eng-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.eng-row:last-child{border-bottom:none}
+.eng-indicator{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.e-run{background:var(--green);box-shadow:0 0 8px rgba(76,175,80,.6);animation:pulse 2s infinite}
+.e-setup{background:var(--amber)}
+.e-off{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.eng-name{font-size:13px;font-weight:500;flex:1}
+.eng-detail{font-size:11px;color:var(--muted)}
+.eng-action{font-size:11px;color:var(--gold);cursor:pointer}
+.eng-action:hover{text-decoration:underline}
+
+/* LEARNING TABLE */
+.learn-tbl{width:100%}
+.learn-tbl th{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0 0 8px;text-align:left;font-weight:400}
+.learn-tbl td{padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
+.learn-tbl tr:last-child td{border-bottom:none}
+.rate-bar-wrap{background:var(--border);border-radius:3px;height:4px;width:80px;overflow:hidden;display:inline-block}
+.rate-bar{height:100%;background:var(--gold);border-radius:3px}
+
+/* SCROLL */
+.main::-webkit-scrollbar,.sidebar::-webkit-scrollbar{width:4px}
+.main::-webkit-scrollbar-track,.sidebar::-webkit-scrollbar-track{background:transparent}
+.main::-webkit-scrollbar-thumb,.sidebar::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:var(--gold);color:#000;padding:10px 18px;border-radius:6px;font-size:12px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999}
+#toast.show{opacity:1}
+
+/* DIVIDER */
+hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center">
+      <div class="logo">HOO</div>
+      <div class="tagline">herrmanonlineoutlook.com — build free, pay on approval</div>
+    </div>
+    <div class="topbar-right">
+      <span id="clock"></span>
+      <button class="btn-sm" onclick="loadAll()">↻ Refresh</button>
+      <button class="btn-sm btn-gold" onclick="openLink('https://partners.shopify.com')">Apply Shopify Partner ↗</button>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="mrr-box">
+        <div class="mrr-lbl">Monthly Recurring</div>
+        <div class="mrr-val" id="mrr-val">$0</div>
+        <div class="mrr-goal">Goal: $1,000/mo</div>
+        <div class="prog"><div class="prog-fill" id="mrr-bar" style="width:0%"></div></div>
+      </div>
+
+      <div class="nav-label">Overview</div>
+      <div class="nav-item active" data-page="today" onclick="nav(this)">
+        <span class="nav-icon">◈</span> Today's Briefing
+        <span class="nav-badge alert" id="badge-urgent">3</span>
+      </div>
+
+      <div class="nav-label">Lead Engine</div>
+      <div class="nav-item" data-page="pipeline" onclick="nav(this)">
+        <span class="nav-icon">◎</span> Pipeline
+        <span class="nav-badge alert" id="badge-leads">25</span>
+      </div>
+      <div class="nav-item" data-page="top5" onclick="nav(this)">
+        <span class="nav-icon">☎</span> Top 5 Calls
+      </div>
+      <div class="nav-item" data-page="learning" onclick="nav(this)">
+        <span class="nav-icon">◑</span> What's Working
+      </div>
+
+      <div class="nav-label">Build Engine</div>
+      <div class="nav-item" data-page="stores" onclick="nav(this)">
+        <span class="nav-icon">◻</span> Store Status
+      </div>
+
+      <div class="nav-label">Social Engine</div>
+      <div class="nav-item" data-page="social" onclick="nav(this)">
+        <span class="nav-icon">◈</span> Post Queue
+        <span class="nav-badge gold" id="badge-queue">0</span>
+      </div>
+
+      <div class="nav-label">System</div>
+      <div class="nav-item" data-page="engines" onclick="nav(this)">
+        <span class="nav-icon">⚙</span> Engine Status
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+      <!-- TODAY PAGE -->
+      <div class="page active" id="page-today">
+        <div class="page-head">
+          <div class="page-title">Today's Briefing</div>
+          <div class="page-sub" id="today-date">Loading...</div>
+        </div>
+
+        <div class="g4" id="metric-tiles">
+          <div class="metric"><div class="m-lbl">MRR</div><div class="m-val gold" id="t-mrr">$0</div><div class="m-sub">Goal: $1,000/mo</div></div>
+          <div class="metric"><div class="m-lbl">Hot Leads</div><div class="m-val red" id="t-hot">—</div><div class="m-sub" id="t-hot-sub">Loading...</div></div>
+          <div class="metric"><div class="m-lbl">Follow-Ups</div><div class="m-val amber" id="t-followup">—</div><div class="m-sub" id="t-fu-sub">Loading...</div></div>
+          <div class="metric"><div class="m-lbl">Stores Live</div><div class="m-val green">3</div><div class="m-sub">NoReturn · TCB · HOO</div></div>
+        </div>
+
+        <div class="g2">
+          <div class="card">
+            <div class="card-label">Priority Actions</div>
+            <div id="priority-list">
+              <div class="alert-item">
+                <span class="badge b-urgent">URGENT</span>
+                <div class="alert-body">
+                  <div class="alert-text">Apply for Shopify Partner Program</div>
+                  <div class="alert-sub">partners.shopify.com — 15 min, free, passive income on every client forever</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <span class="badge b-urgent">URGENT</span>
+                <div class="alert-body">
+                  <div class="alert-text">Call Glendon Thomas — Tattoos by Glendon, Liberty</div>
+                  <div class="alert-sub">(816) 569-4465 — Score 80 — #1 lead, not yet called</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <span class="badge b-today">TODAY</span>
+                <div class="alert-body">
+                  <div class="alert-text">Follow-up wave due — 14 emails sent 2026-03-13</div>
+                  <div class="alert-sub">3-day mark — check replies, send Template 3 to non-responders</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <span class="badge b-today">TODAY</span>
+                <div class="alert-body">
+                  <div class="alert-text">Post God Quest before/after to Facebook</div>
+                  <div class="alert-sub">Content is built — just needs to go live</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <span class="badge b-engine">ENGINE</span>
+                <div class="alert-body">
+                  <div class="alert-text">Install Crawl4AI + configure Twilio</div>
+                  <div class="alert-sub">Run engine/tools/install-verify.py to set up the full lead engine</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Revenue Path to $1,000/mo</div>
+            <div style="margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px">
+                <span style="color:var(--muted)">Current MRR</span>
+                <span style="color:var(--gold)">$0</span>
+              </div>
+              <div class="prog"><div class="prog-fill" style="width:0%"></div></div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);line-height:2">
+              <div>20% close rate × 25 leads = <span style="color:var(--text)">5 clients</span></div>
+              <div>5 Starter clients = <span style="color:var(--gold)">$375/mo MRR</span> + $1,500–2,500 one-time</div>
+              <div>5 Standard clients = <span style="color:var(--gold)">$500/mo MRR</span> + $3,000–4,500 one-time</div>
+              <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">Shopify Partner @ 25 clients = <span style="color:var(--gold2)">+$200–400/mo passive</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE PAGE -->
+      <div class="page" id="page-pipeline">
+        <div class="page-head">
+          <div class="page-title">Lead Pipeline</div>
+          <div class="page-sub">All leads — click phone to copy · Stage auto-updates from n8n</div>
+        </div>
+        <div class="g4" style="margin-bottom:16px">
+          <div class="metric"><div class="m-lbl">Total</div><div class="m-val gold" id="p-total">—</div></div>
+          <div class="metric"><div class="m-lbl">HOT</div><div class="m-val red" id="p-hot">—</div><div class="m-sub">Score 50+</div></div>
+          <div class="metric"><div class="m-lbl">Contacted</div><div class="m-val amber" id="p-contacted">—</div></div>
+          <div class="metric"><div class="m-lbl">Replied</div><div class="m-val green" id="p-replied">—</div></div>
+        </div>
+        <div class="card" style="overflow-x:auto">
+          <table class="lead-tbl" id="pipeline-table">
+            <thead>
+              <tr>
+                <th>Score</th><th>Business</th><th>Industry</th><th>City</th>
+                <th>Phone</th><th>Stage</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="pipeline-body">
+              <tr><td colspan="7" style="color:var(--muted);padding:20px 0;text-align:center">Loading leads...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TOP 5 PAGE -->
+      <div class="page" id="page-top5">
+        <div class="page-head">
+          <div class="page-title">Top 5 Calls</div>
+          <div class="page-sub">Matthew handles these personally — highest-score uncalled leads</div>
+        </div>
+        <div id="top5-cards">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- LEARNING PAGE -->
+      <div class="page" id="page-learning">
+        <div class="page-head">
+          <div class="page-title">What's Working</div>
+          <div class="page-sub">Auto-updated from engine/data/learning.json every session</div>
+        </div>
+        <div class="g2" style="margin-bottom:12px">
+          <div class="metric"><div class="m-lbl">Emails Sent</div><div class="m-val gold" id="l-sent">—</div></div>
+          <div class="metric"><div class="m-lbl">Reply Rate</div><div class="m-val" id="l-reply">—</div><div class="m-sub">Industry avg: ~8-12%</div></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Industry Performance</div>
+          <table class="learn-tbl" id="industry-table">
+            <thead><tr><th>Industry</th><th>Contacted</th><th>Responded</th><th>Rate</th><th>Notes</th></tr></thead>
+            <tbody id="industry-body">
+              <tr><td colspan="5" style="color:var(--muted);padding:20px 0">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STORES PAGE -->
+      <div class="page" id="page-stores">
+        <div class="page-head">
+          <div class="page-title">Store Status</div>
+          <div class="page-sub">All three stores — section by section</div>
+        </div>
+        <div class="g3">
+
+          <!-- NoReturn -->
+          <div class="card">
+            <div class="store-hdr">
+              <div class="store-name gold">NoReturn Apparel</div>
+              <a class="store-url" href="https://noreturnapparel.com" target="_blank">noreturnapparel.com ↗</a>
+            </div>
+            <div>
+              <div class="sec-row"><span class="sec-name">God Quest</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Best Sellers</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Anime Collection</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Fatherhood Ascended</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">No Return Core</span><span class="sec-status"><span class="dot d-built"></span>Built, not pasted</span></div>
+              <div class="sec-row"><span class="sec-name">Collections Landing</span><span class="sec-status"><span class="dot d-built"></span>Built, not pasted</span></div>
+              <div class="sec-row"><span class="sec-name">Hats & Headwear</span><span class="sec-status"><span class="dot d-built"></span>Built, not pasted</span></div>
+              <div class="sec-row"><span class="sec-name">Live or Die</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+              <div class="sec-row"><span class="sec-name">New Arrivals</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+            </div>
+            <hr class="divider">
+            <div style="font-size:11px;color:var(--red)">⚠ Issues: Double marquee (FREE SHIPPING), wrong hrefs, 0 reviews, no email popup</div>
+          </div>
+
+          <!-- TCB -->
+          <div class="card">
+            <div class="store-hdr">
+              <div class="store-name gold">TCB Collections</div>
+              <span class="store-url" style="color:var(--muted)">1TrueDispensery — demo</span>
+            </div>
+            <div>
+              <div class="sec-row"><span class="sec-name">Age Gate</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Hero Section</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Collections Grid</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Deals & Discounts</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+              <div class="sec-row"><span class="sec-name">Rewards Program</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+              <div class="sec-row"><span class="sec-name">Strains Guide</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+              <div class="sec-row"><span class="sec-name">About Section</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+              <div class="sec-row"><span class="sec-name">CTA / Footer</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
+            </div>
+            <hr class="divider">
+            <div style="font-size:11px;color:var(--muted)">Demo portfolio store — awaiting real collection photos</div>
+          </div>
+
+          <!-- HOO Site -->
+          <div class="card">
+            <div class="store-hdr">
+              <div class="store-name gold">HOO Site</div>
+              <a class="store-url" href="https://herrmanonlineoutlook.com" target="_blank">herrmanonlineoutlook.com ↗</a>
+            </div>
+            <div>
+              <div class="sec-row"><span class="sec-name">Hero Section</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">How It Works</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Our Work / Portfolio</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">What's Included</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Pricing</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+              <div class="sec-row"><span class="sec-name">Contact Form</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
+            </div>
+            <hr class="divider">
+            <div style="font-size:11px;color:var(--green)">✓ All 6 sections live · Formspree: xaqpwgkd</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SOCIAL QUEUE PAGE -->
+      <div class="page" id="page-social">
+        <div class="page-head">
+          <div class="page-title">Post Queue</div>
+          <div class="page-sub">Approve posts to move them to social-engine/posted/</div>
+        </div>
+        <div id="queue-list">
+          <div class="empty-state">
+            <div class="empty-icon">◈</div>
+            <div class="empty-text">Queue is empty</div>
+            <div class="empty-sub">Run: node social-engine/post-manager.js library — to generate content from existing builds</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENGINES PAGE -->
+      <div class="page" id="page-engines">
+        <div class="page-head">
+          <div class="page-title">Engine Status</div>
+          <div class="page-sub">All three engines — setup status and actions</div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-label">Lead Engine v3.0</div>
+            <div id="engine-list">
+              <div class="eng-row">
+                <div class="eng-indicator e-setup"></div>
+                <div style="flex:1">
+                  <div class="eng-name">Crawl4AI Scraper</div>
+                  <div class="eng-detail">Not installed · pip install crawl4ai playwright</div>
+                </div>
+                <span class="eng-action" onclick="copyCmd('pip install crawl4ai playwright && playwright install chromium')">Copy install</span>
+              </div>
+              <div class="eng-row">
+                <div class="eng-indicator e-setup"></div>
+                <div style="flex:1">
+                  <div class="eng-name">Twilio SMS</div>
+                  <div class="eng-detail">Not configured · add credentials to .env</div>
+                </div>
+                <span class="eng-action" onclick="openLink('https://twilio.com')">twilio.com ↗</span>
+              </div>
+              <div class="eng-row">
+                <div class="eng-indicator e-setup"></div>
+                <div style="flex:1">
+                  <div class="eng-name">n8n Automation</div>
+                  <div class="eng-detail">Not running · see n8n/SETUP.md</div>
+                </div>
+                <span class="eng-action" onclick="copyCmd('docker run -d --name n8n --restart always -p 5678:5678 -v n8n_data:/home/node/.n8n -e GENERIC_TIMEZONE=America/Chicago docker.n8n.io/n8nio/n8n')">Copy docker cmd</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Social Engine</div>
+            <div>
+              <div class="eng-row">
+                <div class="eng-indicator e-setup"></div>
+                <div style="flex:1">
+                  <div class="eng-name">Post Manager</div>
+                  <div class="eng-detail">social-engine/post-manager.js — ready to run</div>
+                </div>
+                <span class="eng-action" onclick="copyCmd('node social-engine/post-manager.js library')">Generate library</span>
+              </div>
+              <div class="eng-row">
+                <div class="eng-indicator e-setup"></div>
+                <div style="flex:1">
+                  <div class="eng-name">n8n Social Webhook</div>
+                  <div class="eng-detail">Needs n8n running first</div>
+                </div>
+              </div>
+            </div>
+            <hr class="divider">
+            <div class="card-label">Shopify Partner</div>
+            <div class="eng-row">
+              <div class="eng-indicator e-off"></div>
+              <div style="flex:1">
+                <div class="eng-name">Partner Account</div>
+                <div class="eng-detail">NOT APPLIED — losing passive income on every lead closed</div>
+              </div>
+              <span class="eng-action" onclick="openLink('https://partners.shopify.com')">Apply now ↗</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="card-label">Quick Commands</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px">
+            <button class="btn-sm" onclick="copyCmd('python engine/tools/install-verify.py')">Run install-verify.py</button>
+            <button class="btn-sm" onclick="copyCmd('python engine/tools/lead-hunter-v3.py --city Independence --industry tattoo')">Hunt leads</button>
+            <button class="btn-sm" onclick="copyCmd('node engine/tools/sms-engine.js test \"+18049571003\" \"HOO test\" --live')">Test SMS</button>
+            <button class="btn-sm" onclick="copyCmd('node social-engine/post-manager.js library')">Generate social library</button>
+            <button class="btn-sm" onclick="copyCmd('git add memory/ workspaces/ && git commit -m \"session update\" && git push')">Commit session</button>
+            <button class="btn-sm" onclick="copyCmd('cd C:\\Users\\Matth\\hoo-workspace && claude')">Launch Claude Code</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /body -->
+</div><!-- /app -->
+
+<div id="toast"></div>
+
+<script>
+// ── STATIC FALLBACK DATA (used when not running in Electron) ──────────────
+const STATIC_LEADS = [
+  {id:"LEAD-001",business:"Tattoos by Glendon",owner:"Glendon Thomas",phone:"(816) 569-4465",city:"Liberty",industry:"tattoo",score:80,tier:"HOT",stage:"found"},
+  {id:"LEAD-002",business:"Spence's Fences",owner:"Seth",phone:"(816) 878-7631",city:"Grain Valley",industry:"fencing",score:70,tier:"HOT",stage:"found"},
+  {id:"LEAD-003",business:"KC Soul Sistas",owner:"",phone:"(816) 678-9492",city:"Grandview",industry:"food truck",score:70,tier:"HOT",stage:"found"},
+  {id:"LEAD-004",business:"Always Green Landscape",owner:"",phone:"(913) 617-2936",city:"Belton",industry:"landscaping",score:70,tier:"HOT",stage:"found"},
+  {id:"LEAD-005",business:"Fast Track Handyman",owner:"Kenneth Hedges",phone:"(816) 405-7161",city:"Independence",industry:"handyman",score:65,tier:"HOT",stage:"found"},
+  {id:"LEAD-006",business:"Raytown Auto Detail",owner:"",phone:"",city:"Raytown",industry:"auto detailing",score:60,tier:"HOT",stage:"emailed"},
+  {id:"LEAD-007",business:"Blue Springs Cleaning Co",owner:"",phone:"",city:"Blue Springs",industry:"cleaning",score:60,tier:"HOT",stage:"emailed"},
+  {id:"LEAD-008",business:"Lee's Summit Lawn Care",owner:"",phone:"",city:"Lee's Summit",industry:"lawn care",score:55,tier:"HOT",stage:"emailed"},
+  {id:"LEAD-009",business:"KC Mobile Mechanic",owner:"",phone:"",city:"Kansas City",industry:"mobile mechanic",score:55,tier:"HOT",stage:"emailed"},
+  {id:"LEAD-010",business:"Overland Park Pet Grooming",owner:"",phone:"",city:"Overland Park",industry:"pet grooming",score:55,tier:"HOT",stage:"emailed"},
+];
+
+const STATIC_PIPELINE = {total:25,hot:23,warm:2,contacted:14,replied:0,closed:0};
+const STATIC_MRR = 0;
+const STATIC_GOAL = 1000;
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let leads = [];
+let learning = null;
+let queuePosts = [];
+const isElectron = typeof window.hoo !== 'undefined';
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+async function loadAll() {
+  await Promise.all([loadLeads(), loadLearning(), loadQueue()]);
+  renderToday();
+  renderPipeline();
+  renderTop5();
+  renderLearning();
+  renderQueue();
+}
+
+async function loadLeads() {
+  if (isElectron) {
+    const raw = await window.hoo.readLeads();
+    leads = raw && raw.length ? raw : STATIC_LEADS;
+  } else {
+    leads = STATIC_LEADS;
+  }
+}
+
+async function loadLearning() {
+  if (isElectron) {
+    learning = await window.hoo.readJSON('engine/data/learning.json');
+  }
+  if (!learning) {
+    learning = {
+      email_stats:{sent:14,replied:0},
+      sms_stats:{sent:0,replied:0},
+      by_industry:{
+        tattoo:{contacted:1,responded:0,notes:"Personal call recommended"},
+        fencing:{contacted:1,responded:0,notes:"Seasonal — spring/summer"},
+        "food truck":{contacted:1,responded:0,notes:"Facebook heavy"},
+        landscaping:{contacted:1,responded:0,notes:"Phone converts better"},
+        handyman:{contacted:1,responded:0,notes:"Angle: jobs you're missing"}
+      }
+    };
+  }
+}
+
+async function loadQueue() {
+  if (isElectron) {
+    queuePosts = await window.hoo.readQueue() || [];
+  } else {
+    queuePosts = [];
+  }
+  document.getElementById('badge-queue').textContent = queuePosts.length || '0';
+}
+
+// ── RENDER: TODAY ──────────────────────────────────────────────────────────
+function renderToday() {
+  const hot = leads.filter(l => l.tier === 'HOT').length;
+  const contacted = leads.filter(l => l.stage === 'emailed' || l.stage === 'replied' || l.stage === 'closed').length;
+  const replied = leads.filter(l => l.stage === 'replied').length;
+  const followupDue = contacted - replied;
+
+  document.getElementById('t-hot').textContent = hot;
+  document.getElementById('t-hot-sub').textContent = `${leads.filter(l=>l.tier==='WARM').length} WARM`;
+  document.getElementById('t-followup').textContent = followupDue;
+  document.getElementById('t-fu-sub').textContent = 'Follow-ups due today';
+  document.getElementById('badge-urgent').textContent = 3;
+  document.getElementById('badge-leads').textContent = leads.length;
+
+  const mrr = STATIC_MRR;
+  document.getElementById('t-mrr').textContent = '$' + mrr.toLocaleString();
+  document.getElementById('mrr-val').textContent = '$' + mrr.toLocaleString();
+  const pct = Math.round((mrr / STATIC_GOAL) * 100);
+  document.getElementById('mrr-bar').style.width = pct + '%';
+}
+
+// ── RENDER: PIPELINE ──────────────────────────────────────────────────────
+function renderPipeline() {
+  const hot = leads.filter(l=>l.tier==='HOT').length;
+  const contacted = leads.filter(l=>['emailed','replied','closed'].includes(l.stage)).length;
+  const replied = leads.filter(l=>l.stage==='replied').length;
+  document.getElementById('p-total').textContent = leads.length;
+  document.getElementById('p-hot').textContent = hot;
+  document.getElementById('p-contacted').textContent = contacted;
+  document.getElementById('p-replied').textContent = replied;
+
+  const sorted = [...leads].sort((a,b) => (b.score||0) - (a.score||0));
+  const tbody = document.getElementById('pipeline-body');
+  tbody.innerHTML = sorted.map(l => {
+    const tierClass = l.tier === 'HOT' ? 's-hot' : l.tier === 'WARM' ? 's-warm' : 's-cold';
+    const stageClass = {found:'st-found',emailed:'st-emailed',replied:'st-replied',closed:'st-closed'}[l.stage] || 'st-found';
+    const phone = l.phone ? `<span class="phone-link" onclick="copyPhone('${l.phone}')" title="Click to copy">${l.phone}</span>` : '<span style="color:var(--dim)">—</span>';
+    return `<tr>
+      <td><span class="score-pill ${tierClass}">${l.score || '—'}</span></td>
+      <td><div style="font-size:13px;font-weight:500">${l.business||'Unknown'}</div>${l.owner?`<div style="font-size:11px;color:var(--muted)">${l.owner}</div>`:''}</td>
+      <td style="color:var(--muted);font-size:12px">${l.industry||'—'}</td>
+      <td style="color:var(--muted);font-size:12px">${l.city||'—'}</td>
+      <td>${phone}</td>
+      <td><span class="stage-pill ${stageClass}">${l.stage||'found'}</span></td>
+      <td><button class="btn-sm" onclick="scriptPrompt('${(l.business||'').replace(/'/g,"\\'")}','${l.industry||''}','${l.city||''}','${l.phone||''}')">Script</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── RENDER: TOP 5 ──────────────────────────────────────────────────────────
+function renderTop5() {
+  const top5 = [...leads]
+    .filter(l => l.tier === 'HOT')
+    .sort((a,b) => (b.score||0) - (a.score||0))
+    .slice(0, 5);
+
+  const container = document.getElementById('top5-cards');
+  container.innerHTML = top5.map((l, i) => `
+    <div class="card" style="margin-bottom:12px;border-left:3px solid var(--gold)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span style="font-family:var(--fh);font-size:28px;color:var(--gold)">${i+1}</span>
+            <div>
+              <div style="font-size:15px;font-weight:500">${l.business}</div>
+              ${l.owner ? `<div style="font-size:12px;color:var(--muted)">${l.owner} · ${l.city}, MO · ${l.industry}</div>` : `<div style="font-size:12px;color:var(--muted)">${l.city}, MO · ${l.industry}</div>`}
+            </div>
+          </div>
+          ${l.phone ? `<div style="font-size:16px;color:var(--blue);font-weight:500;margin-bottom:8px;cursor:pointer" onclick="copyPhone('${l.phone}')">${l.phone} <span style="font-size:11px;color:var(--muted)">(click to copy)</span></div>` : ''}
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">
+            <span class="score-pill s-hot">Score ${l.score}</span>
+            <span style="margin-left:8px">No website found — strong close candidate</span>
+          </div>
+        </div>
+        <button class="btn-sm btn-gold" style="white-space:nowrap;margin-top:4px"
+          onclick="scriptPrompt('${(l.business||'').replace(/'/g,"\\'")}','${l.industry||''}','${l.city||''}','${l.phone||''}')">
+          Get Call Script ↗
+        </button>
+      </div>
+    </div>
+  `).join('') || '<div class="empty-state"><div class="empty-text">No HOT leads loaded yet</div><div class="empty-sub">Add LEAD-*.json files to engine/leads/ then refresh</div></div>';
+}
+
+// ── RENDER: LEARNING ──────────────────────────────────────────────────────
+function renderLearning() {
+  const sent = learning?.email_stats?.sent || 0;
+  const replied = learning?.email_stats?.replied || 0;
+  const rate = sent > 0 ? ((replied/sent)*100).toFixed(1) + '%' : '—';
+  document.getElementById('l-sent').textContent = sent;
+  document.getElementById('l-reply').textContent = rate;
+
+  const industries = learning?.by_industry || {};
+  const tbody = document.getElementById('industry-body');
+  const rows = Object.entries(industries)
+    .filter(([,v]) => v.contacted > 0)
+    .sort((a,b) => b[1].contacted - a[1].contacted);
+
+  tbody.innerHTML = rows.length ? rows.map(([name, v]) => {
+    const rate = v.contacted > 0 ? Math.round((v.responded/v.contacted)*100) : 0;
+    return `<tr>
+      <td style="text-transform:capitalize;font-weight:500">${name}</td>
+      <td style="color:var(--muted)">${v.contacted}</td>
+      <td style="color:var(--muted)">${v.responded}</td>
+      <td><div class="rate-bar-wrap"><div class="rate-bar" style="width:${Math.min(rate*5,100)}%"></div></div> <span style="color:var(--muted);font-size:11px;margin-left:4px">${rate}%</span></td>
+      <td style="color:var(--muted);font-size:11px">${v.notes||'—'}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" style="color:var(--muted);padding:20px 0">No outreach data yet — start the lead engine</td></tr>';
+}
+
+// ── RENDER: SOCIAL QUEUE ──────────────────────────────────────────────────
+function renderQueue() {
+  const container = document.getElementById('queue-list');
+  if (!queuePosts.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">◈</div>
+      <div class="empty-text">Queue is empty</div>
+      <div class="empty-sub">Run: <code style="background:var(--border2);padding:2px 6px;border-radius:3px">node social-engine/post-manager.js library</code></div>
+    </div>`;
+    return;
+  }
+  container.innerHTML = queuePosts.map(p => {
+    const platClass = {facebook:'p-fb',instagram:'p-ig',tiktok:'p-tk'}[p.platform] || 'p-fb';
+    return `<div class="post-card">
+      <div class="post-hdr">
+        <span class="plat ${platClass}">${p.platform || 'facebook'}</span>
+        <span style="font-size:11px;color:var(--muted)">${p.date || ''}</span>
+      </div>
+      <div class="post-cap">${p.caption || p.content || '—'}</div>
+      <div class="post-actions">
+        <button class="btn-approve" onclick="approvePost('${p.filename}',this)">✓ Approve & Move</button>
+        <button class="btn-sm">Edit</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────
+function nav(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  const page = el.dataset.page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+}
+
+function copyPhone(phone) {
+  navigator.clipboard.writeText(phone).then(() => toast('Copied: ' + phone));
+}
+
+function copyCmd(cmd) {
+  navigator.clipboard.writeText(cmd).then(() => toast('Command copied to clipboard'));
+}
+
+function openLink(url) {
+  if (isElectron) {
+    const { shell } = require('electron');
+    shell.openExternal(url);
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+function scriptPrompt(business, industry, city, phone) {
+  const script = `Write me a phone call script for calling ${business} — ${industry} business in ${city}, MO. They have no website. Use the HOO "build free, pay on approval" angle. Their phone: ${phone}. Keep it under 60 seconds. Natural, blue-collar tone. Not salesy.`;
+  navigator.clipboard.writeText(script).then(() =>
+    toast('Script prompt copied — paste into Claude chat')
+  );
+}
+
+async function approvePost(filename, btn) {
+  if (!isElectron) { toast('Run in Electron to approve posts'); return; }
+  const ok = await window.hoo.approvePost(filename);
+  if (ok) {
+    btn.closest('.post-card').style.opacity = '0.4';
+    btn.textContent = '✓ Moved to posted/';
+    btn.disabled = true;
+    toast('Post approved and moved to posted/');
+    queuePosts = queuePosts.filter(p => p.filename !== filename);
+    document.getElementById('badge-queue').textContent = queuePosts.length;
+  }
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── CLOCK ─────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
+  document.getElementById('today-date').textContent = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── BOOT ──────────────────────────────────────────────────────────────────
+loadAll();
+</script>
+</body>
+</html>

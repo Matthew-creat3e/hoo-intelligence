@@ -1,0 +1,51 @@
+# HOO Intelligence System — .gitignore
+# Sensitive data stays local. Architecture goes to GitHub.
+
+# ── SENSITIVE — NEVER COMMIT ──────────────────────────────
+engine/leads/
+engine/tools/.env
+engine/data/email-config.json
+engine/data/smtp-config.json
+
+# ── OUTPUTS — STAYS LOCAL ─────────────────────────────────
+outputs/
+dashboard/dist/
+dashboard/node_modules/
+
+# ── NODE ──────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+
+# ── PYTHON ────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── EDITOR ────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+
+# ── SOCIAL ENGINE ─────────────────────────────────────────
+# Queue and posted are local workflow — don't sync to GitHub
+social-engine/queue/
+social-engine/posted/
+
+# ── WHAT DOES COMMIT ─────────────────────────────────────
+# memory/ — YES (session history is the asset)
+# workspaces/ — YES (context evolves)
+# reference/ — YES (canonical sources)
+# engine/tools/*.py and *.js — YES (engine code)
+# engine/outreach/ — YES (templates)
+# engine/data/learning.json — YES (what works)
+# n8n/ — YES (workflow files)
+# social-engine/post-manager.js — YES (the tool)
+# .claude/skills/ — YES (skill definitions)
+# CLAUDE.md, CONTEXT.md, AGENTS.md — YES (the brain)
+# dashboard/index.html, main.js, preload.js — YES (the UI)

@@ -1,0 +1,27 @@
+{
+  "name": "hoo-command-center",
+  "version": "1.0.0",
+  "description": "HOO Intelligence System — Command Center",
+  "main": "dashboard/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dashboard": "electron .",
+    "build": "electron-builder --win portable"
+  },
+  "keywords": [],
+  "author": "Matthew Herrman — herrmanonlineoutlook.com",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.hoo.commandcenter",
+    "productName": "HOO Command Center",
+    "directories": { "output": "dashboard/dist" },
+    "win": {
+      "target": "portable",
+      "icon": "dashboard/icon.ico"
+    }
+  }
+}

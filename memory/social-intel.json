@@ -1,0 +1,12 @@
+{
+  "posts": [],
+  "top_content_types": [],
+  "platform_performance": {
+    "facebook": { "posts": 0, "avg_engagement": 0 },
+    "instagram": { "posts": 0, "avg_engagement": 0 },
+    "tiktok": { "posts": 0, "avg_engagement": 0 }
+  },
+  "best_hooks": [],
+  "best_hashtags": [],
+  "notes": "Updated by: node social-engine/post-manager.js log-result [file] [platform] [likes] [comments]"
+}

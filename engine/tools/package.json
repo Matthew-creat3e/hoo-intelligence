@@ -1,0 +1,9 @@
+{
+  "name": "hoo-engine",
+  "version": "3.0.0",
+  "description": "HOO Lead Engine v3 \u2014 Twilio SMS",
+  "dependencies": {
+    "twilio": "^4.0.0",
+    "dotenv": "^16.0.0"
+  }
+}

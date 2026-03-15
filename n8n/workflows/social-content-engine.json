@@ -1,0 +1,97 @@
+{
+  "name": "HOO — Social Content Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/hoo-social-trigger",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson"
+      },
+      "name": "Webhook — New Build Completed",
+      "type": "n8n-nodes-base.webhook",
+      "position": [200, 300],
+      "notes": "Call this webhook whenever Matthew finishes a build. Payload: { store, section, before_img, after_img, client_type, headline }"
+    },
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "hours", "hoursInterval": 24 }] },
+        "cronExpression": "0 10 * * *"
+      },
+      "name": "Daily 10AM — Check Queue",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [200, 500],
+      "notes": "Also posts queued content every morning at 10am"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Generate social post content using Claude API\nconst store   = $json.store || 'HOO';\nconst section = $json.section || 'hero section';\nconst before  = $json.before_img || '';\nconst after   = $json.after_img || '';\nconst type    = $json.client_type || 'local business';\nconst headline = $json.headline || 'built a website for a local business';\n\n// Build the prompt for Claude\nconst systemPrompt = `You are the social media voice for HOO (herrmanonlineoutlook.com). \nHOO is run by Matthew Herrman — a blue collar builder from Independence MO who learned AI and now builds premium Shopify websites for free. Clients pay only if they love it.\nVoice: raw, real, blue collar pride. No corporate fluff. Short sentences. Builder energy.\nMission: helping local businesses get online and compete.`;\n\nconst userPrompt = `Write 3 social media posts for this build:\n- Store: ${store}\n- What was built: ${section}\n- Client type: ${type}\n- Headline: ${headline}\n\nPost 1: Facebook (3-4 sentences, conversational, local small business owners as audience)\nPost 2: Instagram (shorter, punchy, with 5 relevant hashtags)\nPost 3: TikTok caption (1-2 sentences max, hook first)\n\nEach post should end with: herrmanonlineoutlook.com\nAlways mention the \"build free, pay on approval\" model somewhere.\nReturn as JSON: { facebook: string, instagram: string, tiktok: string }`;\n\nreturn [{ json: { systemPrompt, userPrompt, store, section, before, after, type, headline } }];"
+      },
+      "name": "Build Caption Prompt",
+      "type": "n8n-nodes-base.function",
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $credentials.httpHeaderAuth.value }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [{
+            "name": "=",
+            "value": "={{ JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: $json.systemPrompt, messages: [{ role: 'user', content: $json.userPrompt }] }) }}"
+          }]
+        }
+      },
+      "name": "Claude — Write Captions",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [640, 300],
+      "notes": "Calls Claude API to write platform-specific captions. Add Anthropic API key in credentials."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse Claude response and save to social queue\nconst fs = require('fs');\nconst path = require('path');\nconst QUEUE = 'C:\\\\Users\\\\Matth\\\\hoo-workspace\\\\social-engine\\\\queue';\nif (!fs.existsSync(QUEUE)) fs.mkdirSync(QUEUE, { recursive: true });\n\nconst content = $json.body?.content?.[0]?.text || '';\nlet captions;\ntry {\n  const jsonMatch = content.match(/\\{[\\s\\S]*\\}/);\n  captions = jsonMatch ? JSON.parse(jsonMatch[0]) : { facebook: content, instagram: content, tiktok: content };\n} catch {\n  captions = { facebook: content, instagram: content, tiktok: content };\n}\n\nconst today = new Date().toISOString().split('T')[0];\nconst slug  = ($json.section || 'build').toLowerCase().replace(/\\s+/g, '-');\nconst fname = `SOCIAL-${today}-${slug}.json`;\n\nconst post = {\n  date:      today,\n  store:     $json.store,\n  section:   $json.section,\n  type:      $json.type,\n  before:    $json.before,\n  after:     $json.after,\n  captions,\n  status:    'queued',\n  filename:  fname\n};\n\nfs.writeFileSync(path.join(QUEUE, fname), JSON.stringify(post, null, 2));\nreturn [{ json: { saved: true, filename: fname, captions } }];"
+      },
+      "name": "Save to Social Queue",
+      "type": "n8n-nodes-base.function",
+      "position": [840, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "message",
+        "operation": "sendAndWait",
+        "toEmail": "herrmanonlineoutlook@gmail.com",
+        "subject": "📱 HOO Social Post Ready — Review & Approve",
+        "message": "=A new social post was generated for your {{ $json.section }} build.\n\n📘 FACEBOOK:\n{{ $json.captions.facebook }}\n\n📸 INSTAGRAM:\n{{ $json.captions.instagram }}\n\n🎵 TIKTOK:\n{{ $json.captions.tiktok }}\n\n---\nFile saved: {{ $json.filename }}\nReply APPROVE to post, or edit the file and run: node post-now.js {{ $json.filename }}"
+      },
+      "name": "Email Preview to Matthew",
+      "type": "n8n-nodes-base.gmail",
+      "position": [1040, 300],
+      "notes": "Matthew reviews before anything posts. Manual approval required for first month."
+    }
+  ],
+  "connections": {
+    "Webhook — New Build Completed": { "main": [[{ "node": "Build Caption Prompt", "type": "main", "index": 0 }]] },
+    "Build Caption Prompt": { "main": [[{ "node": "Claude — Write Captions", "type": "main", "index": 0 }]] },
+    "Claude — Write Captions": { "main": [[{ "node": "Save to Social Queue", "type": "main", "index": 0 }]] },
+    "Save to Social Queue": { "main": [[{ "node": "Email Preview to Matthew", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["HOO", "Social", "Content Engine"],
+  "_meta": {
+    "description": "Triggered when Matthew finishes a build. Claude writes 3 platform-specific captions (Facebook, Instagram, TikTok). Saves to queue. Emails Matthew a preview for approval before anything posts. Replaces Blotato $29/mo.",
+    "trigger": "POST to /hoo-social-trigger with: { store, section, before_img, after_img, client_type, headline }",
+    "cost": "$0 (n8n free) + Claude API token cost (~$0.001/post)",
+    "manual_posting": "For now, Matthew reviews and posts manually. Phase 2: connect Facebook Graph API for auto-posting."
+  }
+}
