@@ -5,5 +5,27 @@
     "to": "herrmanonlineoutlook@gmail.com",
     "messageId": "<839b21e8-a792-be4b-e27d-5b129a9bc2e9@gmail.com>",
     "status": "sent"
+  },
+  {
+    "date": "2026-03-15T21:09:13.775Z",
+    "lead": "Tattoos by Glendon",
+    "id": "LEAD-TEST-001",
+    "to": "herrmanonlineoutlook@gmail.com",
+    "subject": "I built Tattoos by Glendon a free website — take a look",
+    "template": 7,
+    "messageId": "<2f343dc8-f1ff-5939-f130-6b526756cef4@gmail.com>",
+    "status": "sent",
+    "live": true
+  },
+  {
+    "date": "2026-03-15T21:21:20.175Z",
+    "lead": "Hammer Hands Restoration",
+    "id": "LEAD-002",
+    "to": "HammerHandsRestoration@gmail.com",
+    "subject": "I built Hammer Hands Restoration a free website — take a look",
+    "template": 7,
+    "messageId": "<6a6a8f5f-4533-5dea-b615-498bec54827a@gmail.com>",
+    "status": "sent",
+    "live": true
   }
 ]

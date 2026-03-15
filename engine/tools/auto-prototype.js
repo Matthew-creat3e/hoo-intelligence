@@ -377,7 +377,8 @@ async function buildPrototype(leadPath) {
 
   // Save
   if (!fs.existsSync(OUTPUTS_DIR)) fs.mkdirSync(OUTPUTS_DIR, { recursive: true });
-  const filename = `LEAD-${leadId}-${slugify(biz)}.html`;
+  const cleanId  = leadId.replace(/^LEAD-/i, '');
+  const filename = `LEAD-${cleanId}-${slugify(biz)}.html`;
   const filepath = path.join(OUTPUTS_DIR, filename);
   fs.writeFileSync(filepath, html, 'utf8');
 

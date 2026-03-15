@@ -15,6 +15,8 @@
  *   node email-engine.js send <lead.json>                 Dry run single
  *   node email-engine.js send <lead.json> --live          Send single email
  *   node email-engine.js send <lead.json> --template=2    Use specific template
+ *   node email-engine.js send <lead.json> --demo          Attach demo (Template 7)
+ *   node email-engine.js send <lead.json> --demo --live   Send demo delivery email
  *   node email-engine.js batch <leads.json>               Dry run batch
  *   node email-engine.js batch <leads.json> --live        Send batch from JSON list
  *   node email-engine.js send-all --live                  Send to all lead files
@@ -28,6 +30,7 @@ const nodemailer = require('nodemailer');
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 const LEADS_DIR     = path.join(__dirname, '..', 'leads');
+const DEMOS_DIR     = path.join(__dirname, '..', '..', 'outputs', 'demos');
 const LOG_FILE      = path.join(__dirname, '..', 'data', 'email-log.json');
 const TEMPLATES_FILE = path.join(__dirname, '..', 'outreach', 'templates', 'email-templates.md');
 
@@ -37,6 +40,7 @@ const GMAIL_FROM     = process.env.GMAIL_FROM_NAME || 'Matthew Herrman | HOO';
 
 // ── SAFETY GATE ───────────────────────────────────────────────────────────────
 const IS_LIVE = process.argv.includes('--live');
+const IS_DEMO = process.argv.includes('--demo');
 
 if (!IS_LIVE && process.argv.length > 2) {
   console.log('\n\x1b[33m⚠️  DRY RUN MODE — no emails will be sent\x1b[0m');
@@ -106,6 +110,62 @@ function fillTemplate(text, lead) {
     .replace(/\{estimated_job_value\}/g, lead.job_value || '500');
 }
 
+// ── DEMO FILE FINDER ─────────────────────────────────────────────────────────
+function findDemoFile(lead) {
+  if (!fs.existsSync(DEMOS_DIR)) return null;
+  const files = fs.readdirSync(DEMOS_DIR).filter(f => f.endsWith('.html'));
+  const leadId = (lead.id || '').toLowerCase();
+  const biz = (lead.business || lead.business_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+  // Match by lead ID first, then by business name slug
+  for (const f of files) {
+    const lower = f.toLowerCase();
+    if (leadId && lower.includes(leadId.toLowerCase())) return path.join(DEMOS_DIR, f);
+    if (biz && lower.includes(biz)) return path.join(DEMOS_DIR, f);
+  }
+  return null;
+}
+
+// ── TEMPLATE 7 — DEMO DELIVERY ──────────────────────────────────────────────
+function buildDemoEmail(lead, demoPath) {
+  const biz = lead.business || lead.business_name || 'your business';
+  const owner = lead.owner_name || lead.owner || 'there';
+  const city = lead.city || '';
+  const industry = lead.industry || 'business';
+
+  const subject = `I built ${biz} a free website — take a look`;
+  const body = `Hey ${owner},
+
+My name's Matthew Herrman — I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, for free. You only pay if you love it.
+
+I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. It's attached to this email — just download the file and open it in Chrome or Edge to see the full design with photos, animations, and a working mobile layout.
+
+No obligations. No pitch. Just wanted to show you what your business could look like online.
+
+If you like what you see, reply to this email or call me at (804) 957-1003. If not, no hard feelings — keep the design either way.
+
+Matthew Herrman
+HOO — Build free, pay on approval
+herrmanonlineoutlook.com
+(804) 957-1003`;
+
+  const demoFilename = path.basename(demoPath);
+  const demoContent = fs.readFileSync(demoPath);
+
+  return {
+    to: lead.email,
+    subject,
+    body,
+    templateId: 7,
+    templateName: 'Demo Delivery',
+    attachments: [{
+      filename: demoFilename,
+      content: demoContent,
+      contentType: 'text/html',
+    }],
+  };
+}
+
 // ── PICK BEST TEMPLATE ───────────────────────────────────────────────────────
 function pickTemplate(lead, templates, forceId) {
   if (forceId) {
@@ -132,6 +192,18 @@ function pickTemplate(lead, templates, forceId) {
 
 // ── BUILD EMAIL ───────────────────────────────────────────────────────────────
 function buildEmail(lead, forceTemplateId) {
+  // --demo flag: use Template 7 with attached demo file
+  if (IS_DEMO || forceTemplateId === 7) {
+    const demoPath = findDemoFile(lead);
+    if (!demoPath) {
+      console.error(`  ❌  No demo file found for ${lead.business || lead.id} in outputs/demos/`);
+      console.log(`       Expected pattern: LEAD-*-${(lead.business || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.html`);
+      return null;
+    }
+    console.log(`  📎  Demo found: ${path.basename(demoPath)}`);
+    return buildDemoEmail(lead, demoPath);
+  }
+
   const templates = loadTemplates();
   const template  = pickTemplate(lead, templates, forceTemplateId);
   const subject   = fillTemplate(template.subject, lead);
@@ -144,11 +216,15 @@ function buildEmail(lead, forceTemplateId) {
 // ── PREVIEW ───────────────────────────────────────────────────────────────────
 function preview(lead, forceTemplateId) {
   const email = buildEmail(lead, forceTemplateId);
+  if (!email) return null;
   console.log('\n─────────────────────────────────────');
   console.log(`📧  TO:       ${email.to || '[no email]'}`);
   console.log(`📤  FROM:     ${GMAIL_FROM} <${GMAIL_USER}>`);
   console.log(`📋  TEMPLATE: #${email.templateId} — ${email.templateName}`);
   console.log(`📝  SUBJECT:  ${email.subject}`);
+  if (email.attachments) {
+    console.log(`📎  ATTACH:   ${email.attachments.map(a => a.filename).join(', ')}`);
+  }
   console.log('─── BODY ───');
   console.log(email.body);
   console.log('─────────────────────────────────────\n');
@@ -163,6 +239,7 @@ async function sendEmail(lead, forceTemplateId) {
   }
 
   const email = preview(lead, forceTemplateId);
+  if (!email) return null;
 
   if (!IS_LIVE) {
     console.log('  🔒  DRY RUN — not sent. Use --live to send.');
@@ -172,12 +249,15 @@ async function sendEmail(lead, forceTemplateId) {
   const transporter = getTransporter();
 
   try {
-    const info = await transporter.sendMail({
+    const mailOpts = {
       from:    `"${GMAIL_FROM}" <${GMAIL_USER}>`,
       to:      email.to,
       subject: email.subject,
       text:    email.body,
-    });
+    };
+    if (email.attachments) mailOpts.attachments = email.attachments;
+
+    const info = await transporter.sendMail(mailOpts);
 
     const logEntry = {
       date:       new Date().toISOString(),
@@ -402,6 +482,7 @@ async function main() {
 Commands:
   preview <lead.json>                  Preview email for a lead (dry run)
   send <lead.json> [--live]            Send email to one lead
+  send <lead.json> --demo [--live]     Send with demo HTML attached (Template 7)
   batch <leads.json> [--live]          Send batch from JSON array
   send-all [--live]                    Send to all lead files in engine/leads/
   test "email@addr" [--live]           Send test email to yourself
@@ -409,7 +490,8 @@ Commands:
 
 Options:
   --live                 Actually send (default is dry run)
-  --template=N           Force template number (1-6)
+  --demo                 Attach matching demo from outputs/demos/ (Template 7)
+  --template=N           Force template number (1-7)
 
 Safety: \x1b[33mAll sends are DRY RUN by default.\x1b[0m --live required to actually send.
 
