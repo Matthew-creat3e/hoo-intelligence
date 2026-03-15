@@ -12,12 +12,10 @@ function createWindow() {
     minHeight: 700,
     backgroundColor: '#050505',
     titleBarStyle: 'hiddenInset',
-    webSecurity: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: false
+      nodeIntegration: false
     },
     icon: path.join(__dirname, 'icon.png'),
     title: 'HOO Command Center'
@@ -103,11 +101,6 @@ ipcMain.handle('write-memory', (_, content) => {
 // Check if a path exists
 ipcMain.handle('path-exists', (_, relPath) => {
   return fs.existsSync(path.join(ROOT, relPath));
-});
-
-ipcMain.handle('open-external', (_, url) => {
-  const { shell } = require('electron');
-  shell.openExternal(url);
 });
 
 app.whenReady().then(createWindow);

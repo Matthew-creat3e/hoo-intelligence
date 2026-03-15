@@ -26,6 +26,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .btn-sm:hover{border-color:var(--gold);color:var(--gold)}
 .btn-gold{border-color:var(--gold);color:var(--gold)}
 .btn-gold:hover{background:var(--gold);color:#000}
+.btn-red{border-color:var(--red);color:var(--red);-webkit-app-region:no-drag}
+.btn-red:hover{background:var(--red);color:#000}
 
 .body{display:grid;grid-template-columns:210px 1fr;overflow:hidden}
 
@@ -99,7 +101,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .phone-link:hover{color:var(--gold2)}
 
 /* STORE STATUS */
-.store-block{margin-bottom:16px}
 .store-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
 .store-name{font-family:var(--fh);font-size:20px;letter-spacing:1px}
 .store-url{font-size:11px;color:var(--blue)}
@@ -150,6 +151,50 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .rate-bar-wrap{background:var(--border);border-radius:3px;height:4px;width:80px;overflow:hidden;display:inline-block}
 .rate-bar{height:100%;background:var(--gold);border-radius:3px}
 
+/* TASK LIST */
+.task-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.task-item:last-child{border-bottom:none}
+.task-item.done .task-title{text-decoration:line-through;color:var(--muted)}
+.task-item.done .task-detail{color:var(--dim)}
+.task-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);cursor:pointer;flex-shrink:0;margin-top:2px;transition:all .2s;position:relative}
+.task-check:hover{border-color:var(--gold)}
+.task-item.done .task-check{background:var(--green);border-color:var(--green)}
+.task-item.done .task-check::after{content:'✓';position:absolute;top:-1px;left:2px;font-size:12px;color:#000;font-weight:700}
+.task-body{flex:1}
+.task-title{font-size:13px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.task-detail{font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.5}
+.task-script{font-size:11px;color:var(--gold2);background:rgba(200,149,46,.06);border-left:2px solid var(--gold);padding:6px 10px;border-radius:0 4px 4px 0;margin-bottom:8px;line-height:1.6;font-style:italic}
+.task-cmd{font-size:11px;color:var(--muted);margin-bottom:6px}
+.task-tag{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;letter-spacing:.5px}
+.t-urgent{background:rgba(239,83,80,.15);color:var(--red);border:1px solid rgba(239,83,80,.3)}
+.t-today{background:rgba(255,152,0,.15);color:var(--amber);border:1px solid rgba(255,152,0,.3)}
+.t-engine{background:rgba(200,149,46,.15);color:var(--gold);border:1px solid rgba(200,149,46,.3)}
+.t-build{background:rgba(66,165,245,.12);color:var(--blue);border:1px solid rgba(66,165,245,.3)}
+.t-social{background:rgba(225,48,108,.1);color:#E1306C;border:1px solid rgba(225,48,108,.2)}
+.task-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 12px;border-radius:4px;cursor:pointer;font-family:var(--fb);font-size:11px;transition:all .2s}
+.task-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* COMMAND ROWS */
+.cmd-row{padding:7px 0;border-bottom:1px solid var(--border)}
+.cmd-row:last-child{border-bottom:none}
+.cmd-label{font-size:10px;color:var(--muted);margin-bottom:3px;letter-spacing:.5px}
+.cmd-code{font-size:12px;color:var(--text);background:rgba(255,255,255,.03);padding:4px 8px;border-radius:4px;border:1px solid var(--border)}
+.cmd-code code{font-family:monospace;color:var(--gold2)}
+.copy-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:2px 8px;border-radius:3px;cursor:pointer;font-size:10px;font-family:var(--fb);flex-shrink:0}
+.copy-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* MILESTONE */
+.milestone-row{display:flex;align-items:center;gap:8px;padding:3px 0}
+
+/* WEEK GRID */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:4px}
+.week-day{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:10px}
+.week-day.today{border-color:var(--gold);background:rgba(200,149,46,.05)}
+.week-day-name{font-family:var(--fh);font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--muted)}
+.week-day.today .week-day-name{color:var(--gold)}
+.week-task{font-size:11px;color:var(--muted);padding:3px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.week-task:last-child{border-bottom:none}
+
 /* SCROLL */
 .main::-webkit-scrollbar,.sidebar::-webkit-scrollbar{width:4px}
 .main::-webkit-scrollbar-track,.sidebar::-webkit-scrollbar-track{background:transparent}
@@ -175,7 +220,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
     <div class="topbar-right">
       <span id="clock"></span>
       <button class="btn-sm" onclick="loadAll()">↻ Refresh</button>
-      <button class="btn-sm btn-gold" onclick="openLink('https://partners.shopify.com')">Apply Shopify Partner ↗</button>
+      <button class="btn-sm btn-red" onclick="openLink('https://partners.shopify.com')">Partner Dashboard ↗</button>
     </div>
   </div>
 
@@ -228,79 +273,182 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
     <!-- MAIN CONTENT -->
     <div class="main">
 
-      <!-- TODAY PAGE -->
+
+      <!-- CEO OPERATIONS CENTER -->
       <div class="page active" id="page-today">
         <div class="page-head">
-          <div class="page-title">Today's Briefing</div>
-          <div class="page-sub" id="today-date">Loading...</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div class="page-title">CEO Operations Center</div>
+              <div class="page-sub" id="today-date">Loading...</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:11px;color:var(--muted)">Daily mission</div>
+              <div style="font-size:13px;color:var(--gold);font-weight:500">Find. Build. Close. Repeat.</div>
+            </div>
+          </div>
         </div>
 
-        <div class="g4" id="metric-tiles">
+        <div class="g4" style="margin-bottom:16px">
           <div class="metric"><div class="m-lbl">MRR</div><div class="m-val gold" id="t-mrr">$0</div><div class="m-sub">Goal: $1,000/mo</div></div>
-          <div class="metric"><div class="m-lbl">Hot Leads</div><div class="m-val red" id="t-hot">—</div><div class="m-sub" id="t-hot-sub">Loading...</div></div>
-          <div class="metric"><div class="m-lbl">Follow-Ups</div><div class="m-val amber" id="t-followup">—</div><div class="m-sub" id="t-fu-sub">Loading...</div></div>
+          <div class="metric"><div class="m-lbl">Hot Leads</div><div class="m-val red" id="t-hot">23</div><div class="m-sub" id="t-hot-sub">2 WARM · 0 closed</div></div>
+          <div class="metric"><div class="m-lbl">Follow-Ups Due</div><div class="m-val amber" id="t-followup">14</div><div class="m-sub" id="t-fu-sub">Sent 3 days ago</div></div>
           <div class="metric"><div class="m-lbl">Stores Live</div><div class="m-val green">3</div><div class="m-sub">NoReturn · TCB · HOO</div></div>
         </div>
 
-        <div class="g2">
+        <div class="g2" style="margin-bottom:12px">
+
+          <!-- DAILY TASKS -->
           <div class="card">
-            <div class="card-label">Priority Actions</div>
-            <div id="priority-list">
-              <div class="alert-item">
-                <span class="badge b-urgent">URGENT</span>
-                <div class="alert-body">
-                  <div class="alert-text">Apply for Shopify Partner Program</div>
-                  <div class="alert-sub">partners.shopify.com — 15 min, free, passive income on every client forever</div>
-                </div>
-              </div>
-              <div class="alert-item">
-                <span class="badge b-urgent">URGENT</span>
-                <div class="alert-body">
-                  <div class="alert-text">Call Glendon Thomas — Tattoos by Glendon, Liberty</div>
-                  <div class="alert-sub">(816) 569-4465 — Score 80 — #1 lead, not yet called</div>
-                </div>
-              </div>
-              <div class="alert-item">
-                <span class="badge b-today">TODAY</span>
-                <div class="alert-body">
-                  <div class="alert-text">Follow-up wave due — 14 emails sent 2026-03-13</div>
-                  <div class="alert-sub">3-day mark — check replies, send Template 3 to non-responders</div>
-                </div>
-              </div>
-              <div class="alert-item">
-                <span class="badge b-today">TODAY</span>
-                <div class="alert-body">
-                  <div class="alert-text">Post God Quest before/after to Facebook</div>
-                  <div class="alert-sub">Content is built — just needs to go live</div>
-                </div>
-              </div>
-              <div class="alert-item">
-                <span class="badge b-engine">ENGINE</span>
-                <div class="alert-body">
-                  <div class="alert-text">Install Crawl4AI + configure Twilio</div>
-                  <div class="alert-sub">Run engine/tools/install-verify.py to set up the full lead engine</div>
-                </div>
+            <div class="card-label">Today's actions — check off as you go</div>
+
+            <div class="task-item" id="task-0">
+              <div class="task-check" onclick="checkTask(0)"></div>
+              <div class="task-body">
+                <div class="task-title">Call Glendon Thomas <span class="task-tag t-urgent">CALL NOW</span></div>
+                <div class="task-detail">(816) 569-4465 · Tattoos by Glendon · Liberty · Score 80</div>
+                <div class="task-script">"Hey Glendon, my name's Matthew — I build websites for local businesses. I noticed Tattoos by Glendon doesn't have a website. I'll build it free — you only pay if you love it. Got 5 minutes?"</div>
+                <button class="task-btn" onclick="copyText('(816) 569-4465')">Copy number</button>
               </div>
             </div>
+
+            <div class="task-item" id="task-1">
+              <div class="task-check" onclick="checkTask(1)"></div>
+              <div class="task-body">
+                <div class="task-title">Send follow-up emails <span class="task-tag t-today">TODAY</span></div>
+                <div class="task-detail">14 leads emailed 3 days ago — check replies, send Template 3 to non-responders</div>
+                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
+                <button class="task-btn" onclick="copyText('Check my email replies and draft follow-up emails for all 14 leads that have not responded yet. Use Template 3.')">Copy Claude prompt</button>
+              </div>
+            </div>
+
+            <div class="task-item" id="task-2">
+              <div class="task-check" onclick="checkTask(2)"></div>
+              <div class="task-body">
+                <div class="task-title">Hunt new leads <span class="task-tag t-engine">ENGINE</span></div>
+                <div class="task-detail">Run the lead engine — find 10+ new businesses with no websites in KC metro</div>
+                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
+                <button class="task-btn" onclick="copyText('find me leads in Independence and Liberty for cleaning, handyman, and lawn care businesses')">Copy command</button>
+              </div>
+            </div>
+
+            <div class="task-item" id="task-3">
+              <div class="task-check" onclick="checkTask(3)"></div>
+              <div class="task-body">
+                <div class="task-title">Build a client demo <span class="task-tag t-build">BUILD</span></div>
+                <div class="task-detail">Build a free demo for your #1 lead before you call — show don't tell</div>
+                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
+                <button class="task-btn" onclick="copyText('build a demo homepage for a tattoo shop in Liberty MO called Tattoos by Glendon. Dark theme, gold accents, hero section with booking CTA.')">Copy command</button>
+              </div>
+            </div>
+
+            <div class="task-item" id="task-4">
+              <div class="task-check" onclick="checkTask(4)"></div>
+              <div class="task-body">
+                <div class="task-title">Post to Facebook <span class="task-tag t-social">SOCIAL</span></div>
+                <div class="task-detail">Post the God Quest before/after — your existing portfolio content is ready</div>
+                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
+                <button class="task-btn" onclick="copyText('create a Facebook post for the God Quest NoReturn Apparel build. Before and after. HOO voice. Include herrmanonlineoutlook.com')">Copy command</button>
+              </div>
+            </div>
+
+            <div class="task-item" id="task-5">
+              <div class="task-check" onclick="checkTask(5)"></div>
+              <div class="task-body">
+                <div class="task-title">End of day commit <span class="task-tag t-engine">GIT</span></div>
+                <div class="task-detail">Save today's work to GitHub — the system grows permanently</div>
+                <div class="task-cmd">PowerShell:</div>
+                <button class="task-btn" id="git-btn" onclick="copyGit()">Copy git command</button>
+              </div>
+            </div>
+
           </div>
 
-          <div class="card">
-            <div class="card-label">Revenue Path to $1,000/mo</div>
-            <div style="margin-bottom:14px">
-              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px">
-                <span style="color:var(--muted)">Current MRR</span>
-                <span style="color:var(--gold)">$0</span>
+          <!-- RIGHT COLUMN -->
+          <div style="display:flex;flex-direction:column;gap:12px">
+
+            <!-- CLAUDE CODE COMMANDS -->
+            <div class="card">
+              <div class="card-label">Claude Code commands — type these in VS Code terminal</div>
+              <div class="cmd-row">
+                <div class="cmd-label">1. Open terminal</div>
+                <div class="cmd-code">Ctrl + ` (backtick key)</div>
               </div>
-              <div class="prog"><div class="prog-fill" style="width:0%"></div></div>
+              <div class="cmd-row">
+                <div class="cmd-label">2. Start AI brain</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>claude</code><button class="copy-btn" onclick="copyText('claude')">copy</button>
+                </div>
+              </div>
+              <div class="cmd-row">
+                <div class="cmd-label">Morning briefing</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>morning briefing</code><button class="copy-btn" onclick="copyText('morning briefing')">copy</button>
+                </div>
+              </div>
+              <div class="cmd-row">
+                <div class="cmd-label">Find leads</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>find leads in [city] for [industry]</code><button class="copy-btn" onclick="copyText('find leads in Independence for cleaning businesses')">copy</button>
+                </div>
+              </div>
+              <div class="cmd-row">
+                <div class="cmd-label">Build a section</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>build a hero for [business name]</code><button class="copy-btn" onclick="copyText('build a hero section for a cleaning business in Independence MO')">copy</button>
+                </div>
+              </div>
+              <div class="cmd-row">
+                <div class="cmd-label">Create social post</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>create social content for [build]</code><button class="copy-btn" onclick="copyText('create social content for the build I just finished. HOO voice. Facebook and Instagram.')">copy</button>
+                </div>
+              </div>
+              <div class="cmd-row">
+                <div class="cmd-label">Audit a website</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>audit [url]</code><button class="copy-btn" onclick="copyText('audit noreturnapparel.com and tell me the top 5 issues')">copy</button>
+                </div>
+              </div>
+              <div class="cmd-row">
+                <div class="cmd-label">End session</div>
+                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
+                  <code>end session</code><button class="copy-btn" onclick="copyText('end session')">copy</button>
+                </div>
+              </div>
             </div>
-            <div style="font-size:12px;color:var(--muted);line-height:2">
-              <div>20% close rate × 25 leads = <span style="color:var(--text)">5 clients</span></div>
-              <div>5 Starter clients = <span style="color:var(--gold)">$375/mo MRR</span> + $1,500–2,500 one-time</div>
-              <div>5 Standard clients = <span style="color:var(--gold)">$500/mo MRR</span> + $3,000–4,500 one-time</div>
-              <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">Shopify Partner @ 25 clients = <span style="color:var(--gold2)">+$200–400/mo passive</span></div>
+
+            <!-- REVENUE TRACKER -->
+            <div class="card">
+              <div class="card-label">Revenue path — what each milestone means</div>
+              <div style="margin-bottom:10px">
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
+                  <span style="color:var(--muted)">$0 → $1,000/mo MRR</span>
+                  <span style="color:var(--gold)">0 / 10 clients</span>
+                </div>
+                <div class="prog"><div class="prog-fill" style="width:0%"></div></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">5 clients</span><span style="font-size:12px;color:var(--gold)">$375–500/mo · car payment</span></div>
+                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">10 clients</span><span style="font-size:12px;color:var(--gold)">$750–1,000/mo · bills breathing</span></div>
+                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">20 clients</span><span style="font-size:12px;color:var(--gold)">$1,500–2,000/mo · Shelby stops worrying</span></div>
+                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">35 clients</span><span style="font-size:12px;color:var(--gold)">$2,500–3,500/mo · leave construction</span></div>
+                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">50 clients</span><span style="font-size:12px;color:var(--gold2)">$5,000/mo · hire help · scale</span></div>
+              </div>
+              <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">
+                25 hot leads in pipeline now. One yes from Glendon = first dollar. <span style="color:var(--gold2)">Make the call.</span>
+              </div>
             </div>
+
           </div>
         </div>
+
+        <!-- WEEKLY RHYTHM -->
+        <div class="card">
+          <div class="card-label">Weekly rhythm — what to do each day</div>
+          <div class="week-grid" id="week-grid"></div>
+        </div>
+
       </div>
 
       <!-- PIPELINE PAGE -->
@@ -756,14 +904,17 @@ function copyPhone(phone) {
   navigator.clipboard.writeText(phone).then(() => toast('Copied: ' + phone));
 }
 
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard'));
+}
+
 function copyCmd(cmd) {
   navigator.clipboard.writeText(cmd).then(() => toast('Command copied to clipboard'));
 }
 
 function openLink(url) {
-  if (isElectron) {
-    const { shell } = require('electron');
-    shell.openExternal(url);
+  if (window.hoo && window.hoo.openExternal) {
+    window.hoo.openExternal(url);
   } else {
     window.open(url, '_blank');
   }
@@ -796,6 +947,48 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
+// ── TASKS ─────────────────────────────────────────────────────────────────
+const taskState = JSON.parse(localStorage.getItem('hoo-tasks-'+new Date().toDateString()) || '{}');
+
+function checkTask(i) {
+  taskState[i] = !taskState[i];
+  localStorage.setItem('hoo-tasks-'+new Date().toDateString(), JSON.stringify(taskState));
+  const el = document.getElementById('task-'+i);
+  el.classList.toggle('done', taskState[i]);
+}
+
+function initTasks() {
+  Object.keys(taskState).forEach(i => {
+    const el = document.getElementById('task-'+i);
+    if (el && taskState[i]) el.classList.add('done');
+  });
+}
+
+function copyGit() {
+  const d = new Date().toISOString().slice(0,10);
+  copyText('cd C:\\Users\\Matth\\hoo-workspace && git add memory/ workspaces/ && git commit -m "session '+d+' — daily ops" && git push');
+}
+
+// ── WEEK GRID ─────────────────────────────────────────────────────────────
+function renderWeekGrid() {
+  const days = [
+    {name:'Monday',   tasks:['Morning briefing','Make top 5 calls','Check pipeline replies']},
+    {name:'Tuesday',  tasks:['Build client demos','Hunt new leads','Email new prospects']},
+    {name:'Wednesday',tasks:['Build sessions','Paste built sections','Client follow-ups']},
+    {name:'Thursday', tasks:['Follow-up emails','Approve social posts','Post content live']},
+    {name:'Friday',   tasks:['Weekly debrief','Git commit + push','Plan next week']},
+    {name:'Saturday', tasks:['1 new section build','Generate social library','Let engines run']},
+    {name:'Sunday',   tasks:['Rest — family first','Review the week','Set Monday goals']},
+  ];
+  const todayIdx = (new Date().getDay() + 6) % 7;
+  document.getElementById('week-grid').innerHTML = days.map((d,i) => `
+    <div class="week-day ${i===todayIdx?'today':''}">
+      <div class="week-day-name">${d.name}</div>
+      ${d.tasks.map(t=>`<div class="week-task">${t}</div>`).join('')}
+    </div>
+  `).join('');
+}
+
 // ── CLOCK ─────────────────────────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
@@ -807,6 +1000,8 @@ updateClock();
 
 // ── BOOT ──────────────────────────────────────────────────────────────────
 loadAll();
+initTasks();
+renderWeekGrid();
 </script>
 </body>
 </html>

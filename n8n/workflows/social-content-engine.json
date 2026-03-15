@@ -3,6 +3,7 @@
   "nodes": [
     {
       "parameters": {
+        "httpMethod": "POST",
         "path": "/hoo-social-trigger",
         "responseMode": "onReceived",
         "responseData": "firstEntryJson"
@@ -59,11 +60,20 @@
     },
     {
       "parameters": {
-        "functionCode": "// Parse Claude response and save to social queue\nconst fs = require('fs');\nconst path = require('path');\nconst QUEUE = 'C:\\\\Users\\\\Matth\\\\hoo-workspace\\\\social-engine\\\\queue';\nif (!fs.existsSync(QUEUE)) fs.mkdirSync(QUEUE, { recursive: true });\n\nconst content = $json.body?.content?.[0]?.text || '';\nlet captions;\ntry {\n  const jsonMatch = content.match(/\\{[\\s\\S]*\\}/);\n  captions = jsonMatch ? JSON.parse(jsonMatch[0]) : { facebook: content, instagram: content, tiktok: content };\n} catch {\n  captions = { facebook: content, instagram: content, tiktok: content };\n}\n\nconst today = new Date().toISOString().split('T')[0];\nconst slug  = ($json.section || 'build').toLowerCase().replace(/\\s+/g, '-');\nconst fname = `SOCIAL-${today}-${slug}.json`;\n\nconst post = {\n  date:      today,\n  store:     $json.store,\n  section:   $json.section,\n  type:      $json.type,\n  before:    $json.before,\n  after:     $json.after,\n  captions,\n  status:    'queued',\n  filename:  fname\n};\n\nfs.writeFileSync(path.join(QUEUE, fname), JSON.stringify(post, null, 2));\nreturn [{ json: { saved: true, filename: fname, captions } }];"
+        "functionCode": "// Parse Claude response and prepare social queue data — sandbox safe (no fs)\nconst content = $json.body?.content?.[0]?.text || '';\nlet captions;\ntry {\n  const jsonMatch = content.match(/\\{[\\s\\S]*\\}/);\n  captions = jsonMatch ? JSON.parse(jsonMatch[0]) : { facebook: content, instagram: content, tiktok: content };\n} catch {\n  captions = { facebook: content, instagram: content, tiktok: content };\n}\n\nconst today = new Date().toISOString().split('T')[0];\nconst slug  = ($json.section || 'build').toLowerCase().replace(/\\s+/g, '-');\nconst fname = `SOCIAL-${today}-${slug}.json`;\n\nconst post = {\n  date:      today,\n  store:     $json.store,\n  section:   $json.section,\n  type:      $json.type,\n  before:    $json.before,\n  after:     $json.after,\n  captions,\n  status:    'queued',\n  filename:  fname\n};\n\nreturn [{ json: { saved: true, filename: fname, captions, post: JSON.stringify(post, null, 2) } }];"
       },
       "name": "Save to Social Queue",
       "type": "n8n-nodes-base.function",
       "position": [840, 300]
+    },
+    {
+      "parameters": {
+        "command": "=mkdir -p /c/Users/Matth/hoo-workspace/social-engine/queue && echo '{{ $json.post }}' > '/c/Users/Matth/hoo-workspace/social-engine/queue/{{ $json.filename }}'"
+      },
+      "name": "Write Queue File",
+      "type": "n8n-nodes-base.executeCommand",
+      "position": [940, 300],
+      "notes": "Writes the social post JSON to disk — Execute Command handles fs outside the sandbox."
     },
     {
       "parameters": {
@@ -84,7 +94,8 @@
     "Webhook — New Build Completed": { "main": [[{ "node": "Build Caption Prompt", "type": "main", "index": 0 }]] },
     "Build Caption Prompt": { "main": [[{ "node": "Claude — Write Captions", "type": "main", "index": 0 }]] },
     "Claude — Write Captions": { "main": [[{ "node": "Save to Social Queue", "type": "main", "index": 0 }]] },
-    "Save to Social Queue": { "main": [[{ "node": "Email Preview to Matthew", "type": "main", "index": 0 }]] }
+    "Save to Social Queue": { "main": [[{ "node": "Write Queue File", "type": "main", "index": 0 }]] },
+    "Write Queue File": { "main": [[{ "node": "Email Preview to Matthew", "type": "main", "index": 0 }]] }
   },
   "settings": { "executionOrder": "v1" },
   "tags": ["HOO", "Social", "Content Engine"],
