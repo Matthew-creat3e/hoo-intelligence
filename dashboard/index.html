@@ -1266,6 +1266,9 @@ function renderCallQueue() {
         <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px">Call Script</div>
         <div style="font-size:12px;color:var(--text);line-height:1.6">"Hey ${ownerName}, this is Matthew from HOO - I built ${biz} a free website. Can I send it over? What's the best email?"</div>
       </div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+        <button class="btn-sm btn-gold" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')" style="padding:10px 18px;white-space:nowrap">Preview Demo</button>
+      </div>
       <div style="display:flex;gap:10px;align-items:center">
         <input type="email" id="cq-email-${leadId}" placeholder="Enter email they give you..." style="flex:1;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:10px 14px;border-radius:4px;font-family:var(--fb);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'">
         <button class="btn-sm" id="cq-send-${leadId}" style="border-color:var(--green);color:var(--green);padding:10px 18px;white-space:nowrap" onclick="cqSendDemo('${leadId}',this)">Send Demo</button>
