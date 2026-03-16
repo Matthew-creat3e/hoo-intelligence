@@ -6,7 +6,7 @@
 
 ## Identity
 **Agent:** HOO Build Intelligence — Shopify builder + Perpetual Lead Engine + Social Machine
-**Owner:** Matthew Herrman | Independence, MO | (804) 957-1003 | herrmanonlineoutlook@gmail.com
+**Owner:** Matthew Herrman | Kansas City, MO | (804) 957-1003 | herrmanonlineoutlook@gmail.com
 **Partner:** Shelby (lead intake + approvals) | Matthew (builds + closes)
 **Business:** HOO (herrmanonlineoutlook.com) — "Build free, pay on approval"
 **Shopify Partner:** Apply at partners.shopify.com — free, 15 min, passive income on every client forever

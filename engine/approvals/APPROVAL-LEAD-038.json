@@ -4,7 +4,7 @@
     "business": "Reyna's Cleaning Services LLC",
     "owner": "Reyna",
     "phone": "",
-    "email": "",
+    "email": "matthewherrman31@gmial.com",
     "city": "Raytown",
     "state": "MO",
     "industry": "cleaning",
@@ -13,7 +13,7 @@
   },
   "demo_path": "outputs/demos/LEAD-038-reyna-s-cleaning-services-llc.html",
   "email_preview": {
-    "to": "[no email]",
+    "to": "matthewherrman31@gmial.com",
     "subject": "I built Reyna's Cleaning Services LLC a free website - take a look",
     "body": "Hey Reyna,\n\nMy name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local cleaning businesses, and I do it a little differently: I build first, for free. You only pay if you love it.\n\nI went ahead and built a custom homepage for Reyna's Cleaning Services LLC in Raytown. It's attached to this email - just download the file and open it in Chrome or Edge to see the full design with photos, animations, and a working mobile layout.\n\nNo obligations. No pitch. Just wanted to show you what your business could look like online.\n\nIf you like what you see, reply to this email or call me at (804) 957-1003. If not, no hard feelings - keep the design either way.\n\nMatthew Herrman\nHOO - Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003",
     "attachment": "LEAD-038-reyna-s-cleaning-services-llc.html",
@@ -24,6 +24,7 @@
     "instagram": "Reyna's Cleaning Services LLC had no website. Now they do.\n\nBuilt free. Paid on approval. That's how HOO works.\n\nFull custom homepage for a cleaning business in Raytown, MO — real photos, mobile-first, booking CTA ready.\n\nherrmanonlineoutlook.com\n\n#HOO #WebDesign #RaytownMO #SmallBusiness #ShopifyPartner",
     "tiktok": "POV: You build a cleaning business a free website and they see it for the first time.\n\nReyna's Cleaning Services LLC in Raytown — from zero web presence to a full custom homepage. Build free, pay on approval. herrmanonlineoutlook.com"
   },
-  "status": "pending",
-  "created_date": "2026-03-16"
+  "status": "sent",
+  "created_date": "2026-03-16",
+  "sent_date": "2026-03-16"
 }
