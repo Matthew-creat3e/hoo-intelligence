@@ -18,10 +18,15 @@
   "build": {
     "appId": "com.hoo.commandcenter",
     "productName": "HOO Command Center",
-    "directories": { "output": "dashboard/dist" },
+    "directories": {
+      "output": "dashboard/dist"
+    },
     "win": {
       "target": "portable",
       "icon": "dashboard/icon.ico"
     }
+  },
+  "dependencies": {
+    "puppeteer": "^24.39.1"
   }
 }

@@ -264,6 +264,16 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
         <span class="nav-badge gold" id="badge-queue">0</span>
       </div>
 
+      <div class="nav-label">Pipeline</div>
+      <div class="nav-item" data-page="call-queue" onclick="nav(this)" id="call-queue-tab">
+        <span class="nav-icon">📞</span> Call Queue
+        <span class="nav-badge gold" id="badge-calls">0</span>
+      </div>
+      <div class="nav-item" data-page="approvals" onclick="nav(this)">
+        <span class="nav-icon">✓</span> Approvals
+        <span class="nav-badge gold" id="badge-approvals">0</span>
+      </div>
+
       <div class="nav-label">System</div>
       <div class="nav-item" data-page="engines" onclick="nav(this)">
         <span class="nav-icon">⚙</span> Engine Status
@@ -591,6 +601,50 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
             <div class="empty-icon">◈</div>
             <div class="empty-text">Queue is empty</div>
             <div class="empty-sub">Run: node social-engine/post-manager.js library — to generate content from existing builds</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALL QUEUE PAGE -->
+      <div class="page" id="page-call-queue">
+        <div class="page-head">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div class="page-title">Call Queue</div>
+              <div class="page-sub">Leads with phone but no email - call them, get their email, send the demo</div>
+            </div>
+            <button class="btn-sm btn-gold" onclick="loadCallQueue()">Refresh</button>
+          </div>
+        </div>
+        <div id="call-queue-list">
+          <div class="empty-state">
+            <div class="empty-icon">📞</div>
+            <div class="empty-text">No calls needed</div>
+            <div class="empty-sub">All pending leads have email addresses</div>
+          </div>
+        </div>
+        <div id="call-queue-sent" style="margin-top:24px;display:none">
+          <div style="font-family:var(--fh);font-size:18px;letter-spacing:2px;color:var(--green);margin-bottom:12px">SENT TODAY</div>
+          <div id="call-queue-sent-list"></div>
+        </div>
+      </div>
+
+      <!-- APPROVALS PAGE -->
+      <div class="page" id="page-approvals">
+        <div class="page-head">
+          <div class="page-title">Approvals</div>
+          <div class="page-sub">Review demos, emails, and social content — approve to send, reject to skip</div>
+        </div>
+        <div class="g3" style="margin-bottom:16px">
+          <div class="metric"><div class="m-lbl">Pending</div><div class="m-val amber" id="a-pending">—</div></div>
+          <div class="metric"><div class="m-lbl">Sent</div><div class="m-val green" id="a-sent">—</div></div>
+          <div class="metric"><div class="m-lbl">Rejected</div><div class="m-val red" id="a-rejected">—</div></div>
+        </div>
+        <div id="approvals-list">
+          <div class="empty-state">
+            <div class="empty-icon">✓</div>
+            <div class="empty-text">No approvals yet</div>
+            <div class="empty-sub">Run: <code style="background:var(--border2);padding:2px 6px;border-radius:3px">node engine/tools/pipeline-orchestrator.js run</code></div>
           </div>
         </div>
       </div>
@@ -998,8 +1052,274 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
+// ── APPROVALS ────────────────────────────────────────────────────────────
+let approvals = [];
+
+async function loadApprovals() {
+  if (isElectron) {
+    approvals = await window.hoo.readApprovals() || [];
+  } else {
+    approvals = [];
+  }
+  const pending = approvals.filter(a => a.status === 'pending').length;
+  document.getElementById('badge-approvals').textContent = pending || '0';
+}
+
+function renderApprovals() {
+  const pending = approvals.filter(a => a.status === 'pending').length;
+  const sent = approvals.filter(a => a.status === 'sent').length;
+  const rejected = approvals.filter(a => a.status === 'rejected').length;
+  document.getElementById('a-pending').textContent = pending;
+  document.getElementById('a-sent').textContent = sent;
+  document.getElementById('a-rejected').textContent = rejected;
+
+  const container = document.getElementById('approvals-list');
+  if (!approvals.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">✓</div>
+      <div class="empty-text">No approvals yet</div>
+      <div class="empty-sub">Run: <code style="background:var(--border2);padding:2px 6px;border-radius:3px">node engine/tools/pipeline-orchestrator.js run</code></div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = approvals.map(a => {
+    const l = a.lead || {};
+    const tierClass = l.tier === 'HOT' ? 's-hot' : l.tier === 'WARM' ? 's-warm' : 's-cold';
+    const isPending = a.status === 'pending';
+    const statusColor = a.status === 'sent' ? 'var(--green)' : a.status === 'rejected' ? 'var(--red)' : 'var(--amber)';
+    const statusLabel = a.status === 'sent' ? '✅ SENT' : a.status === 'rejected' ? '❌ REJECTED' : '⏳ PENDING';
+    const fn = a._filename || '';
+
+    return `<div class="card" style="margin-bottom:12px;border-left:3px solid ${statusColor};${!isPending?'opacity:0.6':''}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:4px">${l.business || 'Unknown'}</div>
+          <div style="font-size:12px;color:var(--muted)">${l.owner ? l.owner + ' · ' : ''}${l.city || ''}, ${l.state || 'MO'} · ${l.industry || ''}</div>
+          <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
+            <span class="score-pill ${tierClass}">${l.score || '—'}</span>
+            <span style="font-size:11px;color:${statusColor}">${statusLabel}</span>
+            <span style="font-size:11px;color:var(--muted)">${a.created_date || ''}</span>
+          </div>
+        </div>
+        ${isPending ? `<div style="display:flex;gap:8px">
+          <button class="btn-sm btn-gold" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')">Preview Demo</button>
+          <button class="btn-sm" style="border-color:var(--green);color:var(--green)" onclick="approveLead('${fn}',this)">Approve & Send</button>
+          <button class="btn-sm" style="border-color:var(--red);color:var(--red)" onclick="rejectLead('${fn}',this)">Reject</button>
+        </div>` : `<button class="btn-sm" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')">View Demo</button>`}
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px">
+          <div class="card-label">Email Preview</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TO: ${a.email_preview?.to || '[no email]'}</div>
+          <div style="font-size:11px;color:var(--gold);margin-bottom:8px">SUBJECT: ${a.email_preview?.subject || ''}</div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6;white-space:pre-line;max-height:180px;overflow-y:auto">${a.email_preview?.body || ''}</div>
+        </div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px">
+          <div class="card-label">Social Captions</div>
+          <div id="social-tabs-${a.id}" style="display:flex;gap:6px;margin-bottom:8px">
+            <span class="plat p-fb" style="cursor:pointer" onclick="showCaption('${a.id}','facebook')">facebook</span>
+            <span class="plat p-ig" style="cursor:pointer" onclick="showCaption('${a.id}','instagram')">instagram</span>
+            <span class="plat p-tk" style="cursor:pointer" onclick="showCaption('${a.id}','tiktok')">tiktok</span>
+          </div>
+          <div id="caption-${a.id}" style="font-size:11px;color:var(--muted);line-height:1.6;white-space:pre-line;max-height:180px;overflow-y:auto">${a.social_captions?.facebook || ''}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showCaption(leadId, platform) {
+  const a = approvals.find(x => x.id === leadId);
+  if (!a || !a.social_captions) return;
+  document.getElementById('caption-' + leadId).textContent = a.social_captions[platform] || '';
+}
+
+async function previewDemo(demoPath) {
+  if (isElectron) {
+    await window.hoo.openDemo(demoPath);
+  } else {
+    toast('Run in Electron to preview demos');
+  }
+}
+
+async function approveLead(filename, btn) {
+  if (!isElectron) { toast('Run in Electron to approve'); return; }
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  const result = await window.hoo.approveLead(filename);
+  if (result && result.success) {
+    toast('✅ Approved & sent: ' + result.business);
+    await loadApprovals();
+    renderApprovals();
+  } else {
+    toast('❌ Failed: ' + (result?.error || 'unknown error'));
+    btn.textContent = 'Approve & Send';
+    btn.disabled = false;
+  }
+}
+
+async function rejectLead(filename, btn) {
+  if (!isElectron) { toast('Run in Electron to reject'); return; }
+  btn.textContent = 'Rejecting...';
+  btn.disabled = true;
+  const result = await window.hoo.rejectLead(filename);
+  if (result && result.success) {
+    toast(result.replaced ? 'Rejected — hunting replacement...' : 'Lead rejected');
+    await loadApprovals();
+    renderApprovals();
+  } else {
+    toast('Reject failed');
+    btn.textContent = 'Reject';
+    btn.disabled = false;
+  }
+}
+
+// ── CALL QUEUE ────────────────────────────────────────────────────────────
+let callQueueLeads = [];
+const sentToday = [];
+
+async function loadCallQueue() {
+  if (!isElectron) return;
+  const all = await window.hoo.readApprovals() || [];
+  callQueueLeads = all.filter(a =>
+    a.status === 'pending' &&
+    (a.lead?.phone || '').trim() &&
+    !(a.lead?.email || '').trim()
+  );
+  document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
+  renderCallQueue();
+}
+
+function renderCallQueue() {
+  const container = document.getElementById('call-queue-list');
+  if (!callQueueLeads.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📞</div>
+      <div class="empty-text">No calls needed</div>
+      <div class="empty-sub">All pending leads have email addresses</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = callQueueLeads.map((a, i) => {
+    const l = a.lead || {};
+    const biz = l.business || 'Unknown';
+    const owner = l.owner || '';
+    const phone = l.phone || '';
+    const phoneClean = phone.replace(/\D/g, '');
+    const city = l.city || '';
+    const state = l.state || 'MO';
+    const industry = l.industry || '';
+    const leadId = a.id || '';
+    const ownerName = owner || 'there';
+
+    return `<div class="card" id="cq-card-${leadId}" style="margin-bottom:12px;border-left:3px solid var(--gold)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:18px;font-weight:700;color:var(--gold);font-family:var(--fh);letter-spacing:2px;margin-bottom:2px">${biz}</div>
+          <div style="font-size:12px;color:var(--muted)">${owner ? owner + ' · ' : ''}${city} ${state} · ${industry}</div>
+        </div>
+        <div style="text-align:right">
+          <a href="tel:${phoneClean}" style="font-family:var(--fh);font-size:22px;letter-spacing:2px;color:var(--gold);text-decoration:none">${phone}</a>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${leadId}</div>
+        </div>
+      </div>
+      <div style="background:rgba(200,149,46,.08);border:1px solid rgba(200,149,46,.2);border-radius:6px;padding:12px;margin-bottom:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px">Call Script</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.6">"Hey ${ownerName}, this is Matthew from HOO - I built ${biz} a free website. Can I send it over? What's the best email?"</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <input type="email" id="cq-email-${leadId}" placeholder="Enter email they give you..." style="flex:1;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:10px 14px;border-radius:4px;font-family:var(--fb);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'">
+        <button class="btn-sm" id="cq-send-${leadId}" style="border-color:var(--green);color:var(--green);padding:10px 18px;white-space:nowrap" onclick="cqSendDemo('${leadId}',this)">Send Demo</button>
+        <button class="btn-sm" id="cq-reject-${leadId}" style="border-color:var(--red);color:var(--red);padding:10px 14px;white-space:nowrap" onclick="cqReject('${leadId}',this)">Not Interested</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function cqSendDemo(leadId, btn) {
+  if (!isElectron) { toast('Run in Electron'); return; }
+  const emailInput = document.getElementById('cq-email-' + leadId);
+  const email = (emailInput?.value || '').trim();
+  if (!email || !email.includes('@')) {
+    toast('Enter a valid email first');
+    emailInput?.focus();
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  const result = await window.hoo.addEmailAndSend(leadId, email);
+  if (result && result.success) {
+    toast('✅ Demo sent to ' + email);
+    const card = document.getElementById('cq-card-' + leadId);
+    const biz = card?.querySelector('[style*="font-size:18px"]')?.textContent || leadId;
+
+    // Remove from queue
+    callQueueLeads = callQueueLeads.filter(a => a.id !== leadId);
+    if (card) card.remove();
+    if (!callQueueLeads.length) renderCallQueue();
+    document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
+
+    // Add to Sent Today
+    sentToday.push({ biz, email, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
+    renderSentToday();
+
+    // Refresh approvals in background
+    loadApprovals().then(renderApprovals);
+  } else {
+    toast('❌ Failed: ' + (result?.error || 'unknown error'));
+    btn.textContent = 'Send Demo';
+    btn.disabled = false;
+  }
+}
+
+async function cqReject(leadId, btn) {
+  if (!isElectron) { toast('Run in Electron'); return; }
+  btn.textContent = 'Rejecting...';
+  btn.disabled = true;
+
+  const result = await window.hoo.rejectLeadById(leadId);
+  if (result && result.success) {
+    toast('❌ Marked as not interested');
+    const card = document.getElementById('cq-card-' + leadId);
+    callQueueLeads = callQueueLeads.filter(a => a.id !== leadId);
+    if (card) card.remove();
+    if (!callQueueLeads.length) renderCallQueue();
+    document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
+
+    // Refresh approvals in background
+    loadApprovals().then(renderApprovals);
+  } else {
+    toast('Reject failed');
+    btn.textContent = 'Not Interested';
+    btn.disabled = false;
+  }
+}
+
+function renderSentToday() {
+  const section = document.getElementById('call-queue-sent');
+  const list = document.getElementById('call-queue-sent-list');
+  if (!sentToday.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = sentToday.map(s => `
+    <div class="card" style="margin-bottom:8px;border-left:3px solid var(--green);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <span style="font-weight:600">${s.biz}</span>
+        <span style="color:var(--muted);margin-left:8px">→ ${s.email}</span>
+      </div>
+      <span style="font-size:11px;color:var(--muted)">${s.time}</span>
+    </div>
+  `).join('');
+}
+
 // ── BOOT ──────────────────────────────────────────────────────────────────
 loadAll();
+loadApprovals().then(renderApprovals);
+loadCallQueue();
 initTasks();
 renderWeekGrid();
 </script>

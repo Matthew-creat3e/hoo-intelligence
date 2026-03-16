@@ -1,0 +1,30 @@
+{
+  "id": "LEAD-008",
+  "lead": {
+    "business": "Belton Plaza Barber & Beauty",
+    "owner": "Randy",
+    "phone": "(816) 331-4642",
+    "email": "",
+    "city": "Belton",
+    "state": "MO",
+    "industry": "barber",
+    "score": 90,
+    "tier": "HOT"
+  },
+  "demo_path": "outputs/demos/LEAD-008-belton-plaza-barber-beauty.html",
+  "email_preview": {
+    "to": "[no email]",
+    "subject": "I built Belton Plaza Barber & Beauty a free website — take a look",
+    "body": "Hey Randy,\n\nMy name's Matthew Herrman — I run HOO out of Independence, MO. I build websites for local barber businesses, and I do it a little differently: I build first, for free. You only pay if you love it.\n\nI went ahead and built a custom homepage for Belton Plaza Barber & Beauty in Belton. It's attached to this email — just download the file and open it in Chrome or Edge to see the full design with photos, animations, and a working mobile layout.\n\nNo obligations. No pitch. Just wanted to show you what your business could look like online.\n\nIf you like what you see, reply to this email or call me at (804) 957-1003. If not, no hard feelings — keep the design either way.\n\nMatthew Herrman\nHOO — Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003",
+    "attachment": "LEAD-008-belton-plaza-barber-beauty.html",
+    "template": 7
+  },
+  "social_captions": {
+    "facebook": "Built Belton Plaza Barber & Beauty's entire homepage — completely free for them to see first.\n\nThey're a barber business in Belton, MO. No website before this. Now they've got a full site with real photos, mobile layout, animations, booking CTA — everything.\n\nThey paid nothing until they saw it live and loved it. That's HOO. Build free. Pay on approval.\n\nherrmanonlineoutlook.com",
+    "instagram": "Belton Plaza Barber & Beauty had no website. Now they do.\n\nBuilt free. Paid on approval. That's how HOO works.\n\nFull custom homepage for a barber business in Belton, MO — real photos, mobile-first, booking CTA ready.\n\nherrmanonlineoutlook.com\n\n#HOO #WebDesign #BeltonMO #SmallBusiness #ShopifyPartner",
+    "tiktok": "POV: You build a barber business a free website and they see it for the first time.\n\nBelton Plaza Barber & Beauty in Belton — from zero web presence to a full custom homepage. Build free, pay on approval. herrmanonlineoutlook.com"
+  },
+  "status": "sent",
+  "created_date": "2026-03-16",
+  "sent_date": "2026-03-16"
+}
