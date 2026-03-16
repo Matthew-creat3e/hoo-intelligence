@@ -264,10 +264,23 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
     try { log = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
     log.push({
       date: new Date().toISOString(), lead: biz, id: leadId, to: email,
-      subject, source: 'approve-lead', status: 'sent', attachment: attachName,
+      subject, source: 'approve-lead', status: 'sent', demoUrl,
       screenshot: hasScreenshot ? `${leadId}-preview.png` : null,
     });
     fs.writeFileSync(logFile, JSON.stringify(log, null, 2), 'utf8');
+
+    // Auto-push demos to GitHub Pages so the link works when they click it
+    try {
+      const { execSync } = require('child_process');
+      execSync('git add outputs/demos/', { cwd: ROOT });
+      const gitStatus = execSync('git status --porcelain outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
+      if (gitStatus.trim()) {
+        execSync('git commit -m "deploy: demo page for ' + biz.replace(/"/g, '') + '"', { cwd: ROOT });
+        execSync('git push origin master', { cwd: ROOT, timeout: 30000 });
+      }
+    } catch (pushErr) {
+      console.warn('Auto-push failed:', pushErr.message);
+    }
 
     return { success: true, business: biz };
   } catch (err) {

@@ -471,6 +471,22 @@ async function runBatch(targetCount) {
   console.log(`✅  Done. ${processed}/${targetCount} new approvals created.`);
   console.log(`📂  Open War Room → Approvals to review`);
   console.log(`${'━'.repeat(55)}\n`);
+
+  // Auto-push demos to GitHub Pages so email links work immediately
+  if (processed > 0) {
+    try {
+      const { execSync } = require('child_process');
+      execSync('git add outputs/demos/', { cwd: ROOT });
+      const status = execSync('git status --porcelain outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
+      if (status.trim()) {
+        execSync('git commit -m "deploy: new demo pages"', { cwd: ROOT });
+        execSync('git push origin master', { cwd: ROOT, timeout: 30000 });
+        console.log('🚀  Demos pushed to GitHub Pages — links will be live in ~1 min');
+      }
+    } catch (err) {
+      console.warn(`⚠️  Auto-push failed: ${err.message} — run "git push" manually before sending emails`);
+    }
+  }
 }
 
 // ── REPLACE: HUNT 1 NEW LEAD TO REPLACE A REJECTION ────────────────────────
