@@ -19,7 +19,7 @@ Claude writes the caption. n8n queues it. Matthew reviews. Done.
 ---
 
 ## HOO Social Voice
-**Who Matthew is:** Blue collar Journeyman Laborer from Independence MO who learned AI and now builds premium websites. Dad. Grinder. Faith in the work. Built his businesses at 2am between concrete jobs.
+**Who Matthew is:** Blue collar Journeyman Laborer from Kansas City MO who learned AI and now builds premium websites. Dad. Grinder. Faith in the work. Built his businesses at 2am between concrete jobs.
 
 **What makes HOO different:** "Build free, pay on approval" — zero risk to the client. No other local agency does this.
 
@@ -28,7 +28,7 @@ Claude writes the caption. n8n queues it. Matthew reviews. Done.
 **Always include:**
 - The "build free, pay on approval" model
 - herrmanonlineoutlook.com
-- Local reference (KC, Independence, Missouri) when relevant
+- Local reference (KC, Kansas City, Missouri) when relevant
 
 **Never:** Generic marketing speak. Fake excitement. Promises that sound like ads.
 

@@ -229,7 +229,7 @@ function buildDemoEmail(lead, demoPath) {
   // Plain text body
   const plainText = `Hey ${owner},
 
-My name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, you only pay if you love it.
+My name's Matthew Herrman - I run HOO out of Kansas City, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, you only pay if you love it.
 
 I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. Here's what's included:
 
@@ -259,7 +259,7 @@ ${hooUrl}`;
   const screenshotPath = findScreenshot(lead);
   const hasScreenshot = !!screenshotPath;
 
-  const bodyBeforeBullets = `Hey ${owner},\n\nMy name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, you only pay if you love it.\n\nI went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}.`;
+  const bodyBeforeBullets = `Hey ${owner},\n\nMy name's Matthew Herrman - I run HOO out of Kansas City, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, you only pay if you love it.\n\nI went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}.`;
 
   const htmlBody = buildHTMLEmail({
     heading: `Hey ${owner}, I built ${biz} a website`,

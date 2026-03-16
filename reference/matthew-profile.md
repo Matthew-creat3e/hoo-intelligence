@@ -5,7 +5,7 @@
 
 ## Who He Is
 - **Name:** Matthew Herrman
-- **Location:** Independence, MO
+- **Location:** Kansas City, MO
 - **Role:** Founder & sole builder at HOO (herrmanonlineoutlook.com)
 - **Partner:** Shelby (helps with leads and outreach)
 - **Family:** Has a family he's working to provide for — this is the driving motivation behind everything

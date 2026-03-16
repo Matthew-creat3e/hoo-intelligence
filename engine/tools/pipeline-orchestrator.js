@@ -149,7 +149,7 @@ async function huntLeads(industry, city) {
     return [];
   }
 
-  const systemPrompt = `You are a lead finder for HOO, a web agency in Independence MO.
+  const systemPrompt = `You are a lead finder for HOO, a web agency in Kansas City MO.
 Search for local small businesses with NO website or a poor website.
 Search Facebook, Google Maps, Yelp, their Facebook About section, and any local directories.
 For contact info — check their Facebook page About tab, Google Maps listing, Yelp page, and any directory listings.
@@ -317,29 +317,28 @@ Return as a JSON array only.`;
 // ── BUILD EMAIL PREVIEW ──────────────────────────────────────────────────────
 function buildEmailPreview(lead, demoFilename) {
   const biz = lead.business || lead.business_name || 'your business';
-  const owner = lead.owner_name || lead.owner || 'there';
-  const city = lead.city || '';
-  const industry = lead.industry || 'business';
+  const ownerName = (lead.owner_name || lead.owner || '').trim();
+  const ownerFirst = ownerName ? ownerName.split(' ')[0] : 'there';
 
   return {
     to: lead.email || '[no email]',
-    subject: `I built ${biz} a free website - take a look`,
-    body: `Hey ${owner},
+    subject: `built something for ${biz}`,
+    body: `Hey ${ownerFirst},
 
-My name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, for free. You only pay if you love it.
+I'm a concrete worker out of Kansas City - Local 1290. I've been learning web design at night and building free sites for local businesses to grow my portfolio.
 
-I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. Click the button below to see the full design with real photos, animations, and a working mobile layout.
+I noticed ${biz} doesn't have a website so I built you one. Took me a few hours. No charge to look at it:
 
-No obligations. No pitch. Just wanted to show you what your business could look like online.
+[link will be inserted on send]
 
-If you like what you see, reply to this email or call me at (804) 957-1003. If not, no hard feelings - keep the design either way.
+If you love it, I'll finish the full build for a flat fee. If not, no hard feelings - keep the design.
 
-Matthew Herrman
-HOO - Build free, pay on approval
-herrmanonlineoutlook.com
-(804) 957-1003`,
-    attachment: demoFilename,
-    template: 7
+Either way I hope it helps.
+
+- Matthew Herrman
+HOO - Kansas City, MO
+(804) 957-1003
+herrmanonlineoutlook.com`
   };
 }
 
@@ -476,15 +475,32 @@ async function runBatch(targetCount) {
   if (processed > 0) {
     try {
       const { execSync } = require('child_process');
-      // Copy new demos to /demos/ (GitHub Pages serves from there)
+      // Copy new demos to /demos/ with clean business names (GitHub Pages serves from there)
       const demosDir = path.join(ROOT, 'demos');
       if (!fs.existsSync(demosDir)) fs.mkdirSync(demosDir, { recursive: true });
       fs.readdirSync(path.join(ROOT, 'outputs', 'demos'))
         .filter(f => f.startsWith('LEAD-') && f.endsWith('.html'))
         .forEach(f => {
           const src = path.join(ROOT, 'outputs', 'demos', f);
-          const dst = path.join(demosDir, f);
-          fs.copyFileSync(src, dst);
+          // Try to find matching lead JSON to get clean business name
+          const leadIdMatch = f.match(/^(LEAD-\d+)/);
+          let cleanFilename = f;
+          if (leadIdMatch) {
+            const matchingLead = fs.readdirSync(LEADS_DIR)
+              .filter(lf => lf.startsWith(leadIdMatch[1] + '-') && lf.endsWith('.json'));
+            if (matchingLead.length) {
+              try {
+                const ld = JSON.parse(fs.readFileSync(path.join(LEADS_DIR, matchingLead[0]), 'utf8'));
+                const bizName = ld.business || ld.business_name || '';
+                if (bizName) {
+                  const clean = bizName.replace(/[^a-zA-Z0-9\s]/g, '').split(' ')
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+                  cleanFilename = clean + '.html';
+                }
+              } catch {}
+            }
+          }
+          fs.copyFileSync(src, path.join(demosDir, cleanFilename));
         });
       execSync('git add demos/ outputs/demos/', { cwd: ROOT });
       const status = execSync('git status --porcelain demos/ outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
@@ -679,87 +695,40 @@ async function addEmail(leadId, email) {
   }
 
   const biz = approval.lead?.business || lead.business || lead.business_name || 'your business';
-  const subject = `I built ${biz} a free website - take a look`;
-  const bodyText = approval.email_preview?.body || `Hi,\n\nI built ${biz} a free website. Click the link below to see the full design with photos, animations, and a working mobile layout.\n\n- Matthew Herrman\nHOO - Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003`;
+  const ownerName = (approval.lead?.owner || lead.owner_name || lead.owner || '').trim();
+  const ownerFirst = ownerName ? ownerName.split(' ')[0] : 'there';
 
-  // Build GitHub Pages demo URL
-  const demoFilename = path.basename(demoRelPath);
-  const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${demoFilename}`;
+  // Build live demo URL on GitHub Pages with clean business name
+  const cleanName = biz.replace(/[^a-zA-Z0-9\s]/g, '').split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+  const cleanDemoFilename = `${cleanName}.html`;
+  const liveUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${cleanDemoFilename}`;
 
-  // Screenshot the demo with puppeteer
-  const screenshotsDir = path.join(ROOT, 'outputs', 'screenshots');
-  if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
-  const screenshotPath = path.join(screenshotsDir, `${leadId}-preview.png`);
+  // Copy demo to /demos/ with clean name so the URL works
+  const demosDir = path.join(ROOT, 'demos');
+  if (!fs.existsSync(demosDir)) fs.mkdirSync(demosDir, { recursive: true });
+  fs.copyFileSync(demoFullPath, path.join(demosDir, cleanDemoFilename));
 
-  console.log(`\n📸  Taking screenshot of demo...`);
-  try {
-    const puppeteer = require('puppeteer');
-    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    await page.setViewport({ width: 1280, height: 800 });
-    const { pathToFileURL } = require('url');
-    await page.goto(pathToFileURL(demoFullPath).href, { waitUntil: 'networkidle2' });
-    await page.waitForSelector('body', { visible: true });
-    await new Promise(r => setTimeout(r, 4000)); // wait for animations
-    await page.screenshot({ path: screenshotPath, type: 'png' });
-    await browser.close();
-    console.log(`   ✅  Screenshot saved: outputs/screenshots/${leadId}-preview.png`);
-  } catch (err) {
-    console.warn(`   ⚠️  Screenshot failed: ${err.message} - sending without preview image`);
-  }
+  const subject = `built something for ${biz}`;
+  const bodyText = `Hey ${ownerFirst},
 
-  const hasScreenshot = fs.existsSync(screenshotPath);
+I'm a concrete worker out of Kansas City - Local 1290. I've been learning web design at night and building free sites for local businesses to grow my portfolio.
 
-  // Build HTML email body
-  const bodyHtmlLines = bodyText.split('\n').map(line => {
-    if (!line.trim()) return '<br>';
-    return `<p style="margin:0 0 8px 0;font-size:14px;line-height:1.7;color:#F0EAE0;">${line.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`;
-  }).join('\n');
+I noticed ${biz} doesn't have a website so I built you one. Took me a few hours. No charge to look at it:
 
-  const htmlBody = `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#050505;font-family:'Syne',Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#050505;padding:40px 20px;">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+${liveUrl}
 
-  <!-- HEADER -->
-  <tr><td style="padding:24px 32px;border-bottom:2px solid #C8952E;">
-    <h1 style="margin:0;font-family:'Bebas Neue','Bebas Neue',Impact,sans-serif;font-size:28px;letter-spacing:3px;color:#C8952E;">I built ${biz.replace(/</g,'&lt;').replace(/>/g,'&gt;')} a free website</h1>
-  </td></tr>
+If you love it, I'll finish the full build for a flat fee. If not, no hard feelings - keep the design.
 
-  ${hasScreenshot ? `<!-- SCREENSHOT -->
-  <tr><td style="padding:24px 32px 16px;">
-    <img src="cid:demo-preview" alt="${biz.replace(/"/g,'&quot;')} website preview" style="width:100%;max-width:600px;border-radius:8px;border:1px solid #1C1C1C;display:block;" />
-  </td></tr>` : ''}
+Either way I hope it helps.
 
-  <!-- BODY TEXT -->
-  <tr><td style="padding:16px 32px 24px;">
-    ${bodyHtmlLines}
-  </td></tr>
+- Matthew Herrman
+HOO - Kansas City, MO
+(804) 957-1003
+herrmanonlineoutlook.com`;
 
-  <!-- CTA BUTTON -->
-  <tr><td style="padding:0 32px 16px;" align="center">
-    <a href="${demoUrl}" target="_blank" style="display:inline-block;background:#C8952E;color:#050505;font-family:'Bebas Neue',Impact,sans-serif;font-size:18px;letter-spacing:3px;padding:14px 36px;text-decoration:none;border-radius:4px;">VIEW YOUR FREE WEBSITE</a>
-  </td></tr>
-  <tr><td style="padding:0 32px 32px;" align="center">
-    <a href="https://herrmanonlineoutlook.com" target="_blank" style="display:inline-block;background:transparent;color:#C8952E;font-family:'Bebas Neue',Impact,sans-serif;font-size:14px;letter-spacing:3px;padding:10px 36px;text-decoration:none;border:1px solid #C8952E;border-radius:4px;">SEE MORE OF OUR WORK</a>
-  </td></tr>
-
-  <!-- FOOTER -->
-  <tr><td style="padding:16px 32px;border-top:1px solid #1C1C1C;">
-    <p style="margin:0;font-size:11px;color:#888880;text-align:center;">Matthew Herrman | HOO - Build free, pay on approval | (804) 957-1003</p>
-  </td></tr>
-
-</table>
-</td></tr>
-</table>
-</body>
-</html>`;
-
-  // Send via nodemailer with demo attached + inline screenshot
-  console.log(`\n📧  Sending demo with attachment to ${email}...`);
+  // Send plain text email — no attachments, no HTML
+  console.log(`\n📧  Sending demo to ${email}...`);
   try {
     const nodemailer = require('nodemailer');
     const transporter = nodemailer.createTransport({
@@ -770,27 +739,14 @@ async function addEmail(leadId, email) {
       },
     });
 
-    const attachments = [];
-
-    if (hasScreenshot) {
-      attachments.push({
-        filename: `${leadId}-preview.png`,
-        path: screenshotPath,
-        cid: 'demo-preview',
-      });
-    }
-
     const info = await transporter.sendMail({
-      from: `"${process.env.GMAIL_FROM_NAME || 'Matthew Herrman | HOO'}" <${process.env.GMAIL_USER}>`,
+      from: `"Matthew Herrman | HOO" <${process.env.GMAIL_USER}>`,
       to: email,
       subject,
       text: bodyText,
-      html: htmlBody,
-      attachments,
     });
 
-    if (hasScreenshot) console.log(`🖼️  Inline preview: ${leadId}-preview.png`);
-    console.log(`🔗  Demo link: ${demoUrl}`);
+    console.log(`🔗  Live URL: ${liveUrl}`);
     console.log(`✅  Demo sent to ${email} [${info.messageId}]`);
 
     // Log to email-log.json
@@ -808,10 +764,23 @@ async function addEmail(leadId, email) {
       source:     'add-email',
       messageId:  info.messageId,
       status:     'sent',
-      demoUrl,
-      screenshot: hasScreenshot ? `${leadId}-preview.png` : null,
+      liveUrl,
     });
     fs.writeFileSync(logFile, JSON.stringify(log, null, 2), 'utf8');
+
+    // Auto-push demo to GitHub Pages so the link works
+    try {
+      const { execSync } = require('child_process');
+      execSync('git add demos/', { cwd: ROOT });
+      const status = execSync('git status --porcelain demos/', { cwd: ROOT, encoding: 'utf8' });
+      if (status.trim()) {
+        execSync(`git commit -m "deploy: ${cleanName} demo"`, { cwd: ROOT });
+        execSync('git push origin master', { cwd: ROOT, timeout: 30000 });
+        console.log('🚀  Demo pushed to GitHub Pages — link will be live in ~1 min');
+      }
+    } catch (pushErr) {
+      console.warn(`⚠️  Auto-push failed: ${pushErr.message} — run "git push" manually`);
+    }
   } catch (err) {
     console.error(`❌  Email send failed: ${err.message}`);
     return;
