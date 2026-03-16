@@ -328,7 +328,7 @@ function buildEmailPreview(lead, demoFilename) {
 
 My name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, for free. You only pay if you love it.
 
-I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. It's attached to this email - just download the file and open it in Chrome or Edge to see the full design with photos, animations, and a working mobile layout.
+I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. Click the button below to see the full design with real photos, animations, and a working mobile layout.
 
 No obligations. No pitch. Just wanted to show you what your business could look like online.
 
@@ -654,12 +654,11 @@ async function addEmail(leadId, email) {
 
   const biz = approval.lead?.business || lead.business || lead.business_name || 'your business';
   const subject = `I built ${biz} a free website - take a look`;
-  const bodyText = approval.email_preview?.body || `Hi,\n\nI built ${biz} a free website. Open the attached HTML file in Chrome or Edge to see the full design.\n\n- Matthew Herrman\nHOO - Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003`;
+  const bodyText = approval.email_preview?.body || `Hi,\n\nI built ${biz} a free website. Click the link below to see the full design with photos, animations, and a working mobile layout.\n\n- Matthew Herrman\nHOO - Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003`;
 
-  // Clean attachment name: PascalCase business name + "-FreeWebsiteDemo.html"
-  const attachName = biz.replace(/[^a-zA-Z0-9\s]/g, '').split(' ')
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    .join('') + '-FreeWebsiteDemo.html';
+  // Build GitHub Pages demo URL
+  const demoFilename = path.basename(demoRelPath);
+  const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/outputs/demos/${demoFilename}`;
 
   // Screenshot the demo with puppeteer
   const screenshotsDir = path.join(ROOT, 'outputs', 'screenshots');
@@ -715,8 +714,11 @@ async function addEmail(leadId, email) {
   </td></tr>
 
   <!-- CTA BUTTON -->
+  <tr><td style="padding:0 32px 16px;" align="center">
+    <a href="${demoUrl}" target="_blank" style="display:inline-block;background:#C8952E;color:#050505;font-family:'Bebas Neue',Impact,sans-serif;font-size:18px;letter-spacing:3px;padding:14px 36px;text-decoration:none;border-radius:4px;">VIEW YOUR FREE WEBSITE</a>
+  </td></tr>
   <tr><td style="padding:0 32px 32px;" align="center">
-    <a href="https://herrmanonlineoutlook.com" target="_blank" style="display:inline-block;background:#C8952E;color:#050505;font-family:'Bebas Neue',Impact,sans-serif;font-size:18px;letter-spacing:3px;padding:14px 36px;text-decoration:none;border-radius:4px;">SEE MORE OF OUR WORK</a>
+    <a href="https://herrmanonlineoutlook.com" target="_blank" style="display:inline-block;background:transparent;color:#C8952E;font-family:'Bebas Neue',Impact,sans-serif;font-size:14px;letter-spacing:3px;padding:10px 36px;text-decoration:none;border:1px solid #C8952E;border-radius:4px;">SEE MORE OF OUR WORK</a>
   </td></tr>
 
   <!-- FOOTER -->
@@ -742,13 +744,7 @@ async function addEmail(leadId, email) {
       },
     });
 
-    const attachments = [
-      {
-        filename: attachName,
-        content: fs.readFileSync(demoFullPath),
-        contentType: 'text/html',
-      },
-    ];
+    const attachments = [];
 
     if (hasScreenshot) {
       attachments.push({
