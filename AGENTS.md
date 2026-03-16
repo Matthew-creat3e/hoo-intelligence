@@ -3,7 +3,7 @@
 *Only what cannot be inferred from the project itself.*
 
 ## What This Is
-HOO — Shopify web building service, Independence MO. Build free, client pays on approval.
+HOO — Shopify web building service, Kansas City MO. Build free, client pays on approval.
 Owner: Matthew Herrman | herrmanonlineoutlook@gmail.com | (804) 957-1003
 Shopify Partner: Apply at partners.shopify.com — passive commissions on every client
 

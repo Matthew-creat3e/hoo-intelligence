@@ -10,34 +10,34 @@
 |---|---|---|
 | 🔴 URGENT | Apply for Shopify Partner Program | Go to partners.shopify.com — 15 min, free, passive income on every client |
 | 🔴 URGENT | Call Glendon Thomas | (816) 569-4465 — #1 lead, still not called |
-| 🔴 URGENT | Follow up with Hammer Hands Restoration | (816) 398-2644 — demo email sent 2026-03-15, call in 24-48hrs |
-| 🟡 IMPORTANT | Follow-up emails due 2026-03-16 | 14 emails sent 2026-03-13 — 3-day mark tomorrow |
-| 🟡 IMPORTANT | Post social content | 2 posts queued: God Quest + Hammer Hands — review & post to Facebook/IG/TikTok |
-| 🟡 IMPORTANT | Text/DM 11 phone-only leads | Need Twilio or manual calls |
+| 🔴 URGENT | Test demo link in email | Verify HappyYardsKc.html loads on GitHub Pages after latest push |
+| 🟡 IMPORTANT | Follow-up emails overdue | 14 emails sent 2026-03-13 — 3-day mark was 2026-03-16 |
+| 🟡 IMPORTANT | Post social content | Multiple posts queued in social-engine/queue/ — review & post |
+| 🟡 IMPORTANT | Call Queue leads need emails | No-email leads sitting in Call Queue — get emails, then send from Command Center |
 | 🟢 ENGINE | Install Crawl4AI | `pip install crawl4ai playwright && playwright install chromium` |
 | 🟢 ENGINE | Configure Twilio | Sign up twilio.com, add to `.env`, run `node sms-engine.js test` |
 
 ---
 
-## Pipeline State (as of 2026-03-15 end of session)
+## Pipeline State (as of 2026-03-16 end of session)
 
 | Metric | Value |
 |---|---|
-| Total leads | 26 (added Hammer Hands Restoration) |
-| HOT | 24 |
-| WARM | 2 |
-| Emailed | 16 (14 from 2026-03-13 + Glendon test + Hammer Hands demo) |
-| Demos sent | 1 (Hammer Hands — Template 7 with HTML attachment) |
+| Total leads | 53 (LEAD-001 through LEAD-053) |
+| Batches run | Cleaning, moving, detailing, barber, food/restaurant, landscaping |
+| Demos built | 53 (all leads have demo HTML in outputs/demos/) |
+| Demos on GitHub Pages | 53+ (demos/ directory, clean PascalCase names added this session) |
+| Email format | Plain text only — "concrete worker / Local 1290" angle — live URL in body |
+| Location | Kansas City, MO (updated from Independence this session) |
 | Responded | 0 |
-| Phone-only | 10 |
-| DM-only | 2 |
 | Closed | 0 |
 | MRR | $0 (pre-revenue) |
 
+**Email flow:** Pipeline → Approval → Command Center Approvals tab (if has email) or Call Queue (if no email) → Send → plain text email with GitHub Pages demo link → auto-push demos
+
 **Follow-up schedule:**
-- 2026-03-16: Check all 14 emailed leads, send follow-up to non-responders
-- 2026-03-17: Call Hammer Hands Restoration — demo is fresh in their inbox
-- 2026-03-20: Second follow-up wave (Template 6)
+- OVERDUE: 14 emails from 2026-03-13 need follow-up
+- New leads from 2026-03-16 batches need review in Command Center
 
 ---
 
@@ -66,32 +66,26 @@
 - ✅ ALL 6 SECTIONS LIVE (Hero, Process, Our Work, What's Included, Pricing, Contact)
 - Readability fix applied 2026-03-12 (opacity 0.5-0.78)
 
-### Demos Built
-- ✅ LEAD-TEST-001 — Tattoos by Glendon (tattoo, Liberty)
-- ✅ LEAD-002 — Hammer Hands Restoration (handyman, Independence)
-
 ---
 
 ## Session Log (newest first)
 
 | Date | What Happened |
 |---|---|
-| 2026-03-15 | Full HOO loop: found Hammer Hands Restoration, built demo, sent email live, queued social content. Fixed n8n sandbox (fs removed from 3 nodes), dashboard bugs (copyText, openLink, missing IDs), auto-prototype double-LEAD prefix. Added --demo flag + Template 7 to email engine. Added Partner Dashboard btn to War Room. |
+| 2026-03-16 | Email rewrite: plain text only, "concrete worker / Local 1290" angle, live GitHub Pages URL (no attachments, no HTML). Clean PascalCase demo filenames (HappyYardsKc.html). Auto-push demos on send. Call Queue routing fixed (no-email leads auto-route). Approvals tab shows only pending+email. Updated all location refs from Independence to Kansas City. New batches: food/restaurant (LEAD-043-046), landscaping (LEAD-050-053). |
+| 2026-03-15 | Full HOO loop: found Hammer Hands Restoration, built demo, sent email live, queued social content. Fixed n8n sandbox, dashboard bugs, auto-prototype double-LEAD prefix. Added --demo flag + Template 7 to email engine. Added Partner Dashboard btn. |
 | 2026-03-15 | v6.0 built — Crawl4AI + Twilio + n8n + Social Engine. Shopify Partner added everywhere. |
-| 2026-03-15 | v5.2 packaged — Shopify Partner data added to business/learning/engines-catalog |
-| 2026-03-15 | v5.1 built — Skills layer, memory folder, AGENTS.md, naming conventions |
-| 2026-03-15 | v5.0 built — Jake Van Clief 4-layer architecture from 23-file flat export |
+| 2026-03-15 | v5.0-5.2 — Jake Van Clief 4-layer architecture, skills layer, memory folder, AGENTS.md |
 | 2026-03-13 | 14 emails sent via SMTP to pipeline leads |
 | 2026-03-13 | Lead engine v2.5 built with 25 leads, 5 CLI tools |
 
 ---
 
-## Social Queue
-
-| File | Store | Status |
-|---|---|---|
-| SOCIAL-2026-03-15-god-quest-collection.json | NoReturn Apparel — God Quest | queued |
-| SOCIAL-2026-03-15-hammer-hands-restoration.json | Hammer Hands Restoration — Demo | queued |
+## Key Architecture Decisions (2026-03-16)
+- **Email = plain text only.** HTML emails hit spam filters (especially Gmail→Yahoo/corporate). No attachments.
+- **Demo URLs = GitHub Pages.** `https://matthew-creat3e.github.io/hoo-intelligence/demos/{PascalCaseName}.html`
+- **Auto-push on send.** Both `addEmail()` in pipeline-orchestrator and `approve-lead` in dashboard/main.js copy demo to `/demos/` with clean name, then git add/commit/push.
+- **Command Center routing:** Has email → Approvals tab. No email → Call Queue. Sent/rejected → Pipeline only.
 
 ---
 
