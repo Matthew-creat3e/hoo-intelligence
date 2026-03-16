@@ -184,19 +184,48 @@ Return as a JSON array only.`;
       })
     });
 
-    if (!response.ok) {
+    if (response.status === 429) {
+      console.log(`  ⏳  Rate limited — waiting 60s before retry...`);
+      await new Promise(r => setTimeout(r, 60000));
+      // Retry once
+      const retry = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2000,
+          system: systemPrompt,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{ role: 'user', content: userMessage }]
+        })
+      });
+      if (!retry.ok) {
+        const err = await retry.text();
+        console.error(`  ❌  Retry failed ${retry.status}: ${err.slice(0, 200)}`);
+        return [];
+      }
+      const data = await retry.json();
+      rawText = data.content
+        .filter(block => block.type === 'text')
+        .map(block => block.text)
+        .join('');
+    } else if (!response.ok) {
       const err = await response.text();
       console.error(`  ❌  Anthropic API error ${response.status}: ${err}`);
       return [];
+    } else {
+      const data = await response.json();
+
+      // Extract text blocks from response (may also contain tool_use/tool_result blocks)
+      rawText = data.content
+        .filter(block => block.type === 'text')
+        .map(block => block.text)
+        .join('');
     }
-
-    const data = await response.json();
-
-    // Extract text blocks from response (may also contain tool_use/tool_result blocks)
-    rawText = data.content
-      .filter(block => block.type === 'text')
-      .map(block => block.text)
-      .join('');
 
   } catch (err) {
     console.error(`  ❌  Request failed: ${err.message}`);
@@ -417,8 +446,8 @@ async function runBatch(targetCount) {
     if (processed >= targetCount) break;
 
     if (!isFirstHunt) {
-      console.log('\n⏳  Waiting 10s before next hunt...');
-      await sleep(10000);
+      console.log('\n⏳  Waiting 65s before next hunt (rate limit cooldown)...');
+      await sleep(65000);
     }
     isFirstHunt = false;
 
@@ -534,8 +563,8 @@ function showCallQueue() {
       const d = JSON.parse(fs.readFileSync(path.join(APPROVALS_DIR, f), 'utf8'));
       if (d.status !== 'pending') continue;
       const email = (d.lead?.email || '').trim();
-      const phone = (d.lead?.phone || '').trim();
-      if ((!email) && phone) {
+      const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
+      if (noEmail) {
         callLeads.push(d);
       }
     } catch {}

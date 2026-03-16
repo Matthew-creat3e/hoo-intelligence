@@ -179,6 +179,19 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
   }
 });
 
+// Move a no-email lead to Call Queue instead of sending
+ipcMain.handle('move-to-call-queue', async (_, approvalFilename) => {
+  try {
+    const approvalPath = path.join(ROOT, 'engine', 'approvals', approvalFilename);
+    const approval = JSON.parse(fs.readFileSync(approvalPath, 'utf8'));
+    approval.needs_call = true;
+    fs.writeFileSync(approvalPath, JSON.stringify(approval, null, 2));
+    return { success: true, business: approval.lead?.business || '' };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
 // Reject a lead approval — then hunt 1 replacement from different city/industry
 ipcMain.handle('reject-lead', async (_, approvalFilename) => {
   try {
