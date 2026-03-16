@@ -8,9 +8,10 @@ engine/data/email-config.json
 engine/data/smtp-config.json
 
 # ── OUTPUTS — STAYS LOCAL ─────────────────────────────────
-outputs/
+outputs/*
 # Exception: demo HTML files go to GitHub Pages
 !outputs/demos/
+outputs/demos/*
 !outputs/demos/LEAD-*.html
 dashboard/dist/
 dashboard/node_modules/
