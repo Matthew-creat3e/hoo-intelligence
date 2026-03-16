@@ -476,8 +476,18 @@ async function runBatch(targetCount) {
   if (processed > 0) {
     try {
       const { execSync } = require('child_process');
-      execSync('git add outputs/demos/', { cwd: ROOT });
-      const status = execSync('git status --porcelain outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
+      // Copy new demos to /demos/ (GitHub Pages serves from there)
+      const demosDir = path.join(ROOT, 'demos');
+      if (!fs.existsSync(demosDir)) fs.mkdirSync(demosDir, { recursive: true });
+      fs.readdirSync(path.join(ROOT, 'outputs', 'demos'))
+        .filter(f => f.startsWith('LEAD-') && f.endsWith('.html'))
+        .forEach(f => {
+          const src = path.join(ROOT, 'outputs', 'demos', f);
+          const dst = path.join(demosDir, f);
+          fs.copyFileSync(src, dst);
+        });
+      execSync('git add demos/ outputs/demos/', { cwd: ROOT });
+      const status = execSync('git status --porcelain demos/ outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
       if (status.trim()) {
         execSync('git commit -m "deploy: new demo pages"', { cwd: ROOT });
         execSync('git push origin master', { cwd: ROOT, timeout: 30000 });
@@ -674,7 +684,7 @@ async function addEmail(leadId, email) {
 
   // Build GitHub Pages demo URL
   const demoFilename = path.basename(demoRelPath);
-  const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/outputs/demos/${demoFilename}`;
+  const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${demoFilename}`;
 
   // Screenshot the demo with puppeteer
   const screenshotsDir = path.join(ROOT, 'outputs', 'screenshots');
@@ -779,9 +789,9 @@ async function addEmail(leadId, email) {
       attachments,
     });
 
-    console.log(`📎  Attached: ${attachName}`);
     if (hasScreenshot) console.log(`🖼️  Inline preview: ${leadId}-preview.png`);
-    console.log(`✅  Demo sent with attachment to ${email} [${info.messageId}]`);
+    console.log(`🔗  Demo link: ${demoUrl}`);
+    console.log(`✅  Demo sent to ${email} [${info.messageId}]`);
 
     // Log to email-log.json
     const logFile = path.join(ROOT, 'engine', 'data', 'email-log.json');
@@ -798,7 +808,7 @@ async function addEmail(leadId, email) {
       source:     'add-email',
       messageId:  info.messageId,
       status:     'sent',
-      attachment: attachName,
+      demoUrl,
       screenshot: hasScreenshot ? `${leadId}-preview.png` : null,
     });
     fs.writeFileSync(logFile, JSON.stringify(log, null, 2), 'utf8');

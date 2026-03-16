@@ -152,7 +152,7 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
 
     // Build GitHub Pages demo URL
     const demoFilename = path.basename(demoRelPath);
-    const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/outputs/demos/${demoFilename}`;
+    const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${demoFilename}`;
 
     // Screenshot the demo with puppeteer
     const screenshotsDir = path.join(ROOT, 'outputs', 'screenshots');
@@ -272,8 +272,17 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
     // Auto-push demos to GitHub Pages so the link works when they click it
     try {
       const { execSync } = require('child_process');
-      execSync('git add outputs/demos/', { cwd: ROOT });
-      const gitStatus = execSync('git status --porcelain outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
+      // Copy demo to /demos/ (GitHub Pages serves from there)
+      const demosDir = path.join(ROOT, 'demos');
+      if (!fs.existsSync(demosDir)) fs.mkdirSync(demosDir, { recursive: true });
+      fs.readdirSync(path.join(ROOT, 'outputs', 'demos'))
+        .filter(f => f.startsWith('LEAD-') && f.endsWith('.html'))
+        .forEach(f => fs.copyFileSync(
+          path.join(ROOT, 'outputs', 'demos', f),
+          path.join(demosDir, f)
+        ));
+      execSync('git add demos/ outputs/demos/', { cwd: ROOT });
+      const gitStatus = execSync('git status --porcelain demos/ outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
       if (gitStatus.trim()) {
         execSync('git commit -m "deploy: demo page for ' + biz.replace(/"/g, '') + '"', { cwd: ROOT });
         execSync('git push origin master', { cwd: ROOT, timeout: 30000 });
