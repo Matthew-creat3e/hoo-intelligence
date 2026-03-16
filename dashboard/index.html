@@ -1061,52 +1061,64 @@ async function loadApprovals() {
   } else {
     approvals = [];
   }
-  const pending = approvals.filter(a => a.status === 'pending').length;
-  document.getElementById('badge-approvals').textContent = pending || '0';
+  // Badge only counts pending leads WITH email (ready to send)
+  const readyToSend = approvals.filter(a => {
+    if (a.status !== 'pending') return false;
+    const email = (a.lead?.email || '').trim();
+    const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
+    return !noEmail;
+  }).length;
+  document.getElementById('badge-approvals').textContent = readyToSend || '0';
 }
 
 function renderApprovals() {
-  const pending = approvals.filter(a => a.status === 'pending').length;
+  // Only show pending leads WITH email in Approvals tab
+  // No-email leads go to Call Queue. Sent/Rejected only show in Pipeline.
+  const readyToSend = approvals.filter(a => {
+    if (a.status !== 'pending') return false;
+    const email = (a.lead?.email || '').trim();
+    const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
+    return !noEmail;
+  });
+
   const sent = approvals.filter(a => a.status === 'sent').length;
   const rejected = approvals.filter(a => a.status === 'rejected').length;
-  document.getElementById('a-pending').textContent = pending;
+  document.getElementById('a-pending').textContent = readyToSend.length;
   document.getElementById('a-sent').textContent = sent;
   document.getElementById('a-rejected').textContent = rejected;
+  document.getElementById('badge-approvals').textContent = readyToSend.length || '0';
 
   const container = document.getElementById('approvals-list');
-  if (!approvals.length) {
+  if (!readyToSend.length) {
     container.innerHTML = `<div class="empty-state">
       <div class="empty-icon">✓</div>
-      <div class="empty-text">No approvals yet</div>
-      <div class="empty-sub">Run: <code style="background:var(--border2);padding:2px 6px;border-radius:3px">node engine/tools/pipeline-orchestrator.js run</code></div>
+      <div class="empty-text">No approvals waiting</div>
+      <div class="empty-sub">Leads with email appear here ready to send. No-email leads are in Call Queue.</div>
     </div>`;
     return;
   }
 
-  container.innerHTML = approvals.map(a => {
+  container.innerHTML = readyToSend.map(a => {
     const l = a.lead || {};
     const tierClass = l.tier === 'HOT' ? 's-hot' : l.tier === 'WARM' ? 's-warm' : 's-cold';
-    const isPending = a.status === 'pending';
-    const statusColor = a.status === 'sent' ? 'var(--green)' : a.status === 'rejected' ? 'var(--red)' : 'var(--amber)';
-    const statusLabel = a.status === 'sent' ? '✅ SENT' : a.status === 'rejected' ? '❌ REJECTED' : '⏳ PENDING';
     const fn = a._filename || '';
 
-    return `<div class="card" style="margin-bottom:12px;border-left:3px solid ${statusColor};${!isPending?'opacity:0.6':''}">
+    return `<div class="card" style="margin-bottom:12px;border-left:3px solid var(--amber)">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
         <div>
           <div style="font-size:16px;font-weight:600;margin-bottom:4px">${l.business || 'Unknown'}</div>
           <div style="font-size:12px;color:var(--muted)">${l.owner ? l.owner + ' · ' : ''}${l.city || ''}, ${l.state || 'MO'} · ${l.industry || ''}</div>
           <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
             <span class="score-pill ${tierClass}">${l.score || '—'}</span>
-            <span style="font-size:11px;color:${statusColor}">${statusLabel}</span>
+            <span style="font-size:11px;color:var(--amber)">⏳ PENDING</span>
             <span style="font-size:11px;color:var(--muted)">${a.created_date || ''}</span>
           </div>
         </div>
-        ${isPending ? `<div style="display:flex;gap:8px">
+        <div style="display:flex;gap:8px">
           <button class="btn-sm btn-gold" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')">Preview Demo</button>
           <button class="btn-sm" style="border-color:var(--green);color:var(--green)" onclick="approveLead('${fn}',this)">Approve & Send</button>
           <button class="btn-sm" style="border-color:var(--red);color:var(--red)" onclick="rejectLead('${fn}',this)">Reject</button>
-        </div>` : `<button class="btn-sm" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')">View Demo</button>`}
+        </div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -1146,6 +1158,29 @@ async function previewDemo(demoPath) {
 
 async function approveLead(filename, btn) {
   if (!isElectron) { toast('Run in Electron to approve'); return; }
+
+  // Check if lead has an email — if not, route to Call Queue
+  const a = approvals.find(x => x._filename === filename);
+  const email = (a?.lead?.email || '').trim();
+  const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
+
+  if (noEmail) {
+    btn.textContent = 'Moving...';
+    btn.disabled = true;
+    const result = await window.hoo.moveToCallQueue(filename);
+    if (result && result.success) {
+      toast('📞 Moved to Call Queue — no email found');
+      await loadApprovals();
+      renderApprovals();
+      await loadCallQueue();
+    } else {
+      toast('❌ Failed: ' + (result?.error || 'unknown'));
+      btn.textContent = 'Approve & Send';
+      btn.disabled = false;
+    }
+    return;
+  }
+
   btn.textContent = 'Sending...';
   btn.disabled = true;
   const result = await window.hoo.approveLead(filename);
@@ -1183,11 +1218,12 @@ const sentToday = [];
 async function loadCallQueue() {
   if (!isElectron) return;
   const all = await window.hoo.readApprovals() || [];
-  callQueueLeads = all.filter(a =>
-    a.status === 'pending' &&
-    (a.lead?.phone || '').trim() &&
-    !(a.lead?.email || '').trim()
-  );
+  callQueueLeads = all.filter(a => {
+    if (a.status !== 'pending') return false;
+    const email = (a.lead?.email || '').trim();
+    const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
+    return noEmail || a.needs_call === true;
+  });
   document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
   renderCallQueue();
 }

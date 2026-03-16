@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld('hoo', {
   rejectLead:       (filename)       => ipcRenderer.invoke('reject-lead', filename),
   openDemo:         (demoPath)       => ipcRenderer.invoke('open-demo', demoPath),
   addEmailAndSend:  (leadId, email)  => ipcRenderer.invoke('add-email-and-send', leadId, email),
-  rejectLeadById:   (leadId)         => ipcRenderer.invoke('reject-lead-by-id', leadId)
+  rejectLeadById:   (leadId)         => ipcRenderer.invoke('reject-lead-by-id', leadId),
+  moveToCallQueue:  (filename)       => ipcRenderer.invoke('move-to-call-queue', filename)
 });

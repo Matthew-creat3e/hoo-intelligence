@@ -235,50 +235,263 @@ def save_lead(d: dict) -> Path:
     print(f"  {tag}  {fname}  [Score:{d.get('score',0)} {d.get('tier','?')}] [{cat_label}]")
     return path
 
-# ── PRIMARY SEARCH (Yelp — reliable, no blocks) ──────────────────────────────
-async def scrape_maps(industry: str, city: str) -> list:
-    """Routes all searches through Yelp. Google Maps blocks Crawl4AI."""
-    return await scrape_yelp(industry, city)
+# ── DEBUG LOG ─────────────────────────────────────────────────────────────────
+DEBUG_LOG = BASE / "engine" / "data" / "scrape-debug.log"
 
-# ── YELP FALLBACK ──────────────────────────────────────────────────────────────
+def debug_log(source: str, industry: str, city: str, md: str):
+    """Log first 500 chars of raw markdown for debugging empty scrapes."""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    snippet = md[:500].replace('\n', '\\n') if md else "(EMPTY)"
+    entry = f"[{timestamp}] {source} | {industry} | {city} | len={len(md)} | {snippet}\n{'='*80}\n"
+    try:
+        with open(DEBUG_LOG, "a", encoding="utf-8") as f:
+            f.write(entry)
+    except: pass
+
+# ── EXTRACT BUSINESS NAMES FROM MARKDOWN ──────────────────────────────────────
+def extract_businesses_from_md(md: str, industry: str, city: str, source: str) -> list:
+    """Parse business names + phone numbers from crawled markdown."""
+    parts = city.split()
+    state = parts[-1] if len(parts) > 1 else "MO"
+    city_only = " ".join(parts[:-1]) if len(parts) > 1 else city
+    leads = []
+    seen_names = set()
+
+    # Extract all phone numbers from the full text for later matching
+    all_phones = re.findall(r'\(?\d{3}\)?[\s\-\.]\d{3}[\s\-\.]\d{4}', md)
+
+    # Strategy 1: Look for numbered listings (common in Yelp/BBB markdown)
+    # Patterns like "1. Business Name" or "**Business Name**" or "### Business Name"
+    numbered = re.findall(r'(?:^|\n)\s*\d+\.\s*\[?([A-Z][A-Za-z\s&\'\-\.]{3,55})\]?', md)
+    bolded   = re.findall(r'\*\*([A-Z][A-Za-z\s&\'\-\.]{3,55})\*\*', md)
+    headered = re.findall(r'#{1,4}\s*([A-Z][A-Za-z\s&\'\-\.]{3,55})', md)
+
+    # Strategy 2: Lines that look like business names (capitalized, reasonable length)
+    line_names = []
+    for line in md.split("\n"):
+        line = line.strip()
+        if not line or len(line) < 4 or len(line) > 70: continue
+        # Strip markdown syntax
+        clean = re.sub(r'\[|\]|\(.*?\)|[#*_`>]|\d+\.', '', line).strip()
+        if not clean or len(clean) < 4 or len(clean) > 60: continue
+        # Must start with uppercase, look like a business name
+        if re.match(r'^[A-Z]', clean) and not clean.startswith(('http', 'www.', 'Search', 'Filter', 'Sort', 'Map', 'Showing', 'Page', 'Next', 'Previous', 'Log', 'Sign', 'Write', 'Categories', 'Open', 'Closed', 'Price', 'Distance', 'Rating')):
+            # Skip if it's a full sentence (too many lowercase words)
+            words = clean.split()
+            if len(words) <= 8:
+                line_names.append(clean)
+
+    # Combine all candidates, prioritize numbered > bolded > headered > line
+    all_candidates = []
+    for name in numbered + bolded + headered + line_names:
+        name = name.strip().rstrip('.')
+        if name and name not in seen_names and len(name) > 3:
+            seen_names.add(name)
+            all_candidates.append(name)
+
+    # Build lead objects
+    phone_idx = 0
+    for name in all_candidates:
+        if already_exists(name): continue
+        # Try to find a nearby phone number
+        phone = ""
+        if phone_idx < len(all_phones):
+            phone = all_phones[phone_idx]
+            phone_idx += 1
+
+        d = {
+            "business": name, "owner_name": "", "phone": phone,
+            "email": "", "city": city_only, "state": state,
+            "industry": industry, "no_website": True,
+            "website_url": None, "has_reviews": False,
+            "stage": "found", "playbook": "no-website",
+            "source": source, "notes": f"{source}: {industry} {city}"
+        }
+        d["score"] = score_lead(d)
+        d["tier"]  = tier(d["score"])
+        leads.append(d)
+        if len(leads) >= 10: break
+
+    return leads
+
+# ── PRIMARY SEARCH — YELP → GOOGLE MAPS → BBB ───────────────────────────────
+async def scrape_maps(industry: str, city: str) -> list:
+    """Try Yelp first, fall back to Google Maps, then BBB."""
+    leads = await scrape_yelp(industry, city)
+    if leads:
+        return leads
+
+    print(f"  🔄  Yelp returned 0 — trying Google Maps...")
+    leads = await scrape_google_maps(industry, city)
+    if leads:
+        return leads
+
+    print(f"  🔄  Google Maps returned 0 — trying BBB...")
+    leads = await scrape_bbb(industry, city)
+    return leads
+
+# ── YELP SCRAPER ──────────────────────────────────────────────────────────────
 async def scrape_yelp(industry: str, city: str) -> list:
     city_slug = city.replace(" ", "-").replace("'", "").replace(",","")
     url = f"https://www.yelp.com/search?find_desc={industry.replace(' ','+')}&find_loc={city_slug}"
-    print(f"  🍕  Yelp fallback: {industry} in {city}")
+    print(f"  🍕  Yelp: {industry} in {city}")
 
     cfg = CrawlerRunConfig(
-        wait_for="div.businessName__09f24__",
-        delay_before_return_html=2.0,
+        js_code="await new Promise(r => setTimeout(r, 3000))",
+        delay_before_return_html=3.0,
         cache_mode="bypass",
-        word_count_threshold=20
+        word_count_threshold=10
     )
 
-    leads = []
-    async with AsyncWebCrawler(config=browser_cfg()) as crawler:
-        res = await crawler.arun(url=url, config=cfg)
-        if not res.success: return []
-        md = res.markdown_v2.fit_markdown if res.markdown_v2 else ""
-        # Extract business names from Yelp markdown
-        city_only = city.split()[0]
-        for line in md.split("\n"):
-            line = line.strip()
-            if not line or len(line) < 4: continue
-            name = re.sub(r'\[|\]|\(.*?\)|[#*]', '', line).strip()
-            if 3 < len(name) < 60 and not already_exists(name):
+    try:
+        async with AsyncWebCrawler(config=browser_cfg()) as crawler:
+            res = await crawler.arun(url=url, config=cfg)
+            if not res.success:
+                print(f"  ⚠️  Yelp crawl failed")
+                debug_log("yelp-FAIL", industry, city, "")
+                return []
+
+            md = res.markdown.raw_markdown if res.markdown else ""
+            debug_log("yelp", industry, city, md)
+
+            if not md or len(md) < 100:
+                print(f"  ⚠️  Yelp returned thin content ({len(md)} chars)")
+                return []
+
+            leads = extract_businesses_from_md(md, industry, city, "yelp")
+            print(f"  Found {len(leads)} via Yelp")
+            return leads
+    except Exception as e:
+        print(f"  ⚠️  Yelp error: {e}")
+        debug_log("yelp-ERROR", industry, city, str(e))
+        return []
+
+# ── GOOGLE MAPS SCRAPER ──────────────────────────────────────────────────────
+async def scrape_google_maps(industry: str, city: str) -> list:
+    query = f"{industry}+{city.replace(' ', '+')}"
+    url = f"https://www.google.com/maps/search/{query}"
+    print(f"  🗺️  Google Maps: {industry} in {city}")
+
+    cfg = CrawlerRunConfig(
+        js_code="await new Promise(r => setTimeout(r, 4000))",
+        delay_before_return_html=3.0,
+        cache_mode="bypass",
+        word_count_threshold=10
+    )
+
+    try:
+        async with AsyncWebCrawler(config=browser_cfg()) as crawler:
+            res = await crawler.arun(url=url, config=cfg)
+            if not res.success:
+                print(f"  ⚠️  Google Maps crawl failed")
+                debug_log("gmaps-FAIL", industry, city, "")
+                return []
+
+            md = res.markdown.raw_markdown if res.markdown else ""
+            debug_log("gmaps", industry, city, md)
+
+            if not md or len(md) < 100:
+                print(f"  ⚠️  Google Maps returned thin content ({len(md)} chars)")
+                return []
+
+            # Google Maps markdown has business names, addresses, phones, ratings
+            parts = city.split()
+            state = parts[-1] if len(parts) > 1 else "MO"
+            city_only = " ".join(parts[:-1]) if len(parts) > 1 else city
+            leads = []
+
+            # Extract phone numbers
+            phones = re.findall(r'\(?\d{3}\)?[\s\-\.]\d{3}[\s\-\.]\d{4}', md)
+
+            # Extract business names — Maps often has them as bold or linked text
+            # Also look for rating patterns like "4.5(123)" near business names
+            biz_patterns = re.findall(r'(?:^|\n)\s*\[?([A-Z][A-Za-z\s&\'\-\.]{3,50})\]?(?:\s*\(?\d+\.?\d*\s*(?:star|★|\())?', md)
+            # Also try extracting from structured patterns
+            biz_patterns += re.findall(r'\*\*([A-Z][A-Za-z\s&\'\-\.]{3,50})\*\*', md)
+
+            # Google Maps UI text that gets scraped as "business names"
+            GMAPS_JUNK = {
+                'Drag to change', 'Saved', 'Recents', 'Get app', 'Hours',
+                'Rating', 'All filters', 'Open', 'Open now', 'Closed',
+                'Collapse side panel', 'Close', 'Results',
+                'Update results when map moves', 'Sign in',
+                'Get the most out of Google Maps', 'Prices come from',
+                'Some of these hotel and vacation rental search resu',
+            }
+
+            seen = set()
+            phone_idx = 0
+            for name in biz_patterns:
+                name = name.strip().rstrip('.')
+                if not name or name in seen or len(name) < 4: continue
+                if name.startswith(('Search', 'Filter', 'Map', 'Google', 'Directions', 'Results', 'Prices', 'Some of')): continue
+                if name in GMAPS_JUNK or any(j in name for j in GMAPS_JUNK): continue
+                # Skip generic category labels (e.g. "Plumber", "Handyman", "Tattoo shop", "Pet groomer")
+                generic = ['service', 'shop', 'store', 'groomer', 'supply', 'Plumber', 'Handyman',
+                           'Remodeler', 'Tattoo shop', 'Pet groomer', 'Lawn care service',
+                           'Tattoo and piercing', 'Tattoo removal service', 'Pet supply']
+                if name in generic or name.lower() in [g.lower() for g in generic]: continue
+                if already_exists(name): continue
+                seen.add(name)
+
+                phone = phones[phone_idx] if phone_idx < len(phones) else ""
+                phone_idx += 1
+
                 d = {
-                    "business": name, "owner_name": "", "phone": "",
-                    "email": "", "city": city_only, "state": city.split()[-1],
+                    "business": name, "owner_name": "", "phone": phone,
+                    "email": "", "city": city_only, "state": state,
                     "industry": industry, "no_website": True,
                     "website_url": None, "has_reviews": False,
                     "stage": "found", "playbook": "no-website",
-                    "source": "yelp", "notes": f"Yelp: {industry} {city}"
+                    "source": "google-maps", "notes": f"Google Maps: {industry} {city}"
                 }
                 d["score"] = score_lead(d)
                 d["tier"]  = tier(d["score"])
                 leads.append(d)
                 if len(leads) >= 10: break
-    print(f"  Found {len(leads)} via Yelp")
-    return leads
+
+            print(f"  Found {len(leads)} via Google Maps")
+            return leads
+    except Exception as e:
+        print(f"  ⚠️  Google Maps error: {e}")
+        debug_log("gmaps-ERROR", industry, city, str(e))
+        return []
+
+# ── BBB SCRAPER ───────────────────────────────────────────────────────────────
+async def scrape_bbb(industry: str, city: str) -> list:
+    city_slug = city.replace(" ", "+").replace("'", "")
+    url = f"https://www.bbb.org/search?find_text={industry.replace(' ', '+')}&find_loc={city_slug}"
+    print(f"  🏛️  BBB: {industry} in {city}")
+
+    cfg = CrawlerRunConfig(
+        js_code="await new Promise(r => setTimeout(r, 3000))",
+        delay_before_return_html=3.0,
+        cache_mode="bypass",
+        word_count_threshold=10
+    )
+
+    try:
+        async with AsyncWebCrawler(config=browser_cfg()) as crawler:
+            res = await crawler.arun(url=url, config=cfg)
+            if not res.success:
+                print(f"  ⚠️  BBB crawl failed")
+                debug_log("bbb-FAIL", industry, city, "")
+                return []
+
+            md = res.markdown.raw_markdown if res.markdown else ""
+            debug_log("bbb", industry, city, md)
+
+            if not md or len(md) < 100:
+                print(f"  ⚠️  BBB returned thin content ({len(md)} chars)")
+                return []
+
+            leads = extract_businesses_from_md(md, industry, city, "bbb")
+            print(f"  Found {len(leads)} via BBB")
+            return leads
+    except Exception as e:
+        print(f"  ⚠️  BBB error: {e}")
+        debug_log("bbb-ERROR", industry, city, str(e))
+        return []
 
 # ── QUICK URL SCAN ─────────────────────────────────────────────────────────────
 async def scan_url(url: str) -> dict:
@@ -289,7 +502,7 @@ async def scan_url(url: str) -> dict:
     if not res.success:
         return {"url": url, "alive": False, "score": 0, "issues": ["Unreachable"]}
 
-    md = res.markdown_v2.fit_markdown if res.markdown_v2 else ""
+    md = res.markdown.raw_markdown if res.markdown else ""
     words = len(md.split())
     issues = []
     if words < 100:      issues.append("Thin content (<100 words)")
@@ -339,7 +552,7 @@ async def enrich_lead(filename: str):
     async with AsyncWebCrawler(config=browser_cfg()) as crawler:
         res = await crawler.arun(url=url, config=cfg)
 
-    md = res.markdown_v2.fit_markdown if (res.success and res.markdown_v2) else ""
+    md = res.markdown.raw_markdown if (res.success and res.markdown) else ""
 
     phones = re.findall(r'\(?\d{3}\)?[\s\-\.]\d{3}[\s\-\.]\d{4}', md)
     if phones and not data.get("phone"):
@@ -400,10 +613,12 @@ async def batch_hunt():
     industry_counts = dict(existing_counts)
     city_counts = {}
 
-    for industry, city in combos:
+    total_combos = len(combos)
+    for combo_idx, (industry, city) in enumerate(combos, 1):
+        print(f"\n[{combo_idx}/{total_combos}] 🔍  {industry} in {city}")
         leads = await scrape_maps(industry, city)
         for lead in leads:
-            ind, cit = lead["industry"], lead["city"]
+            ind, cit = lead["industry"], lead["city"].strip().lower()
             # Running total includes existing + new leads
             new_ind_count = industry_counts.get(ind, 0) + 1
             city_counts[cit] = city_counts.get(cit, 0) + 1
@@ -411,13 +626,15 @@ async def batch_hunt():
             if new_ind_count / total_all > 0.30:
                 print(f"  ⏭️  Skip {lead['business']} — industry cap ({ind}: {new_ind_count}/{total_all} = {new_ind_count/total_all*100:.0f}%)")
                 continue
-            if city_counts[cit] / max(len(all_leads) + 1, 1) > 0.40:
-                print(f"  ⏭️  Skip {lead['business']} — city cap ({cit})")
+            if city_counts[cit] > 8:
+                print(f"  ⏭️  Skip {lead['business']} — city cap ({cit}: {city_counts[cit]}/8)")
                 continue
             industry_counts[ind] = new_ind_count
             all_leads.append(lead)
             save_lead(lead)
         await asyncio.sleep(2)
+
+    print(f"\n🏁  All {total_combos} combos processed. Done.")
 
     hot  = sorted([l for l in all_leads if l["tier"]=="HOT"],  key=lambda x:x["score"], reverse=True)
     warm = [l for l in all_leads if l["tier"]=="WARM"]
@@ -528,3 +745,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+    sys.exit(0)

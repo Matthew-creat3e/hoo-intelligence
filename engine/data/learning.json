@@ -1,7 +1,16 @@
 {
   "version": "3.0",
   "last_updated": "2026-03-15",
-  "hunts": [],
+  "hunts": [
+    {
+      "date": "2026-03-16",
+      "found": 0,
+      "hot": 0,
+      "warm": 0,
+      "industries": [],
+      "cities": []
+    }
+  ],
   "email_stats": {
     "sent": 14,
     "opened": 0,
@@ -17,35 +26,152 @@
     "best_messages": []
   },
   "by_industry": {
-    "tattoo":           { "contacted": 1, "responded": 0, "closed": 0, "notes": "Personal call recommended — owner is the artist" },
-    "fencing":          { "contacted": 1, "responded": 0, "closed": 0, "notes": "Seasonal — spring/summer hottest" },
-    "food truck":       { "contacted": 1, "responded": 0, "closed": 0, "notes": "Facebook/Instagram heavy — show Google value" },
-    "landscaping":      { "contacted": 1, "responded": 0, "closed": 0, "notes": "Phone call converts better than email" },
-    "handyman":         { "contacted": 1, "responded": 0, "closed": 0, "notes": "High call volume already — angle: jobs you're not hearing about" },
-    "cleaning":         { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "lawn care":        { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "painting":         { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "auto detailing":   { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "pressure washing": { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "roofing":          { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "barber":           { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "photography":      { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "pet grooming":     { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "mobile mechanic":  { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "junk removal":     { "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "personal training":{ "contacted": 0, "responded": 0, "closed": 0, "notes": "" },
-    "moving":           { "contacted": 0, "responded": 0, "closed": 0, "notes": "" }
+    "tattoo": {
+      "contacted": 1,
+      "responded": 0,
+      "closed": 0,
+      "notes": "Personal call recommended \u00e2\u20ac\u201d owner is the artist"
+    },
+    "fencing": {
+      "contacted": 1,
+      "responded": 0,
+      "closed": 0,
+      "notes": "Seasonal \u00e2\u20ac\u201d spring/summer hottest"
+    },
+    "food truck": {
+      "contacted": 1,
+      "responded": 0,
+      "closed": 0,
+      "notes": "Facebook/Instagram heavy \u00e2\u20ac\u201d show Google value"
+    },
+    "landscaping": {
+      "contacted": 1,
+      "responded": 0,
+      "closed": 0,
+      "notes": "Phone call converts better than email"
+    },
+    "handyman": {
+      "contacted": 1,
+      "responded": 0,
+      "closed": 0,
+      "notes": "High call volume already \u00e2\u20ac\u201d angle: jobs you're not hearing about"
+    },
+    "cleaning": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "lawn care": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "painting": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "auto detailing": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "pressure washing": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "roofing": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "barber": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "photography": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "pet grooming": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "mobile mechanic": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "junk removal": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "personal training": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    },
+    "moving": {
+      "contacted": 0,
+      "responded": 0,
+      "closed": 0,
+      "notes": ""
+    }
   },
   "by_city": {
-    "Independence":  { "contacted": 3, "responded": 0 },
-    "Liberty":       { "contacted": 2, "responded": 0 },
-    "Grain Valley":  { "contacted": 2, "responded": 0 },
-    "Grandview":     { "contacted": 2, "responded": 0 },
-    "Belton":        { "contacted": 1, "responded": 0 },
-    "Blue Springs":  { "contacted": 1, "responded": 0 },
-    "Lee's Summit":  { "contacted": 1, "responded": 0 },
-    "Kansas City":   { "contacted": 1, "responded": 0 },
-    "Overland Park": { "contacted": 1, "responded": 0 }
+    "Independence": {
+      "contacted": 3,
+      "responded": 0
+    },
+    "Liberty": {
+      "contacted": 2,
+      "responded": 0
+    },
+    "Grain Valley": {
+      "contacted": 2,
+      "responded": 0
+    },
+    "Grandview": {
+      "contacted": 2,
+      "responded": 0
+    },
+    "Belton": {
+      "contacted": 1,
+      "responded": 0
+    },
+    "Blue Springs": {
+      "contacted": 1,
+      "responded": 0
+    },
+    "Lee's Summit": {
+      "contacted": 1,
+      "responded": 0
+    },
+    "Kansas City": {
+      "contacted": 1,
+      "responded": 0
+    },
+    "Overland Park": {
+      "contacted": 1,
+      "responded": 0
+    }
   },
   "conversion_rates": {
     "email_open_rate": null,
