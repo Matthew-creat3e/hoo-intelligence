@@ -643,8 +643,10 @@ async function addEmail(leadId, email) {
     const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 800 });
-    await page.goto(`file:///${demoFullPath.replace(/\\/g, '/')}`, { waitUntil: 'networkidle2' });
-    await new Promise(r => setTimeout(r, 2000)); // wait for animations
+    const { pathToFileURL } = require('url');
+    await page.goto(pathToFileURL(demoFullPath).href, { waitUntil: 'networkidle2' });
+    await page.waitForSelector('body', { visible: true });
+    await new Promise(r => setTimeout(r, 4000)); // wait for animations
     await page.screenshot({ path: screenshotPath, type: 'png' });
     await browser.close();
     console.log(`   ✅  Screenshot saved: outputs/screenshots/${leadId}-preview.png`);
