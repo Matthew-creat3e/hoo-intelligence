@@ -220,7 +220,7 @@ function buildDemoEmail(lead, demoPath) {
 
   // Demo URL: lead.demo_url > GitHub Pages demo link > HOO site
   const demoFilename = path.basename(demoPath);
-  const demoUrl = lead.demo_url || `https://matthew-creat3e.github.io/hoo-intelligence/demos/${demoFilename}`;
+  const demoUrl = lead.demo_url || `https://matthew-creat3e.github.io/hoo-intelligence/outputs/demos/${demoFilename}`;
   const hooUrl = 'https://herrmanonlineoutlook.com';
 
   // Subject: avoid spam triggers (no "free", "guaranteed", "click here", etc.)
