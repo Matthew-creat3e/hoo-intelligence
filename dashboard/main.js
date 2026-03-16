@@ -128,7 +128,7 @@ ipcMain.handle('read-approvals', () => {
   } catch { return []; }
 });
 
-// Approve a lead — send dark-themed HTML email with screenshot + demo attachment
+// Approve a lead — send plain text email with demo HTML attached
 ipcMain.handle('approve-lead', async (_, approvalFilename) => {
   try {
     require('dotenv').config({ path: path.join(ROOT, 'engine', 'tools', '.env') });
@@ -137,6 +137,8 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
     const leadId = approval.id || '';
     const biz = approval.lead?.business || 'your business';
     const email = (approval.lead?.email || '').trim();
+    const ownerName = (approval.lead?.owner || '').trim();
+    const ownerFirst = ownerName ? ownerName.split(' ')[0] : 'there';
 
     if (!email) return { success: false, error: 'No email on this lead' };
 
@@ -147,73 +149,31 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
       return { success: false, error: 'Demo file not found: ' + demoRelPath };
     }
 
-    const subject = `I built ${biz} a free website - take a look`;
-    const bodyText = approval.email_preview?.body || `Hi,\n\nI built ${biz} a free website. Click the link below to see the full design with photos, animations, and a working mobile layout.\n\n- Matthew Herrman\nHOO - Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003`;
+    // Build live demo URL on GitHub Pages with clean business name
+    const cleanName = biz.replace(/[^a-zA-Z0-9\s]/g, '').split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+    const cleanDemoFilename = `${cleanName}.html`;
+    const liveUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${cleanDemoFilename}`;
 
-    // Build GitHub Pages demo URL
-    const demoFilename = path.basename(demoRelPath);
-    const demoUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${demoFilename}`;
+    const subject = `built something for ${biz}`;
+    const bodyText = `Hey ${ownerFirst},
 
-    // Screenshot the demo with puppeteer
-    const screenshotsDir = path.join(ROOT, 'outputs', 'screenshots');
-    if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
-    const screenshotPath = path.join(screenshotsDir, `${leadId}-preview.png`);
+I'm a concrete worker out of Kansas City - Local 1290. I've been learning web design at night and building free sites for local businesses to grow my portfolio.
 
-    try {
-      const puppeteer = require('puppeteer');
-      const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-      const page = await browser.newPage();
-      await page.setViewport({ width: 1280, height: 800 });
-      const { pathToFileURL } = require('url');
-      await page.goto(pathToFileURL(demoFullPath).href, { waitUntil: 'networkidle2' });
-      await page.waitForSelector('body', { visible: true });
-      await new Promise(r => setTimeout(r, 4000));
-      await page.screenshot({ path: screenshotPath, type: 'png' });
-      await browser.close();
-    } catch (err) {
-      console.warn('Screenshot failed:', err.message);
-    }
+I noticed ${biz} doesn't have a website so I built you one. Took me a few hours. No charge to look at it:
 
-    const hasScreenshot = fs.existsSync(screenshotPath);
+${liveUrl}
 
-    // Build dark-themed HTML email
-    const bodyHtmlLines = bodyText.split('\n').map(line => {
-      if (!line.trim()) return '<br>';
-      return `<p style="margin:0 0 8px 0;font-size:14px;line-height:1.7;color:#F0EAE0;">${line.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`;
-    }).join('\n');
+If you love it, I'll finish the full build for a flat fee. If not, no hard feelings - keep the design.
 
-    const htmlBody = `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#050505;font-family:'Syne',Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#050505;padding:40px 20px;">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-  <tr><td style="padding:24px 32px;border-bottom:2px solid #C8952E;">
-    <h1 style="margin:0;font-family:'Bebas Neue',Impact,sans-serif;font-size:28px;letter-spacing:3px;color:#C8952E;">I built ${biz.replace(/</g,'&lt;').replace(/>/g,'&gt;')} a free website</h1>
-  </td></tr>
-  ${hasScreenshot ? `<tr><td style="padding:24px 32px 16px;">
-    <img src="cid:demo-preview" alt="${biz.replace(/"/g,'&quot;')} website preview" style="width:100%;max-width:600px;border-radius:8px;border:1px solid #1C1C1C;display:block;" />
-  </td></tr>` : ''}
-  <tr><td style="padding:16px 32px 24px;">
-    ${bodyHtmlLines}
-  </td></tr>
-  <tr><td style="padding:0 32px 16px;" align="center">
-    <a href="${demoUrl}" target="_blank" style="display:inline-block;background:#C8952E;color:#050505;font-family:'Bebas Neue',Impact,sans-serif;font-size:18px;letter-spacing:3px;padding:14px 36px;text-decoration:none;border-radius:4px;">VIEW YOUR FREE WEBSITE</a>
-  </td></tr>
-  <tr><td style="padding:0 32px 32px;" align="center">
-    <a href="https://herrmanonlineoutlook.com" target="_blank" style="display:inline-block;background:transparent;color:#C8952E;font-family:'Bebas Neue',Impact,sans-serif;font-size:14px;letter-spacing:3px;padding:10px 36px;text-decoration:none;border:1px solid #C8952E;border-radius:4px;">SEE MORE OF OUR WORK</a>
-  </td></tr>
-  <tr><td style="padding:16px 32px;border-top:1px solid #1C1C1C;">
-    <p style="margin:0;font-size:11px;color:#888880;text-align:center;">Matthew Herrman | HOO - Build free, pay on approval | (804) 957-1003</p>
-  </td></tr>
-</table>
-</td></tr>
-</table>
-</body>
-</html>`;
+Either way I hope it helps.
 
-    // Send via nodemailer
+- Matthew Herrman
+HOO - Kansas City, MO
+(804) 957-1003
+herrmanonlineoutlook.com`;
+
+    // Send plain text email — no attachments, no HTML
     const nodemailer = require('nodemailer');
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -223,18 +183,11 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
       },
     });
 
-    const attachments = [];
-    if (hasScreenshot) {
-      attachments.push({ filename: `${leadId}-preview.png`, path: screenshotPath, cid: 'demo-preview' });
-    }
-
     await transporter.sendMail({
-      from: `"${process.env.GMAIL_FROM_NAME || 'Matthew Herrman | HOO'}" <${process.env.GMAIL_USER}>`,
+      from: `"Matthew Herrman | HOO" <${process.env.GMAIL_USER}>`,
       to: email,
       subject,
       text: bodyText,
-      html: htmlBody,
-      attachments,
     });
 
     // Save social captions to queue
@@ -264,23 +217,17 @@ ipcMain.handle('approve-lead', async (_, approvalFilename) => {
     try { log = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
     log.push({
       date: new Date().toISOString(), lead: biz, id: leadId, to: email,
-      subject, source: 'approve-lead', status: 'sent', demoUrl,
-      screenshot: hasScreenshot ? `${leadId}-preview.png` : null,
+      subject, source: 'approve-lead', status: 'sent', liveUrl,
     });
     fs.writeFileSync(logFile, JSON.stringify(log, null, 2), 'utf8');
 
     // Auto-push demos to GitHub Pages so the link works when they click it
     try {
       const { execSync } = require('child_process');
-      // Copy demo to /demos/ (GitHub Pages serves from there)
+      // Copy demo to /demos/ with clean business name
       const demosDir = path.join(ROOT, 'demos');
       if (!fs.existsSync(demosDir)) fs.mkdirSync(demosDir, { recursive: true });
-      fs.readdirSync(path.join(ROOT, 'outputs', 'demos'))
-        .filter(f => f.startsWith('LEAD-') && f.endsWith('.html'))
-        .forEach(f => fs.copyFileSync(
-          path.join(ROOT, 'outputs', 'demos', f),
-          path.join(demosDir, f)
-        ));
+      fs.copyFileSync(demoFullPath, path.join(demosDir, cleanDemoFilename));
       execSync('git add demos/ outputs/demos/', { cwd: ROOT });
       const gitStatus = execSync('git status --porcelain demos/ outputs/demos/', { cwd: ROOT, encoding: 'utf8' });
       if (gitStatus.trim()) {

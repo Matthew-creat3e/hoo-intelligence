@@ -47,7 +47,7 @@ If Matthew says "send it" or "fire it off":
 ```bash
 pip install crawl4ai playwright && playwright install chromium
 
-python lead-hunter-v3.py hunt "cleaning" "Independence MO"
+python lead-hunter-v3.py hunt "cleaning" "Kansas City MO"
 python lead-hunter-v3.py maps "tattoo" "Liberty MO"
 python lead-hunter-v3.py batch          # all priority combos
 python lead-hunter-v3.py scan https://example.com
@@ -79,7 +79,7 @@ See `n8n/SETUP.md` for Docker install (30 min, free forever).
 
 ### 1. Lead Hunter (`tools/lead-hunter.js`)
 ```bash
-hunt "lawn care" "Independence MO"   # Google/Facebook/BBB scraper
+hunt "lawn care" "Kansas City MO"   # Google/Facebook/BBB scraper
 batch                                 # All priority city+industry combos
 scan <url>                            # Quick HTTP site check (no Puppeteer)
 enrich <lead.json>                    # Scrape Facebook for phone/email/website

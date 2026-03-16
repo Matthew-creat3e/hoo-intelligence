@@ -54,12 +54,12 @@ Output all 3 captions in chat for Matthew to review.
 
 ## HOO Voice Quick Reference
 - Short punchy sentences
-- Blue collar builder from Independence MO
+- Blue collar builder from Kansas City MO
 - Dad. Grinder. Late nights. Real work.
 - Never corporate. Never fake excitement.
 - Always mention "build free, pay on approval"
 - Always end with herrmanonlineoutlook.com
-- Local references: KC, Independence, Missouri
+- Local references: KC, Kansas City, Missouri
 
 ---
 

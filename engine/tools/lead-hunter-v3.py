@@ -10,7 +10,7 @@ Install once:
   playwright install chromium
 
 Usage:
-  python lead-hunter-v3.py hunt "cleaning" "Independence MO"
+  python lead-hunter-v3.py hunt "cleaning" "Kansas City MO"
   python lead-hunter-v3.py maps "tattoo" "Liberty MO"
   python lead-hunter-v3.py batch
   python lead-hunter-v3.py scan https://example.com
@@ -43,7 +43,7 @@ ENRICH_DIR.mkdir(parents=True, exist_ok=True)
 (BASE / "engine" / "data").mkdir(parents=True, exist_ok=True)
 
 CITIES = [
-    "Independence MO", "Blue Springs MO", "Lee's Summit MO",
+    "Kansas City MO", "Blue Springs MO", "Lee's Summit MO",
     "Grain Valley MO", "Raytown MO", "Belton MO", "Liberty MO",
     "Grandview MO", "Pleasant Hill MO", "Oak Grove MO",
     "Kansas City MO", "Kansas City KS", "Overland Park KS"
@@ -60,13 +60,13 @@ PRIORITY_COMBOS = [
     ("tattoo",           "Liberty MO"),
     ("fencing",          "Grain Valley MO"),
     ("food truck",       "Grandview MO"),
-    ("cleaning",         "Independence MO"),
+    ("cleaning",         "Kansas City MO"),
     ("landscaping",      "Belton MO"),
     ("lawn care",        "Blue Springs MO"),
     ("handyman",         "Lee's Summit MO"),
     ("auto detailing",   "Kansas City MO"),
     ("pressure washing", "Overland Park KS"),
-    ("photography",      "Independence MO"),
+    ("photography",      "Kansas City MO"),
     ("barber",           "Raytown MO"),
     ("pet grooming",     "Liberty MO"),
     ("roofing",          "Lee's Summit MO"),

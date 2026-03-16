@@ -155,7 +155,7 @@ Code location: `C:\Users\Matth\hoo-workspace\outputs\hoo-site\`
 ```
 Phone:     (804) 957-1003
 Email:     herrmanonlineoutlook@gmail.com
-Location:  Independence, MO
+Location:  Kansas City, MO
 Formspree: xaqpwgkd
 ```
 
