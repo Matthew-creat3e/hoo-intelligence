@@ -1,14 +1,16 @@
 /**
- * HOO Auto-Prototype v1.0 — Lead → Pexels Photos → Full Demo Page → Email
- * Wires pexels-engine.js + email-engine.js into a single pipeline.
+ * HOO Auto-Prototype v2.0 — Lead → Competitor Intel → Pexels Photos → Themed Demo → Email
+ * Wires pexels-engine.js + email-engine.js + competitor color scraping into a single pipeline.
  *
  * Usage:
  *   node auto-prototype.js build <lead.json>              Build demo (dry run preview)
  *   node auto-prototype.js build <lead.json> --send       Build + email demo link to lead
  *   node auto-prototype.js build <lead.json> --send --live Build + actually send email
  *   node auto-prototype.js test                           Build demo for fake tattoo lead
+ *   node auto-prototype.js test --industry=cleaning       Test with specific industry theme
  *
  * Output: outputs/demos/LEAD-{id}-{business-slug}.html
+ *         outputs/prototypes/LEAD-{id}-color-intel.json
  */
 
 require('dotenv').config({ path: require('path').join(__dirname, '.env') });
@@ -17,8 +19,34 @@ const path = require('path');
 const { getPhotos, INDUSTRY_MAP } = require('./pexels-engine');
 
 const OUTPUTS_DIR = path.join(__dirname, '..', '..', 'outputs', 'demos');
+const INTEL_DIR   = path.join(__dirname, '..', '..', 'outputs', 'prototypes');
 const IS_SEND     = process.argv.includes('--send');
 const IS_LIVE     = process.argv.includes('--live');
+
+// ── INDUSTRY COLOR THEMES ────────────────────────────────────────────────────
+// bg = section backgrounds, primary = headings/CTAs/borders, accent = text/secondary
+const INDUSTRY_THEMES = {
+  cleaning:             { bg: '#FFFFFF', bg2: '#F0F4F8', bg3: '#E8EDF2', primary: '#3498DB', primaryHover: '#5DADE2', accent: '#F5F5F5', text: '#1A1A2E', textDim: 'rgba(26,26,46,.6)', isLight: true },
+  'lawn care':          { bg: '#1A1A1A', bg2: '#141414', bg3: '#222222', primary: '#2D6A4F', primaryHover: '#40916C', accent: '#C8952E', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  handyman:             { bg: '#0A1628', bg2: '#081220', bg3: '#122040', primary: '#CC5500', primaryHover: '#E67300', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+  painting:             { bg: '#0D0D0D', bg2: '#0A0A0A', bg3: '#1A1A1A', primary: '#4A0E8F', primaryHover: '#6B21B0', accent: '#C8952E', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  landscaping:          { bg: '#0A0F0A', bg2: '#070C07', bg3: '#142014', primary: '#1A5C38', primaryHover: '#2D8B57', accent: '#8B4513', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  moving:               { bg: '#0A1628', bg2: '#081220', bg3: '#122040', primary: '#C0392B', primaryHover: '#E74C3C', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+  'auto detailing':     { bg: '#0D0D0D', bg2: '#0A0A0A', bg3: '#1A1A1A', primary: '#C0392B', primaryHover: '#E74C3C', accent: '#C0C0C0', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  'pressure washing':   { bg: '#0A1A2A', bg2: '#071520', bg3: '#122538', primary: '#3498DB', primaryHover: '#5DADE2', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+  'pet grooming':       { bg: '#1A0A1A', bg2: '#140814', bg3: '#2A122A', primary: '#9B59B6', primaryHover: '#BB77D4', accent: '#FF69B4', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  tattoo:               { bg: '#050505', bg2: '#0E0E0E', bg3: '#1C1C1C', primary: '#C0392B', primaryHover: '#E74C3C', accent: '#F0EAE0', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  'food truck':         { bg: '#1A0F00', bg2: '#140C00', bg3: '#2A1A06', primary: '#CC5500', primaryHover: '#E67300', accent: '#F5F0E8', text: '#F5F0E8', textDim: 'rgba(245,240,232,.6)', isLight: false },
+  roofing:              { bg: '#0D0D0D', bg2: '#0A0A0A', bg3: '#1A1A1A', primary: '#C0392B', primaryHover: '#E74C3C', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+  fencing:              { bg: '#0A1A0A', bg2: '#071507', bg3: '#142514', primary: '#2D6A4F', primaryHover: '#40916C', accent: '#8B6914', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  'personal training':  { bg: '#050505', bg2: '#0E0E0E', bg3: '#1C1C1C', primary: '#C8952E', primaryHover: '#E8B84B', accent: '#F0EAE0', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false },
+  barber:               { bg: '#0A1628', bg2: '#081220', bg3: '#122040', primary: '#C0392B', primaryHover: '#E74C3C', accent: '#F5F0E8', text: '#F5F0E8', textDim: 'rgba(245,240,232,.6)', isLight: false },
+  photography:          { bg: '#050505', bg2: '#0E0E0E', bg3: '#1C1C1C', primary: '#C8952E', primaryHover: '#E8B84B', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+  'junk removal':       { bg: '#0D0D0D', bg2: '#0A0A0A', bg3: '#1A1A1A', primary: '#CC5500', primaryHover: '#E67300', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+  'mobile mechanic':    { bg: '#0D0D0D', bg2: '#0A0A0A', bg3: '#1A1A1A', primary: '#3498DB', primaryHover: '#5DADE2', accent: '#F5F5F5', text: '#F5F5F5', textDim: 'rgba(245,245,245,.6)', isLight: false },
+};
+
+const DEFAULT_THEME = { bg: '#050505', bg2: '#0E0E0E', bg3: '#1C1C1C', primary: '#C8952E', primaryHover: '#E8B84B', accent: '#F0EAE0', text: '#F0EAE0', textDim: 'rgba(240,234,224,.6)', isLight: false };
 
 // ── INDUSTRY COPY ─────────────────────────────────────────────────────────────
 const INDUSTRY_COPY = {
@@ -49,8 +77,127 @@ function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
+// ── HEX HELPERS ───────────────────────────────────────────────────────────────
+function hexToRGBA(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// ── COMPETITOR INTEL SCRAPING ─────────────────────────────────────────────────
+async function scrapeCompetitorIntel(industry, city, leadId) {
+  let puppeteer;
+  try {
+    puppeteer = require('puppeteer');
+  } catch {
+    console.log('   ⚠️  Puppeteer not installed — skipping competitor intel');
+    return null;
+  }
+
+  const query = encodeURIComponent(`${industry} ${city} website`);
+  const searchUrl = `https://www.google.com/search?q=${query}`;
+  const intel = { query: `${industry} ${city}`, competitors: [], ogImages: [], scraped_date: new Date().toISOString() };
+
+  let browser;
+  try {
+    console.log(`   🔍  Scraping competitors: "${industry} ${city}"...`);
+    browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+
+    // Search Google for competitors
+    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForSelector('body', { visible: true });
+
+    // Extract top 3 result URLs from search results
+    const urls = await page.evaluate(() => {
+      const links = Array.from(document.querySelectorAll('a[href]'));
+      const results = [];
+      for (const link of links) {
+        const href = link.href;
+        if (href && href.startsWith('http') && !href.includes('google.') && !href.includes('youtube.') && !href.includes('yelp.') && !href.includes('facebook.') && !href.includes('instagram.') && !href.includes('wikipedia.')) {
+          try {
+            const u = new URL(href);
+            const domain = u.hostname;
+            if (!results.find(r => r.includes(domain))) {
+              results.push(href);
+            }
+          } catch {}
+        }
+        if (results.length >= 3) break;
+      }
+      return results;
+    });
+
+    console.log(`   📋  Found ${urls.length} competitor URLs`);
+
+    // Scrape each competitor
+    for (const url of urls.slice(0, 3)) {
+      try {
+        const compPage = await browser.newPage();
+        await compPage.goto(url, { waitUntil: 'domcontentloaded', timeout: 10000 });
+        await compPage.waitForSelector('body', { visible: true });
+
+        const data = await compPage.evaluate(() => {
+          const title = document.querySelector('title')?.textContent || '';
+          const metaDesc = document.querySelector('meta[name="description"]')?.content || document.querySelector('meta[property="og:description"]')?.content || '';
+          const ogImage = document.querySelector('meta[property="og:image"]')?.content || '';
+
+          // Extract hex colors from inline styles and style tags
+          const hexColors = [];
+          const styleText = Array.from(document.querySelectorAll('style')).map(s => s.textContent).join(' ');
+          const inlineStyles = Array.from(document.querySelectorAll('[style]')).map(el => el.getAttribute('style')).join(' ');
+          const allCSS = styleText + ' ' + inlineStyles;
+          const hexMatches = allCSS.match(/#[0-9a-fA-F]{6}/g) || [];
+          // Count occurrences
+          const colorCounts = {};
+          for (const hex of hexMatches) {
+            const h = hex.toLowerCase();
+            // Skip near-black and near-white
+            if (h === '#000000' || h === '#ffffff' || h === '#f5f5f5' || h === '#333333') continue;
+            colorCounts[h] = (colorCounts[h] || 0) + 1;
+          }
+          const topColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([c]) => c);
+
+          return { title: title.trim(), metaDesc: metaDesc.trim(), ogImage, topColors };
+        });
+
+        const comp = {
+          url,
+          title: data.title,
+          meta_description: data.metaDesc,
+          og_image: data.ogImage,
+          top_colors: data.topColors,
+        };
+        intel.competitors.push(comp);
+        if (data.ogImage) intel.ogImages.push(data.ogImage);
+        console.log(`   ✅  ${new URL(url).hostname}: ${data.topColors.length} colors, ${data.ogImage ? 'has og:image' : 'no og:image'}`);
+        await compPage.close();
+      } catch (err) {
+        console.log(`   ⚠️  Failed to scrape ${url}: ${err.message}`);
+      }
+    }
+
+    await browser.close();
+  } catch (err) {
+    console.log(`   ⚠️  Competitor scraping failed: ${err.message}`);
+    if (browser) try { await browser.close(); } catch {}
+  }
+
+  // Save intel
+  if (intel.competitors.length > 0) {
+    if (!fs.existsSync(INTEL_DIR)) fs.mkdirSync(INTEL_DIR, { recursive: true });
+    const intelPath = path.join(INTEL_DIR, `${leadId}-color-intel.json`);
+    fs.writeFileSync(intelPath, JSON.stringify(intel, null, 2), 'utf8');
+    console.log(`   💾  Intel saved: outputs/prototypes/${leadId}-color-intel.json`);
+  }
+
+  return intel;
+}
+
 // ── BUILD HTML ────────────────────────────────────────────────────────────────
-function buildHTML(lead, photos) {
+function buildHTML(lead, photos, theme, compIntel) {
   const biz       = lead.business || lead.business_name || 'Business';
   const owner     = lead.owner_name || '';
   const city      = lead.city || '';
@@ -61,14 +208,37 @@ function buildHTML(lead, photos) {
   const phoneClean = phone.replace(/\D/g, '');
   const location   = city ? `${city}, ${state}` : state;
 
-  // Assign photos to slots — fallback to gradient if missing
-  const hero  = photos[0]?.url || '';
-  const about = photos[1]?.url || '';
-  const svc   = [photos[2]?.url || '', photos[3]?.url || '', photos[4]?.url || ''];
-  const cta   = photos[5]?.url || hero;
+  const t = theme; // shorthand
 
-  const heroAlt  = photos[0]?.alt || `${biz} hero`;
-  const aboutAlt = photos[1]?.alt || `About ${biz}`;
+  // Merge competitor og:images into photo pool if available
+  let allPhotos = [...photos];
+  if (compIntel && compIntel.ogImages && compIntel.ogImages.length > 0) {
+    for (const ogUrl of compIntel.ogImages) {
+      allPhotos.push({ url: ogUrl, alt: `${industry} competitor reference` });
+    }
+  }
+
+  // Assign photos to slots
+  const hero  = allPhotos[0]?.url || '';
+  const about = allPhotos[1]?.url || '';
+  const svc   = [allPhotos[2]?.url || '', allPhotos[3]?.url || '', allPhotos[4]?.url || ''];
+  const cta   = allPhotos[5]?.url || hero;
+
+  const heroAlt  = allPhotos[0]?.alt || `${biz} hero`;
+  const aboutAlt = allPhotos[1]?.alt || `About ${biz}`;
+
+  // Compute overlay colors based on light/dark theme
+  const overlayTop  = t.isLight ? 'rgba(255,255,255,.45)' : hexToRGBA(t.bg, '.55');
+  const overlayBot  = t.isLight ? 'rgba(255,255,255,.90)' : hexToRGBA(t.bg, '.85');
+  const navBg       = t.isLight ? 'rgba(255,255,255,.95)' : hexToRGBA(t.bg, '.95');
+  const ctaOverlay  = t.isLight ? 'rgba(255,255,255,.88)' : hexToRGBA(t.bg, '.88');
+  const borderFaint = hexToRGBA(t.primary, '.2');
+  const borderFaint2 = hexToRGBA(t.primary, '.12');
+  const glowColor   = hexToRGBA(t.primary, '.25');
+  const footerBorder = hexToRGBA(t.primary, '.15');
+
+  // CTA button text color: ensure contrast
+  const btnText = t.isLight ? '#FFFFFF' : t.bg;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -80,57 +250,59 @@ function buildHTML(lead, photos) {
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#050505;--bg2:#0E0E0E;--bg3:#1C1C1C;
-  --gold:#C8952E;--gold-hover:#E8B84B;--gold-glow:rgba(200,149,46,.25);
-  --text:#F0EAE0;--text-dim:rgba(240,234,224,.6);
+  --bg:${t.bg};--bg2:${t.bg2};--bg3:${t.bg3};
+  --primary:${t.primary};--primary-hover:${t.primaryHover};--primary-glow:${glowColor};
+  --accent:${t.accent};
+  --text:${t.text};--text-dim:${t.textDim};
+  --btn-text:${btnText};
   --font-h:'Bebas Neue',sans-serif;--font-b:'Syne',sans-serif;--font-accent:'Cormorant Garamond',serif;
   --ease:cubic-bezier(.25,.46,.45,.94);--max:1200px;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.6;overflow-x:hidden}
-a{color:var(--gold);text-decoration:none;transition:color .3s var(--ease)}
-a:hover{color:var(--gold-hover)}
+a{color:var(--primary);text-decoration:none;transition:color .3s var(--ease)}
+a:hover{color:var(--primary-hover)}
 img{max-width:100%;display:block}
 
 /* ═══ PROGRESS BAR ═══ */
-.ap-progress{position:fixed;top:0;left:0;height:3px;background:var(--gold);width:0;z-index:1001;will-change:width}
+.ap-progress{position:fixed;top:0;left:0;height:3px;background:var(--primary);width:0;z-index:1001;will-change:width}
 
 /* ═══ NAV ═══ */
 .ap-nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:16px 0;transition:background .4s var(--ease),padding .4s var(--ease)}
-.ap-nav.scrolled{background:rgba(5,5,5,.95);backdrop-filter:blur(10px);padding:10px 0}
+.ap-nav.scrolled{background:${navBg};backdrop-filter:blur(10px);padding:10px 0}
 .ap-nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
 .ap-logo{font-family:var(--font-h);font-size:clamp(1.2rem,3vw,1.6rem);letter-spacing:2px;color:var(--text)}
-.ap-logo span{color:var(--gold)}
+.ap-logo span{color:var(--primary)}
 .ap-nav-links{display:flex;gap:24px;align-items:center}
 .ap-nav-links a{font-size:.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;transition:color .3s var(--ease)}
-.ap-nav-links a:hover{color:var(--gold)}
-.ap-nav-cta{background:var(--gold);color:var(--bg);padding:10px 22px;font-family:var(--font-h);font-size:.95rem;letter-spacing:2px;border:none;cursor:pointer;transition:all .3s var(--ease)}
-.ap-nav-cta:hover{background:var(--gold-hover);transform:translateY(-2px);color:var(--bg)}
+.ap-nav-links a:hover{color:var(--primary)}
+.ap-nav-cta{background:var(--primary);color:var(--btn-text);padding:10px 22px;font-family:var(--font-h);font-size:.95rem;letter-spacing:2px;border:none;cursor:pointer;transition:all .3s var(--ease)}
+.ap-nav-cta:hover{background:var(--primary-hover);transform:translateY(-2px);color:var(--btn-text)}
 .ap-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002}
-.ap-ham span{width:26px;height:2px;background:var(--gold);transition:all .3s var(--ease)}
+.ap-ham span{width:26px;height:2px;background:var(--primary);transition:all .3s var(--ease)}
 
 /* ═══ HERO ═══ */
 .ap-hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .ap-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0}
-.ap-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,.85) 100%);z-index:1}
+.ap-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,${overlayTop} 0%,${overlayBot} 100%);z-index:1}
 .ap-hero-content{position:relative;z-index:2;text-align:center;padding:0 20px;max-width:850px}
-.ap-hero-label{font-family:var(--font-accent);font-style:italic;color:var(--gold);font-size:clamp(1rem,2.5vw,1.2rem);margin-bottom:12px;opacity:0;transform:translateY(20px);animation:ap-up .8s var(--ease) .3s forwards}
+.ap-hero-label{font-family:var(--font-accent);font-style:italic;color:var(--primary);font-size:clamp(1rem,2.5vw,1.2rem);margin-bottom:12px;opacity:0;transform:translateY(20px);animation:ap-up .8s var(--ease) .3s forwards}
 .ap-hero h1{font-family:var(--font-h);font-size:clamp(2.8rem,9vw,6.5rem);line-height:.92;letter-spacing:3px;margin-bottom:20px}
 .ap-hero h1 .ap-ln{display:block;overflow:hidden}
 .ap-hero h1 .ap-ln-i{display:block;transform:translateY(110%);animation:ap-rev .8s var(--ease) forwards}
 .ap-hero h1 .ap-ln:nth-child(1) .ap-ln-i{animation-delay:.5s}
-.ap-hero h1 .ap-ln:nth-child(2) .ap-ln-i{animation-delay:.7s;color:var(--gold)}
+.ap-hero h1 .ap-ln:nth-child(2) .ap-ln-i{animation-delay:.7s;color:var(--primary)}
 .ap-hero-sub{font-size:clamp(.9rem,1.8vw,1.1rem);color:var(--text-dim);max-width:520px;margin:0 auto 32px;opacity:0;animation:ap-up .8s var(--ease) 1.1s forwards}
 .ap-hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:ap-up .8s var(--ease) 1.3s forwards}
-.ap-btn{background:var(--gold);color:var(--bg);padding:15px 36px;font-family:var(--font-h);font-size:1.1rem;letter-spacing:3px;border:none;cursor:pointer;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:8px}
-.ap-btn:hover{background:var(--gold-hover);transform:translateY(-3px);box-shadow:0 12px 40px var(--gold-glow);color:var(--bg)}
-.ap-btn-o{border:1px solid var(--gold);color:var(--gold);padding:15px 36px;font-family:var(--font-h);font-size:1.1rem;letter-spacing:3px;background:transparent;cursor:pointer;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:8px}
-.ap-btn-o:hover{background:var(--gold);color:var(--bg);transform:translateY(-3px)}
+.ap-btn{background:var(--primary);color:var(--btn-text);padding:15px 36px;font-family:var(--font-h);font-size:1.1rem;letter-spacing:3px;border:none;cursor:pointer;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:8px}
+.ap-btn:hover{background:var(--primary-hover);transform:translateY(-3px);box-shadow:0 12px 40px var(--primary-glow);color:var(--btn-text)}
+.ap-btn-o{border:1px solid var(--primary);color:var(--primary);padding:15px 36px;font-family:var(--font-h);font-size:1.1rem;letter-spacing:3px;background:transparent;cursor:pointer;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:8px}
+.ap-btn-o:hover{background:var(--primary);color:var(--btn-text);transform:translateY(-3px)}
 .ap-hero-stats{display:flex;justify-content:center;gap:clamp(20px,5vw,56px);margin-top:44px;opacity:0;animation:ap-up .8s var(--ease) 1.5s forwards}
-.ap-stat-n{font-family:var(--font-h);font-size:clamp(1.8rem,4.5vw,2.8rem);color:var(--gold);line-height:1}
+.ap-stat-n{font-family:var(--font-h);font-size:clamp(1.8rem,4.5vw,2.8rem);color:var(--primary);line-height:1}
 .ap-stat-l{font-size:.75rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-top:4px}
 .ap-hero-ph{margin-top:24px;opacity:0;animation:ap-up .8s var(--ease) 1.7s forwards}
-.ap-hero-ph a{font-family:var(--font-h);font-size:clamp(1rem,2.5vw,1.4rem);color:var(--gold);letter-spacing:3px}
+.ap-hero-ph a{font-family:var(--font-h);font-size:clamp(1rem,2.5vw,1.4rem);color:var(--primary);letter-spacing:3px}
 
 @keyframes ap-rev{to{transform:translateY(0)}}
 @keyframes ap-up{to{opacity:1;transform:translateY(0)}}
@@ -140,7 +312,7 @@ img{max-width:100%;display:block}
 .ap-vis{opacity:1;transform:none}
 
 /* ═══ SECTION COMMON ═══ */
-.ap-label{font-family:var(--font-accent);font-style:italic;color:var(--gold);font-size:1rem;margin-bottom:8px;letter-spacing:1px}
+.ap-label{font-family:var(--font-accent);font-style:italic;color:var(--primary);font-size:1rem;margin-bottom:8px;letter-spacing:1px}
 .ap-title{font-family:var(--font-h);font-size:clamp(2rem,5vw,3.2rem);letter-spacing:3px;margin-bottom:24px}
 
 /* ═══ ABOUT ═══ */
@@ -148,19 +320,19 @@ img{max-width:100%;display:block}
 .ap-about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
 .ap-about-text p{color:var(--text-dim);margin-bottom:14px;font-size:clamp(.88rem,1.4vw,1.02rem)}
 .ap-about-text p strong{color:var(--text)}
-.ap-about-sig{font-family:var(--font-accent);font-style:italic;color:var(--gold);font-size:1.3rem;margin-top:18px}
-.ap-about-img{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(200,149,46,.2)}
-.ap-about-img::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.ap-about-sig{font-family:var(--font-accent);font-style:italic;color:var(--primary);font-size:1.3rem;margin-top:18px}
+.ap-about-img{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderFaint}}
+.ap-about-img::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--primary),transparent)}
 .ap-about-img img{width:100%;height:100%;object-fit:cover}
 
 /* ═══ SERVICES ═══ */
 .ap-svc{padding:clamp(60px,10vw,120px) 20px;background:var(--bg2)}
 .ap-svc-inner{max-width:var(--max);margin:0 auto}
 .ap-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
-.ap-svc-card{background:var(--bg);border:1px solid rgba(200,149,46,.12);overflow:hidden;transition:all .4s var(--ease);position:relative}
-.ap-svc-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);z-index:1}
+.ap-svc-card{background:var(--bg);border:1px solid ${borderFaint2};overflow:hidden;transition:all .4s var(--ease);position:relative}
+.ap-svc-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--primary);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);z-index:1}
 .ap-svc-card:hover::before{transform:scaleX(1)}
-.ap-svc-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.ap-svc-card:hover{border-color:var(--primary);transform:translateY(-4px)}
 .ap-svc-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
 .ap-svc-body{padding:24px 20px}
 .ap-svc-card h3{font-family:var(--font-h);font-size:1.3rem;letter-spacing:2px;margin-bottom:8px}
@@ -169,24 +341,24 @@ img{max-width:100%;display:block}
 /* ═══ CTA ═══ */
 .ap-cta{position:relative;padding:clamp(80px,12vw,140px) 20px;text-align:center;overflow:hidden}
 .ap-cta-bg{position:absolute;inset:0;background-size:cover;background-position:center}
-.ap-cta-overlay{position:absolute;inset:0;background:rgba(5,5,5,.88)}
+.ap-cta-overlay{position:absolute;inset:0;background:${ctaOverlay}}
 .ap-cta-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
 .ap-cta h2{font-family:var(--font-h);font-size:clamp(2.2rem,6vw,4.5rem);letter-spacing:4px;margin-bottom:14px}
-.ap-cta h2 span{color:var(--gold)}
+.ap-cta h2 span{color:var(--primary)}
 .ap-cta p{color:var(--text-dim);font-size:clamp(.9rem,1.8vw,1.1rem);margin-bottom:32px}
 .ap-cta .ap-btn{font-size:1.3rem;padding:18px 48px}
 .ap-cta-ph{margin-top:20px}
-.ap-cta-ph a{font-family:var(--font-h);font-size:1.2rem;color:var(--gold);letter-spacing:3px}
+.ap-cta-ph a{font-family:var(--font-h);font-size:1.2rem;color:var(--primary);letter-spacing:3px}
 .ap-cta-urg{font-size:.8rem;color:var(--text-dim);margin-top:14px;text-transform:uppercase;letter-spacing:2px}
 
 /* ═══ FOOTER ═══ */
-.ap-footer{padding:36px 20px;border-top:1px solid rgba(200,149,46,.15);text-align:center}
+.ap-footer{padding:36px 20px;border-top:1px solid ${footerBorder};text-align:center}
 .ap-footer p{color:var(--text-dim);font-size:.82rem}
-.ap-footer a{color:var(--gold)}
+.ap-footer a{color:var(--primary)}
 
 /* ═══ DEMO BANNER ═══ */
-.ap-demo-bar{position:fixed;bottom:0;left:0;width:100%;background:var(--gold);color:var(--bg);text-align:center;padding:10px 20px;font-family:var(--font-h);font-size:.95rem;letter-spacing:2px;z-index:9999}
-.ap-demo-bar a{color:var(--bg);text-decoration:underline}
+.ap-demo-bar{position:fixed;bottom:0;left:0;width:100%;background:var(--primary);color:var(--btn-text);text-align:center;padding:10px 20px;font-family:var(--font-h);font-size:.95rem;letter-spacing:2px;z-index:9999}
+.ap-demo-bar a{color:var(--btn-text);text-decoration:underline}
 
 /* ═══ MOBILE ═══ */
 @media(max-width:768px){
@@ -300,7 +472,7 @@ ${copy.services.map((s, i) => `      <div class="ap-svc-card ap-pop">
 <footer class="ap-footer">
   <div>
     <p>&copy; ${new Date().getFullYear()} ${escHTML(biz)}. All rights reserved. ${escHTML(location)}. ${phoneClean ? `<a href="tel:${phoneClean}">${escHTML(phone)}</a>` : ''}</p>
-    <p style="margin-top:6px;font-size:.72rem;color:rgba(240,234,224,.3)">Built by <a href="https://herrmanonlineoutlook.com" target="_blank" rel="noopener">HOO</a></p>
+    <p style="margin-top:6px;font-size:.72rem;color:${t.textDim}">Built by <a href="https://herrmanonlineoutlook.com" target="_blank" rel="noopener">HOO</a></p>
   </div>
 </footer>
 
@@ -355,13 +527,28 @@ async function buildPrototype(leadPath) {
   const biz      = lead.business || lead.business_name || 'demo';
   const industry = (lead.industry || '').toLowerCase();
   const leadId   = lead.id || 'XXXX';
+  const city     = lead.city || '';
 
-  console.log(`\n🏗️  Auto-Prototype: ${biz}`);
+  console.log(`\n🏗️  Auto-Prototype v2.0: ${biz}`);
   console.log(`   Industry: ${industry}`);
-  console.log(`   City: ${lead.city || 'N/A'}`);
+  console.log(`   City: ${city || 'N/A'}`);
   console.log(`   Owner: ${lead.owner_name || 'N/A'}`);
 
-  // Fetch photos
+  // Resolve color theme
+  const theme = INDUSTRY_THEMES[industry] || DEFAULT_THEME;
+  console.log(`\n🎨  Theme: bg ${theme.bg} | primary ${theme.primary} | accent ${theme.accent}${theme.isLight ? ' (LIGHT)' : ''}`);
+
+  // Competitor intel scraping
+  let compIntel = null;
+  if (city && industry) {
+    console.log('\n🕵️  Competitor Intel...');
+    compIntel = await scrapeCompetitorIntel(industry, `${city} ${lead.state || 'MO'}`, leadId);
+    if (compIntel && compIntel.ogImages.length > 0) {
+      console.log(`   🖼️  ${compIntel.ogImages.length} competitor og:images found — will embed as reference photos`);
+    }
+  }
+
+  // Fetch photos from Pexels
   console.log(`\n📸  Fetching 6 photos from Pexels for "${industry}"...`);
   let photos = [];
   try {
@@ -371,9 +558,9 @@ async function buildPrototype(leadPath) {
     console.warn(`   ⚠️  Pexels failed: ${err.message} — building with gradients`);
   }
 
-  // Build HTML
+  // Build HTML with industry theme + competitor intel
   console.log('\n🔨  Building demo page...');
-  const html = buildHTML(lead, photos);
+  const html = buildHTML(lead, photos, theme, compIntel);
 
   // Save
   if (!fs.existsSync(OUTPUTS_DIR)) fs.mkdirSync(OUTPUTS_DIR, { recursive: true });
@@ -458,20 +645,38 @@ async function buildPrototype(leadPath) {
     }
   }
 
-  return { filepath, filename, photos: photos.length };
+  return { filepath, filename, photos: photos.length, theme: industry, competitorIntel: compIntel ? compIntel.competitors.length : 0 };
 }
 
 // ── TEST LEAD ─────────────────────────────────────────────────────────────────
 function createTestLead() {
+  // Check for --industry= flag
+  const indFlag = process.argv.find(a => a.startsWith('--industry='));
+  const testIndustry = indFlag ? indFlag.split('=')[1] : 'tattoo';
+
+  const testData = {
+    tattoo:             { business: 'Tattoos by Glendon', owner: 'Glendon Thomas', city: 'Liberty', phone: '(816) 569-4465' },
+    cleaning:           { business: 'Sparkle Clean KC', owner: 'Sarah Johnson', city: 'Independence', phone: '(816) 555-0101' },
+    'lawn care':        { business: 'Green Edge Lawns', owner: 'Mike Davis', city: 'Blue Springs', phone: '(816) 555-0202' },
+    handyman:           { business: 'Fix It Right KC', owner: 'Tom Wilson', city: "Lee's Summit", phone: '(816) 555-0303' },
+    barber:             { business: 'Sharp Cutz Barbershop', owner: 'James Carter', city: 'Raytown', phone: '(816) 555-0404' },
+    'pet grooming':     { business: 'Pampered Paws KC', owner: 'Lisa Park', city: 'Liberty', phone: '(816) 555-0505' },
+    'food truck':       { business: 'Rolling Smoke BBQ', owner: 'Derek Brown', city: 'Grandview', phone: '(816) 555-0606' },
+    'auto detailing':   { business: 'Mirror Finish Auto', owner: 'Chris Lopez', city: 'Kansas City', phone: '(816) 555-0707' },
+    'pressure washing': { business: 'BlastClean Pro', owner: 'Ryan Miller', city: 'Overland Park', phone: '(913) 555-0808' },
+    'mobile mechanic':  { business: 'Wrench Ready Mobile', owner: 'Aaron Foster', city: 'Independence', phone: '(816) 555-0909' },
+  };
+
+  const data = testData[testIndustry] || testData.tattoo;
   return {
     id:            'TEST-001',
-    business:      'Tattoos by Glendon',
-    business_name: 'Tattoos by Glendon',
-    owner_name:    'Glendon Thomas',
-    industry:      'tattoo',
-    city:          'Liberty',
+    business:      data.business,
+    business_name: data.business,
+    owner_name:    data.owner,
+    industry:      testIndustry,
+    city:          data.city,
     state:         'MO',
-    phone:         '(816) 569-4465',
+    phone:         data.phone,
     email:         'test@example.com',
     no_website:    true,
     stage:         'new',
@@ -493,7 +698,9 @@ async function main() {
     }
 
     case 'test': {
-      console.log('\n🧪  Test mode — using fake tattoo shop lead\n');
+      const indFlag = process.argv.find(a => a.startsWith('--industry='));
+      const testInd = indFlag ? indFlag.split('=')[1] : 'tattoo';
+      console.log(`\n🧪  Test mode — ${testInd} theme\n`);
       const lead = createTestLead();
       const tmpFile = path.join(OUTPUTS_DIR, '_test-lead.json');
       if (!fs.existsSync(OUTPUTS_DIR)) fs.mkdirSync(OUTPUTS_DIR, { recursive: true });
@@ -503,29 +710,42 @@ async function main() {
       break;
     }
 
+    case 'themes': {
+      console.log('\n🎨  Available Industry Themes:\n');
+      for (const [ind, t] of Object.entries(INDUSTRY_THEMES)) {
+        console.log(`  ${ind.padEnd(20)} bg:${t.bg}  primary:${t.primary}  accent:${t.accent}${t.isLight ? '  (LIGHT)' : ''}`);
+      }
+      console.log(`\n  Test any: node auto-prototype.js test --industry=${Object.keys(INDUSTRY_THEMES)[0]}`);
+      break;
+    }
+
     default:
       console.log(`
-\x1b[33mHOO Auto-Prototype v1.0\x1b[0m — Lead → Photos → Demo Page → Email
+\x1b[33mHOO Auto-Prototype v2.0\x1b[0m — Lead → Competitor Intel → Photos → Themed Demo → Email
 
 Commands:
   build <lead.json>                   Build demo from lead file (dry run)
   build <lead.json> --send            Build + preview email to lead
   build <lead.json> --send --live     Build + actually send email
   test                                Build demo for fake tattoo shop lead
+  test --industry=cleaning            Test with specific industry theme
+  themes                              List all 18 industry color themes
 
 Pipeline:
   1. Read lead JSON (industry, city, owner, phone)
-  2. Fetch 6 real photos from Pexels
-  3. Build complete single-file HTML demo
-  4. Save to outputs/demos/LEAD-{id}-{slug}.html
-  5. Optionally email the lead
+  2. Scrape top 3 competitor sites for color intel + og:images
+  3. Apply industry-specific color theme (18 themes)
+  4. Fetch 6 real photos from Pexels
+  5. Build complete single-file HTML demo
+  6. Save to outputs/demos/LEAD-{id}-{slug}.html
+  7. Optionally email the lead
 
-Output: outputs/demos/
+Output: outputs/demos/  |  outputs/prototypes/ (color intel)
       `);
   }
 }
 
-module.exports = { buildPrototype, createTestLead };
+module.exports = { buildPrototype, createTestLead, INDUSTRY_THEMES };
 
 if (require.main === module) {
   main().catch(console.error);

@@ -1,5 +1,5 @@
 /**
- * HOO Email Engine v1.0 — Gmail SMTP via Nodemailer
+ * HOO Email Engine v2.0 — Gmail SMTP via Nodemailer
  * Mirrors sms-engine.js patterns. DRY RUN by default. --live to send.
  *
  * Install: npm install nodemailer (dotenv already installed)
@@ -15,7 +15,7 @@
  *   node email-engine.js send <lead.json>                 Dry run single
  *   node email-engine.js send <lead.json> --live          Send single email
  *   node email-engine.js send <lead.json> --template=2    Use specific template
- *   node email-engine.js send <lead.json> --demo          Attach demo (Template 7)
+ *   node email-engine.js send <lead.json> --demo          Send demo delivery (Template 7)
  *   node email-engine.js send <lead.json> --demo --live   Send demo delivery email
  *   node email-engine.js batch <leads.json>               Dry run batch
  *   node email-engine.js batch <leads.json> --live        Send batch from JSON list
@@ -29,9 +29,10 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-const LEADS_DIR     = path.join(__dirname, '..', 'leads');
-const DEMOS_DIR     = path.join(__dirname, '..', '..', 'outputs', 'demos');
-const LOG_FILE      = path.join(__dirname, '..', 'data', 'email-log.json');
+const LEADS_DIR      = path.join(__dirname, '..', 'leads');
+const DEMOS_DIR      = path.join(__dirname, '..', '..', 'outputs', 'demos');
+const SCREENSHOTS_DIR = path.join(__dirname, '..', '..', 'outputs', 'screenshots');
+const LOG_FILE       = path.join(__dirname, '..', 'data', 'email-log.json');
 const TEMPLATES_FILE = path.join(__dirname, '..', 'outreach', 'templates', 'email-templates.md');
 
 const GMAIL_USER     = process.env.GMAIL_USER;
@@ -64,9 +65,6 @@ function getTransporter() {
 }
 
 // ── TEMPLATE PARSER ───────────────────────────────────────────────────────────
-// Reads templates from engine/outreach/templates/email-templates.md
-// Returns array of { id, name, use_for, subject, body }
-
 function loadTemplates() {
   if (!fs.existsSync(TEMPLATES_FILE)) {
     console.error(`❌  Templates not found: ${TEMPLATES_FILE}`);
@@ -110,6 +108,12 @@ function fillTemplate(text, lead) {
     .replace(/\{estimated_job_value\}/g, lead.job_value || '500');
 }
 
+// ── HTML ESCAPE ───────────────────────────────────────────────────────────────
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // ── DEMO FILE FINDER ─────────────────────────────────────────────────────────
 function findDemoFile(lead) {
   if (!fs.existsSync(DEMOS_DIR)) return null;
@@ -117,7 +121,6 @@ function findDemoFile(lead) {
   const leadId = (lead.id || '').toLowerCase();
   const biz = (lead.business || lead.business_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  // Match by lead ID first, then by business name slug
   for (const f of files) {
     const lower = f.toLowerCase();
     if (leadId && lower.includes(leadId.toLowerCase())) return path.join(DEMOS_DIR, f);
@@ -126,43 +129,170 @@ function findDemoFile(lead) {
   return null;
 }
 
-// ── TEMPLATE 7 — DEMO DELIVERY ──────────────────────────────────────────────
+// ── SCREENSHOT FINDER ─────────────────────────────────────────────────────────
+function findScreenshot(lead) {
+  if (!fs.existsSync(SCREENSHOTS_DIR)) return null;
+  const leadId = lead.id || '';
+  const pngPath = path.join(SCREENSHOTS_DIR, `${leadId}-preview.png`);
+  if (fs.existsSync(pngPath)) return pngPath;
+  // Fallback: search by pattern
+  const files = fs.readdirSync(SCREENSHOTS_DIR).filter(f => f.endsWith('.png'));
+  for (const f of files) {
+    if (leadId && f.toLowerCase().includes(leadId.toLowerCase())) return path.join(SCREENSHOTS_DIR, f);
+  }
+  return null;
+}
+
+// ── HTML EMAIL BUILDER ───────────────────────────────────────────────────────
+// Builds a themed HTML email with inline screenshot via cid
+function buildHTMLEmail(opts) {
+  const { heading, screenshotCid, bullets, ctaText, ctaUrl, bodyText, footerName, footerPhone, footerEmail, hooUrl } = opts;
+
+  const bulletHtml = bullets.map(b =>
+    `<tr><td style="padding:0 0 10px 0;font-size:14px;line-height:1.6;color:#F0EAE0;">
+      <span style="color:#C8952E;font-weight:bold;margin-right:6px;">&#10003;</span> ${esc(b)}
+    </td></tr>`
+  ).join('\n');
+
+  const bodyHtmlLines = bodyText ? bodyText.split('\n').map(line => {
+    if (!line.trim()) return '<br>';
+    return `<p style="margin:0 0 8px 0;font-size:14px;line-height:1.7;color:#F0EAE0;">${esc(line)}</p>`;
+  }).join('\n') : '';
+
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#050505;font-family:'Syne',Arial,Helvetica,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#050505;padding:40px 20px;">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+  <!-- HEADER -->
+  <tr><td style="padding:24px 32px;border-bottom:2px solid #C8952E;">
+    <h1 style="margin:0;font-family:'Bebas Neue',Impact,sans-serif;font-size:26px;letter-spacing:3px;color:#C8952E;line-height:1.2;">${esc(heading)}</h1>
+  </td></tr>
+
+  ${screenshotCid ? `<!-- SCREENSHOT (inline via cid — no visible attachment) -->
+  <tr><td style="padding:24px 32px 16px;">
+    <img src="cid:${screenshotCid}" alt="Website preview" style="width:100%;max-width:540px;border-radius:8px;border:1px solid #1C1C1C;display:block;" />
+  </td></tr>` : ''}
+
+  ${bodyHtmlLines ? `<!-- BODY TEXT -->
+  <tr><td style="padding:16px 32px 8px;">
+    ${bodyHtmlLines}
+  </td></tr>` : ''}
+
+  ${bullets.length > 0 ? `<!-- WHAT WE BUILT -->
+  <tr><td style="padding:16px 32px 8px;">
+    <p style="margin:0 0 12px 0;font-family:'Bebas Neue',Impact,sans-serif;font-size:16px;letter-spacing:2px;color:#C8952E;">WHAT WE BUILT FOR YOU</p>
+    <table cellpadding="0" cellspacing="0" style="width:100%;">
+      ${bulletHtml}
+    </table>
+  </td></tr>` : ''}
+
+  <!-- CTA BUTTON -->
+  <tr><td style="padding:16px 32px 32px;" align="center">
+    <a href="${esc(ctaUrl)}" target="_blank" style="display:inline-block;background:#C8952E;color:#050505;font-family:'Bebas Neue',Impact,sans-serif;font-size:18px;letter-spacing:3px;padding:14px 36px;text-decoration:none;border-radius:4px;">${esc(ctaText)}</a>
+  </td></tr>
+
+  <!-- FOOTER -->
+  <tr><td style="padding:20px 32px;border-top:1px solid #1C1C1C;">
+    <p style="margin:0 0 6px 0;font-size:13px;color:#F0EAE0;text-align:center;">${esc(footerName)}</p>
+    <p style="margin:0 0 4px 0;font-size:13px;color:#F0EAE0;text-align:center;">HOO - Build first, pay on approval</p>
+    <p style="margin:0 0 4px 0;font-size:13px;text-align:center;"><strong style="color:#C8952E;">${esc(footerPhone || '(804) 957-1003')}</strong></p>
+    <p style="margin:0 0 4px 0;font-size:13px;text-align:center;"><strong style="color:#C8952E;">${esc(footerEmail || 'herrmanonlineoutlook@gmail.com')}</strong></p>
+    ${hooUrl ? `<p style="margin:0;font-size:13px;text-align:center;"><a href="${esc(hooUrl)}" target="_blank" style="color:#C8952E;text-decoration:underline;">${esc(hooUrl)}</a></p>` : ''}
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+// ── TEMPLATE 7 — DEMO DELIVERY (inline screenshot, no visible attachment) ───
 function buildDemoEmail(lead, demoPath) {
   const biz = lead.business || lead.business_name || 'your business';
   const owner = lead.owner_name || lead.owner || 'there';
   const city = lead.city || '';
   const industry = lead.industry || 'business';
 
-  const subject = `I built ${biz} a free website — take a look`;
-  const body = `Hey ${owner},
+  // Demo URL: lead.demo_url > GitHub Pages demo link > HOO site
+  const demoFilename = path.basename(demoPath);
+  const demoUrl = lead.demo_url || `https://matthew-creat3e.github.io/hoo-intelligence/demos/${demoFilename}`;
+  const hooUrl = 'https://herrmanonlineoutlook.com';
 
-My name's Matthew Herrman — I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, for free. You only pay if you love it.
+  // Subject: avoid spam triggers (no "free", "guaranteed", "click here", etc.)
+  const subject = `I built ${biz} a website - take a look`;
 
-I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. It's attached to this email — just download the file and open it in Chrome or Edge to see the full design with photos, animations, and a working mobile layout.
+  // Plain text body
+  const plainText = `Hey ${owner},
 
-No obligations. No pitch. Just wanted to show you what your business could look like online.
+My name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, you only pay if you love it.
 
-If you like what you see, reply to this email or call me at (804) 957-1003. If not, no hard feelings — keep the design either way.
+I went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}. Here's what's included:
+
+- Custom homepage designed for ${industry} businesses in ${city || 'your area'}
+- Mobile-ready layout with real photos and working animations
+- Click-to-call button wired to your phone number
+
+See your website: ${demoUrl}
+
+No obligations. No pitch. Just wanted to show you what ${biz} could look like online.
+
+If you like what you see, reply to this email or call me. If not, no hard feelings.
 
 Matthew Herrman
-HOO — Build free, pay on approval
-herrmanonlineoutlook.com
-(804) 957-1003`;
+HOO - Build first, pay on approval
+(804) 957-1003
+herrmanonlineoutlook@gmail.com
+${hooUrl}`;
 
-  const demoFilename = path.basename(demoPath);
-  const demoContent = fs.readFileSync(demoPath);
+  const bullets = [
+    `Custom homepage designed for ${industry} businesses in ${city || 'your area'}`,
+    'Mobile-ready layout with real photos and working animations',
+    'Click-to-call button wired to your phone number',
+  ];
+
+  // Check for existing screenshot (inline via cid)
+  const screenshotPath = findScreenshot(lead);
+  const hasScreenshot = !!screenshotPath;
+
+  const bodyBeforeBullets = `Hey ${owner},\n\nMy name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local ${industry} businesses, and I do it a little differently: I build first, you only pay if you love it.\n\nI went ahead and built a custom homepage for ${biz}${city ? ' in ' + city : ''}.`;
+
+  const htmlBody = buildHTMLEmail({
+    heading: `Hey ${owner}, I built ${biz} a website`,
+    screenshotCid: hasScreenshot ? 'demo-preview' : null,
+    bullets,
+    ctaText: 'SEE YOUR WEBSITE \u2192',
+    ctaUrl: demoUrl,
+    bodyText: bodyBeforeBullets,
+    footerName: 'Matthew Herrman',
+    footerPhone: '(804) 957-1003',
+    footerEmail: 'herrmanonlineoutlook@gmail.com',
+    hooUrl,
+  });
+
+  // Attachments: only inline screenshot (no visible file attachments)
+  const attachments = [];
+  if (hasScreenshot) {
+    attachments.push({
+      filename: 'preview.png',
+      path: screenshotPath,
+      cid: 'demo-preview',
+    });
+  }
 
   return {
     to: lead.email,
     subject,
-    body,
+    body: plainText,
+    html: htmlBody,
     templateId: 7,
     templateName: 'Demo Delivery',
-    attachments: [{
-      filename: demoFilename,
-      content: demoContent,
-      contentType: 'text/html',
-    }],
+    attachments,
+    demoUrl,
   };
 }
 
@@ -190,9 +320,33 @@ function pickTemplate(lead, templates, forceId) {
   return templates.find(t => t.id === 4) || templates[3];
 }
 
-// ── BUILD EMAIL ───────────────────────────────────────────────────────────────
+// ── BUILD STANDARD EMAIL (templates 1-6) ─────────────────────────────────────
+function buildStandardHTMLEmail(lead, template) {
+  const biz = lead.business || lead.business_name || 'your business';
+  const owner = lead.owner_name || 'there';
+  const demoUrl = lead.demo_url || 'https://herrmanonlineoutlook.com';
+  const subject = fillTemplate(template.subject, lead);
+  const plainBody = fillTemplate(template.body, lead);
+
+  const htmlBody = buildHTMLEmail({
+    heading: `Hey ${owner}, a quick note about ${biz}`,
+    screenshotCid: null,
+    bullets: [],
+    ctaText: 'SEE OUR WORK \u2192',
+    ctaUrl: demoUrl,
+    bodyText: plainBody,
+    footerName: 'Matthew Herrman',
+    footerPhone: '(804) 957-1003',
+    footerEmail: 'herrmanonlineoutlook@gmail.com',
+    hooUrl: 'https://herrmanonlineoutlook.com',
+  });
+
+  return { to: lead.email, subject, body: plainBody, html: htmlBody, templateId: template.id, templateName: template.name };
+}
+
+// ── BUILD EMAIL (dispatcher) ─────────────────────────────────────────────────
 function buildEmail(lead, forceTemplateId) {
-  // --demo flag: use Template 7 with attached demo file
+  // --demo flag: use Template 7 with inline screenshot
   if (IS_DEMO || forceTemplateId === 7) {
     const demoPath = findDemoFile(lead);
     if (!demoPath) {
@@ -200,17 +354,19 @@ function buildEmail(lead, forceTemplateId) {
       console.log(`       Expected pattern: LEAD-*-${(lead.business || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.html`);
       return null;
     }
-    console.log(`  📎  Demo found: ${path.basename(demoPath)}`);
+    console.log(`  📄  Demo found: ${path.basename(demoPath)}`);
+    const screenshotPath = findScreenshot(lead);
+    if (screenshotPath) {
+      console.log(`  🖼️  Screenshot found: ${path.basename(screenshotPath)} (will embed inline)`);
+    } else {
+      console.log(`  ⚠️  No screenshot found — email will send without preview image`);
+    }
     return buildDemoEmail(lead, demoPath);
   }
 
   const templates = loadTemplates();
   const template  = pickTemplate(lead, templates, forceTemplateId);
-  const subject   = fillTemplate(template.subject, lead);
-  const body      = fillTemplate(template.body, lead);
-  const to        = lead.email;
-
-  return { to, subject, body, templateId: template.id, templateName: template.name };
+  return buildStandardHTMLEmail(lead, template);
 }
 
 // ── PREVIEW ───────────────────────────────────────────────────────────────────
@@ -222,12 +378,22 @@ function preview(lead, forceTemplateId) {
   console.log(`📤  FROM:     ${GMAIL_FROM} <${GMAIL_USER}>`);
   console.log(`📋  TEMPLATE: #${email.templateId} — ${email.templateName}`);
   console.log(`📝  SUBJECT:  ${email.subject}`);
-  if (email.attachments) {
-    console.log(`📎  ATTACH:   ${email.attachments.map(a => a.filename).join(', ')}`);
+  if (email.demoUrl) {
+    console.log(`🔗  CTA URL:  ${email.demoUrl}`);
   }
-  console.log('─── BODY ───');
+  if (email.attachments && email.attachments.length > 0) {
+    const inlineCount = email.attachments.filter(a => a.cid).length;
+    const fileCount = email.attachments.filter(a => !a.cid).length;
+    if (inlineCount) console.log(`🖼️  INLINE:   ${inlineCount} embedded image(s) via cid`);
+    if (fileCount) console.log(`📎  ATTACH:   ${email.attachments.filter(a => !a.cid).map(a => a.filename).join(', ')}`);
+  }
+  console.log('─── PLAIN TEXT ───');
   console.log(email.body);
-  console.log('─────────────────────────────────────\n');
+  console.log('─────────────────────────────────────');
+  if (email.html) {
+    console.log('  [HTML version will also be sent — inline screenshot + themed layout]');
+  }
+  console.log('');
   return email;
 }
 
@@ -255,7 +421,8 @@ async function sendEmail(lead, forceTemplateId) {
       subject: email.subject,
       text:    email.body,
     };
-    if (email.attachments) mailOpts.attachments = email.attachments;
+    if (email.html) mailOpts.html = email.html;
+    if (email.attachments && email.attachments.length > 0) mailOpts.attachments = email.attachments;
 
     const info = await transporter.sendMail(mailOpts);
 
@@ -269,6 +436,8 @@ async function sendEmail(lead, forceTemplateId) {
       messageId:  info.messageId,
       status:     'sent',
       live:       true,
+      hasHTML:    !!email.html,
+      hasInlineImage: !!(email.attachments && email.attachments.some(a => a.cid)),
     };
 
     appendLog(logEntry);
@@ -290,7 +459,6 @@ async function sendEmail(lead, forceTemplateId) {
 }
 
 // ── BATCH FROM JSON ───────────────────────────────────────────────────────────
-// Expects a JSON file with an array of lead objects
 async function sendBatch(filePath, forceTemplateId) {
   let leads;
   try {
@@ -313,7 +481,7 @@ async function sendBatch(filePath, forceTemplateId) {
     }
     await sendEmail(lead, forceTemplateId);
     sent++;
-    if (IS_LIVE) await sleep(3000); // 3s between sends — Gmail rate limit safety
+    if (IS_LIVE) await sleep(3000);
   }
 
   console.log(`\n✅  Batch done. ${IS_LIVE ? 'Sent' : 'Previewed'}: ${sent} emails.`);
@@ -361,12 +529,20 @@ async function sendTest(toAddr) {
   const transporter = getTransporter();
 
   try {
-    const info = await transporter.sendMail({
+    const mailOpts = {
       from:    `"${GMAIL_FROM}" <${GMAIL_USER}>`,
       to:      toAddr,
       subject: '[HOO TEST] ' + email.subject,
       text:    `--- THIS IS A TEST EMAIL ---\n\n${email.body}\n\n--- END TEST ---`,
-    });
+    };
+    if (email.html) {
+      mailOpts.html = email.html;
+    }
+    if (email.attachments && email.attachments.length > 0) {
+      mailOpts.attachments = email.attachments;
+    }
+
+    const info = await transporter.sendMail(mailOpts);
 
     console.log(`  ✅  Test sent to ${toAddr} [${info.messageId}]`);
     appendLog({
@@ -477,12 +653,12 @@ async function main() {
 
     default:
       console.log(`
-\x1b[33mHOO Email Engine v1.0\x1b[0m — Gmail SMTP via Nodemailer
+\x1b[33mHOO Email Engine v2.0\x1b[0m — Gmail SMTP via Nodemailer
 
 Commands:
   preview <lead.json>                  Preview email for a lead (dry run)
   send <lead.json> [--live]            Send email to one lead
-  send <lead.json> --demo [--live]     Send with demo HTML attached (Template 7)
+  send <lead.json> --demo [--live]     Send demo with inline screenshot (Template 7)
   batch <leads.json> [--live]          Send batch from JSON array
   send-all [--live]                    Send to all lead files in engine/leads/
   test "email@addr" [--live]           Send test email to yourself
@@ -490,8 +666,16 @@ Commands:
 
 Options:
   --live                 Actually send (default is dry run)
-  --demo                 Attach matching demo from outputs/demos/ (Template 7)
+  --demo                 Use Template 7: demo delivery with inline screenshot
   --template=N           Force template number (1-7)
+
+Email structure (--demo):
+  - Heading: "Hey [owner], I built [business] a website"
+  - Inline screenshot (embedded via cid — no visible attachment)
+  - 3 bullet points of what was built
+  - CTA button: "See Your Website" linking to demo_url
+  - Matthew's name + phone
+  - HTML + plain text versions sent together
 
 Safety: \x1b[33mAll sends are DRY RUN by default.\x1b[0m --live required to actually send.
 

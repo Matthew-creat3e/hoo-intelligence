@@ -21,6 +21,11 @@ import asyncio, json, sys, re, os
 from datetime import datetime
 from pathlib import Path
 
+# Fix Windows console encoding for emoji output
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 try:
     from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
     from crawl4ai.extraction_strategy import JsonCssExtractionStrategy
@@ -31,8 +36,10 @@ except ImportError:
 # ── CONFIG ─────────────────────────────────────────────────────────────────────
 BASE        = Path(r"C:\Users\Matth\hoo-workspace")
 LEADS_DIR   = BASE / "engine" / "leads"
+ENRICH_DIR  = LEADS_DIR / "needs-enrichment"
 LEARNING    = BASE / "engine" / "data" / "learning.json"
 LEADS_DIR.mkdir(parents=True, exist_ok=True)
+ENRICH_DIR.mkdir(parents=True, exist_ok=True)
 (BASE / "engine" / "data").mkdir(parents=True, exist_ok=True)
 
 CITIES = [
@@ -103,20 +110,101 @@ def tier(score: int) -> str:
     if score >= 30: return "WARM"
     return "COLD"
 
+# ── INDUSTRY SPREAD ────────────────────────────────────────────────────────────
+def count_leads_by_industry() -> dict:
+    """Scan engine/leads/ filenames to count leads per industry."""
+    counts = {ind: 0 for ind in INDUSTRIES}
+    # Check both main dir and needs-enrichment subdir
+    for search_dir in [LEADS_DIR, ENRICH_DIR]:
+        for f in search_dir.glob("LEAD-*.json"):
+            name = f.stem.lower()
+            for ind in INDUSTRIES:
+                slug = ind.replace(" ", "-")
+                if f"-{slug}-" in name:
+                    counts[ind] = counts.get(ind, 0) + 1
+                    break
+    return counts
+
+def prioritize_industries() -> list:
+    """Sort industries by fewest existing leads first. Underrepresented go first."""
+    counts = count_leads_by_industry()
+    total  = max(sum(counts.values()), 1)
+    print(f"\n📊  Industry Spread (total: {total} leads)")
+    sorted_inds = sorted(counts.items(), key=lambda x: x[1])
+    for ind, cnt in sorted_inds:
+        pct = cnt / total * 100
+        bar = "█" * int(pct / 3) if pct > 0 else "░"
+        cap = " ⚠️  AT CAP" if pct >= 30 else ""
+        print(f"    {ind:<20} {cnt:>3} ({pct:4.1f}%) {bar}{cap}")
+    return sorted_inds
+
+def get_priority_combos() -> list:
+    """Build hunt list: underrepresented industries first, skip any at 30% cap."""
+    sorted_inds = prioritize_industries()
+    total = max(sum(c for _, c in sorted_inds), 1)
+
+    # Build a city rotation for each industry
+    import random
+    combos = []
+    for ind, cnt in sorted_inds:
+        pct = cnt / total * 100 if total > 0 else 0
+        if pct >= 30:
+            print(f"  ⏭️  Skipping {ind} — at 30% cap ({pct:.1f}%)")
+            continue
+        # Check if there's a hardcoded priority combo for this industry
+        matched_city = None
+        for pi, pc in PRIORITY_COMBOS:
+            if pi == ind:
+                matched_city = pc
+                break
+        if matched_city:
+            combos.append((ind, matched_city))
+        else:
+            # Pick a random city
+            combos.append((ind, random.choice(CITIES)))
+
+    print(f"\n🎯  Hunt order: {len(combos)} industries (fewest leads first)")
+    for i, (ind, city) in enumerate(combos[:5], 1):
+        print(f"    {i}. {ind} → {city}")
+    if len(combos) > 5:
+        print(f"    ... +{len(combos) - 5} more")
+    return combos
+
 # ── HELPERS ────────────────────────────────────────────────────────────────────
 def next_id() -> str:
-    existing = list(LEADS_DIR.glob("LEAD-*.json"))
-    if not existing: return "001"
-    nums = [int(m.group(1)) for f in existing if (m := re.match(r"LEAD-(\d+)", f.name))]
+    """Get next lead ID — checks both main and needs-enrichment dirs."""
+    all_files = list(LEADS_DIR.glob("LEAD-*.json")) + list(ENRICH_DIR.glob("LEAD-*.json"))
+    if not all_files: return "001"
+    nums = [int(m.group(1)) for f in all_files if (m := re.match(r"LEAD-(\d+)", f.name))]
     return str(max(nums) + 1).zfill(3) if nums else "001"
 
 def already_exists(name: str) -> bool:
-    for f in LEADS_DIR.glob("LEAD-*.json"):
-        try:
-            if json.loads(f.read_text()).get("business","").lower() == name.lower():
-                return True
-        except: pass
+    for search_dir in [LEADS_DIR, ENRICH_DIR]:
+        for f in search_dir.glob("LEAD-*.json"):
+            try:
+                if json.loads(f.read_text()).get("business","").lower() == name.lower():
+                    return True
+            except: pass
     return False
+
+def categorize_lead(d: dict) -> dict:
+    """Categorize lead by contact info availability."""
+    has_email   = bool(d.get("email"))
+    has_website = bool(d.get("website_url"))
+
+    if has_email:
+        d["outreach_ready"]    = True
+        d["needs_enrichment"]  = False
+        d["category"]          = "ready"
+    elif has_website:
+        d["outreach_ready"]    = False
+        d["needs_enrichment"]  = True
+        d["category"]          = "has-website-no-email"
+    else:
+        d["outreach_ready"]    = False
+        d["needs_enrichment"]  = True
+        d["category"]          = "needs-contact-info"
+    return d
 
 def save_lead(d: dict) -> Path:
     lead_id  = next_id()
@@ -126,76 +214,31 @@ def save_lead(d: dict) -> Path:
     fname    = f"LEAD-{lead_id}-{industry}-{city}.json"
     d["filename"]   = fname
     d["found_date"] = datetime.now().strftime("%Y-%m-%d")
-    path = LEADS_DIR / fname
+
+    # Categorize before saving
+    d = categorize_lead(d)
+
+    # Decide save location: has email or website → main dir, neither → needs-enrichment
+    has_email   = bool(d.get("email"))
+    has_website = bool(d.get("website_url"))
+
+    if has_email or has_website:
+        save_dir = LEADS_DIR
+        tag = "📧" if has_email else "🌐"
+    else:
+        save_dir = ENRICH_DIR
+        tag = "📁"
+
+    path = save_dir / fname
     path.write_text(json.dumps(d, indent=2))
-    print(f"  ✅  {fname}  [Score:{d.get('score',0)} {d.get('tier','?')}]")
+    cat_label = d.get("category", "?")
+    print(f"  {tag}  {fname}  [Score:{d.get('score',0)} {d.get('tier','?')}] [{cat_label}]")
     return path
 
-# ── GOOGLE MAPS SCRAPE ─────────────────────────────────────────────────────────
+# ── PRIMARY SEARCH (Yelp — reliable, no blocks) ──────────────────────────────
 async def scrape_maps(industry: str, city: str) -> list:
-    query = f"{industry} {city}"
-    url   = f"https://www.google.com/maps/search/{query.replace(' ','+')}"
-    print(f"\n🗺️   Google Maps: {query}")
-
-    schema = JsonCssExtractionStrategy(schema={
-        "name": "businesses",
-        "baseSelector": "div[data-result-index]",
-        "fields": [
-            {"name":"name",    "selector":".qBF1Pd",              "type":"text"},
-            {"name":"rating",  "selector":".MW4etd",              "type":"text"},
-            {"name":"reviews", "selector":".UY7F9",               "type":"text"},
-            {"name":"address", "selector":".W4Efsd:last-child",   "type":"text"},
-            {"name":"website", "selector":"a[data-item-id='authority']","type":"attribute","attribute":"href"},
-            {"name":"phone",   "selector":"[data-tooltip='Copy phone number']","type":"text"},
-        ]
-    })
-
-    cfg = CrawlerRunConfig(
-        extraction_strategy=schema,
-        wait_for="div[data-result-index]",
-        delay_before_return_html=3.0,
-        js_code="window.scrollTo(0, document.body.scrollHeight);",
-        cache_mode="bypass"
-    )
-
-    leads = []
-    async with AsyncWebCrawler(config=browser_cfg()) as crawler:
-        res = await crawler.arun(url=url, config=cfg)
-        if not res.success:
-            print(f"  ⚠️  Maps blocked — falling back to Yelp")
-            return await scrape_yelp(industry, city)
-        try:
-            raw = json.loads(res.extracted_content or "[]")
-        except: raw = []
-
-        city_only = city.split(" ")[0]
-        for biz in raw:
-            name = (biz.get("name") or "").strip()
-            if not name or already_exists(name): continue
-            no_site = not bool(biz.get("website"))
-            d = {
-                "business":   name,
-                "owner_name": "",
-                "phone":      (biz.get("phone") or "").strip(),
-                "email":      "",
-                "city":       city_only,
-                "state":      city.split()[-1],
-                "industry":   industry,
-                "no_website": no_site,
-                "website_url":biz.get("website") or None,
-                "has_reviews":bool(biz.get("reviews")),
-                "stage":      "found",
-                "playbook":   "no-website" if no_site else "bad-website",
-                "source":     "google-maps",
-                "notes":      f"Found: {query}"
-            }
-            d["score"] = score_lead(d)
-            d["tier"]  = tier(d["score"])
-            if no_site or d["score"] >= 30:
-                leads.append(d)
-                print(f"  📍  {name} — {'NO SITE' if no_site else 'has site'} — {d['score']}pts")
-
-    return leads
+    """Routes all searches through Yelp. Google Maps blocks Crawl4AI."""
+    return await scrape_yelp(industry, city)
 
 # ── YELP FALLBACK ──────────────────────────────────────────────────────────────
 async def scrape_yelp(industry: str, city: str) -> list:
@@ -275,18 +318,22 @@ async def scan_url(url: str) -> dict:
 async def enrich_lead(filename: str):
     path = LEADS_DIR / filename
     if not path.exists():
-        # Try to find it
-        matches = list(LEADS_DIR.glob(f"*{filename}*"))
+        # Check needs-enrichment subdir too
+        matches = list(LEADS_DIR.glob(f"*{filename}*")) + list(ENRICH_DIR.glob(f"*{filename}*"))
         if not matches:
             print(f"❌  Not found: {filename}")
             return
         path = matches[0]
 
     data = json.loads(path.read_text())
+    was_in_enrich = path.parent == ENRICH_DIR
     print(f"\n🔍  Enriching: {data['business']}")
+    if was_in_enrich:
+        print(f"    (currently in needs-enrichment/)")
 
     search = f'"{data["business"]}" {data.get("city","")}'
-    url    = f"https://www.google.com/search?q={search.replace(\" \", \"+\")}"
+    query  = search.replace(" ", "+")
+    url    = f"https://www.google.com/search?q={query}"
     cfg    = CrawlerRunConfig(cache_mode="bypass", screenshot=False)
 
     async with AsyncWebCrawler(config=browser_cfg()) as crawler:
@@ -321,31 +368,53 @@ async def enrich_lead(filename: str):
     data["tier"]         = tier(data["score"])
     data["enriched"]     = True
     data["enriched_date"]= datetime.now().strftime("%Y-%m-%d")
-    path.write_text(json.dumps(data, indent=2))
-    print(f"  ✅  Score: {data['score']} ({data['tier']})")
+
+    # Re-categorize after enrichment
+    data = categorize_lead(data)
+
+    # If lead was in needs-enrichment but now has email or website, promote to main dir
+    if was_in_enrich and (data.get("email") or data.get("website_url")):
+        new_path = LEADS_DIR / path.name
+        new_path.write_text(json.dumps(data, indent=2))
+        path.unlink()  # remove from needs-enrichment
+        path = new_path
+        print(f"  📤  Promoted to engine/leads/ (now {data['category']})")
+    else:
+        path.write_text(json.dumps(data, indent=2))
+
+    print(f"  ✅  Score: {data['score']} ({data['tier']}) | Category: {data['category']}")
 
 # ── BATCH HUNT ─────────────────────────────────────────────────────────────────
 async def batch_hunt():
-    print("\n🚀  HOO BATCH HUNT v3.0 — Crawl4AI powered")
-    print(f"    {len(PRIORITY_COMBOS)} combos | Google Maps + Yelp fallback")
+    print("\n🚀  HOO BATCH HUNT v3.1 — Crawl4AI + Industry Spread")
+    print("="*55)
+
+    # Dynamic priority: underrepresented industries go first
+    combos = get_priority_combos()
+    print(f"    {len(combos)} combos queued | Yelp scraping")
     print("="*55)
 
     all_leads = []
-    industry_counts, city_counts = {}, {}
+    # Track counts INCLUDING existing leads for 30% cap enforcement
+    existing_counts = count_leads_by_industry()
+    industry_counts = dict(existing_counts)
+    city_counts = {}
 
-    for industry, city in PRIORITY_COMBOS:
+    for industry, city in combos:
         leads = await scrape_maps(industry, city)
         for lead in leads:
             ind, cit = lead["industry"], lead["city"]
-            industry_counts[ind] = industry_counts.get(ind, 0) + 1
-            city_counts[cit]     = city_counts.get(cit, 0) + 1
-            total = len(all_leads) + 1
-            if industry_counts[ind] / total > 0.30:
-                print(f"  ⏭️  Skip {lead['business']} — industry cap ({ind})")
+            # Running total includes existing + new leads
+            new_ind_count = industry_counts.get(ind, 0) + 1
+            city_counts[cit] = city_counts.get(cit, 0) + 1
+            total_all = sum(industry_counts.values()) + len(all_leads) + 1
+            if new_ind_count / total_all > 0.30:
+                print(f"  ⏭️  Skip {lead['business']} — industry cap ({ind}: {new_ind_count}/{total_all} = {new_ind_count/total_all*100:.0f}%)")
                 continue
-            if city_counts[cit] / total > 0.40:
+            if city_counts[cit] / max(len(all_leads) + 1, 1) > 0.40:
                 print(f"  ⏭️  Skip {lead['business']} — city cap ({cit})")
                 continue
+            industry_counts[ind] = new_ind_count
             all_leads.append(lead)
             save_lead(lead)
         await asyncio.sleep(2)
@@ -354,9 +423,18 @@ async def batch_hunt():
     warm = [l for l in all_leads if l["tier"]=="WARM"]
     cold = [l for l in all_leads if l["tier"]=="COLD"]
 
+    # Categorization summary
+    ready    = [l for l in all_leads if l.get("outreach_ready")]
+    enrich   = [l for l in all_leads if l.get("needs_enrichment") and l.get("website_url")]
+    no_contact = [l for l in all_leads if l.get("category") == "needs-contact-info"]
+
     print(f"\n{'='*55}")
     print(f"✅  BATCH COMPLETE: {len(all_leads)} leads")
     print(f"    HOT:{len(hot)}  WARM:{len(warm)}  COLD:{len(cold)}")
+    print(f"\n📂  CATEGORIZATION:")
+    print(f"    📧 Outreach-ready (has email):     {len(ready)}")
+    print(f"    🌐 Has website, needs email:        {len(enrich)}")
+    print(f"    📁 Needs enrichment (no contact):   {len(no_contact)} → engine/leads/needs-enrichment/")
     print(f"\n📋  TOP 5 — MATTHEW'S CALLS:")
     for i, l in enumerate(hot[:5], 1):
         phone = l.get("phone","no phone yet")
@@ -413,7 +491,14 @@ def _update_learning(leads: list):
 async def main():
     args = sys.argv[1:]
     if not args:
-        print("Commands: hunt [industry] [city] | maps [industry] [city] | batch | scan [url] | enrich [filename]")
+        print("HOO Lead Hunter v3.1 — Crawl4AI + Industry Spread + Lead Categorization")
+        print("Commands:")
+        print("  hunt [industry] [city]   Single industry hunt")
+        print("  maps [industry] [city]   Alias for hunt")
+        print("  batch                    Smart batch — hunts underrepresented industries first")
+        print("  scan [url]               Scan a website for quality issues")
+        print("  enrich [filename]        Enrich a lead with Google search data")
+        print("  spread                   Show industry balance / lead counts")
         return
 
     cmd = args[0].lower()
@@ -421,13 +506,23 @@ async def main():
         industry, city = args[1], " ".join(args[2:])
         leads = await scrape_maps(industry, city)
         for l in leads: save_lead(l)
-        print(f"\nSaved {len(leads)} leads")
+        # Summary
+        ready = [l for l in leads if l.get("outreach_ready")]
+        enrich = [l for l in leads if not l.get("outreach_ready")]
+        print(f"\nSaved {len(leads)} leads: {len(ready)} outreach-ready, {len(enrich)} need enrichment")
     elif cmd == "batch":
         await batch_hunt()
     elif cmd == "scan" and len(args) >= 2:
         await scan_url(args[1])
     elif cmd == "enrich" and len(args) >= 2:
         await enrich_lead(args[1])
+    elif cmd == "spread":
+        sorted_inds = prioritize_industries()
+        total = sum(c for _, c in sorted_inds)
+        enrich_count = len(list(ENRICH_DIR.glob("LEAD-*.json")))
+        print(f"\n    Total leads: {total}")
+        print(f"    In needs-enrichment/: {enrich_count}")
+        print(f"    In engine/leads/:     {total - enrich_count}")
     else:
         print("Unknown command. Run without args for help.")
 

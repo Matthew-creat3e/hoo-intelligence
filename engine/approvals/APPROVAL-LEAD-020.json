@@ -1,0 +1,30 @@
+{
+  "id": "LEAD-020",
+  "lead": {
+    "business": "We Do It All",
+    "owner": "",
+    "phone": "(816) 982-6670",
+    "email": "matthewherrman2021@gmail.com",
+    "city": "Raytown",
+    "state": "MO",
+    "industry": "moving",
+    "score": 80,
+    "tier": "HOT"
+  },
+  "demo_path": "outputs/demos/LEAD-020-we-do-it-all.html",
+  "email_preview": {
+    "to": "matthewherrman2021@gmail.com",
+    "subject": "I built We Do It All a free website - take a look",
+    "body": "Hey there,\n\nMy name's Matthew Herrman - I run HOO out of Independence, MO. I build websites for local moving businesses, and I do it a little differently: I build first, for free. You only pay if you love it.\n\nI went ahead and built a custom homepage for We Do It All in Raytown. It's attached to this email - just download the file and open it in Chrome or Edge to see the full design with photos, animations, and a working mobile layout.\n\nNo obligations. No pitch. Just wanted to show you what your business could look like online.\n\nIf you like what you see, reply to this email or call me at (804) 957-1003. If not, no hard feelings - keep the design either way.\n\nMatthew Herrman\nHOO - Build free, pay on approval\nherrmanonlineoutlook.com\n(804) 957-1003",
+    "attachment": "LEAD-020-we-do-it-all.html",
+    "template": 7
+  },
+  "social_captions": {
+    "facebook": "Built We Do It All's entire homepage — completely free for them to see first.\n\nThey're a moving business in Raytown, MO. No website before this. Now they've got a full site with real photos, mobile layout, animations, booking CTA — everything.\n\nThey paid nothing until they saw it live and loved it. That's HOO. Build free. Pay on approval.\n\nherrmanonlineoutlook.com",
+    "instagram": "We Do It All had no website. Now they do.\n\nBuilt free. Paid on approval. That's how HOO works.\n\nFull custom homepage for a moving business in Raytown, MO — real photos, mobile-first, booking CTA ready.\n\nherrmanonlineoutlook.com\n\n#HOO #WebDesign #RaytownMO #SmallBusiness #ShopifyPartner",
+    "tiktok": "POV: You build a moving business a free website and they see it for the first time.\n\nWe Do It All in Raytown — from zero web presence to a full custom homepage. Build free, pay on approval. herrmanonlineoutlook.com"
+  },
+  "status": "sent",
+  "created_date": "2026-03-16",
+  "sent_date": "2026-03-16"
+}
