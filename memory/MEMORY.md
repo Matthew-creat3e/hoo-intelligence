@@ -10,34 +10,30 @@
 |---|---|---|
 | 🔴 URGENT | Apply for Shopify Partner Program | Go to partners.shopify.com — 15 min, free, passive income on every client |
 | 🔴 URGENT | Call Glendon Thomas | (816) 569-4465 — #1 lead, still not called |
-| 🔴 URGENT | Test demo link in email | Verify HappyYardsKc.html loads on GitHub Pages after latest push |
-| 🟡 IMPORTANT | Follow-up emails overdue | 14 emails sent 2026-03-13 — 3-day mark was 2026-03-16 |
+| 🔴 URGENT | Follow up with Joe's Mobile Mechanic | Status: MAYBE — resent fixed link 2026-03-20. Follow up in 1-2 days |
+| 🟡 IMPORTANT | Follow-up emails overdue | 14 emails sent 2026-03-13 — 7 days overdue |
 | 🟡 IMPORTANT | Post social content | Multiple posts queued in social-engine/queue/ — review & post |
-| 🟡 IMPORTANT | Call Queue leads need emails | No-email leads sitting in Call Queue — get emails, then send from Command Center |
-| 🟢 ENGINE | Install Crawl4AI | `pip install crawl4ai playwright && playwright install chromium` |
-| 🟢 ENGINE | Configure Twilio | Sign up twilio.com, add to `.env`, run `node sms-engine.js test` |
+| 🟡 IMPORTANT | Call Queue: 11 leads need emails | No-email leads in Call Queue — call, get emails, send demos |
+| 🟢 ENGINE | Configure Twilio | Sign up twilio.com, add to `.env` — would unlock phone-only leads |
 
 ---
 
-## Pipeline State (as of 2026-03-16 end of session)
+## Pipeline State (as of 2026-03-20 end of session)
 
 | Metric | Value |
 |---|---|
-| Total leads | 53 (LEAD-001 through LEAD-053) |
-| Batches run | Cleaning, moving, detailing, barber, food/restaurant, landscaping |
-| Demos built | 53 (all leads have demo HTML in outputs/demos/) |
-| Demos on GitHub Pages | 53+ (demos/ directory, clean PascalCase names added this session) |
+| Total leads | 78 (LEAD-001 through LEAD-078) |
+| Approvals | 48 files |
+| Pending | 11 |
+| Sent | 28 |
+| Rejected | 8 |
+| Maybe | 1 (Joe's Mobile Mechanic — first response!) |
+| Industries | Cleaning, moving, detailing, barber, food/restaurant, landscaping, mobile mechanic |
 | Email format | Plain text only — "concrete worker / Local 1290" angle — live URL in body |
-| Location | Kansas City, MO (updated from Independence this session) |
-| Responded | 0 |
-| Closed | 0 |
+| Location | Kansas City, MO |
 | MRR | $0 (pre-revenue) |
 
-**Email flow:** Pipeline → Approval → Command Center Approvals tab (if has email) or Call Queue (if no email) → Send → plain text email with GitHub Pages demo link → auto-push demos
-
-**Follow-up schedule:**
-- OVERDUE: 14 emails from 2026-03-13 need follow-up
-- New leads from 2026-03-16 batches need review in Command Center
+**Email flow:** Pipeline → Approval → War Room Approvals tab (if has email) or Call Queue (if no email) → Send → plain text email with GitHub Pages demo link → auto-push demos
 
 ---
 
@@ -63,8 +59,7 @@
 - ❌ Deals, Discounts, Rewards, Strains, About, CTA
 
 ### HOO Site (herrmanonlineoutlook.com)
-- ✅ ALL 6 SECTIONS LIVE (Hero, Process, Our Work, What's Included, Pricing, Contact)
-- Readability fix applied 2026-03-12 (opacity 0.5-0.78)
+- ✅ ALL 6 SECTIONS LIVE
 
 ---
 
@@ -72,20 +67,22 @@
 
 | Date | What Happened |
 |---|---|
-| 2026-03-16 | Email rewrite: plain text only, "concrete worker / Local 1290" angle, live GitHub Pages URL (no attachments, no HTML). Clean PascalCase demo filenames (HappyYardsKc.html). Auto-push demos on send. Call Queue routing fixed (no-email leads auto-route). Approvals tab shows only pending+email. Updated all location refs from Independence to Kansas City. New batches: food/restaurant (LEAD-043-046), landscaping (LEAD-050-053). |
-| 2026-03-15 | Full HOO loop: found Hammer Hands Restoration, built demo, sent email live, queued social content. Fixed n8n sandbox, dashboard bugs, auto-prototype double-LEAD prefix. Added --demo flag + Template 7 to email engine. Added Partner Dashboard btn. |
-| 2026-03-15 | v6.0 built — Crawl4AI + Twilio + n8n + Social Engine. Shopify Partner added everywhere. |
+| 2026-03-20 | Fixed War Room: nodemailer path bug (Electron couldn't find module), added error alert dialogs. Fixed pipeline JSON parsing (bracket-matching instead of fragile regex), stronger prompt, max_tokens 2000→4000, rate limit retry 60→90s. Disabled HTML/attachments in email-engine.js. Kansas City first in CITIES list. Resent Joe's Mobile Mechanic with fixed link — status: MAYBE. New batches: landscaping (LEAD-063-066), auto detailing (LEAD-073-078). |
+| 2026-03-16 | Email rewrite: plain text only, "concrete worker / Local 1290" angle, live GitHub Pages URL. Clean PascalCase demo filenames. Auto-push demos on send. Call Queue routing fixed. Updated location refs Independence → Kansas City. New batches: food/restaurant, landscaping. |
+| 2026-03-15 | Full HOO loop: Hammer Hands demo + email. Fixed n8n sandbox, dashboard bugs. Added --demo flag + Template 7. |
+| 2026-03-15 | v6.0 built — Crawl4AI + Twilio + n8n + Social Engine. Shopify Partner added. |
 | 2026-03-15 | v5.0-5.2 — Jake Van Clief 4-layer architecture, skills layer, memory folder, AGENTS.md |
-| 2026-03-13 | 14 emails sent via SMTP to pipeline leads |
-| 2026-03-13 | Lead engine v2.5 built with 25 leads, 5 CLI tools |
+| 2026-03-13 | 14 emails sent via SMTP. Lead engine v2.5 built with 25 leads. |
 
 ---
 
-## Key Architecture Decisions (2026-03-16)
-- **Email = plain text only.** HTML emails hit spam filters (especially Gmail→Yahoo/corporate). No attachments.
+## Key Architecture Decisions
+- **Email = plain text only.** HTML hits spam filters. No attachments.
 - **Demo URLs = GitHub Pages.** `https://matthew-creat3e.github.io/hoo-intelligence/demos/{PascalCaseName}.html`
-- **Auto-push on send.** Both `addEmail()` in pipeline-orchestrator and `approve-lead` in dashboard/main.js copy demo to `/demos/` with clean name, then git add/commit/push.
-- **Command Center routing:** Has email → Approvals tab. No email → Call Queue. Sent/rejected → Pipeline only.
+- **Auto-push on send.** addEmail() and approve-lead both copy demo to /demos/ with clean name, git push.
+- **War Room routing:** Has email → Approvals tab. No email → Call Queue. Sent/rejected → Pipeline only.
+- **Pipeline JSON fix (2026-03-20):** Bracket-matching parser, stronger JSON-only prompt, 4000 max_tokens.
+- **dashboard/main.js requires nodemailer from engine/tools/node_modules/** — not root node_modules.
 
 ---
 

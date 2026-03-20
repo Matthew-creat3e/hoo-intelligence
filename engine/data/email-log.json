@@ -378,5 +378,48 @@
     "messageId": "<8417afa4-8605-d493-8686-6e4e94232dbb@gmail.com>",
     "status": "sent",
     "liveUrl": "https://matthew-creat3e.github.io/hoo-intelligence/demos/LadyOnABroomCleaningServices.html"
+  },
+  {
+    "date": "2026-03-19T01:15:20.664Z",
+    "lead": "Jose Lawn and Landscaping",
+    "id": "LEAD-051",
+    "to": "matthewherrman31@gmail.com",
+    "subject": "built something for Jose Lawn and Landscaping",
+    "source": "add-email",
+    "messageId": "<2c3ad100-704a-156e-79f2-a97f75f98dec@gmail.com>",
+    "status": "sent",
+    "liveUrl": "https://matthew-creat3e.github.io/hoo-intelligence/demos/JoseLawnAndLandscaping.html"
+  },
+  {
+    "date": "2026-03-20T21:00:55.929Z",
+    "lead": "Motor Brothers KC",
+    "id": "LEAD-057",
+    "to": "Motorbros.4@gmail.com",
+    "subject": "built something for Motor Brothers KC",
+    "source": "approve-lead",
+    "status": "sent",
+    "liveUrl": "https://matthew-creat3e.github.io/hoo-intelligence/demos/MotorBrothersKc.html"
+  },
+  {
+    "date": "2026-03-20T22:10:43.798Z",
+    "lead": "Joe's Mobile Mechanic",
+    "id": "LEAD-059",
+    "to": "joeadamsou812@gmail.com",
+    "subject": "built something for Joe's Mobile Mechanic",
+    "source": "add-email",
+    "messageId": "<e70c43be-6b7a-fcd2-2057-a2245bbdb61f@gmail.com>",
+    "status": "sent",
+    "liveUrl": "https://matthew-creat3e.github.io/hoo-intelligence/demos/JoesMobileMechanic.html"
+  },
+  {
+    "date": "2026-03-20T22:19:23.064Z",
+    "lead": "Tacos la Chicatana",
+    "id": "LEAD-043",
+    "to": "Lupita0284@outlook.com",
+    "subject": "built something for Tacos la Chicatana",
+    "source": "add-email",
+    "messageId": "<6a9b5785-ea1d-9751-5066-2ad3f5206723@gmail.com>",
+    "status": "sent",
+    "liveUrl": "https://matthew-creat3e.github.io/hoo-intelligence/demos/TacosLaChicatana.html"
   }
 ]

@@ -1183,13 +1183,23 @@ async function approveLead(filename, btn) {
 
   btn.textContent = 'Sending...';
   btn.disabled = true;
-  const result = await window.hoo.approveLead(filename);
-  if (result && result.success) {
-    toast('✅ Approved & sent: ' + result.business);
-    await loadApprovals();
-    renderApprovals();
-  } else {
-    toast('❌ Failed: ' + (result?.error || 'unknown error'));
+  try {
+    const result = await window.hoo.approveLead(filename);
+    if (result && result.success) {
+      toast('✅ Approved & sent: ' + result.business);
+      await loadApprovals();
+      renderApprovals();
+      await loadCallQueue();
+    } else {
+      const errMsg = result?.error || 'unknown error';
+      toast('❌ Failed: ' + errMsg);
+      alert('Send failed:\n\n' + errMsg);
+      btn.textContent = 'Approve & Send';
+      btn.disabled = false;
+    }
+  } catch (e) {
+    toast('❌ Error: ' + e.message);
+    alert('Send error:\n\n' + e.message);
     btn.textContent = 'Approve & Send';
     btn.disabled = false;
   }
@@ -1291,26 +1301,35 @@ async function cqSendDemo(leadId, btn) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
-  const result = await window.hoo.addEmailAndSend(leadId, email);
-  if (result && result.success) {
-    toast('✅ Demo sent to ' + email);
-    const card = document.getElementById('cq-card-' + leadId);
-    const biz = card?.querySelector('[style*="font-size:18px"]')?.textContent || leadId;
+  try {
+    const result = await window.hoo.addEmailAndSend(leadId, email);
+    if (result && result.success) {
+      toast('✅ Demo sent to ' + email);
+      const card = document.getElementById('cq-card-' + leadId);
+      const biz = card?.querySelector('[style*="font-size:18px"]')?.textContent || leadId;
 
-    // Remove from queue
-    callQueueLeads = callQueueLeads.filter(a => a.id !== leadId);
-    if (card) card.remove();
-    if (!callQueueLeads.length) renderCallQueue();
-    document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
+      // Remove from queue
+      callQueueLeads = callQueueLeads.filter(a => a.id !== leadId);
+      if (card) card.remove();
+      if (!callQueueLeads.length) renderCallQueue();
+      document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
 
-    // Add to Sent Today
-    sentToday.push({ biz, email, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
-    renderSentToday();
+      // Add to Sent Today
+      sentToday.push({ biz, email, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
+      renderSentToday();
 
-    // Refresh approvals in background
-    loadApprovals().then(renderApprovals);
-  } else {
-    toast('❌ Failed: ' + (result?.error || 'unknown error'));
+      // Refresh approvals in background
+      loadApprovals().then(renderApprovals);
+    } else {
+      const errMsg = result?.error || 'unknown error';
+      toast('❌ Failed: ' + errMsg);
+      alert('Send failed:\n\n' + errMsg);
+      btn.textContent = 'Send Demo';
+      btn.disabled = false;
+    }
+  } catch (e) {
+    toast('❌ Error: ' + e.message);
+    alert('Send error:\n\n' + e.message);
     btn.textContent = 'Send Demo';
     btn.disabled = false;
   }

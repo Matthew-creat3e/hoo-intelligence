@@ -34,10 +34,10 @@ const { buildPrototype } = require('./auto-prototype');
 
 // ── KC METRO CITIES & INDUSTRIES ─────────────────────────────────────────────
 const CITIES = [
-  'Independence MO', 'Blue Springs MO', "Lee's Summit MO",
+  'Kansas City MO', 'Kansas City KS', 'Overland Park KS',
+  'Blue Springs MO', "Lee's Summit MO", 'Independence MO',
   'Grain Valley MO', 'Raytown MO', 'Belton MO', 'Liberty MO',
-  'Grandview MO', 'Pleasant Hill MO', 'Oak Grove MO',
-  'Kansas City MO', 'Kansas City KS', 'Overland Park KS'
+  'Grandview MO', 'Pleasant Hill MO', 'Oak Grove MO'
 ];
 
 const INDUSTRIES = [
@@ -153,13 +153,18 @@ async function huntLeads(industry, city) {
 Search for local small businesses with NO website or a poor website.
 Search Facebook, Google Maps, Yelp, their Facebook About section, and any local directories.
 For contact info — check their Facebook page About tab, Google Maps listing, Yelp page, and any directory listings.
-Return ONLY a JSON array. No markdown, no explanation, no code fences.
+
+CRITICAL: Your ENTIRE response must be a valid JSON array. Nothing else.
+No text before the opening [. No text after the closing ]. No markdown fences. No explanation.
+Just: [ { ... }, { ... } ]
+
 Each object must have these exact keys:
   business_name, owner_name (empty string if not found), phone (dig hard — check every source),
   email (dig hard — check Facebook About, Google listing, Yelp, their own website if any),
   address, city, state, industry, source, no_website (true/false), website_url (empty string if none),
   notes (one sentence why they qualify)
-Return 5-10 leads. Prioritize leads where you found both phone AND email.`;
+Return 5-10 leads. Prioritize leads where you found both phone AND email.
+REMEMBER: Output ONLY the JSON array. Start with [ and end with ].`;
 
   const userMessage = `Find ${industry} businesses in ${city} that have no website or a very poor website. 
 Search Facebook business pages, Google Maps listings, Yelp, and local directories.
@@ -177,7 +182,7 @@ Return as a JSON array only.`;
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2000,
+        max_tokens: 4000,
         system: systemPrompt,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: userMessage }]
@@ -185,8 +190,8 @@ Return as a JSON array only.`;
     });
 
     if (response.status === 429) {
-      console.log(`  ⏳  Rate limited — waiting 60s before retry...`);
-      await new Promise(r => setTimeout(r, 60000));
+      console.log(`  ⏳  Rate limited — waiting 90s before retry...`);
+      await new Promise(r => setTimeout(r, 90000));
       // Retry once
       const retry = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -197,7 +202,7 @@ Return as a JSON array only.`;
         },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
-          max_tokens: 2000,
+          max_tokens: 4000,
           system: systemPrompt,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           messages: [{ role: 'user', content: userMessage }]
@@ -232,15 +237,39 @@ Return as a JSON array only.`;
     return [];
   }
 
-  // Parse the JSON array out of the response
+  // Parse the JSON array out of the response — try multiple strategies
   let candidates = [];
   try {
-    // Strip any accidental markdown fences just in case
-    const clean = rawText.replace(/```json|```/g, '').trim();
-    // Find the first [ ... ] array in the response
-    const arrayMatch = clean.match(/\[[\s\S]*\]/);
-    if (!arrayMatch) throw new Error('No JSON array found in response');
-    candidates = JSON.parse(arrayMatch[0]);
+    // Strip markdown fences and surrounding text
+    let clean = rawText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+
+    // Strategy 1: Direct parse (if Claude returned clean JSON)
+    try {
+      const direct = JSON.parse(clean);
+      if (Array.isArray(direct)) { candidates = direct; }
+      else { throw new Error('not array'); }
+    } catch {
+      // Strategy 2: Find the outermost [ ... ] using bracket matching
+      const start = clean.indexOf('[');
+      if (start === -1) throw new Error('No JSON array found in response');
+      let depth = 0;
+      let end = -1;
+      for (let i = start; i < clean.length; i++) {
+        if (clean[i] === '[') depth++;
+        else if (clean[i] === ']') { depth--; if (depth === 0) { end = i; break; } }
+      }
+      if (end === -1) throw new Error('No closing bracket found');
+      const extracted = clean.slice(start, end + 1);
+
+      // Try to parse, if it fails try fixing common issues
+      try {
+        candidates = JSON.parse(extracted);
+      } catch {
+        // Fix trailing commas before ] or }
+        const fixed = extracted.replace(/,\s*([\]}])/g, '$1');
+        candidates = JSON.parse(fixed);
+      }
+    }
   } catch (err) {
     console.error(`  ❌  Failed to parse Claude response as JSON: ${err.message}`);
     console.error(`  Raw response preview: ${rawText.slice(0, 300)}`);
