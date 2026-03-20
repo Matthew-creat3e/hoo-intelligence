@@ -131,7 +131,8 @@ ipcMain.handle('read-approvals', () => {
 // Approve a lead — send plain text email with demo HTML attached
 ipcMain.handle('approve-lead', async (_, approvalFilename) => {
   try {
-    require('dotenv').config({ path: path.join(ROOT, 'engine', 'tools', '.env') });
+    const engineToolsDir = path.join(ROOT, 'engine', 'tools');
+    require(path.join(engineToolsDir, 'node_modules', 'dotenv')).config({ path: path.join(engineToolsDir, '.env') });
     const approvalPath = path.join(ROOT, 'engine', 'approvals', approvalFilename);
     const approval = JSON.parse(fs.readFileSync(approvalPath, 'utf8'));
     const leadId = approval.id || '';
@@ -174,7 +175,7 @@ HOO - Kansas City, MO
 herrmanonlineoutlook.com`;
 
     // Send plain text email — no attachments, no HTML
-    const nodemailer = require('nodemailer');
+    const nodemailer = require(path.join(engineToolsDir, 'node_modules', 'nodemailer'));
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {

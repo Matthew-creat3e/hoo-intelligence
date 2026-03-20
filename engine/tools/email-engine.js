@@ -421,8 +421,9 @@ async function sendEmail(lead, forceTemplateId) {
       subject: email.subject,
       text:    email.body,
     };
-    if (email.html) mailOpts.html = email.html;
-    if (email.attachments && email.attachments.length > 0) mailOpts.attachments = email.attachments;
+    // Plain text only — no HTML, no attachments (avoids spam filters)
+    // if (email.html) mailOpts.html = email.html;
+    // if (email.attachments && email.attachments.length > 0) mailOpts.attachments = email.attachments;
 
     const info = await transporter.sendMail(mailOpts);
 
