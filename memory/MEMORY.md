@@ -18,13 +18,13 @@
 
 ---
 
-## Pipeline State (as of 2026-03-20 end of session)
+## Pipeline State (as of 2026-03-20 end of session 2)
 
 | Metric | Value |
 |---|---|
-| Total leads | 78 (LEAD-001 through LEAD-078) |
-| Approvals | 48 files |
-| Pending | 11 |
+| Total leads | 86 (LEAD-001 through LEAD-086) |
+| Approvals | 52 files |
+| Pending | 15 |
 | Sent | 28 |
 | Rejected | 8 |
 | Maybe | 1 (Joe's Mobile Mechanic — first response!) |
@@ -67,7 +67,8 @@
 
 | Date | What Happened |
 |---|---|
-| 2026-03-20 | Fixed War Room: nodemailer path bug (Electron couldn't find module), added error alert dialogs. Fixed pipeline JSON parsing (bracket-matching instead of fragile regex), stronger prompt, max_tokens 2000→4000, rate limit retry 60→90s. Disabled HTML/attachments in email-engine.js. Kansas City first in CITIES list. Resent Joe's Mobile Mechanic with fixed link — status: MAYBE. New batches: landscaping (LEAD-063-066), auto detailing (LEAD-073-078). |
+| 2026-03-20 | Session 2: Ran cleaning batch — LEAD-079-086 (KC cleaning businesses). All demos pushed to GitHub Pages. Pipeline now at 52 approvals, 86 total leads. |
+| 2026-03-20 | Session 1: Fixed War Room nodemailer path bug, added error dialogs. Fixed pipeline JSON parsing (bracket-matching), stronger prompt, max_tokens 4000, rate limit 90s. Disabled HTML in email-engine.js. Resent Joe's Mobile Mechanic — status: MAYBE. New batches: mechanics, lawn, detailing (LEAD-057-078). |
 | 2026-03-16 | Email rewrite: plain text only, "concrete worker / Local 1290" angle, live GitHub Pages URL. Clean PascalCase demo filenames. Auto-push demos on send. Call Queue routing fixed. Updated location refs Independence → Kansas City. New batches: food/restaurant, landscaping. |
 | 2026-03-15 | Full HOO loop: Hammer Hands demo + email. Fixed n8n sandbox, dashboard bugs. Added --demo flag + Template 7. |
 | 2026-03-15 | v6.0 built — Crawl4AI + Twilio + n8n + Social Engine. Shopify Partner added. |
