@@ -664,6 +664,27 @@ async function runBatch(targetCount) {
     console.log('    - All combos tried may already exist in engine/leads/');
   }
 
+  // Clean up leads that weren't processed (no demo, no approval = no value)
+  // Only keep leads that have a matching approval file
+  try {
+    const leadFiles = fs.readdirSync(LEADS_DIR).filter(f => f.endsWith('.json'));
+    const approvalFiles = fs.readdirSync(APPROVALS_DIR).filter(f => f.endsWith('.json'));
+    const approvalIds = new Set(approvalFiles.map(f => f.match(/LEAD-\d+/)?.[0]).filter(Boolean));
+    let cleaned = 0;
+    for (const lf of leadFiles) {
+      const leadId = lf.match(/LEAD-\d+/)?.[0];
+      if (leadId && !approvalIds.has(leadId)) {
+        fs.unlinkSync(path.join(LEADS_DIR, lf));
+        cleaned++;
+      }
+    }
+    if (cleaned > 0) {
+      console.log(`🧹  Cleaned ${cleaned} unprocessed leads (no approval = not in war room)`);
+    }
+  } catch (cleanErr) {
+    // Non-critical, don't fail the run
+  }
+
   console.log(`\n${'━'.repeat(55)}`);
   console.log(`✅  Done. ${processed}/${targetCount} new approvals created.`);
   console.log(`📂  Open War Room → Approvals to review`);
