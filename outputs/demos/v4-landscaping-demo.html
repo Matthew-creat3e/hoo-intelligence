@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stonegate Landscapes | Design-Build Landscaping in Kansas City</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --olive:#3B5323;--olive-light:#4D6E30;--olive-dark:#2A3D18;--olive-muted:#6B8F55;
+  --sand:#C4A77D;--sand-light:#D4BFA0;--sand-dark:#A88B5E;
+  --copper:#B8632E;--copper-light:#D07840;--copper-dark:#8E4A1E;
+  --stone:#8B8274;--stone-light:#A69D8E;
+  --cream:#FAF6F0;--cream2:#F0EAE0;--cream3:#E2D9CC;
+  --white:#FFFFFF;--bg:#FDFBF8;
+  --text:#2A2318;--text-mid:#5A5244;--text-dim:#8A826E;
+  --font-h:'Cormorant Garant',serif;--font-b:'Manrope',sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);--ease-out:cubic-bezier(.16,1,.3,1);
+  --max:1200px;--radius:6px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.7;overflow-x:hidden}
+a{color:var(--olive);text-decoration:none;transition:color .3s}
+img{max-width:100%;display:block}
+.rv{opacity:0;transform:translateY(30px);transition:all .7s var(--ease-out)}
+.rv.vis{opacity:1;transform:none}
+
+/* === NAV === */
+.sg-nav{position:sticky;top:0;z-index:999;background:rgba(253,251,248,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.04)}
+.sg-nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:18px 40px}
+.sg-logo{font-family:var(--font-h);font-size:1.5rem;font-weight:700;color:var(--olive-dark);letter-spacing:-.5px}
+.sg-logo span{color:var(--copper);font-weight:400;font-style:italic}
+.sg-nav-links{display:flex;gap:32px;align-items:center}
+.sg-nav-links a{font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-mid);transition:color .2s}
+.sg-nav-links a:hover{color:var(--olive)}
+.sg-nav-right{display:flex;align-items:center;gap:16px}
+.sg-nav-phone{font-size:.78rem;font-weight:600;color:var(--text)}
+.sg-nav-cta{background:var(--olive);color:#fff;padding:11px 28px;font-family:var(--font-b);font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:4px;cursor:pointer;transition:all .3s}
+.sg-nav-cta:hover{background:var(--olive-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(59,83,35,.25)}
+.sg-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002}
+.sg-ham span{width:24px;height:2px;background:var(--text);transition:all .3s}
+
+/* === HERO — Full-bleed cinematic === */
+.sg-hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden}
+.sg-hero-bg{position:absolute;inset:0}
+.sg-hero-bg img{width:100%;height:100%;object-fit:cover}
+.sg-hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(42,61,24,.82),rgba(42,35,24,.65))}
+.sg-hero-content{position:relative;z-index:2;max-width:var(--max);margin:0 auto;width:100%;padding:0 40px;text-align:center}
+.sg-hero-tag{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-b);font-size:.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--sand-light);margin-bottom:24px}
+.sg-hero-tag::before,.sg-hero-tag::after{content:'';width:40px;height:1px;background:var(--sand)}
+.sg-hero-content h1{font-family:var(--font-h);font-size:clamp(2.8rem,6vw,5rem);font-weight:600;color:#fff;line-height:1.05;margin-bottom:20px;letter-spacing:-1px}
+.sg-hero-content h1 em{font-style:italic;color:var(--sand-light)}
+.sg-hero-sub{font-size:1.05rem;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto 36px;line-height:1.8;font-weight:300}
+.sg-hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.sg-btn-w{background:var(--white);color:var(--olive-dark);padding:15px 36px;font-family:var(--font-b);font-size:.75rem;font-weight:700;letter-spacing:.5px;border:none;border-radius:4px;cursor:pointer;transition:all .3s}
+.sg-btn-w:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.sg-btn-o{background:transparent;color:#fff;padding:15px 36px;font-family:var(--font-b);font-size:.75rem;font-weight:600;letter-spacing:.5px;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;transition:all .3s}
+.sg-btn-o:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
+.sg-hero-scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.4);font-size:.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.sg-hero-scroll::after{content:'';width:1px;height:40px;background:rgba(255,255,255,.2);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:.2;height:40px}50%{opacity:.6;height:50px}}
+
+/* === TRUST BAR === */
+.sg-trust{background:var(--olive-dark);padding:20px 40px}
+.sg-trust-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.sg-trust-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.7);font-size:.75rem;font-weight:500}
+.sg-trust-item strong{color:var(--sand-light);font-size:.95rem;font-weight:700}
+
+/* === SECTION STYLES === */
+.sg-tag{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-b);font-size:.6rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--copper);margin-bottom:14px}
+.sg-tag::before{content:'';width:24px;height:2px;background:var(--copper)}
+.sg-title{font-family:var(--font-h);font-size:clamp(2rem,4vw,3rem);font-weight:600;color:var(--olive-dark);margin-bottom:14px;line-height:1.1;letter-spacing:-.5px}
+.sg-sub{font-size:.9rem;color:var(--text-mid);max-width:540px;line-height:1.8;font-weight:400}
+
+/* === SERVICES — Masonry-style cards === */
+.sg-services{padding:100px 40px;max-width:var(--max);margin:0 auto}
+.sg-services-header{text-align:center;margin-bottom:64px}
+.sg-services-header .sg-sub{margin:0 auto}
+.sg-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:20px}
+.sg-svc{position:relative;border-radius:var(--radius);overflow:hidden;cursor:pointer;min-height:280px;display:flex;align-items:flex-end}
+.sg-svc.tall{grid-row:span 2;min-height:580px}
+.sg-svc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.sg-svc:hover img{transform:scale(1.05)}
+.sg-svc-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(42,35,24,.85) 0%,transparent 60%);transition:background .4s}
+.sg-svc:hover .sg-svc-overlay{background:linear-gradient(0deg,rgba(59,83,35,.9) 0%,rgba(59,83,35,.2) 70%)}
+.sg-svc-info{position:relative;z-index:2;padding:28px;width:100%}
+.sg-svc-info h3{font-family:var(--font-h);font-size:1.4rem;color:#fff;margin-bottom:4px}
+.sg-svc-info p{font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.sg-svc:hover .sg-svc-info p{max-height:80px}
+
+/* === BEFORE/AFTER SLIDER === */
+.sg-ba{background:var(--cream);padding:100px 40px}
+.sg-ba-inner{max-width:var(--max);margin:0 auto}
+.sg-ba-header{text-align:center;margin-bottom:56px}
+.sg-ba-header .sg-sub{margin:0 auto}
+.sg-slider-wrap{position:relative;max-width:900px;margin:0 auto;border-radius:var(--radius);overflow:hidden;cursor:col-resize;user-select:none;aspect-ratio:16/9}
+.sg-slider-wrap img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.sg-slider-after{clip-path:inset(0 0 0 50%)}
+.sg-slider-line{position:absolute;top:0;bottom:0;left:50%;width:3px;background:var(--white);z-index:5;pointer-events:none}
+.sg-slider-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:var(--white);border-radius:50%;z-index:6;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.2);pointer-events:none;font-size:.8rem;color:var(--text-mid);font-weight:700}
+.sg-slider-labels{display:flex;justify-content:space-between;padding:16px 0;max-width:900px;margin:0 auto}
+.sg-slider-labels span{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+
+/* === PORTFOLIO GALLERY === */
+.sg-portfolio{padding:100px 40px;max-width:var(--max);margin:0 auto}
+.sg-portfolio-header{text-align:center;margin-bottom:20px}
+.sg-portfolio-header .sg-sub{margin:0 auto}
+.sg-filters{display:flex;justify-content:center;gap:8px;margin:28px 0 48px;flex-wrap:wrap}
+.sg-filter{padding:9px 22px;font-family:var(--font-b);font-size:.7rem;font-weight:600;letter-spacing:.5px;border:1px solid var(--cream3);border-radius:30px;background:var(--white);color:var(--text-mid);cursor:pointer;transition:all .3s}
+.sg-filter.active,.sg-filter:hover{background:var(--olive);color:#fff;border-color:var(--olive)}
+.sg-port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sg-port-item{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;cursor:pointer}
+.sg-port-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.sg-port-item:hover img{transform:scale(1.06)}
+.sg-port-item-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(42,35,24,.7) 0%,transparent 50%);opacity:0;transition:opacity .4s}
+.sg-port-item:hover .sg-port-item-overlay{opacity:1}
+.sg-port-item-info{position:absolute;bottom:16px;left:16px;z-index:2;opacity:0;transform:translateY(8px);transition:all .4s}
+.sg-port-item:hover .sg-port-item-info{opacity:1;transform:none}
+.sg-port-item-info h4{font-family:var(--font-h);font-size:1.1rem;color:#fff}
+.sg-port-item-info span{font-size:.68rem;color:var(--sand-light);font-weight:500}
+
+/* === PROCESS === */
+.sg-process{background:var(--olive-dark);padding:100px 40px;position:relative;overflow:hidden}
+.sg-process::before{content:'';position:absolute;top:-200px;right:-200px;width:500px;height:500px;border-radius:50%;background:rgba(196,167,125,.05)}
+.sg-process-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:1}
+.sg-process-header{text-align:center;margin-bottom:64px}
+.sg-process-header .sg-tag{color:var(--sand)}
+.sg-process-header .sg-tag::before{background:var(--sand)}
+.sg-process-header .sg-title{color:var(--cream)}
+.sg-process-header .sg-sub{color:rgba(255,255,255,.5);margin:0 auto}
+.sg-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:24px}
+.sg-step{text-align:center;position:relative}
+.sg-step::after{content:'';position:absolute;top:36px;right:-12px;width:24px;height:1px;background:rgba(255,255,255,.15)}
+.sg-step:last-child::after{display:none}
+.sg-step-icon{width:72px;height:72px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.6rem;transition:all .4s}
+.sg-step:hover .sg-step-icon{background:rgba(196,167,125,.15);border-color:var(--sand)}
+.sg-step h4{font-family:var(--font-h);font-size:1.1rem;color:var(--cream);margin-bottom:6px}
+.sg-step p{font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.7;padding:0 6px}
+
+/* === SEASONAL TIMELINE === */
+.sg-seasons{padding:100px 40px;max-width:var(--max);margin:0 auto}
+.sg-seasons-header{text-align:center;margin-bottom:56px}
+.sg-seasons-header .sg-sub{margin:0 auto}
+.sg-season-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.sg-season{background:var(--white);border:1px solid rgba(0,0,0,.04);border-radius:var(--radius);overflow:hidden;transition:all .4s}
+.sg-season:hover{box-shadow:0 12px 40px rgba(0,0,0,.08);transform:translateY(-4px)}
+.sg-season-top{padding:24px 24px 0;text-align:center}
+.sg-season-icon{font-size:2.4rem;margin-bottom:8px;display:block}
+.sg-season-name{font-family:var(--font-h);font-size:1.3rem;color:var(--olive-dark);display:block;margin-bottom:4px}
+.sg-season-months{font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim)}
+.sg-season-list{padding:20px 24px 28px;list-style:none}
+.sg-season-list li{font-size:.78rem;color:var(--text-mid);padding:6px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,0,0,.03)}
+.sg-season-list li:last-child{border:none}
+.sg-season-list li::before{content:'●';font-size:.4rem;color:var(--olive-muted);flex-shrink:0}
+
+/* === ESTIMATE FORM === */
+.sg-estimate{background:var(--cream);padding:100px 40px}
+.sg-est-inner{max-width:860px;margin:0 auto}
+.sg-est-header{text-align:center;margin-bottom:48px}
+.sg-est-header .sg-sub{margin:0 auto}
+.sg-est-card{background:var(--white);border-radius:10px;padding:48px;box-shadow:0 8px 40px rgba(0,0,0,.06)}
+.sg-est-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.sg-est-field label{display:block;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.sg-est-field input,.sg-est-field select,.sg-est-field textarea{width:100%;padding:13px 16px;font-family:var(--font-b);font-size:.85rem;border:1px solid var(--cream3);border-radius:var(--radius);background:var(--cream);color:var(--text);transition:border-color .3s;outline:none}
+.sg-est-field input:focus,.sg-est-field select:focus,.sg-est-field textarea:focus{border-color:var(--olive)}
+.sg-est-field textarea{height:90px;resize:vertical}
+.sg-est-full{grid-column:span 2}
+.sg-est-submit{width:100%;padding:16px;margin-top:8px;background:var(--olive);color:#fff;font-family:var(--font-b);font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:var(--radius);cursor:pointer;transition:all .3s}
+.sg-est-submit:hover{background:var(--olive-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,83,35,.25)}
+.sg-est-note{text-align:center;margin-top:14px;font-size:.72rem;color:var(--text-dim)}
+
+/* === ABOUT === */
+.sg-about{padding:100px 40px;max-width:var(--max);margin:0 auto}
+.sg-about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.sg-about-img{position:relative;border-radius:var(--radius);overflow:hidden}
+.sg-about-img img{width:100%;height:440px;object-fit:cover}
+.sg-about-accent{position:absolute;bottom:-12px;right:-12px;width:180px;height:180px;border:2px solid var(--sand);border-radius:var(--radius);z-index:-1}
+.sg-about-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.sg-stat{background:var(--cream);border-radius:var(--radius);padding:20px;text-align:center}
+.sg-stat strong{display:block;font-family:var(--font-h);font-size:1.8rem;color:var(--olive);margin-bottom:2px}
+.sg-stat span{font-size:.68rem;color:var(--text-dim);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+
+/* === REVIEWS === */
+.sg-reviews{background:var(--olive-dark);padding:100px 40px}
+.sg-reviews-inner{max-width:var(--max);margin:0 auto}
+.sg-reviews-header{text-align:center;margin-bottom:56px}
+.sg-reviews-header .sg-tag{color:var(--sand)}
+.sg-reviews-header .sg-tag::before{background:var(--sand)}
+.sg-reviews-header .sg-title{color:var(--cream)}
+.sg-reviews-header .sg-sub{color:rgba(255,255,255,.5);margin:0 auto}
+.sg-rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.sg-rev{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:32px;transition:all .4s}
+.sg-rev:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
+.sg-rev-stars{color:var(--sand);font-size:.8rem;letter-spacing:2px;margin-bottom:14px}
+.sg-rev p{font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:18px;font-style:italic}
+.sg-rev-author{display:flex;align-items:center;gap:10px}
+.sg-rev-avatar{width:36px;height:36px;border-radius:50%;background:var(--olive-light);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff}
+.sg-rev-info strong{display:block;font-size:.78rem;color:var(--cream)}
+.sg-rev-info span{font-size:.65rem;color:rgba(255,255,255,.35)}
+
+/* === CTA === */
+.sg-cta{position:relative;padding:100px 40px;text-align:center;overflow:hidden}
+.sg-cta-bg{position:absolute;inset:0}
+.sg-cta-bg img{width:100%;height:100%;object-fit:cover}
+.sg-cta-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(42,61,24,.88),rgba(42,35,24,.75))}
+.sg-cta-content{position:relative;z-index:2}
+.sg-cta h2{font-family:var(--font-h);font-size:clamp(2rem,4vw,3.2rem);color:var(--cream);margin-bottom:14px;font-weight:600}
+.sg-cta p{font-size:.95rem;color:rgba(255,255,255,.55);max-width:480px;margin:0 auto 36px;font-weight:300}
+.sg-cta .sg-btn-w{box-shadow:0 4px 16px rgba(0,0,0,.15)}
+
+/* === FOOTER === */
+.sg-footer{background:#1A1D14;padding:64px 40px 28px}
+.sg-footer-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.sg-footer-brand{font-family:var(--font-h);font-size:1.3rem;color:var(--cream);margin-bottom:12px}
+.sg-footer-brand span{color:var(--sand);font-weight:400;font-style:italic}
+.sg-footer-desc{font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7;max-width:280px}
+.sg-footer h5{font-size:.6rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:18px}
+.sg-footer ul{list-style:none}
+.sg-footer li{margin-bottom:8px}
+.sg-footer li a{font-size:.78rem;color:rgba(255,255,255,.45);transition:color .2s}
+.sg-footer li a:hover{color:var(--sand-light)}
+.sg-footer-bar{max-width:var(--max);margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:.68rem;color:rgba(255,255,255,.2)}
+
+/* === MOBILE === */
+@media(max-width:1024px){
+  .sg-svc-grid{grid-template-columns:1fr 1fr}
+  .sg-svc.tall{grid-row:auto;min-height:280px}
+  .sg-steps{grid-template-columns:repeat(3,1fr)}
+  .sg-season-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .sg-nav-links,.sg-nav-phone{display:none}
+  .sg-ham{display:flex}
+  .sg-nav-inner{padding:14px 20px}
+  .sg-hero{min-height:80vh}
+  .sg-hero-content{padding:0 20px}
+  .sg-hero-content h1{font-size:clamp(2.2rem,8vw,3.4rem)}
+  .sg-trust-inner{gap:20px;justify-content:center}
+  .sg-svc-grid{grid-template-columns:1fr}
+  .sg-svc{min-height:220px}
+  .sg-svc.tall{min-height:220px}
+  .sg-port-grid{grid-template-columns:1fr 1fr}
+  .sg-steps{grid-template-columns:1fr 1fr}
+  .sg-step::after{display:none}
+  .sg-season-grid{grid-template-columns:1fr}
+  .sg-est-row{grid-template-columns:1fr}
+  .sg-est-full{grid-column:auto}
+  .sg-est-card{padding:28px 20px}
+  .sg-about-grid{grid-template-columns:1fr;gap:32px}
+  .sg-rev-grid{grid-template-columns:1fr}
+  .sg-footer-inner{grid-template-columns:1fr 1fr;gap:28px}
+  .sg-services,.sg-ba,.sg-portfolio,.sg-seasons,.sg-estimate,.sg-about{padding:64px 20px}
+  .sg-process,.sg-reviews{padding:64px 20px}
+  .sg-cta{padding:64px 20px}
+  .sg-slider-wrap{aspect-ratio:4/3}
+}
+@media(max-width:480px){
+  .sg-port-grid{grid-template-columns:1fr}
+  .sg-steps{grid-template-columns:1fr}
+  .sg-about-stats{grid-template-columns:1fr}
+  .sg-footer-inner{grid-template-columns:1fr}
+  .sg-filters{gap:6px}
+  .sg-filter{padding:7px 14px;font-size:.65rem}
+}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="sg-nav">
+  <div class="sg-nav-inner">
+    <div class="sg-logo">Stonegate <span>Landscapes</span></div>
+    <div class="sg-nav-links">
+      <a href="#services">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#process">Process</a>
+      <a href="#seasons">Seasonal</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+    <div class="sg-nav-right">
+      <div class="sg-nav-phone">📞 (816) 555-0247</div>
+      <button class="sg-nav-cta" onclick="document.getElementById('estimate').scrollIntoView({behavior:'smooth'})">Design Consultation</button>
+    </div>
+    <div class="sg-ham" onclick="this.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="sg-hero">
+  <div class="sg-hero-bg">
+    <img src="https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Beautifully landscaped modern home exterior at dusk">
+  </div>
+  <div class="sg-hero-overlay"></div>
+  <div class="sg-hero-content">
+    <div class="sg-hero-tag">Design · Build · Maintain</div>
+    <h1>Where Landscape Becomes <em>Living Art</em></h1>
+    <p class="sg-hero-sub">Full-service design-build landscaping for Kansas City homeowners who want more than a mowed lawn. Patios, plantings, retaining walls, outdoor living — built to last.</p>
+    <div class="sg-hero-btns">
+      <button class="sg-btn-w" onclick="document.getElementById('estimate').scrollIntoView({behavior:'smooth'})">Schedule a Design Consultation</button>
+      <button class="sg-btn-o" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View Our Portfolio</button>
+    </div>
+  </div>
+  <div class="sg-hero-scroll">Scroll<span></span></div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="sg-trust">
+  <div class="sg-trust-inner">
+    <div class="sg-trust-item"><strong>16</strong> Years in KC</div>
+    <div class="sg-trust-item"><strong>900+</strong> Properties Transformed</div>
+    <div class="sg-trust-item"><strong>4.9</strong> ★ Google Rating</div>
+    <div class="sg-trust-item"><strong>NALP</strong> Certified</div>
+    <div class="sg-trust-item"><strong>Licensed</strong> & Insured</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="sg-services rv" id="services">
+  <div class="sg-services-header">
+    <div class="sg-tag">What We Build</div>
+    <h2 class="sg-title">Full-Service Landscaping</h2>
+    <p class="sg-sub">From concept sketch to finished backyard — we design, build, and maintain outdoor spaces that transform how you live.</p>
+  </div>
+  <div class="sg-svc-grid">
+    <div class="sg-svc tall">
+      <img src="https://images.pexels.com/photos/238377/pexels-photo-238377.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Beautiful outdoor patio living space">
+      <div class="sg-svc-overlay"></div>
+      <div class="sg-svc-info">
+        <h3>Outdoor Living</h3>
+        <p>Patios, fire pits, outdoor kitchens, pergolas — spaces built for entertaining and everyday life.</p>
+      </div>
+    </div>
+    <div class="sg-svc">
+      <img src="https://images.pexels.com/photos/158063/bellingrath-gardens-alabama-landscape-scenic-158063.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Lush landscape garden design">
+      <div class="sg-svc-overlay"></div>
+      <div class="sg-svc-info">
+        <h3>Landscape Design</h3>
+        <p>Custom plantings, garden beds, trees, and shrubs selected for KC's climate.</p>
+      </div>
+    </div>
+    <div class="sg-svc">
+      <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Stone home with landscaped yard">
+      <div class="sg-svc-overlay"></div>
+      <div class="sg-svc-info">
+        <h3>Hardscaping</h3>
+        <p>Retaining walls, walkways, driveways, and stone features that last decades.</p>
+      </div>
+    </div>
+    <div class="sg-svc">
+      <img src="https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Gardening and planting work">
+      <div class="sg-svc-overlay"></div>
+      <div class="sg-svc-info">
+        <h3>Irrigation</h3>
+        <p>Smart sprinkler systems, drip irrigation, and water management that saves 30%+ on water bills.</p>
+      </div>
+    </div>
+    <div class="sg-svc">
+      <img src="https://images.pexels.com/photos/4079768/pexels-photo-4079768.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Landscape maintenance crew at work">
+      <div class="sg-svc-overlay"></div>
+      <div class="sg-svc-info">
+        <h3>Maintenance</h3>
+        <p>Year-round property care — mowing, pruning, seasonal color, mulch, and snow removal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER SLIDER -->
+<section class="sg-ba rv" id="beforeafter">
+  <div class="sg-ba-inner">
+    <div class="sg-ba-header">
+      <div class="sg-tag">The Transformation</div>
+      <h2 class="sg-title">Drag to Reveal</h2>
+      <p class="sg-sub">See the Stonegate difference. Drag the slider to compare before and after on a recent Leawood backyard project.</p>
+    </div>
+    <div class="sg-slider-wrap" id="baSlider">
+      <img src="https://images.pexels.com/photos/5461936/pexels-photo-5461936.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Before — bare yard" class="sg-slider-before">
+      <img src="https://images.pexels.com/photos/3209049/pexels-photo-3209049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="After — finished outdoor living space" class="sg-slider-after">
+      <div class="sg-slider-line" id="sliderLine"></div>
+      <div class="sg-slider-handle" id="sliderHandle">⟷</div>
+    </div>
+    <div class="sg-slider-labels">
+      <span>Before</span>
+      <span>After</span>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="sg-portfolio rv" id="portfolio">
+  <div class="sg-portfolio-header">
+    <div class="sg-tag">Our Work</div>
+    <h2 class="sg-title">Featured Projects</h2>
+    <p class="sg-sub">Tap a category to filter. Every project is a real KC property.</p>
+  </div>
+  <div class="sg-filters">
+    <button class="sg-filter active" onclick="filterPort('all',this)">All</button>
+    <button class="sg-filter" onclick="filterPort('patio',this)">Patios</button>
+    <button class="sg-filter" onclick="filterPort('planting',this)">Plantings</button>
+    <button class="sg-filter" onclick="filterPort('hardscape',this)">Hardscape</button>
+    <button class="sg-filter" onclick="filterPort('outdoor',this)">Outdoor Living</button>
+    <button class="sg-filter" onclick="filterPort('maintenance',this)">Maintenance</button>
+  </div>
+  <div class="sg-port-grid" id="portGrid">
+    <div class="sg-port-item" data-cat="patio outdoor">
+      <img src="https://images.pexels.com/photos/238377/pexels-photo-238377.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Stone patio with seating">
+      <div class="sg-port-item-overlay"></div>
+      <div class="sg-port-item-info"><h4>Brookside Patio</h4><span>Patio · Outdoor Living</span></div>
+    </div>
+    <div class="sg-port-item" data-cat="planting">
+      <img src="https://images.pexels.com/photos/158063/bellingrath-gardens-alabama-landscape-scenic-158063.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Garden landscape design">
+      <div class="sg-port-item-overlay"></div>
+      <div class="sg-port-item-info"><h4>Mission Hills Garden</h4><span>Planting Design</span></div>
+    </div>
+    <div class="sg-port-item" data-cat="hardscape">
+      <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Stone retaining wall and walkway">
+      <div class="sg-port-item-overlay"></div>
+      <div class="sg-port-item-info"><h4>Prairie Village Estate</h4><span>Hardscape · Walls</span></div>
+    </div>
+    <div class="sg-port-item" data-cat="outdoor">
+      <img src="https://images.pexels.com/photos/3209049/pexels-photo-3209049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" alt="Outdoor living space with pool">
+      <div class="sg-port-item-overlay"></div>
+      <div class="sg-port-item-info"><h4>Leawood Outdoor Suite</h4><span>Pool · Cabana · Landscape</span></div>
+    </div>
+    <div class="sg-port-item" data-cat="planting maintenance">
+      <img src="https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Landscaped home exterior at dusk">
+      <div class="sg-port-item-overlay"></div>
+      <div class="sg-port-item-info"><h4>Overland Park Residence</h4><span>Full Property · Maintenance</span></div>
+    </div>
+    <div class="sg-port-item" data-cat="patio hardscape">
+      <img src="https://images.pexels.com/photos/238385/pexels-photo-238385.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Outdoor entertaining patio">
+      <div class="sg-port-item-overlay"></div>
+      <div class="sg-port-item-info"><h4>Waldo Fire Pit Patio</h4><span>Patio · Hardscape</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="sg-process rv" id="process">
+  <div class="sg-process-inner">
+    <div class="sg-process-header">
+      <div class="sg-tag">How It Works</div>
+      <h2 class="sg-title">From Vision to Reality</h2>
+      <p class="sg-sub">Every Stonegate project follows our proven 5-step design-build process.</p>
+    </div>
+    <div class="sg-steps">
+      <div class="sg-step">
+        <div class="sg-step-icon">📐</div>
+        <h4>Consult</h4>
+        <p>Free on-site visit. We walk your property, listen to your vision, and assess the space.</p>
+      </div>
+      <div class="sg-step">
+        <div class="sg-step-icon">✏️</div>
+        <h4>Design</h4>
+        <p>Custom landscape plan with 3D renderings, material selections, and plant palettes.</p>
+      </div>
+      <div class="sg-step">
+        <div class="sg-step-icon">📋</div>
+        <h4>Propose</h4>
+        <p>Transparent line-item proposal. You know exactly what you're getting and what it costs.</p>
+      </div>
+      <div class="sg-step">
+        <div class="sg-step-icon">🏗️</div>
+        <h4>Build</h4>
+        <p>Our crew installs with precision. Weekly progress updates. Clean site every day.</p>
+      </div>
+      <div class="sg-step">
+        <div class="sg-step-icon">🌿</div>
+        <h4>Maintain</h4>
+        <p>Optional year-round care plan. We protect your investment with seasonal maintenance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEASONAL TIMELINE -->
+<section class="sg-seasons rv" id="seasons">
+  <div class="sg-seasons-header">
+    <div class="sg-tag">Year-Round Care</div>
+    <h2 class="sg-title">Seasonal Services</h2>
+    <p class="sg-sub">KC weather is unpredictable. Our maintenance plans keep your property pristine through every season.</p>
+  </div>
+  <div class="sg-season-grid">
+    <div class="sg-season">
+      <div class="sg-season-top">
+        <span class="sg-season-icon">🌸</span>
+        <span class="sg-season-name">Spring</span>
+        <span class="sg-season-months">Mar – May</span>
+      </div>
+      <ul class="sg-season-list">
+        <li>Spring cleanup & debris removal</li>
+        <li>Mulch installation</li>
+        <li>Pre-emergent weed control</li>
+        <li>Irrigation activation & testing</li>
+        <li>Annual flower planting</li>
+      </ul>
+    </div>
+    <div class="sg-season">
+      <div class="sg-season-top">
+        <span class="sg-season-icon">☀️</span>
+        <span class="sg-season-name">Summer</span>
+        <span class="sg-season-months">Jun – Aug</span>
+      </div>
+      <ul class="sg-season-list">
+        <li>Weekly mowing & edging</li>
+        <li>Pruning & hedge trimming</li>
+        <li>Fertilization & weed treatment</li>
+        <li>Irrigation monitoring</li>
+        <li>Seasonal color rotations</li>
+      </ul>
+    </div>
+    <div class="sg-season">
+      <div class="sg-season-top">
+        <span class="sg-season-icon">🍂</span>
+        <span class="sg-season-name">Fall</span>
+        <span class="sg-season-months">Sep – Nov</span>
+      </div>
+      <ul class="sg-season-list">
+        <li>Leaf removal & disposal</li>
+        <li>Fall aeration & overseeding</li>
+        <li>Perennial cutback</li>
+        <li>Irrigation winterization</li>
+        <li>Tree & shrub planting</li>
+      </ul>
+    </div>
+    <div class="sg-season">
+      <div class="sg-season-top">
+        <span class="sg-season-icon">❄️</span>
+        <span class="sg-season-name">Winter</span>
+        <span class="sg-season-months">Dec – Feb</span>
+      </div>
+      <ul class="sg-season-list">
+        <li>Snow & ice removal</li>
+        <li>De-icing walks & drives</li>
+        <li>Winter pruning</li>
+        <li>Landscape planning for spring</li>
+        <li>Equipment maintenance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ESTIMATE -->
+<section class="sg-estimate rv" id="estimate">
+  <div class="sg-est-inner">
+    <div class="sg-est-header">
+      <div class="sg-tag">Get Started</div>
+      <h2 class="sg-title">Request a Design Consultation</h2>
+      <p class="sg-sub">Tell us about your property and vision. We'll follow up within 24 hours to schedule a free on-site visit.</p>
+    </div>
+    <div class="sg-est-card">
+      <div class="sg-est-row">
+        <div class="sg-est-field">
+          <label>Your Name</label>
+          <input type="text" placeholder="Full name">
+        </div>
+        <div class="sg-est-field">
+          <label>Phone</label>
+          <input type="tel" placeholder="(816) 555-0000">
+        </div>
+      </div>
+      <div class="sg-est-row">
+        <div class="sg-est-field">
+          <label>Email</label>
+          <input type="email" placeholder="you@email.com">
+        </div>
+        <div class="sg-est-field">
+          <label>Property Address</label>
+          <input type="text" placeholder="Street address, City">
+        </div>
+      </div>
+      <div class="sg-est-row">
+        <div class="sg-est-field">
+          <label>Property Type</label>
+          <select>
+            <option value="">Select...</option>
+            <option>Residential</option>
+            <option>Commercial</option>
+            <option>HOA / Community</option>
+            <option>Multi-Family</option>
+          </select>
+        </div>
+        <div class="sg-est-field">
+          <label>Service Needed</label>
+          <select>
+            <option value="">Select...</option>
+            <option>Landscape Design & Install</option>
+            <option>Hardscaping (Patio, Walls, Walkway)</option>
+            <option>Outdoor Living (Fire Pit, Kitchen, Pergola)</option>
+            <option>Planting & Garden Design</option>
+            <option>Irrigation Install / Repair</option>
+            <option>Ongoing Maintenance</option>
+            <option>Snow & Ice Removal</option>
+            <option>Full Property Renovation</option>
+          </select>
+        </div>
+      </div>
+      <div class="sg-est-row">
+        <div class="sg-est-field">
+          <label>Budget Range</label>
+          <select>
+            <option value="">Select...</option>
+            <option>Under $5,000</option>
+            <option>$5,000 – $15,000</option>
+            <option>$15,000 – $30,000</option>
+            <option>$30,000 – $50,000</option>
+            <option>$50,000+</option>
+            <option>Not sure — help me plan</option>
+          </select>
+        </div>
+        <div class="sg-est-field">
+          <label>Timeline</label>
+          <select>
+            <option value="">Select...</option>
+            <option>ASAP</option>
+            <option>Within 1–3 months</option>
+            <option>This spring/summer</option>
+            <option>Planning for next year</option>
+            <option>Just exploring options</option>
+          </select>
+        </div>
+      </div>
+      <div class="sg-est-row">
+        <div class="sg-est-field sg-est-full">
+          <label>Tell Us About Your Vision</label>
+          <textarea placeholder="Describe what you'd like — dream big. We'll figure out how to make it real."></textarea>
+        </div>
+      </div>
+      <button class="sg-est-submit">Request My Free Consultation</button>
+      <p class="sg-est-note">Free on-site consultation · No commitment · Response within 24 hours</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sg-about rv">
+  <div class="sg-about-grid">
+    <div class="sg-about-img">
+      <img src="https://images.pexels.com/photos/7728706/pexels-photo-7728706.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Stonegate landscaping crew at work">
+      <div class="sg-about-accent"></div>
+    </div>
+    <div>
+      <div class="sg-tag">About Stonegate</div>
+      <h2 class="sg-title">Built on Dirt, Driven by Design</h2>
+      <p class="sg-sub" style="margin-bottom:24px">Started in 2010 with a truck and a shovel. Today we're a 14-person design-build team that's transformed over 900 KC properties. We don't do cookie-cutter — every landscape is designed from scratch for your property, your lifestyle, and your budget.</p>
+      <div class="sg-about-stats">
+        <div class="sg-stat"><strong>16</strong><span>Years in Business</span></div>
+        <div class="sg-stat"><strong>900+</strong><span>Projects Completed</span></div>
+        <div class="sg-stat"><strong>14</strong><span>Team Members</span></div>
+        <div class="sg-stat"><strong>98%</strong><span>Client Retention</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sg-reviews rv" id="reviews">
+  <div class="sg-reviews-inner">
+    <div class="sg-reviews-header">
+      <div class="sg-tag">Testimonials</div>
+      <h2 class="sg-title">What Our Clients Say</h2>
+      <p class="sg-sub">Real feedback from KC homeowners and property managers.</p>
+    </div>
+    <div class="sg-rev-grid">
+      <div class="sg-rev">
+        <div class="sg-rev-stars">★★★★★</div>
+        <p>"They designed and built our entire backyard — patio, retaining wall, fire pit, and all the plantings. It looks like something out of a magazine. We practically live outside now."</p>
+        <div class="sg-rev-author">
+          <div class="sg-rev-avatar">TM</div>
+          <div class="sg-rev-info">
+            <strong>Tom M.</strong>
+            <span>Full Backyard · Leawood</span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-rev">
+        <div class="sg-rev-stars">★★★★★</div>
+        <p>"We manage 12 commercial properties and Stonegate handles all of them. Year-round maintenance, snow removal, seasonal color — they keep every property looking immaculate."</p>
+        <div class="sg-rev-author">
+          <div class="sg-rev-avatar">KR</div>
+          <div class="sg-rev-info">
+            <strong>Karen R.</strong>
+            <span>Commercial · Overland Park</span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-rev">
+        <div class="sg-rev-stars">★★★★★</div>
+        <p>"The 3D design they presented blew us away. We could see exactly what our front yard would look like before a single shovel hit the dirt. The install matched the rendering perfectly."</p>
+        <div class="sg-rev-author">
+          <div class="sg-rev-avatar">AL</div>
+          <div class="sg-rev-info">
+            <strong>Amanda L.</strong>
+            <span>Front Yard Design · Prairie Village</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sg-cta rv">
+  <div class="sg-cta-bg">
+    <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Beautiful landscaped property">
+  </div>
+  <div class="sg-cta-overlay"></div>
+  <div class="sg-cta-content">
+    <h2>Ready to Transform Your Property?</h2>
+    <p>Free design consultation. Custom landscape plan. No commitment until you love it.</p>
+    <button class="sg-btn-w" onclick="document.getElementById('estimate').scrollIntoView({behavior:'smooth'})">Schedule Your Free Consultation</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="sg-footer">
+  <div class="sg-footer-inner">
+    <div>
+      <div class="sg-footer-brand">Stonegate <span>Landscapes</span></div>
+      <p class="sg-footer-desc">Kansas City's premier design-build landscaping firm. From concept to completion — patios, plantings, hardscaping, and year-round property maintenance.</p>
+    </div>
+    <div>
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Landscape Design</a></li>
+        <li><a href="#services">Hardscaping</a></li>
+        <li><a href="#services">Outdoor Living</a></li>
+        <li><a href="#services">Irrigation</a></li>
+        <li><a href="#services">Maintenance</a></li>
+        <li><a href="#services">Snow Removal</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Service Areas</h5>
+      <ul>
+        <li><a href="#">Kansas City, MO</a></li>
+        <li><a href="#">Overland Park</a></li>
+        <li><a href="#">Leawood</a></li>
+        <li><a href="#">Prairie Village</a></li>
+        <li><a href="#">Mission Hills</a></li>
+        <li><a href="#">Brookside</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:8165550247">(816) 555-0247</a></li>
+        <li><a href="mailto:design@stonegatekc.com">design@stonegatekc.com</a></li>
+        <li><a href="#">Mon–Fri 7am–6pm</a></li>
+        <li><a href="#">Sat 8am–1pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sg-footer-bar">
+    <span>&copy; 2026 Stonegate Landscapes. All rights reserved.</span>
+    <span>Built by <a href="https://herrmanonlineoutlook.com" style="color:rgba(255,255,255,.3)">HOO</a></span>
+  </div>
+</footer>
+
+<script>
+// === Scroll reveal ===
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// === Before/After Slider ===
+(function(){
+  const wrap=document.getElementById('baSlider');
+  const afterImg=wrap.querySelector('.sg-slider-after');
+  const line=document.getElementById('sliderLine');
+  const handle=document.getElementById('sliderHandle');
+  let dragging=false;
+
+  function setPos(x){
+    const rect=wrap.getBoundingClientRect();
+    let pct=((x-rect.left)/rect.width)*100;
+    pct=Math.max(2,Math.min(98,pct));
+    afterImg.style.clipPath=`inset(0 0 0 ${pct}%)`;
+    line.style.left=pct+'%';
+    handle.style.left=pct+'%';
+  }
+
+  wrap.addEventListener('mousedown',e=>{dragging=true;setPos(e.clientX)});
+  window.addEventListener('mousemove',e=>{if(dragging)setPos(e.clientX)});
+  window.addEventListener('mouseup',()=>dragging=false);
+  wrap.addEventListener('touchstart',e=>{dragging=true;setPos(e.touches[0].clientX)},{passive:true});
+  window.addEventListener('touchmove',e=>{if(dragging)setPos(e.touches[0].clientX)},{passive:true});
+  window.addEventListener('touchend',()=>dragging=false);
+})();
+
+// === Portfolio Filter ===
+function filterPort(cat,btn){
+  document.querySelectorAll('.sg-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.sg-port-item').forEach(item=>{
+    if(cat==='all'||item.dataset.cat.includes(cat)){
+      item.style.display='';
+      item.style.animation='fadeUp .5s ease forwards';
+    }else{
+      item.style.display='none';
+    }
+  });
+}
+</script>
+
+<!-- HOO PROTECTION -->
+<div id="hoo-wm" style="position:fixed;bottom:12px;right:16px;z-index:99998;font-family:monospace;font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.15);pointer-events:none;user-select:none">DEMO &mdash; BUILT BY HOO</div>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12')e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c'))e.preventDefault();
+    if(e.ctrlKey&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))e.preventDefault();
+  });
+  document.body.style.userSelect='none';
+  document.body.style.webkitUserSelect='none';
+  document.addEventListener('dragstart',function(e){e.preventDefault()});
+  console.log('%c⚠ This demo is protected intellectual property of HOO (herrmanonlineoutlook.com). Unauthorized copying is prohibited.','color:red;font-size:14px;font-weight:bold');
+})();
+</script>
+</body>
+</html>

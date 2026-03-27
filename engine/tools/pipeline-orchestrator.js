@@ -23,11 +23,55 @@ const ROOT          = path.join(__dirname, '..', '..');
 const LEADS_DIR     = path.join(ROOT, 'engine', 'leads');
 const APPROVALS_DIR = path.join(ROOT, 'engine', 'approvals');
 const DEMOS_DIR     = path.join(ROOT, 'outputs', 'demos');
+const LOG_FILE      = path.join(ROOT, 'engine', 'logs', 'orchestrator.log');
+
+const https = require('https');
+const http  = require('http');
+
+// ── WEBSITE CHECKER — HEAD request to verify if a URL is live ────────────────
+function checkUrl(url, timeoutMs = 5000) {
+  return new Promise(resolve => {
+    try {
+      const mod = url.startsWith('https') ? https : http;
+      const req = mod.request(url, { method: 'HEAD', timeout: timeoutMs, headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
+        // 2xx or 3xx = site exists
+        resolve(res.statusCode >= 200 && res.statusCode < 400);
+      });
+      req.on('error', () => resolve(false));
+      req.on('timeout', () => { req.destroy(); resolve(false); });
+      req.end();
+    } catch {
+      resolve(false);
+    }
+  });
+}
 
 // ── ENSURE DIRS ──────────────────────────────────────────────────────────────
-[APPROVALS_DIR, DEMOS_DIR, LEADS_DIR].forEach(d => {
+[APPROVALS_DIR, DEMOS_DIR, LEADS_DIR, path.join(ROOT, 'engine', 'logs')].forEach(d => {
   if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
 });
+
+// ── FILE LOGGER ─────────────────────────────────────────────────────────────
+// Writes every console.log/warn/error to engine/logs/orchestrator.log
+// so you can always check what happened after a run.
+const _origLog  = console.log.bind(console);
+const _origErr  = console.error.bind(console);
+const _origWarn = console.warn.bind(console);
+
+function logToFile(...args) {
+  const ts = new Date().toISOString();
+  const line = `[${ts}] ${args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')}\n`;
+  try { fs.appendFileSync(LOG_FILE, line, 'utf8'); } catch {}
+}
+
+console.log  = (...args) => { _origLog(...args);  logToFile('[INFO]', ...args); };
+console.error = (...args) => { _origErr(...args); logToFile('[ERROR]', ...args); };
+console.warn  = (...args) => { _origWarn(...args); logToFile('[WARN]', ...args); };
+
+// Log session start
+console.log(`\n${'='.repeat(60)}`);
+console.log(`ORCHESTRATOR SESSION START — ${new Date().toISOString()}`);
+console.log(`${'='.repeat(60)}`);
 
 // ── LOAD TOOLS ───────────────────────────────────────────────────────────────
 const { buildPrototype } = require('./auto-prototype');
@@ -111,25 +155,54 @@ function pickNewCombo(avoidCity, avoidIndustry) {
 }
 
 // ── PICK N RANDOM COMBOS FOR BATCH ──────────────────────────────────────────
+// Returns count*2 combos with DIFFERENT industries, so we don't burn all
+// attempts on one industry that has no leads (like photography).
 function pickBatchCombos(count) {
   const usedCombos = getApprovalCombos();
-  const usedKeys = new Set(usedCombos.map(c => `${c.industry}|${c.city}`));
+  // Normalize keys the same way: industry|first-word-of-city
+  const usedKeys = new Set(usedCombos.map(c =>
+    `${c.industry}|${(c.city || '').split(' ')[0].split("'")[0]}`
+  ));
   const combos = [];
 
-  const shuffledCities = [...CITIES].sort(() => Math.random() - 0.5);
-  const shuffledIndustries = [...INDUSTRIES].sort(() => Math.random() - 0.5);
-
-  for (const industry of shuffledIndustries) {
-    for (const city of shuffledCities) {
-      const key = `${industry}|${city.toLowerCase().split(' ')[0]}`;
+  // Build all possible pairs, shuffle, then pick — ensures industry diversity
+  const allPairs = [];
+  for (const industry of INDUSTRIES) {
+    for (const city of CITIES) {
+      const key = `${industry}|${city.toLowerCase().split(' ')[0].split("'")[0]}`;
       if (!usedKeys.has(key)) {
-        combos.push({ city, industry });
-        usedKeys.add(key);
-        if (combos.length >= count * 2) break;
+        allPairs.push({ city, industry, key });
       }
     }
-    if (combos.length >= count * 2) break;
   }
+  // Shuffle
+  for (let i = allPairs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allPairs[i], allPairs[j]] = [allPairs[j], allPairs[i]];
+  }
+
+  // Pick combos, but don't repeat the same industry more than once per batch
+  const usedIndustries = new Set();
+  for (const pair of allPairs) {
+    if (combos.length >= count * 2) break;
+    if (usedIndustries.has(pair.industry)) continue;
+    combos.push({ city: pair.city, industry: pair.industry });
+    usedIndustries.add(pair.industry);
+    usedKeys.add(pair.key);
+  }
+
+  // If we still need more, allow repeats
+  if (combos.length < count * 2) {
+    for (const pair of allPairs) {
+      if (combos.length >= count * 2) break;
+      if (!usedKeys.has(pair.key)) {
+        combos.push({ city: pair.city, industry: pair.industry });
+        usedKeys.add(pair.key);
+      }
+    }
+  }
+
+  console.log(`  🎯  Picked ${combos.length} combos: ${combos.map(c => `${c.industry}/${c.city}`).join(', ')}`);
   return combos;
 }
 
@@ -154,17 +227,23 @@ Search for local small businesses with NO website or a poor website.
 Search Facebook, Google Maps, Yelp, their Facebook About section, and any local directories.
 For contact info — check their Facebook page About tab, Google Maps listing, Yelp page, and any directory listings.
 
-CRITICAL: Your ENTIRE response must be a valid JSON array. Nothing else.
-No text before the opening [. No text after the closing ]. No markdown fences. No explanation.
-Just: [ { ... }, { ... } ]
+CRITICAL RULES:
+1. Your FINAL text output must be ONLY a valid JSON array. No explanation. No apologies. No "I couldn't find" messages.
+2. If you find fewer than 5 perfect matches, STILL return what you found — even 1 or 2 leads.
+3. Include businesses with outdated/ugly/broken websites too — not just "no website."
+4. Include businesses that only have a Facebook page but no real website.
+5. If the specific city is small, expand your search to nearby cities in the KC metro.
+6. NEVER return an empty response. There is ALWAYS at least one small business without a good website.
+7. VERIFY WEBSITES CAREFULLY: Actually check if the business has a real website (not just Facebook/Yelp). If they have ANY working website (even a basic Wix, Square, GoDaddy, or Google site), set no_website to FALSE and include the URL in website_url. We ONLY want businesses with truly NO real website.
+8. If the business has a website URL, ALWAYS include it in website_url — even if you think the site is poor quality. We verify URLs on our end.
 
 Each object must have these exact keys:
   business_name, owner_name (empty string if not found), phone (dig hard — check every source),
   email (dig hard — check Facebook About, Google listing, Yelp, their own website if any),
   address, city, state, industry, source, no_website (true/false), website_url (empty string if none),
   notes (one sentence why they qualify)
-Return 5-10 leads. Prioritize leads where you found both phone AND email.
-REMEMBER: Output ONLY the JSON array. Start with [ and end with ].`;
+Return 3-10 leads. Prioritize leads where you found both phone AND email.
+Output ONLY the JSON array. Start with [ and end with ].`;
 
   const userMessage = `Find ${industry} businesses in ${city} that have no website or a very poor website. 
 Search Facebook business pages, Google Maps listings, Yelp, and local directories.
@@ -181,7 +260,7 @@ Return as a JSON array only.`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-haiku-4-5',
         max_tokens: 4000,
         system: systemPrompt,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
@@ -201,7 +280,7 @@ Return as a JSON array only.`;
           'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
+          model: 'claude-haiku-4-5',
           max_tokens: 4000,
           system: systemPrompt,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
@@ -225,11 +304,19 @@ Return as a JSON array only.`;
     } else {
       const data = await response.json();
 
+      console.log(`  📡  API response: status=${response.status}, stop_reason=${data.stop_reason}, blocks=${data.content?.length || 0}`);
+      console.log(`  📡  Block types: ${(data.content || []).map(b => b.type).join(', ')}`);
+
       // Extract text blocks from response (may also contain tool_use/tool_result blocks)
       rawText = data.content
         .filter(block => block.type === 'text')
         .map(block => block.text)
         .join('');
+
+      if (!rawText) {
+        console.error(`  ⚠️  No text blocks in response — Claude may have only returned tool_use blocks`);
+        console.error(`  📝  Full response content types: ${JSON.stringify((data.content || []).map(b => ({ type: b.type, ...(b.type === 'text' ? { len: b.text?.length } : {}) })))}`);
+      }
     }
 
   } catch (err) {
@@ -271,29 +358,84 @@ Return as a JSON array only.`;
       }
     }
   } catch (err) {
-    console.error(`  ❌  Failed to parse Claude response as JSON: ${err.message}`);
-    console.error(`  Raw response preview: ${rawText.slice(0, 300)}`);
+    console.error(`  ❌  Failed to parse JSON: ${err.message}`);
+    console.error(`  📝  Claude returned text instead of JSON. Full response:`);
+    console.error(`  ${rawText.slice(0, 800)}`);
     return [];
   }
 
   if (!Array.isArray(candidates) || !candidates.length) {
     console.log('  ⚠️  Claude returned 0 candidates');
+    console.log(`  📝  Raw response length: ${rawText.length} chars`);
+    console.log(`  📝  Raw preview: ${rawText.slice(0, 500)}`);
     return [];
+  }
+
+  console.log(`  📝  Claude returned ${candidates.length} candidates for "${industry}" in "${city}"`);
+
+  // ── WEBSITE VERIFICATION — check each candidate for a real website ──────
+  console.log(`  🔍  Verifying websites...`);
+  for (const candidate of candidates) {
+    const bizName = (candidate.business_name || '').trim();
+    const givenUrl = (candidate.website_url || '').trim();
+
+    // If Claude said they have a website URL, verify it actually works
+    if (givenUrl && givenUrl.length > 5 && !givenUrl.includes('facebook.com') && !givenUrl.includes('yelp.com')) {
+      const isLive = await checkUrl(givenUrl);
+      if (isLive) {
+        console.log(`  ⚠️  ${bizName} has a working website: ${givenUrl} — marking as HAS WEBSITE`);
+        candidate._has_website = true;
+        candidate.no_website = false;
+        continue;
+      }
+    }
+
+    // If Claude said no_website, try common URL patterns to double-check
+    if (candidate.no_website === true || !givenUrl) {
+      const slug = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/\s+/g, '');
+      const slugDash = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      const guessUrls = [
+        `https://www.${slugDash}.com`,
+        `https://${slugDash}.com`,
+        `https://www.${slug}.com`,
+        `https://${slug}.com`,
+      ];
+      for (const guessUrl of guessUrls) {
+        const isLive = await checkUrl(guessUrl);
+        if (isLive) {
+          console.log(`  ⚠️  ${bizName} has a website at ${guessUrl} — SKIPPING`);
+          candidate._has_website = true;
+          candidate.no_website = false;
+          candidate.website_url = guessUrl;
+          break;
+        }
+      }
+    }
+  }
+
+  // Filter out leads that have real websites
+  const verified = candidates.filter(c => !c._has_website);
+  const skippedWebsite = candidates.length - verified.length;
+  if (skippedWebsite > 0) {
+    console.log(`  🚫  Removed ${skippedWebsite} leads that have working websites`);
   }
 
   // Dedup against existing leads and write new ones to disk
   const newLeads = [];
+  let skippedDupes = 0;
+  let skippedEmpty = 0;
   let nextId = getNextLeadId();
   const citySlug = city.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
 
-  for (const candidate of candidates) {
+  for (const candidate of verified) {
     const bizName = (candidate.business_name || '').trim();
     const bizCity = (candidate.city || city.split(' ')[0]).toLowerCase().trim();
-    if (!bizName) continue;
+    if (!bizName) { skippedEmpty++; continue; }
 
     const dedupeKey = `${bizName.toLowerCase()}|${bizCity}`;
     if (existingKeys.has(dedupeKey)) {
-      console.log(`  ⏭️  Skipping duplicate: ${bizName}`);
+      console.log(`  ⏭️  Skipping duplicate: ${bizName} (key: ${dedupeKey})`);
+      skippedDupes++;
       continue;
     }
 
@@ -339,7 +481,7 @@ Return as a JSON array only.`;
     console.log(`  ✅  ${leadId}: ${bizName} (${lead.city}) — score ${score}`);
   }
 
-  console.log(`  📦  ${newLeads.length} brand new leads written to engine/leads/`);
+  console.log(`  📦  ${newLeads.length} new | ${skippedDupes} dupes | ${skippedEmpty} empty | ${candidates.length} total from Claude`);
   return newLeads;
 }
 

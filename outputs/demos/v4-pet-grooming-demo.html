@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paws & Co. | Professional Pet Grooming — Kansas City</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAFAF7;--card:#FFFFFF;--card-alt:#F3F2EF;
+  --teal:#00897B;--teal-soft:rgba(0,137,123,.06);--teal-mid:rgba(0,137,123,.12);
+  --coral:#E8614D;--coral-soft:rgba(232,97,77,.06);
+  --text:#1C2024;--muted:#5F6B7A;--light:#A3AEBD;
+  --head:'DM Serif Display',serif;
+  --body:'Poppins',sans-serif;
+  --r:16px;--r-sm:10px;
+  --shadow:0 1px 16px rgba(0,0,0,.05);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--teal);color:#fff}
+
+.wrap{max-width:1060px;margin:0 auto;padding:0 32px}
+
+/* === NAV === */
+.nav{position:sticky;top:0;z-index:999;background:rgba(250,250,247,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.04)}
+.nav-inner{max-width:1060px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-family:var(--head);font-size:1.3rem;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{font-size:.7rem;font-weight:600;color:var(--muted);transition:color .3s}
+.nav-link:hover{color:var(--teal)}
+.nav-phone{font-size:.72rem;font-weight:700;color:var(--text)}
+.nav-cta{font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--teal);color:#fff;padding:10px 22px;border-radius:8px;transition:all .3s}
+.nav-cta:hover{background:#00796B;transform:translateY(-1px)}
+
+/* === HERO === */
+.hero{padding:64px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.hero-left{padding-right:16px}
+.hero-trust{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.hero-stars{color:var(--coral);font-size:.85rem;letter-spacing:1px}
+.hero-rating{font-size:.75rem;font-weight:700}
+.hero-reviews{font-size:.65rem;color:var(--muted)}
+.hero-badge{font-size:.5rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);background:var(--teal-soft);padding:4px 12px;border-radius:6px}
+.hero h1{font-family:var(--head);font-size:clamp(2.4rem,4vw,3.4rem);line-height:1.1;margin-bottom:16px}
+.hero h1 em{font-style:normal;color:var(--teal)}
+.hero-sub{font-size:.88rem;color:var(--muted);line-height:1.8;margin-bottom:28px;max-width:440px}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.hero-btn{padding:14px 28px;font-family:var(--body);font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:8px;transition:all .3s;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:8px}
+.hero-btn.primary{background:var(--teal);color:#fff}
+.hero-btn.primary:hover{background:#00796B;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,137,123,.2)}
+.hero-btn.secondary{background:var(--card);color:var(--text);border:1px solid var(--card-alt)}
+.hero-btn.secondary:hover{border-color:var(--teal)}
+.hero-btn.phone-btn{background:var(--card);color:var(--text);border:1px solid var(--card-alt);font-size:.7rem;font-weight:700;letter-spacing:0;text-transform:none}
+.hero-creds{display:flex;gap:16px;flex-wrap:wrap}
+.hero-cred{display:flex;align-items:center;gap:6px;font-size:.6rem;color:var(--muted);font-weight:500}
+.hero-cred-icon{width:20px;height:20px;background:var(--teal-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--teal)}
+.hero-right{position:relative}
+.hero-img{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.hero-img img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.hero-float{position:absolute;bottom:20px;left:-20px;background:var(--card);border-radius:var(--r-sm);padding:14px 18px;box-shadow:0 4px 24px rgba(0,0,0,.1);display:flex;align-items:center;gap:10px}
+.hero-float-icon{width:36px;height:36px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem}
+.hero-float-text{font-size:.65rem;font-weight:700;line-height:1.4}
+.hero-float-text span{display:block;font-size:.55rem;color:var(--muted);font-weight:500}
+
+/* === WELLNESS BAR === */
+.wellness-bar{padding:56px 0;border-bottom:1px solid var(--card-alt)}
+.wellness-label{text-align:center;font-size:.5rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.wellness-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.wellness-item{text-align:center;padding:20px 12px;background:var(--card);border-radius:var(--r-sm);box-shadow:var(--shadow);transition:all .3s}
+.wellness-item:hover{transform:translateY(-2px)}
+.wellness-icon{font-size:1.4rem;margin-bottom:8px}
+.wellness-name{font-family:var(--head);font-size:.9rem;margin-bottom:2px}
+.wellness-desc{font-size:.58rem;color:var(--muted);line-height:1.5}
+
+/* === SECTIONS === */
+.section{padding:80px 0}
+.sec-label{font-size:.5rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.sec-heading{font-family:var(--head);font-size:clamp(1.8rem,3.5vw,2.6rem);margin-bottom:8px;line-height:1.1}
+.sec-sub{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:480px}
+
+/* === SERVICES === */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.svc-card{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:all .4s var(--ease);opacity:0;transform:translateY(20px)}
+.svc-card.visible{opacity:1;transform:translateY(0)}
+.svc-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,.08)}
+.svc-img{height:200px;overflow:hidden}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.svc-card:hover .svc-img img{transform:scale(1.04)}
+.svc-body{padding:22px}
+.svc-body h3{font-family:var(--head);font-size:1.1rem;margin-bottom:6px}
+.svc-body p{font-size:.72rem;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.svc-meta{display:flex;justify-content:space-between;align-items:center}
+.svc-price{font-family:var(--head);font-size:1rem;color:var(--teal)}
+.svc-time{font-size:.55rem;font-weight:600;color:var(--light);letter-spacing:.5px}
+
+/* === PRICING === */
+.pricing-section{padding:80px 0;background:var(--card);border-radius:var(--r)}
+.pricing-inner{max-width:1060px;margin:0 auto;padding:0 32px}
+.size-row{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.size-btn{display:flex;align-items:center;gap:10px;padding:14px 22px;background:var(--bg);border:2px solid var(--card-alt);border-radius:var(--r-sm);cursor:pointer;transition:all .3s}
+.size-btn.active{border-color:var(--teal);background:var(--teal-soft)}
+.size-btn .sz-icon{font-size:1.2rem}
+.size-btn .sz-info{text-align:left}
+.size-btn .sz-name{font-size:.7rem;font-weight:700;display:block}
+.size-btn .sz-range{font-size:.55rem;color:var(--light)}
+.size-btn.active .sz-name{color:var(--teal)}
+
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pkg-card{background:var(--bg);border-radius:var(--r);padding:32px 28px;text-align:center;border:2px solid transparent;position:relative;transition:all .4s var(--ease);opacity:0;transform:translateY(20px)}
+.pkg-card.visible{opacity:1;transform:translateY(0)}
+.pkg-card.featured{border-color:var(--coral)}
+.pkg-card.featured::before{content:'Most Popular';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--coral);color:#fff;font-size:.48rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 16px;border-radius:20px;white-space:nowrap}
+.pkg-card:hover{transform:translateY(-3px)}
+.pkg-name{font-family:var(--head);font-size:1.2rem;margin-bottom:6px}
+.pkg-price{font-family:var(--head);font-size:2.6rem;color:var(--teal);margin-bottom:2px}
+.pkg-time{font-size:.58rem;color:var(--light);font-weight:500;margin-bottom:20px}
+.pkg-divider{width:100%;height:1px;background:var(--card-alt);margin-bottom:20px}
+.pkg-list{list-style:none;display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:24px}
+.pkg-list li{font-size:.72rem;color:var(--muted);padding-left:22px;position:relative;line-height:1.5}
+.pkg-list li::before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:700;font-size:.7rem}
+.pkg-book{display:block;width:100%;padding:14px;font-family:var(--body);font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:8px;text-align:center;transition:all .3s;cursor:pointer;border:none}
+.pkg-card .pkg-book{background:var(--teal-mid);color:var(--teal)}
+.pkg-card .pkg-book:hover{background:var(--teal);color:#fff}
+.pkg-card.featured .pkg-book{background:var(--coral);color:#fff}
+.pkg-card.featured .pkg-book:hover{background:#D4503C}
+
+/* === GALLERY (filterable) === */
+.gallery-section{padding:80px 0}
+.gallery-filters{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.gf-btn{padding:8px 18px;font-family:var(--body);font-size:.58rem;font-weight:600;background:var(--card);border:1px solid var(--card-alt);border-radius:8px;cursor:pointer;transition:all .3s;color:var(--muted)}
+.gf-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gallery-item{border-radius:var(--r-sm);overflow:hidden;position:relative;cursor:pointer;opacity:0;transform:translateY(16px);transition:all .5s var(--ease)}
+.gallery-item.visible{opacity:1;transform:translateY(0)}
+.gallery-item.hidden{display:none}
+.gallery-item img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .4s var(--ease)}
+.gallery-item:hover img{transform:scale(1.04)}
+.gallery-item-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff}
+.gallery-item-breed{font-size:.65rem;font-weight:700}
+.gallery-item-service{font-size:.5rem;color:rgba(255,255,255,.7)}
+
+/* === TEAM === */
+.team-section{padding:80px 0}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.team-card{background:var(--card);border-radius:var(--r);padding:28px 24px;text-align:center;box-shadow:var(--shadow);opacity:0;transform:translateY(16px);transition:all .5s var(--ease)}
+.team-card.visible{opacity:1;transform:translateY(0)}
+.team-photo{width:100px;height:100px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:3px solid var(--teal-mid)}
+.team-photo img{width:100%;height:100%;object-fit:cover}
+.team-name{font-family:var(--head);font-size:1rem;margin-bottom:2px}
+.team-role{font-size:.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);margin-bottom:6px}
+.team-creds{display:flex;justify-content:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.team-cred-tag{font-size:.45rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);background:var(--teal-soft);padding:3px 10px;border-radius:4px}
+.team-bio{font-size:.68rem;color:var(--muted);line-height:1.6}
+
+/* === REVIEWS === */
+.reviews-section{padding:80px 0}
+.review-summary{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+.review-stars-lg{color:var(--coral);font-size:1.2rem;letter-spacing:2px}
+.review-score-lg{font-family:var(--head);font-size:1.8rem}
+.review-count-lg{font-size:.65rem;color:var(--light);font-weight:500}
+.review-platforms{display:flex;gap:8px}
+.review-plat{font-size:.5rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:6px;border:1px solid var(--card-alt)}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.review-card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);opacity:0;transform:translateY(16px);transition:all .5s var(--ease)}
+.review-card.visible{opacity:1;transform:translateY(0)}
+.review-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.review-avatar{width:38px;height:38px;background:var(--teal-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.65rem;color:var(--teal)}
+.review-info .review-name{font-size:.75rem;font-weight:700}
+.review-info .review-pet{font-size:.58rem;color:var(--light)}
+.review-card-stars{color:var(--coral);font-size:.65rem;margin-bottom:8px}
+.review-body{font-size:.75rem;color:var(--muted);line-height:1.7}
+
+/* === AREA === */
+.area-section{padding:0 0 80px}
+.area-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.area-pill{padding:8px 18px;background:var(--card);border-radius:8px;font-size:.6rem;font-weight:600;color:var(--muted);box-shadow:var(--shadow);border:1px solid transparent;transition:all .3s}
+.area-pill:hover{border-color:var(--teal);color:var(--teal)}
+
+/* === CTA === */
+.cta-section{background:var(--teal);padding:80px 32px;text-align:center}
+.cta-inner{max-width:600px;margin:0 auto}
+.cta-heading{font-family:var(--head);font-size:clamp(2rem,4vw,3rem);color:#fff;margin-bottom:8px;line-height:1.1}
+.cta-sub{font-size:.82rem;color:rgba(255,255,255,.7);margin-bottom:28px;line-height:1.6}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-btn-w{padding:16px 32px;background:#fff;color:var(--text);font-family:var(--body);font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:8px;transition:all .3s;border:none;cursor:pointer}
+.cta-btn-w:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.cta-btn-o{padding:16px 32px;background:rgba(255,255,255,.12);color:#fff;font-family:var(--body);font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:8px;border:1px solid rgba(255,255,255,.25);transition:all .3s;cursor:pointer}
+.cta-btn-o:hover{border-color:#fff}
+.cta-phone{margin-top:20px;font-family:var(--head);font-size:1.4rem;color:#fff}
+.cta-phone-sub{font-size:.55rem;color:rgba(255,255,255,.5);margin-top:4px;letter-spacing:2px;text-transform:uppercase}
+
+/* === STICKY CTA === */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:998;background:rgba(250,250,247,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(0,0,0,.05);padding:10px 16px;display:flex;gap:10px;transform:translateY(100%);transition:transform .4s var(--ease)}
+.sticky-cta.show{transform:translateY(0)}
+.sticky-cta a{flex:1;text-align:center;padding:14px;font-family:var(--body);font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:block;border-radius:8px;transition:all .3s}
+.sticky-cta .sc-call{background:var(--card);color:var(--text);border:1px solid var(--card-alt)}
+.sticky-cta .sc-book{background:var(--teal);color:#fff}
+
+.reveal{opacity:0;transform:translateY(20px);transition:all .6s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* === RESPONSIVE === */
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;gap:32px;padding:40px 0 0}
+  .hero-left{padding-right:0}
+  .svc-grid{grid-template-columns:1fr}
+  .pkg-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .review-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
+  .wellness-grid{grid-template-columns:repeat(3,1fr)}
+  .nav-links{display:none}
+  .hero-float{left:12px;bottom:12px}
+  body{padding-bottom:74px}
+}
+@media(max-width:480px){
+  .wrap{padding:0 20px}
+  .nav-inner{padding:12px 20px}
+  .hero h1{font-size:2rem}
+  .hero-ctas{flex-direction:column}
+  .hero-btn{width:100%;justify-content:center}
+  .wellness-grid{grid-template-columns:repeat(2,1fr)}
+  .size-row{justify-content:center}
+  .size-btn{padding:10px 16px}
+  .gallery-grid{grid-template-columns:1fr}
+  .section,.pricing-section,.gallery-section,.team-section,.reviews-section{padding:60px 0}
+}
+@media(min-width:769px){
+  .sticky-cta{display:none}
+}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">Paws & Co.</div>
+    <div class="nav-links">
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#gallery" class="nav-link">Gallery</a>
+      <a href="#team" class="nav-link">Our Team</a>
+      <a href="tel:8165550192" class="nav-phone">(816) 555-0192</a>
+      <a href="#pricing" class="nav-cta">Book Now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-trust">
+        <span class="hero-stars">★★★★★</span>
+        <span class="hero-rating">4.9</span>
+        <span class="hero-reviews">280+ Reviews</span>
+        <span class="hero-badge">Accepting New Clients</span>
+      </div>
+      <h1>Healthy pets.<br><em>Happy parents.</em></h1>
+      <p class="hero-sub">Professional grooming focused on your pet's health — skin, coat, ears, nails, and teeth. Gentle care, breed-specific styling, and a spa-level experience. Serving Kansas City since 2019.</p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="hero-btn primary">Book an Appointment</a>
+        <a href="tel:8165550192" class="hero-btn phone-btn">📞 (816) 555-0192</a>
+        <a href="sms:8165550192" class="hero-btn secondary">Text Us</a>
+      </div>
+      <div class="hero-creds">
+        <div class="hero-cred"><span class="hero-cred-icon">✓</span> NDGAA Certified</div>
+        <div class="hero-cred"><span class="hero-cred-icon">✓</span> Pet First Aid Trained</div>
+        <div class="hero-cred"><span class="hero-cred-icon">✓</span> Fear-Free Certified</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img">
+        <img src="https://images.pexels.com/photos/6131149/pexels-photo-6131149.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Professional groomer working on a Yorkshire Terrier" loading="eager">
+      </div>
+      <div class="hero-float">
+        <div class="hero-float-icon">🐾</div>
+        <div class="hero-float-text">4,200+ pets groomed<span>Since 2019 in Kansas City</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ WELLNESS BAR (S.C.E.N.T. inspired) ============ -->
+<div class="wrap">
+  <div class="wellness-bar">
+    <div class="wellness-label">Every groom covers 5 health checkpoints</div>
+    <div class="wellness-grid">
+      <div class="wellness-item">
+        <div class="wellness-icon">🧴</div>
+        <div class="wellness-name">Skin</div>
+        <div class="wellness-desc">Check for irritation, dryness, hot spots</div>
+      </div>
+      <div class="wellness-item">
+        <div class="wellness-icon">✨</div>
+        <div class="wellness-name">Coat</div>
+        <div class="wellness-desc">De-mat, condition, breed-specific styling</div>
+      </div>
+      <div class="wellness-item">
+        <div class="wellness-icon">👂</div>
+        <div class="wellness-name">Ears</div>
+        <div class="wellness-desc">Clean, inspect for infection or buildup</div>
+      </div>
+      <div class="wellness-item">
+        <div class="wellness-icon">🐾</div>
+        <div class="wellness-name">Nails</div>
+        <div class="wellness-desc">Trim, file, paw pad inspection</div>
+      </div>
+      <div class="wellness-item">
+        <div class="wellness-icon">🦷</div>
+        <div class="wellness-name">Teeth</div>
+        <div class="wellness-desc">Brush, check gums, fresh breath treatment</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<div class="wrap" id="services">
+  <section class="section">
+    <div class="sec-label reveal">Services</div>
+    <div class="sec-heading reveal">Everything your pet needs.</div>
+    <div class="sec-sub reveal">From a quick bath to a full spa day, every service includes our 5-point health check.</div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/19145881/pexels-photo-19145881.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Dog bath" loading="lazy"></div>
+        <div class="svc-body">
+          <h3>Bath & Brush</h3>
+          <p>Premium shampoo, conditioner, blow-dry, brush-out, ear cleaning, and nail trim.</p>
+          <div class="svc-meta"><span class="svc-price">From $35</span><span class="svc-time">45 min – 1 hr</span></div>
+        </div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/6131568/pexels-photo-6131568.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Full grooming" loading="lazy"></div>
+        <div class="svc-body">
+          <h3>Full Groom</h3>
+          <p>Everything in Bath & Brush plus breed-specific haircut, sanitary trim, and paw pad shave.</p>
+          <div class="svc-meta"><span class="svc-price">From $55</span><span class="svc-time">1.5 – 2 hrs</span></div>
+        </div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/1436139/pexels-photo-1436139.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Puppy bath" loading="lazy"></div>
+        <div class="svc-body">
+          <h3>Puppy's First Groom</h3>
+          <p>Gentle intro for pups under 6 months. Bath, light trim, and lots of positive reinforcement.</p>
+          <div class="svc-meta"><span class="svc-price">From $30</span><span class="svc-time">30 – 45 min</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PRICING ============ -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="sec-label reveal">Pricing</div>
+    <div class="sec-heading reveal">Transparent pricing by size.</div>
+    <div class="sec-sub reveal">All prices include nail trim, ear cleaning, and teeth brush. No hidden fees.</div>
+
+    <div class="size-row reveal">
+      <div class="size-btn active" data-size="small">
+        <span class="sz-icon">🐕</span>
+        <span class="sz-info"><span class="sz-name">Small</span><span class="sz-range">Under 20 lbs</span></span>
+      </div>
+      <div class="size-btn" data-size="medium">
+        <span class="sz-icon">🐕‍🦺</span>
+        <span class="sz-info"><span class="sz-name">Medium</span><span class="sz-range">20–50 lbs</span></span>
+      </div>
+      <div class="size-btn" data-size="large">
+        <span class="sz-icon">🦮</span>
+        <span class="sz-info"><span class="sz-name">Large</span><span class="sz-range">50–80 lbs</span></span>
+      </div>
+      <div class="size-btn" data-size="xl">
+        <span class="sz-icon">🐕‍🦺</span>
+        <span class="sz-info"><span class="sz-name">XL</span><span class="sz-range">80+ lbs</span></span>
+      </div>
+    </div>
+
+    <div class="pkg-grid">
+      <div class="pkg-card">
+        <div class="pkg-name">Bath & Brush</div>
+        <div class="pkg-price" data-prices='{"small":35,"medium":50,"large":65,"xl":80}'>$35</div>
+        <div class="pkg-time">45 min – 1 hr</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-list">
+          <li>Premium shampoo & conditioner</li>
+          <li>Blow-dry & brush-out</li>
+          <li>Nail trim & file</li>
+          <li>Ear cleaning</li>
+          <li>Cologne spritz</li>
+        </ul>
+        <a href="tel:8165550192" class="pkg-book">Book This</a>
+      </div>
+      <div class="pkg-card featured">
+        <div class="pkg-name">Full Groom</div>
+        <div class="pkg-price" data-prices='{"small":55,"medium":75,"large":95,"xl":115}'>$55</div>
+        <div class="pkg-time">1.5 – 2 hrs</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-list">
+          <li>Everything in Bath & Brush</li>
+          <li>Breed-specific haircut</li>
+          <li>Sanitary trim</li>
+          <li>Paw pad shave</li>
+          <li>Teeth brushing</li>
+          <li>Bandana or bow</li>
+        </ul>
+        <a href="tel:8165550192" class="pkg-book">Book This</a>
+      </div>
+      <div class="pkg-card">
+        <div class="pkg-name">Spa Day</div>
+        <div class="pkg-price" data-prices='{"small":85,"medium":105,"large":130,"xl":155}'>$85</div>
+        <div class="pkg-time">2 – 3 hrs</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-list">
+          <li>Everything in Full Groom</li>
+          <li>De-shedding treatment</li>
+          <li>Blueberry facial</li>
+          <li>Paw balm & moisturize</li>
+          <li>Aromatherapy rinse</li>
+          <li>Premium bandana</li>
+          <li>Photo before pickup</li>
+        </ul>
+        <a href="tel:8165550192" class="pkg-book">Book This</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY (filterable) ============ -->
+<div class="wrap" id="gallery">
+  <section class="gallery-section">
+    <div class="sec-label reveal">The Glow Up</div>
+    <div class="sec-heading reveal">Real results from our salon.</div>
+    <div class="sec-sub reveal">Filter by service type to see transformations.</div>
+    <div class="gallery-filters reveal">
+      <button class="gf-btn active" data-filter="all">All</button>
+      <button class="gf-btn" data-filter="full-groom">Full Groom</button>
+      <button class="gf-btn" data-filter="bath">Bath & Brush</button>
+      <button class="gf-btn" data-filter="spa">Spa Day</button>
+      <button class="gf-btn" data-filter="puppy">Puppy's First</button>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" data-cat="full-groom">
+        <img src="https://images.pexels.com/photos/19145898/pexels-photo-19145898.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Shih Tzu after groom" loading="lazy">
+        <div class="gallery-item-label"><div class="gallery-item-breed">Shih Tzu</div><div class="gallery-item-service">Full Groom</div></div>
+      </div>
+      <div class="gallery-item" data-cat="bath">
+        <img src="https://images.pexels.com/photos/19145883/pexels-photo-19145883.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Dog bath" loading="lazy">
+        <div class="gallery-item-label"><div class="gallery-item-breed">Shih Tzu</div><div class="gallery-item-service">Bath & Brush</div></div>
+      </div>
+      <div class="gallery-item" data-cat="full-groom">
+        <img src="https://images.pexels.com/photos/6816860/pexels-photo-6816860.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Yorkie groomed" loading="lazy">
+        <div class="gallery-item-label"><div class="gallery-item-breed">Yorkshire Terrier</div><div class="gallery-item-service">Full Groom</div></div>
+      </div>
+      <div class="gallery-item" data-cat="spa">
+        <img src="https://images.pexels.com/photos/6131568/pexels-photo-6131568.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Terrier spa" loading="lazy">
+        <div class="gallery-item-label"><div class="gallery-item-breed">Terrier Mix</div><div class="gallery-item-service">Spa Day</div></div>
+      </div>
+      <div class="gallery-item" data-cat="puppy">
+        <img src="https://images.pexels.com/photos/1436139/pexels-photo-1436139.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Puppy bath" loading="lazy">
+        <div class="gallery-item-label"><div class="gallery-item-breed">Toy Poodle</div><div class="gallery-item-service">Puppy's First</div></div>
+      </div>
+      <div class="gallery-item" data-cat="bath">
+        <img src="https://images.pexels.com/photos/485294/pexels-photo-485294.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Chihuahua bath" loading="lazy">
+        <div class="gallery-item-label"><div class="gallery-item-breed">Chihuahua</div><div class="gallery-item-service">Bath & Brush</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ TEAM ============ -->
+<div class="wrap" id="team">
+  <section class="team-section">
+    <div class="sec-label reveal" style="text-align:center">Our Team</div>
+    <div class="sec-heading reveal" style="text-align:center;margin-bottom:36px">Meet your groomers.</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo"><img src="https://images.pexels.com/photos/6131163/pexels-photo-6131163.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Sarah" loading="lazy"></div>
+        <div class="team-name">Sarah M.</div>
+        <div class="team-role">Lead Groomer</div>
+        <div class="team-creds">
+          <span class="team-cred-tag">NDGAA Certified</span>
+          <span class="team-cred-tag">8 Years</span>
+        </div>
+        <div class="team-bio">Poodle & doodle specialist. Trained in breed-specific styling and Asian fusion cuts.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><img src="https://images.pexels.com/photos/6816837/pexels-photo-6816837.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Mia" loading="lazy"></div>
+        <div class="team-name">Mia K.</div>
+        <div class="team-role">Senior Groomer</div>
+        <div class="team-creds">
+          <span class="team-cred-tag">Fear-Free Certified</span>
+          <span class="team-cred-tag">5 Years</span>
+        </div>
+        <div class="team-bio">Specializes in anxious dogs and senior pets. Patient, gentle approach — never rushes a groom.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><img src="https://images.pexels.com/photos/19145895/pexels-photo-19145895.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Jake" loading="lazy"></div>
+        <div class="team-name">Jake R.</div>
+        <div class="team-role">Groomer</div>
+        <div class="team-creds">
+          <span class="team-cred-tag">Pet First Aid</span>
+          <span class="team-cred-tag">2 Years</span>
+        </div>
+        <div class="team-bio">Great with large breeds. Your dog's favorite person. Currently training for NDGAA certification.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ REVIEWS ============ -->
+<div class="wrap">
+  <section class="reviews-section">
+    <div class="sec-label reveal">Reviews</div>
+    <div class="sec-heading reveal">What pet parents say.</div>
+    <div class="review-summary reveal">
+      <span class="review-stars-lg">★★★★★</span>
+      <span class="review-score-lg">4.9</span>
+      <span class="review-count-lg">280+ Reviews</span>
+      <div class="review-platforms">
+        <span class="review-plat">Google</span>
+        <span class="review-plat">Yelp</span>
+      </div>
+    </div>
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar">A</div>
+          <div class="review-info"><div class="review-name">Ashley P.</div><div class="review-pet">Golden Doodle, 45 lbs</div></div>
+        </div>
+        <div class="review-card-stars">★★★★★</div>
+        <div class="review-body">Cooper was SO fluffy when I picked him up! They sent me a photo before pickup — I literally teared up. Best groomer in KC.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar">T</div>
+          <div class="review-info"><div class="review-name">Tyler J.</div><div class="review-pet">Pit Bull, 62 lbs</div></div>
+        </div>
+        <div class="review-card-stars">★★★★★</div>
+        <div class="review-body">My dog is terrified of groomers. Paws & Co. was the first place he didn't shake the whole time. Mia was incredibly patient.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar">L</div>
+          <div class="review-info"><div class="review-name">Lisa M.</div><div class="review-pet">Shih Tzu, 12 lbs</div></div>
+        </div>
+        <div class="review-card-stars">★★★★★</div>
+        <div class="review-body">Got the Spa Day for Bella's birthday. She came back smelling amazing with a little bandana. The blueberry facial was a nice touch!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar">R</div>
+          <div class="review-info"><div class="review-name">Rachel D.</div><div class="review-pet">Yorkie, 7 lbs</div></div>
+        </div>
+        <div class="review-card-stars">★★★★★</div>
+        <div class="review-body">I've tried 4 groomers in KC. Only one that gets the teddy bear cut right. Clean, organized, and they actually listen to what I want.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ AREA ============ -->
+<div class="wrap">
+  <section class="area-section">
+    <div class="sec-label reveal">Location</div>
+    <div class="sec-heading reveal">Serving Kansas City.</div>
+    <div class="sec-sub reveal">Drop-off or ask about our pickup & delivery service ($15 add-on).</div>
+    <div class="area-pills">
+      <span class="area-pill">Kansas City</span>
+      <span class="area-pill">Overland Park</span>
+      <span class="area-pill">Olathe</span>
+      <span class="area-pill">Lee's Summit</span>
+      <span class="area-pill">Independence</span>
+      <span class="area-pill">Shawnee</span>
+      <span class="area-pill">Liberty</span>
+      <span class="area-pill">Blue Springs</span>
+      <span class="area-pill">Lenexa</span>
+      <span class="area-pill">Parkville</span>
+    </div>
+  </section>
+</div>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-heading">Your pet deserves the best groom.</div>
+    <div class="cta-sub">Call, text, or book online. Walk-ins welcome weekdays before 2 PM.</div>
+    <div class="cta-row">
+      <a href="tel:8165550192" class="cta-btn-w">Call Now</a>
+      <a href="sms:8165550192" class="cta-btn-o">Text Us</a>
+      <a href="#pricing" class="cta-btn-o">Book Online</a>
+    </div>
+    <div class="cta-phone">(816) 555-0192</div>
+    <div class="cta-phone-sub">Mon–Sat 8am–6pm</div>
+  </div>
+</section>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="tel:8165550192" class="sc-call">Call</a>
+  <a href="#pricing" class="sc-book">Book Now</a>
+</div>
+
+<script>
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal,.svc-card,.pkg-card,.review-card,.team-card,.gallery-item').forEach(el => io.observe(el));
+
+// Sticky CTA
+let shown = false;
+const sticky = document.getElementById('stickyCta');
+window.addEventListener('scroll', () => {
+  if (!shown && window.scrollY > 400) { sticky.classList.add('show'); shown = true; }
+}, { passive: true });
+
+// Size toggle
+const sizeBtns = document.querySelectorAll('.size-btn');
+const pkgPrices = document.querySelectorAll('.pkg-price');
+sizeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    sizeBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const size = btn.dataset.size;
+    pkgPrices.forEach(p => {
+      const prices = JSON.parse(p.dataset.prices);
+      p.textContent = '$' + prices[size];
+    });
+  });
+});
+
+// Gallery filter
+const filterBtns = document.querySelectorAll('.gf-btn');
+const galleryItems = document.querySelectorAll('.gallery-item');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    galleryItems.forEach(item => {
+      if (filter === 'all' || item.dataset.cat === filter) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>
+
+<!-- HOO PROTECTION -->
+<div id="hoo-wm" style="position:fixed;bottom:12px;right:16px;z-index:99998;font-family:monospace;font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.15);pointer-events:none;user-select:none">DEMO &mdash; BUILT BY HOO</div>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12')e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c'))e.preventDefault();
+    if(e.ctrlKey&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))e.preventDefault();
+  });
+  document.body.style.userSelect='none';
+  document.body.style.webkitUserSelect='none';
+  document.addEventListener('dragstart',function(e){e.preventDefault()});
+  console.log('%c⚠ This demo is protected intellectual property of HOO (herrmanonlineoutlook.com). Unauthorized copying is prohibited.','color:red;font-size:14px;font-weight:bold');
+})();
+</script>
+</body>
+</html>
