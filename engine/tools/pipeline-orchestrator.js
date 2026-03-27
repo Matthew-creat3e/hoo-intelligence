@@ -86,7 +86,7 @@ const CITIES = [
 
 const INDUSTRIES = [
   'cleaning', 'lawn care', 'handyman', 'painting', 'landscaping',
-  'moving', 'auto detailing', 'pressure washing', 'pet grooming',
+  'moving', 'auto detailing', 'auto repair', 'pressure washing', 'pet grooming',
   'tattoo', 'food truck', 'roofing', 'fencing', 'personal training',
   'barber', 'photography', 'junk removal', 'mobile mechanic'
 ];
@@ -313,8 +313,35 @@ Return as a JSON array only.`;
         .map(block => block.text)
         .join('');
 
-      if (!rawText) {
-        console.error(`  ⚠️  No text blocks in response — Claude may have only returned tool_use blocks`);
+      if (!rawText && data.stop_reason === 'tool_use') {
+        console.log(`  🔄  Claude used tools — sending continuation to get final answer...`);
+        // Build tool results from the response and continue the conversation
+        const toolBlocks = data.content.filter(b => b.type === 'tool_use');
+        const toolResults = toolBlocks.map(b => ({ type: 'tool_result', tool_use_id: b.id, content: 'Search complete. Now return the JSON array of leads.' }));
+        const cont = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+          body: JSON.stringify({
+            model: 'claude-haiku-4-5',
+            max_tokens: 4000,
+            system: systemPrompt,
+            tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+            messages: [
+              { role: 'user', content: userMessage },
+              { role: 'assistant', content: data.content },
+              { role: 'user', content: toolResults }
+            ]
+          })
+        });
+        if (cont.ok) {
+          const contData = await cont.json();
+          rawText = (contData.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+          console.log(`  ✅  Continuation response: ${rawText.length} chars`);
+        } else {
+          console.error(`  ❌  Continuation failed: ${cont.status}`);
+        }
+      } else if (!rawText) {
+        console.error(`  ⚠️  No text blocks in response`);
         console.error(`  📝  Full response content types: ${JSON.stringify((data.content || []).map(b => ({ type: b.type, ...(b.type === 'text' ? { len: b.text?.length } : {}) })))}`);
       }
     }
@@ -1007,7 +1034,7 @@ async function main() {
 
     case 'add-email': {
       const emailArg = process.argv[4];
-      addEmail(arg, emailArg);
+      await addEmail(arg, emailArg);
       break;
     }
 

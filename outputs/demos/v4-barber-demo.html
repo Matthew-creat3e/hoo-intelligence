@@ -43,7 +43,6 @@ img{max-width:100%;display:block}
 .bb-vis{opacity:1!important;transform:none!important}
 .bb-pop-l{opacity:0;transform:translateX(-50px);transition:all 1s var(--ease-smooth)}
 .bb-pop-r{opacity:0;transform:translateX(50px);transition:all 1s var(--ease-smooth)}
-.bb-clip{clip-path:inset(0 0 0 0);transition:clip-path 1.2s var(--ease-smooth)}
 @keyframes bb-glow{from{transform:scale(1)}to{transform:scale(1.15)}}
 .bb-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
 .bb-orb-gold{width:400px;height:400px;background:radial-gradient(circle,rgba(200,149,46,.06),transparent 65%);animation:bb-glow 6s ease-in-out infinite alternate}
@@ -241,27 +240,27 @@ img{max-width:100%;display:block}
       </div>
     </div>
     <div class="bb-pgrid">
-      <div class="bb-pitem tall bb-clip">
+      <div class="bb-pitem tall bb-pop">
         <img src="https://images.pexels.com/photos/2809652/pexels-photo-2809652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900&w=600" alt="Barber cutting hair with straight razor" loading="lazy">
         <div class="bb-pitem-overlay"><span>STRAIGHT RAZOR WORK</span></div>
       </div>
-      <div class="bb-pitem bb-clip">
+      <div class="bb-pitem bb-pop">
         <img src="https://images.pexels.com/photos/6487911/pexels-photo-6487911.jpeg?auto=compress&cs=tinysrgb&w=600&h=600" alt="Fresh fade haircut" loading="lazy">
         <div class="bb-pitem-overlay"><span>SKIN FADE</span></div>
       </div>
-      <div class="bb-pitem bb-clip">
+      <div class="bb-pitem bb-pop">
         <img src="https://images.pexels.com/photos/5853394/pexels-photo-5853394.jpeg?auto=compress&cs=tinysrgb&w=600&h=600" alt="Beard grooming" loading="lazy">
         <div class="bb-pitem-overlay"><span>BEARD SCULPT</span></div>
       </div>
-      <div class="bb-pitem bb-clip">
+      <div class="bb-pitem bb-pop">
         <img src="https://images.pexels.com/photos/1570806/pexels-photo-1570806.jpeg?auto=compress&cs=tinysrgb&w=600&h=600" alt="Clipper cut" loading="lazy">
         <div class="bb-pitem-overlay"><span>CLIPPER CUT</span></div>
       </div>
-      <div class="bb-pitem wide bb-clip">
+      <div class="bb-pitem wide bb-pop">
         <img src="https://images.pexels.com/photos/7518739/pexels-photo-7518739.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="Barbershop interior" loading="lazy">
         <div class="bb-pitem-overlay"><span>THE SHOP</span></div>
       </div>
-      <div class="bb-pitem bb-clip">
+      <div class="bb-pitem bb-pop">
         <img src="https://images.pexels.com/photos/7697711/pexels-photo-7697711.jpeg?auto=compress&cs=tinysrgb&w=600&h=600" alt="Barber tools razor" loading="lazy">
         <div class="bb-pitem-overlay"><span>THE TOOLS</span></div>
       </div>
@@ -428,7 +427,7 @@ img{max-width:100%;display:block}
   var ham=document.querySelector('.bb-ham'),links=document.querySelector('.bb-nav-links');
   ham.addEventListener('click',function(){links.classList.toggle('open')});
   links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open')})});
-  var els=document.querySelectorAll('.bb-pop,.bb-pop-l,.bb-pop-r,.bb-clip');
+  var els=document.querySelectorAll('.bb-pop,.bb-pop-l,.bb-pop-r');
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('bb-vis');io.unobserve(e.target)}})},{threshold:.06,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el,i){el.style.transitionDelay=(i%4)*90+'ms';io.observe(el)})}else{els.forEach(function(p){p.classList.add('bb-vis')})}
 })();
 </script>
