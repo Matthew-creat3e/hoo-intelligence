@@ -32,24 +32,24 @@ const IS_LIVE     = process.argv.includes('--live');
 // Each industry maps to its V4 template file and placeholder business info.
 // The engine reads the template, swaps placeholders with real lead data.
 const V4_TEMPLATES = {
-  'auto detailing':    { file: 'v4-auto-detailing-demo.html',    placeholder: 'DRIP Detail KC',           shortName: 'DRIP Detail',     phone: '(816) 555-0147' },
-  'auto repair':       { file: 'v4-auto-repair-demo.html',       placeholder: 'Precision Auto KC',        shortName: 'Precision Auto',  phone: '(816) 955-1234' },
-  barber:              { file: 'v4-barber-demo.html',             placeholder: 'Iron & Blade Barbershop',  shortName: 'Iron & Blade',    phone: '(816) 955-1234' },
-  cleaning:            { file: 'v4-cleaning-demo.html',           placeholder: 'Pristine Clean KC',        shortName: 'Pristine Clean',  phone: '(816) 955-1234' },
-  fencing:             { file: 'v4-fencing-demo.html',            placeholder: 'KC Fence Pros',            shortName: 'KC Fence',        phone: '(816) 955-1234' },
-  'food truck':        { file: 'v4-food-truck-demo.html',         placeholder: 'Fuego KC',                 shortName: 'Fuego',           phone: '(816) 555-0193' },
-  handyman:            { file: 'v4-handyman-demo.html',           placeholder: 'FixIt Pro KC',             shortName: 'FixIt Pro',       phone: '(816) 955-1234' },
-  'junk removal':      { file: 'v4-junk-removal-demo.html',       placeholder: 'KC Junk Pros',             shortName: 'KC Junk',         phone: '(816) 955-1234' },
-  landscaping:         { file: 'v4-landscaping-demo.html',        placeholder: 'Stonegate Landscapes',     shortName: 'Stonegate',       phone: '(816) 555-0247' },
-  'lawn care':         { file: 'v4-lawn-care-demo.html',          placeholder: 'GreenLine Lawn Co.',       shortName: 'GreenLine',       phone: '(816) 955-1234' },
-  moving:              { file: 'v4-moving-demo.html',             placeholder: 'MoveRight KC',             shortName: 'MoveRight',       phone: '(816) 555-0318' },
-  painting:            { file: 'v4-painting-demo.html',           placeholder: 'BrushCraft Painting Co.',  shortName: 'BrushCraft',      phone: '(816) 555-0192' },
-  'personal training': { file: 'v4-personal-training-demo.html',  placeholder: 'FORGE Athletics',          shortName: 'FORGE',           phone: '(816) 555-0237' },
-  'pet grooming':      { file: 'v4-pet-grooming-demo.html',       placeholder: 'Paws & Co.',              shortName: 'Paws',            phone: '(816) 555-0192' },
-  photography:         { file: 'v4-photography-demo.html',        placeholder: 'Lens & Light KC',          shortName: 'Lens & Light',    phone: '(816) 555-0217' },
-  'pressure washing':  { file: 'v4-pressure-washing-demo.html',   placeholder: 'BlastClean KC',            shortName: 'BlastClean',      phone: '(816) 555-0284' },
-  roofing:             { file: 'v4-roofing-demo.html',            placeholder: 'Summit Roofing KC',        shortName: 'Summit Roofing',  phone: '(816) 555-ROOF' },
-  tattoo:              { file: 'v4-tattoo-demo.html',             placeholder: 'Iron & Ink Tattoo',        shortName: 'Iron & Ink',      phone: '(816) 955-1234' },
+  'auto detailing':    { file: 'v4-auto-detailing-demo.html',    placeholder: 'DRIP Detail KC',           shortName: 'DRIP Detail',     brandWord: 'Drip',     phone: '(816) 555-0147' },
+  'auto repair':       { file: 'v4-auto-repair-demo.html',       placeholder: 'Precision Auto KC',        shortName: 'Precision Auto',  brandWord: 'Precision', phone: '(816) 955-1234' },
+  barber:              { file: 'v4-barber-demo.html',             placeholder: 'Iron & Blade Barbershop',  shortName: 'Iron & Blade',    brandWord: null,       phone: '(816) 955-1234' },
+  cleaning:            { file: 'v4-cleaning-demo.html',           placeholder: 'Pristine Clean KC',        shortName: 'Pristine Clean',  brandWord: 'Pristine', phone: '(816) 955-1234' },
+  fencing:             { file: 'v4-fencing-demo.html',            placeholder: 'KC Fence Pros',            shortName: 'KC Fence',        brandWord: null,       phone: '(816) 955-1234' },
+  'food truck':        { file: 'v4-food-truck-demo.html',         placeholder: 'Fuego KC',                 shortName: 'Fuego',           brandWord: 'Fuego',    phone: '(816) 555-0193' },
+  handyman:            { file: 'v4-handyman-demo.html',           placeholder: 'FixIt Pro KC',             shortName: 'FixIt Pro',       brandWord: 'FixIt',    phone: '(816) 955-1234' },
+  'junk removal':      { file: 'v4-junk-removal-demo.html',       placeholder: 'KC Junk Pros',             shortName: 'KC Junk',         brandWord: null,       phone: '(816) 955-1234' },
+  landscaping:         { file: 'v4-landscaping-demo.html',        placeholder: 'Stonegate Landscapes',     shortName: 'Stonegate',       brandWord: 'Stonegate', phone: '(816) 555-0247' },
+  'lawn care':         { file: 'v4-lawn-care-demo.html',          placeholder: 'GreenLine Lawn Co.',       shortName: 'GreenLine',       brandWord: 'GreenLine', phone: '(816) 955-1234' },
+  moving:              { file: 'v4-moving-demo.html',             placeholder: 'MoveRight KC',             shortName: 'MoveRight',       brandWord: 'MoveRight', phone: '(816) 555-0318' },
+  painting:            { file: 'v4-painting-demo.html',           placeholder: 'BrushCraft Painting Co.',  shortName: 'BrushCraft',      brandWord: 'BrushCraft', phone: '(816) 555-0192' },
+  'personal training': { file: 'v4-personal-training-demo.html',  placeholder: 'FORGE Athletics',          shortName: 'FORGE',           brandWord: 'FORGE',    phone: '(816) 555-0237' },
+  'pet grooming':      { file: 'v4-pet-grooming-demo.html',       placeholder: 'Paws & Co.',              shortName: 'Paws',            brandWord: 'Paws',     phone: '(816) 555-0192' },
+  photography:         { file: 'v4-photography-demo.html',        placeholder: 'Lens & Light KC',          shortName: 'Lens & Light',    brandWord: null,       phone: '(816) 555-0217' },
+  'pressure washing':  { file: 'v4-pressure-washing-demo.html',   placeholder: 'BlastClean KC',            shortName: 'BlastClean',      brandWord: 'BlastClean', phone: '(816) 555-0284' },
+  roofing:             { file: 'v4-roofing-demo.html',            placeholder: 'Summit Roofing KC',        shortName: 'Summit Roofing',  brandWord: 'Summit',   phone: '(816) 555-ROOF' },
+  tattoo:              { file: 'v4-tattoo-demo.html',             placeholder: 'Iron & Ink Tattoo',        shortName: 'Iron & Ink',      brandWord: null,       phone: '(816) 955-1234' },
 };
 
 // ── INDUSTRY COLOR THEMES (ALL LIGHT) ────────────────────────────────────────
@@ -714,6 +714,36 @@ function buildFromV4Template(lead, photos, compIntel) {
       html = html.split(shortUpperEnc).join(bizShortUpper.replace(/&/g, '&amp;'));
     }
     console.log(`   ✏️  Short name: "${shortName}" → "${bizShort}"`);
+  }
+
+  // Replace single brand word (e.g. "Drip" from "DRIP Detail KC", "Fuego" from "Fuego KC")
+  // This catches creative uses like "The Full Drip", "Ready to drip?", "@DRIPDETAILKC"
+  if (tmpl.brandWord) {
+    const bw = tmpl.brandWord;
+    const bizClean = biz.replace(/,?\s*(LLC|Inc\.?|Co\.?|Corp\.?)$/i, '').trim();
+    const bizFirst = bizClean.split(' ')[0];
+    // Replace all case forms of the brand word with the lead's first word
+    html = html.split(bw).join(bizFirst);
+    html = html.split(bw.toUpperCase()).join(bizFirst.toUpperCase());
+    html = html.split(bw.toLowerCase()).join(bizFirst.toLowerCase());
+    console.log(`   ✏️  Brand word: "${bw}" → "${bizFirst}"`);
+  }
+
+  // Handle HTML-tagged logos like "DRIP <em>DETAIL</em> KC" or "LENS <em>&</em> LIGHT"
+  // Replace any logo div content that still has template text
+  html = html.replace(/<div class="[^"]*logo[^"]*">([^<]*(?:<[^>]+>[^<]*)*)<\/div>/gi, (match, inner) => {
+    // If this logo content still contains a template word that should have been replaced, rebuild it
+    const bizClean = biz.replace(/,?\s*(LLC|Inc\.?|Co\.?|Corp\.?)$/i, '').trim();
+    const bizUpper = bizClean.toUpperCase();
+    // Preserve the original div tags, just replace the inner content
+    return match.replace(inner, bizUpper);
+  });
+
+  // Replace social handles like @DRIPDETAILKC → @BIZNAME
+  const bizSlugUpper = biz.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  const placeholderSlug = tmpl.placeholder.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  if (placeholderSlug) {
+    html = html.split('@' + placeholderSlug).join('@' + bizSlugUpper);
   }
 
   // 2. PHONE — replace placeholder phone with real phone (or hide if none)
