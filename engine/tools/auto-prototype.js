@@ -730,12 +730,10 @@ function buildFromV4Template(lead, photos, compIntel) {
   }
 
   // Handle HTML-tagged logos like "DRIP <em>DETAIL</em> KC" or "LENS <em>&</em> LIGHT"
-  // Replace any logo div content that still has template text
-  html = html.replace(/<div class="[^"]*logo[^"]*">([^<]*(?:<[^>]+>[^<]*)*)<\/div>/gi, (match, inner) => {
-    // If this logo content still contains a template word that should have been replaced, rebuild it
+  // Only match the logo div's inner content up to its first closing </div> (non-greedy)
+  html = html.replace(/<div class="[^"]*logo[^"]*">((?:(?!<\/div>).)*)<\/div>/gi, (match, inner) => {
     const bizClean = biz.replace(/,?\s*(LLC|Inc\.?|Co\.?|Corp\.?)$/i, '').trim();
     const bizUpper = bizClean.toUpperCase();
-    // Preserve the original div tags, just replace the inner content
     return match.replace(inner, bizUpper);
   });
 
@@ -1404,9 +1402,9 @@ async function buildPrototype(leadPath) {
 
   const theme = INDUSTRY_THEMES[industry] || DEFAULT_THEME;
 
-  // Competitor intel scraping
+  // Competitor intel scraping — only needed for v3 fallback (V4 templates don't use it)
   let compIntel = null;
-  if (city && industry) {
+  if (!hasV4 && city && industry) {
     console.log('\n\ud83d\udd75\ufe0f  Competitor Intel...');
     compIntel = await scrapeCompetitorIntel(industry, `${city} ${lead.state || 'MO'}`, leadId);
     if (compIntel && compIntel.ogImages.length > 0) {

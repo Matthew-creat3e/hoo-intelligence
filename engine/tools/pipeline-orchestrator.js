@@ -223,31 +223,33 @@ async function huntLeads(industry, city) {
   }
 
   const systemPrompt = `You are a lead finder for HOO, a web agency in Kansas City MO.
-Search for local small businesses with NO website or a poor website.
+Search for local small businesses with absolutely NO website.
 Search Facebook, Google Maps, Yelp, their Facebook About section, and any local directories.
 For contact info — check their Facebook page About tab, Google Maps listing, Yelp page, and any directory listings.
 
 CRITICAL RULES:
 1. Your FINAL text output must be ONLY a valid JSON array. No explanation. No apologies. No "I couldn't find" messages.
 2. If you find fewer than 5 perfect matches, STILL return what you found — even 1 or 2 leads.
-3. Include businesses with outdated/ugly/broken websites too — not just "no website."
-4. Include businesses that only have a Facebook page but no real website.
+3. ONLY return businesses with NO website at all. If they have ANY website — Wix, Square, GoDaddy, WordPress, Shopify, custom — DO NOT include them. We build websites for businesses that have NONE.
+4. Facebook pages, Yelp listings, and Google Maps listings do NOT count as websites. A business with ONLY these = no website = good lead.
 5. If the specific city is small, expand your search to nearby cities in the KC metro.
-6. NEVER return an empty response. There is ALWAYS at least one small business without a good website.
-7. VERIFY WEBSITES CAREFULLY: Actually check if the business has a real website (not just Facebook/Yelp). If they have ANY working website (even a basic Wix, Square, GoDaddy, or Google site), set no_website to FALSE and include the URL in website_url. We ONLY want businesses with truly NO real website.
-8. If the business has a website URL, ALWAYS include it in website_url — even if you think the site is poor quality. We verify URLs on our end.
+6. NEVER return an empty response. There is ALWAYS at least one small business without a website.
+7. DIG HARD for contact info. Check Facebook About section, Google Maps listing, Yelp page, every directory. We need phone numbers and emails to reach out.
+8. Set no_website to TRUE for every lead — if they have a website, don't return them at all.
 
 Each object must have these exact keys:
   business_name, owner_name (empty string if not found), phone (dig hard — check every source),
   email (dig hard — check Facebook About, Google listing, Yelp, their own website if any),
   address, city, state, industry, source, no_website (true/false), website_url (empty string if none),
-  notes (one sentence why they qualify)
+  notes (one sentence why they qualify — must mention they have no website)
 Return 3-10 leads. Prioritize leads where you found both phone AND email.
 Output ONLY the JSON array. Start with [ and end with ].`;
 
-  const userMessage = `Find ${industry} businesses in ${city} that have no website or a very poor website. 
+  const userMessage = `Find ${industry} businesses in ${city} that have NO website at all.
+They should ONLY have a Facebook page, Google listing, or Yelp — but NO actual website.
+If a business has ANY website (even ugly, even basic) do NOT include them.
 Search Facebook business pages, Google Maps listings, Yelp, and local directories.
-VERIFY each one — do not include businesses that clearly have a working professional website.
+Dig hard for phone numbers and email addresses — check every source.
 Return as a JSON array only.`;
 
   let rawText = '';
@@ -408,13 +410,36 @@ Return as a JSON array only.`;
 
     // If Claude said they have a website URL, verify it actually works
     if (givenUrl && givenUrl.length > 5 && !givenUrl.includes('facebook.com') && !givenUrl.includes('yelp.com')) {
-      const isLive = await checkUrl(givenUrl);
-      if (isLive) {
-        console.log(`  ⚠️  ${bizName} has a working website: ${givenUrl} — marking as HAS WEBSITE`);
+      // Add protocol if missing
+      const urlsToCheck = [];
+      if (givenUrl.startsWith('http')) {
+        urlsToCheck.push(givenUrl);
+      } else {
+        urlsToCheck.push(`https://${givenUrl}`, `https://www.${givenUrl}`);
+      }
+      for (const testUrl of urlsToCheck) {
+        const isLive = await checkUrl(testUrl);
+        if (isLive) {
+          console.log(`  ⚠️  ${bizName} has a working website: ${testUrl} — SKIPPING`);
+          candidate._has_website = true;
+          candidate.no_website = false;
+          break;
+        }
+      }
+      // Even if URL check failed, if Claude provided a URL, mark it — they likely have a site
+      if (!candidate._has_website && givenUrl.length > 8) {
+        console.log(`  ⚠️  ${bizName} has website_url "${givenUrl}" (unreachable but still risky) — SKIPPING`);
         candidate._has_website = true;
         candidate.no_website = false;
-        continue;
       }
+      if (candidate._has_website) continue;
+    }
+
+    // If Claude explicitly said no_website is false, skip regardless
+    if (candidate.no_website === false) {
+      console.log(`  ⚠️  ${bizName} marked no_website=false by Claude — SKIPPING`);
+      candidate._has_website = true;
+      continue;
     }
 
     // If Claude said no_website, try common URL patterns to double-check
@@ -553,6 +578,32 @@ function buildSocialCaptions(lead) {
   };
 }
 
+// ── BUILD CALL SCRIPT ───────────────────────────────────────────────────────
+function buildCallScript(lead) {
+  const biz = lead.business || lead.business_name || 'your business';
+  const ownerName = (lead.owner_name || lead.owner || '').trim();
+  const ownerFirst = ownerName ? ownerName.split(' ')[0] : '';
+  const city = lead.city || 'your area';
+  const industry = lead.industry || 'business';
+
+  const greeting = ownerFirst ? `Hey ${ownerFirst}, this is` : `Hey, this is`;
+
+  return {
+    opener: `${greeting} Matthew from HOO out of Kansas City. I do web design for local ${industry} businesses. Got a quick second?`,
+    hook: `I was looking at ${industry} businesses in ${city} and I noticed ${biz} doesn't have a website yet. So I actually went ahead and built you one — completely free, just to show you what's possible.`,
+    pitch: `It's a full custom homepage — mobile-ready, has your phone number, your city, real photos, the whole thing. I'd love to send it over so you can take a look. What's the best email to send it to?`,
+    objections: {
+      'not interested': `No worries at all. The site's already built though — can I at least email it over? Zero obligation. If you hate it, no hard feelings.`,
+      'how much': `The demo is 100% free. If you love it and want it live on your own domain, it's a flat one-time fee — no monthly charges, no contracts. But first just take a look and see if you even like it.`,
+      'already have someone': `Totally respect that. I just noticed you don't have a site up yet — the one I built is already done, so if you want a second option to compare, I can send it over real quick.`,
+      'too busy': `I totally get it — that's actually why I built it for you. Takes 30 seconds to look at on your phone. What's a good email? I'll shoot it over and you can check it whenever.`,
+      'call back later': `For sure. When's a good time? I'll call you back then. And what's a good email so I can send the site preview ahead of time?`
+    },
+    voicemail: `${greeting} Matthew — I do websites for ${industry} businesses in ${city}. I actually built a free website for ${biz} and I'd love to send it over. Give me a call back at 804-957-1003 or I'll try you again in a couple days. Thanks!`,
+    close: `Awesome. I'll send that over right now. Take a look on your phone too — it looks great on mobile. And if you have any questions just call or text me at 804-957-1003.`
+  };
+}
+
 // ── PROCESS SINGLE LEAD → APPROVAL ──────────────────────────────────────────
 async function processLead(leadPath) {
   let lead;
@@ -590,7 +641,9 @@ async function processLead(leadPath) {
     return null;
   }
 
-  // Step 2: Build email preview
+  // Step 2: Build call script + email preview
+  console.log('📞  Building call script...');
+  const callScript = buildCallScript(lead);
   console.log('📧  Building email preview...');
   const emailPreview = buildEmailPreview(lead, demoResult.filename);
 
@@ -613,9 +666,14 @@ async function processLead(leadPath) {
       tier: lead.tier || 'HOT'
     },
     demo_path: `outputs/demos/${demoResult.filename}`,
+    call_script: callScript,
     email_preview: emailPreview,
     social_captions: socialCaptions,
-    status: 'pending',
+    status: 'call-queue',
+    call_log: [],
+    email_sent: false,
+    email_sent_date: null,
+    follow_up_dates: [],
     created_date: new Date().toISOString().split('T')[0]
   };
 
@@ -1024,6 +1082,297 @@ function rejectById(leadId) {
   return true;
 }
 
+// ── LOG CALL ────────────────────────────────────────────────────────────────
+// Log a call attempt on an approval. Outcomes:
+//   reached      — spoke to them (use send-demo if they want the site)
+//   voicemail    — left voicemail, callback in 2 days
+//   no-answer    — didn't pick up, try again tomorrow
+//   not-interested — done, mark dead
+//   send-demo    — reached + they want to see the site → triggers email
+function logCall(approvalFilename, outcome) {
+  const approvalPath = path.join(APPROVALS_DIR, approvalFilename);
+  if (!fs.existsSync(approvalPath)) {
+    console.error(`❌  Not found: ${approvalFilename}`);
+    return false;
+  }
+
+  const approval = JSON.parse(fs.readFileSync(approvalPath, 'utf8'));
+  const biz = approval.lead?.business || approvalFilename;
+  const now = new Date();
+  const entry = {
+    date: now.toISOString(),
+    outcome: outcome,
+    display_date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+  };
+
+  if (!approval.call_log) approval.call_log = [];
+  approval.call_log.push(entry);
+
+  switch (outcome) {
+    case 'reached':
+      approval.status = 'reached';
+      console.log(`📞  ${biz} — Reached. Use "send-demo" when ready to send the site.`);
+      break;
+
+    case 'voicemail':
+      approval.status = 'callback';
+      approval.callback_date = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      console.log(`📱  ${biz} — Left voicemail. Callback scheduled: ${approval.callback_date}`);
+      break;
+
+    case 'no-answer':
+      approval.status = 'callback';
+      approval.callback_date = new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      console.log(`❌  ${biz} — No answer. Try again tomorrow: ${approval.callback_date}`);
+      break;
+
+    case 'not-interested':
+      approval.status = 'dead';
+      approval.dead_date = now.toISOString().split('T')[0];
+      console.log(`🚫  ${biz} — Not interested. Removed from queue.`);
+      break;
+
+    case 'send-demo':
+      approval.status = 'demo-sent';
+      approval.call_log[approval.call_log.length - 1].outcome = 'reached-send-demo';
+      console.log(`📞  ${biz} — Reached + wants the site! Sending demo email...`);
+      // Trigger email send
+      sendDemoEmail(approvalFilename);
+      break;
+
+    default:
+      console.error(`❌  Unknown outcome: "${outcome}". Use: reached, voicemail, no-answer, not-interested, send-demo`);
+      return false;
+  }
+
+  fs.writeFileSync(approvalPath, JSON.stringify(approval, null, 2), 'utf8');
+  return true;
+}
+
+// ── SEND DEMO EMAIL ─────────────────────────────────────────────────────────
+// Sends the demo link email after a successful call.
+// DRY RUN by default — add --live to actually send.
+async function sendDemoEmail(approvalFilename) {
+  const approvalPath = path.join(APPROVALS_DIR, approvalFilename);
+  if (!fs.existsSync(approvalPath)) {
+    console.error(`❌  Not found: ${approvalFilename}`);
+    return;
+  }
+
+  const approval = JSON.parse(fs.readFileSync(approvalPath, 'utf8'));
+  const lead = approval.lead || {};
+  const biz = lead.business || 'your business';
+  const ownerName = (lead.owner || '').trim();
+  const ownerFirst = ownerName ? ownerName.split(' ')[0] : 'there';
+  const email = (lead.email || '').trim();
+
+  if (!email || email === '[no email]') {
+    console.log(`⚠️  ${biz} has no email address. Get it on the call and run:`);
+    console.log(`   node pipeline-orchestrator.js add-email ${approval.id} their@email.com`);
+    return;
+  }
+
+  // Build live demo URL
+  const cleanName = biz.replace(/[^a-zA-Z0-9\s]/g, '').split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+  const liveUrl = `https://matthew-creat3e.github.io/hoo-intelligence/demos/${cleanName}.html`;
+
+  const subject = `Here's the website I built for ${biz}`;
+  const bodyText = `Hey ${ownerFirst},
+
+Great talking to you! As promised, here's the website I built for ${biz}:
+
+${liveUrl}
+
+Take a look on your phone too — it's fully mobile-ready.
+
+If you love it, I'll get it live on your own domain for a flat fee. No monthly charges, no contracts. If it's not for you, no worries at all.
+
+Let me know what you think!
+
+- Matthew Herrman
+HOO — Kansas City, MO
+(804) 957-1003
+herrmanonlineoutlook.com`;
+
+  if (!IS_LIVE) {
+    console.log('\n─── EMAIL PREVIEW (DRY RUN) ───');
+    console.log(`TO:      ${email}`);
+    console.log(`SUBJECT: ${subject}`);
+    console.log('─── BODY ───');
+    console.log(bodyText);
+    console.log('────────────');
+    console.log('\n🔒  DRY RUN — add --live to actually send.');
+    console.log(`   node pipeline-orchestrator.js send-demo ${approvalFilename} --live`);
+    return;
+  }
+
+  // Actually send via Nodemailer
+  try {
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD
+      }
+    });
+
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+      console.error('❌  Missing GMAIL_USER or GMAIL_APP_PASSWORD in .env');
+      console.log('   Set up a Gmail App Password: Google Account → Security → App Passwords');
+      return;
+    }
+
+    const info = await transporter.sendMail({
+      from: `"Matthew Herrman | HOO" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: subject,
+      text: bodyText,
+    });
+
+    console.log(`✅  Email sent to ${email} [${info.messageId}]`);
+
+    // Update approval
+    approval.email_sent = true;
+    approval.email_sent_date = new Date().toISOString().split('T')[0];
+    approval.status = 'demo-sent';
+
+    // Schedule follow-ups at 3, 7, 14 days
+    const now = new Date();
+    approval.follow_up_dates = [
+      new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    ];
+    fs.writeFileSync(approvalPath, JSON.stringify(approval, null, 2), 'utf8');
+
+    // Log to email-log.json
+    const logFile = path.join(ROOT, 'engine', 'data', 'email-log.json');
+    let log = [];
+    try { log = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
+    log.push({
+      date: new Date().toISOString(),
+      lead: biz,
+      id: approval.id,
+      to: email,
+      subject: subject,
+      messageId: info.messageId,
+      status: 'sent',
+      demo_url: liveUrl,
+    });
+    fs.writeFileSync(logFile, JSON.stringify(log, null, 2));
+
+    // Update lead stage
+    const leadFiles = fs.readdirSync(LEADS_DIR).filter(f => f.startsWith(approval.id + '-'));
+    for (const lf of leadFiles) {
+      try {
+        const leadData = JSON.parse(fs.readFileSync(path.join(LEADS_DIR, lf), 'utf8'));
+        leadData.stage = 'contacted';
+        fs.writeFileSync(path.join(LEADS_DIR, lf), JSON.stringify(leadData, null, 2), 'utf8');
+      } catch {}
+    }
+
+    console.log(`📧  Demo email sent. Follow-ups scheduled: ${approval.follow_up_dates.join(', ')}`);
+
+    // Auto-push demo to GitHub Pages if not already pushed
+    try {
+      const { execSync } = require('child_process');
+      const demosDir = path.join(ROOT, 'demos');
+      const demoSrc = path.join(ROOT, approval.demo_path);
+      if (fs.existsSync(demoSrc)) {
+        fs.copyFileSync(demoSrc, path.join(demosDir, `${cleanName}.html`));
+        execSync('git add demos/', { cwd: ROOT });
+        const gitStatus = execSync('git status --porcelain demos/', { cwd: ROOT, encoding: 'utf8' });
+        if (gitStatus.trim()) {
+          execSync(`git commit -m "deploy: ${cleanName} demo"`, { cwd: ROOT });
+          execSync('git push origin master', { cwd: ROOT, timeout: 30000 });
+          console.log('🚀  Demo pushed to GitHub Pages — link live in ~1 min');
+        }
+      }
+    } catch (pushErr) {
+      console.warn(`⚠️  Auto-push failed: ${pushErr.message} — run "git push" manually`);
+    }
+  } catch (err) {
+    console.error(`❌  Email send failed: ${err.message}`);
+  }
+}
+
+// ── SHOW CALL QUEUE ─────────────────────────────────────────────────────────
+function showCallQueueV2() {
+  const files = fs.readdirSync(APPROVALS_DIR).filter(f => f.endsWith('.json'));
+  if (!files.length) { console.log('\n📭  No leads in the queue.'); return; }
+
+  const queue = [];
+  const followUp = [];
+  const dead = [];
+  const today = new Date().toISOString().split('T')[0];
+
+  for (const f of files) {
+    const a = JSON.parse(fs.readFileSync(path.join(APPROVALS_DIR, f), 'utf8'));
+    a._filename = f;
+    if (a.status === 'dead') { dead.push(a); continue; }
+    if (a.status === 'demo-sent') { followUp.push(a); continue; }
+    queue.push(a);
+  }
+
+  // Sort: no calls first, then callbacks due today/past, then future callbacks
+  queue.sort((a, b) => {
+    const aCalls = (a.call_log || []).length;
+    const bCalls = (b.call_log || []).length;
+    if (aCalls === 0 && bCalls > 0) return -1;
+    if (bCalls === 0 && aCalls > 0) return 1;
+    if (a.callback_date && b.callback_date) return a.callback_date.localeCompare(b.callback_date);
+    return 0;
+  });
+
+  console.log(`\n${'━'.repeat(55)}`);
+  console.log(`📞  CALL QUEUE — ${queue.length} to call | ${followUp.length} follow-ups | ${dead.length} dead`);
+  console.log(`${'━'.repeat(55)}\n`);
+
+  if (queue.length) {
+    console.log('── TO CALL ──────────────────────────────────────────');
+    for (const a of queue) {
+      const l = a.lead || {};
+      const calls = (a.call_log || []).length;
+      const callInfo = calls > 0 ? ` (${calls} attempts)` : ' ← NEW';
+      const callback = a.callback_date ? ` | callback: ${a.callback_date}` : '';
+      const due = a.callback_date && a.callback_date <= today ? ' ⚡ DUE' : '';
+      console.log(`  📞  ${l.business || '?'} — ${l.phone || 'NO PHONE'} | ${l.industry} | ${l.city}, ${l.state}${callInfo}${callback}${due}`);
+      if (l.owner) console.log(`       Owner: ${l.owner}`);
+      console.log(`       File: ${a._filename}`);
+    }
+  }
+
+  if (followUp.length) {
+    console.log('\n── FOLLOW-UP (demo sent) ────────────────────────────');
+    for (const a of followUp) {
+      const l = a.lead || {};
+      const nextFollowUp = (a.follow_up_dates || []).find(d => d >= today) || 'done';
+      const due = nextFollowUp <= today ? ' ⚡ DUE TODAY' : '';
+      console.log(`  📧  ${l.business || '?'} — sent ${a.email_sent_date || '?'} | next follow-up: ${nextFollowUp}${due}`);
+    }
+  }
+
+  if (dead.length) {
+    console.log(`\n── DEAD (${dead.length}) ──────────────────────────────────`);
+    for (const a of dead) {
+      console.log(`  🚫  ${a.lead?.business || '?'} — ${a.dead_date || '?'}`);
+    }
+  }
+
+  console.log(`\n${'━'.repeat(55)}`);
+  console.log('Commands:');
+  console.log('  log-call <file> reached        — Spoke to them');
+  console.log('  log-call <file> voicemail       — Left voicemail');
+  console.log('  log-call <file> no-answer       — Didn\'t pick up');
+  console.log('  log-call <file> not-interested  — Done, mark dead');
+  console.log('  log-call <file> send-demo       — Reached + send demo email');
+  console.log('  send-demo <file>                — Send demo email (after getting email on call)');
+  console.log('  add-email <LEAD-ID> <email>     — Add email to lead');
+  console.log(`${'━'.repeat(55)}`);
+}
+
 // ── CLI ──────────────────────────────────────────────────────────────────────
 async function main() {
   const [,, cmd, arg] = process.argv;
@@ -1050,8 +1399,23 @@ async function main() {
       break;
 
     case 'calls':
-      showCallQueue();
+    case 'queue':
+      showCallQueueV2();
       break;
+
+    case 'log-call': {
+      if (!arg) { console.log('Usage: node pipeline-orchestrator.js log-call <APPROVAL-FILE> <outcome>'); return; }
+      const outcome = process.argv[4];
+      if (!outcome) { console.log('Outcomes: reached, voicemail, no-answer, not-interested, send-demo'); return; }
+      logCall(arg, outcome);
+      break;
+    }
+
+    case 'send-demo': {
+      if (!arg) { console.log('Usage: node pipeline-orchestrator.js send-demo <APPROVAL-FILE> [--live]'); return; }
+      await sendDemoEmail(arg);
+      break;
+    }
 
     case 'add-email': {
       const emailArg = process.argv[4];
@@ -1067,30 +1431,32 @@ async function main() {
 
     default:
       console.log(`
-\x1b[33mHOO Pipeline Orchestrator v2.1\x1b[0m — Hunt New → Demo → Approval
+\x1b[33mHOO Pipeline Orchestrator v3.0\x1b[0m — Hunt → Demo → Call → Close
 
 Commands:
-  run                      Hunt 4 brand new leads + build approvals
+  run                      Hunt 4 new leads + build V4 demos
   run --count=N            Hunt N new leads
-  single <lead.json>       Build approval for one specific lead
-  replace <approval.json>  Hunt 1 replacement (different city/industry than rejected)
+  queue / calls            Show call queue + follow-ups
+  log-call <file> <outcome>  Log a call (reached/voicemail/no-answer/not-interested/send-demo)
+  send-demo <file>         Send demo email after call (dry run)
+  send-demo <file> --live  Actually send the email
+  add-email <ID> <email>   Add email to a lead
+  reject <LEAD-ID>         Mark lead as dead
   status                   Show all approvals
-  calls                    Show phone call queue (pending leads with no email)
-  add-email <ID> <email>   Add email to lead + send demo immediately
-  reject <LEAD-ID>         Mark lead as not interested
+  single <lead.json>       Build approval for one specific lead
+  replace <approval.json>  Hunt replacement for rejected lead
 
 Pipeline:
-  1. Pick random city/industry combos (avoids duplicates)
-  2. Call Anthropic API (web_search tool) to find no-website businesses
-  3. Dedup against engine/leads/ — only brand new businesses
-  4. Write new LEAD-{ID}-{industry}-{city}.json files
-  5. Build demo for each (auto-prototype + Pexels photos)
-  6. Generate email preview (Template 7) + social captions
-  7. Save to engine/approvals/APPROVAL-{ID}.json
-  8. Matthew reviews in War Room → Approvals tab
-  9. On reject → auto-hunts replacement from different city/industry
+  1. Hunt → Find no-website businesses via Anthropic API
+  2. Demo → Build V4 template demo with lead's info + Pexels photos
+  3. Call Queue → Lead lands in war room ready for cold call
+  4. Cold Call → Matthew/Shelby calls, logs outcome
+  5. Send Demo → After call, email demo link to lead
+  6. Follow Up → Auto-scheduled at 3, 7, 14 days
+  7. Close → Lead says yes → build Shopify store
 
 Requires: ANTHROPIC_API_KEY in engine/tools/.env
+          GMAIL_USER + GMAIL_APP_PASSWORD for email send
 Output:   engine/approvals/
       `);
   }
