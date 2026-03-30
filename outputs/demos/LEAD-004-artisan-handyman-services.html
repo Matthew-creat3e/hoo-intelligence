@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artisan Handyman Services | Lee's Summit, MO — Handyman</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#1B3A5C;--blue-light:#2A5080;--blue-dark:#0F2640;
+  --gold:#E8A838;--gold-light:#F0BE5E;--gold-dark:#C88A20;
+  --bg:#FFFFFF;--bg2:#F7F8FA;--bg3:#EEF0F4;
+  --text:#1A1D26;--text-mid:#555A68;--text-dim:#8B90A0;
+  --font-h:'Outfit',sans-serif;--font-b:'Plus Jakarta Sans',sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);--ease-out:cubic-bezier(.16,1,.3,1);
+  --max:1200px;--radius:12px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.7;overflow-x:hidden}
+a{color:var(--blue);text-decoration:none;transition:color .3s}
+img{max-width:100%;display:block}
+.rev{opacity:0;transform:translateY(24px);transition:all .6s var(--ease-out)}
+.rev.vis{opacity:1;transform:none}
+
+/* === PROMO BAR === */
+.fi-promo{background:var(--gold);text-align:center;padding:10px 20px;font-family:var(--font-h);font-size:.72rem;font-weight:600;letter-spacing:1px;color:var(--blue-dark)}
+.fi-promo strong{font-weight:800}
+
+/* === NAV === */
+.fi-nav{position:sticky;top:0;z-index:999;background:var(--bg);border-bottom:1px solid rgba(0,0,0,.06);padding:0}
+.fi-nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 40px}
+.fi-logo{font-family:var(--font-h);font-size:1.3rem;font-weight:800;color:var(--blue)}
+.fi-logo span{color:var(--gold)}
+.fi-nav-links{display:flex;gap:28px;align-items:center}
+.fi-nav-links a{font-size:.78rem;font-weight:500;color:var(--text-mid);transition:color .2s}
+.fi-nav-links a:hover{color:var(--blue)}
+.fi-nav-right{display:flex;align-items:center;gap:16px}
+.fi-nav-phone{font-family:var(--font-h);font-size:.82rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px}
+.fi-nav-cta{background:var(--gold);color:var(--blue-dark);padding:10px 24px;font-family:var(--font-h);font-size:.75rem;font-weight:700;letter-spacing:.5px;border:none;border-radius:8px;cursor:pointer;transition:all .3s}
+.fi-nav-cta:hover{background:var(--gold-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,168,56,.3);color:var(--blue-dark)}
+.fi-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002}
+.fi-ham span{width:22px;height:2px;background:var(--text);transition:all .3s}
+
+/* === HERO — Image bg + overlapping form === */
+.fi-hero{position:relative;min-height:600px;display:flex;align-items:center;background:var(--blue-dark);overflow:hidden}
+.fi-hero-bg{position:absolute;inset:0}
+.fi-hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.35}
+.fi-hero-content{position:relative;z-index:2;max-width:var(--max);margin:0 auto;width:100%;padding:80px 40px;display:grid;grid-template-columns:1fr 400px;gap:60px;align-items:center}
+.fi-hero-text h1{font-family:var(--font-h);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:16px}
+.fi-hero-text h1 span{color:var(--gold)}
+.fi-hero-text p{color:rgba(255,255,255,.6);font-size:1rem;font-weight:300;max-width:460px;margin-bottom:28px;line-height:1.8}
+.fi-hero-badges{display:flex;gap:20px;flex-wrap:wrap}
+.fi-hero-badge{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5);font-size:.72rem;font-weight:500}
+.fi-hero-badge svg{width:18px;height:18px;fill:var(--gold)}
+
+/* Hero form card */
+.fi-hero-form{background:var(--bg);border-radius:var(--radius);padding:36px 32px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+.fi-hero-form h3{font-family:var(--font-h);font-size:1.1rem;font-weight:700;margin-bottom:4px;color:var(--blue)}
+.fi-hero-form .fi-form-sub{font-size:.78rem;color:var(--text-dim);margin-bottom:24px}
+.fi-hero-form label{display:block;font-size:.68rem;font-weight:600;letter-spacing:.5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:6px}
+.fi-hero-form input,.fi-hero-form select,.fi-hero-form textarea{width:100%;border:1px solid #E2E5EB;border-radius:8px;padding:12px 14px;font-family:var(--font-b);font-size:.85rem;color:var(--text);outline:none;transition:border .2s;background:var(--bg);margin-bottom:16px}
+.fi-hero-form input:focus,.fi-hero-form select:focus,.fi-hero-form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,168,56,.12)}
+.fi-hero-form select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%238B90A0' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.fi-hero-form textarea{resize:none;height:70px}
+.fi-hero-form-btn{width:100%;background:var(--gold);color:var(--blue-dark);padding:14px;font-family:var(--font-h);font-size:.85rem;font-weight:700;letter-spacing:.5px;border:none;border-radius:8px;cursor:pointer;transition:all .3s}
+.fi-hero-form-btn:hover{background:var(--gold-dark);box-shadow:0 6px 20px rgba(232,168,56,.3)}
+.fi-hero-form-trust{display:flex;justify-content:center;gap:16px;margin-top:14px}
+.fi-hero-form-trust span{font-size:.65rem;color:var(--text-dim);display:flex;align-items:center;gap:4px}
+.fi-hero-form-trust span::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+
+/* === TRUST BAR === */
+.fi-trust-bar{padding:28px 40px;background:var(--bg2);border-bottom:1px solid rgba(0,0,0,.04)}
+.fi-trust-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:center;align-items:center;gap:clamp(24px,4vw,56px);flex-wrap:wrap}
+.fi-trust-stat{text-align:center}
+.fi-trust-stat-num{font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:var(--blue)}
+.fi-trust-stat-label{font-size:.65rem;font-weight:500;color:var(--text-dim);letter-spacing:.5px}
+.fi-trust-divider{width:1px;height:40px;background:rgba(0,0,0,.08)}
+
+/* === SERVICES — Icon grid === */
+.fi-services{padding:100px 40px;background:var(--bg)}
+.fi-services-inner{max-width:var(--max);margin:0 auto}
+.fi-section-tag{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+.fi-section-title{font-family:var(--font-h);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;margin-bottom:12px}
+.fi-section-title span{color:var(--gold-dark)}
+.fi-section-desc{color:var(--text-mid);font-size:.92rem;font-weight:300;max-width:520px;margin-bottom:48px;line-height:1.8}
+.fi-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fi-svc-item{background:var(--bg2);border:1px solid rgba(0,0,0,.04);border-radius:var(--radius);padding:32px 28px;transition:all .4s var(--ease-out);cursor:default}
+.fi-svc-item:hover{background:var(--bg);border-color:rgba(232,168,56,.2);box-shadow:0 12px 32px rgba(0,0,0,.06);transform:translateY(-4px)}
+.fi-svc-icon{width:52px;height:52px;background:linear-gradient(135deg,rgba(27,58,92,.08),rgba(27,58,92,.02));border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;color:var(--blue)}
+.fi-svc-item h4{font-family:var(--font-h);font-size:.95rem;font-weight:700;margin-bottom:8px}
+.fi-svc-item p{font-size:.8rem;color:var(--text-dim);line-height:1.7;font-weight:400}
+.fi-svc-item .fi-svc-from{font-size:.7rem;font-weight:700;color:var(--gold-dark);margin-top:12px;letter-spacing:.5px}
+
+/* === 50/50 SPLIT SECTIONS === */
+.fi-split{padding:100px 40px;position:relative}
+.fi-split.alt{background:var(--bg2)}
+.fi-split-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.fi-split.flip .fi-split-inner{direction:rtl}
+.fi-split.flip .fi-split-inner>*{direction:ltr}
+.fi-split-img{border-radius:var(--radius);overflow:hidden;position:relative}
+.fi-split-img img{width:100%;height:100%;object-fit:cover;min-height:420px}
+.fi-split-img-badge{position:absolute;bottom:20px;left:20px;background:var(--gold);color:var(--blue-dark);padding:12px 20px;border-radius:8px;font-family:var(--font-h);font-size:.75rem;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.fi-split-img-badge .num{font-size:1.3rem;font-weight:800}
+.fi-split-text h2{font-family:var(--font-h);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;margin-bottom:16px;line-height:1.15}
+.fi-split-text h2 span{color:var(--gold-dark)}
+.fi-split-text>p{color:var(--text-mid);font-size:.9rem;font-weight:300;line-height:1.9;margin-bottom:28px}
+.fi-check-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+.fi-check-list li{display:flex;align-items:center;gap:12px;font-size:.85rem;font-weight:500;color:var(--text-mid);padding:12px 16px;background:var(--bg);border:1px solid rgba(0,0,0,.04);border-radius:10px;transition:all .3s}
+.fi-check-list li:hover{border-color:rgba(232,168,56,.15);transform:translateX(4px)}
+.fi-check-list li .check{width:24px;height:24px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.65rem;font-weight:700;flex-shrink:0}
+.fi-split.alt .fi-check-list li{background:var(--bg2)}
+
+/* === HOW IT WORKS === */
+.fi-steps{padding:100px 40px;background:var(--blue-dark);position:relative;overflow:hidden}
+.fi-steps::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(232,168,56,.08),transparent 60%);pointer-events:none}
+.fi-steps-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:1}
+.fi-steps-header{text-align:center;margin-bottom:64px}
+.fi-steps-header .fi-section-tag{color:var(--gold)}
+.fi-steps-header .fi-section-title{color:#fff}
+.fi-steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative}
+.fi-steps-grid::before{content:'';position:absolute;top:40px;left:12%;right:12%;height:2px;background:linear-gradient(90deg,transparent,rgba(232,168,56,.2),rgba(232,168,56,.3),rgba(232,168,56,.2),transparent)}
+.fi-step-card{text-align:center;position:relative}
+.fi-step-num{width:80px;height:80px;margin:0 auto 24px;border-radius:50%;background:rgba(255,255,255,.04);border:2px solid rgba(232,168,56,.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:var(--gold);position:relative;z-index:1;transition:all .4s var(--ease-out)}
+.fi-step-card:hover .fi-step-num{background:var(--gold);color:var(--blue-dark);border-color:var(--gold);transform:scale(1.1);box-shadow:0 12px 32px rgba(232,168,56,.2)}
+.fi-step-card h4{font-family:var(--font-h);font-size:.88rem;font-weight:700;color:#fff;letter-spacing:.5px;margin-bottom:8px}
+.fi-step-card p{font-size:.78rem;color:rgba(255,255,255,.35);font-weight:300;line-height:1.8;max-width:200px;margin:0 auto}
+
+/* === REVIEWS === */
+.fi-reviews{padding:100px 40px;background:var(--bg2)}
+.fi-reviews-inner{max-width:var(--max);margin:0 auto}
+.fi-reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.fi-review-card{background:var(--bg);border:1px solid rgba(0,0,0,.04);border-radius:var(--radius);padding:32px 28px;transition:all .4s var(--ease-out)}
+.fi-review-card:hover{box-shadow:0 12px 32px rgba(0,0,0,.06);transform:translateY(-4px)}
+.fi-review-stars{color:var(--gold);font-size:.85rem;letter-spacing:2px;margin-bottom:16px}
+.fi-review-text{font-size:.88rem;color:var(--text-mid);line-height:1.9;font-weight:300;margin-bottom:24px;font-style:italic}
+.fi-review-author{display:flex;align-items:center;gap:12px}
+.fi-review-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-light));display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-h);font-size:.7rem;font-weight:700;flex-shrink:0}
+.fi-review-name{font-family:var(--font-h);font-size:.75rem;font-weight:700;display:block}
+.fi-review-loc{font-size:.68rem;color:var(--text-dim)}
+
+/* === FAQ === */
+.fi-faq{padding:100px 40px;background:var(--bg)}
+.fi-faq-inner{max-width:720px;margin:0 auto}
+.fi-faq-item{border-bottom:1px solid rgba(0,0,0,.06)}
+.fi-faq-q{display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;gap:16px}
+.fi-faq-q h4{font-family:var(--font-h);font-size:.88rem;font-weight:600}
+.fi-faq-q .icon{width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--gold-dark);transition:all .3s;flex-shrink:0}
+.fi-faq-item.open .icon{background:var(--gold);color:#fff;transform:rotate(45deg)}
+.fi-faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease-out),padding .3s}
+.fi-faq-item.open .fi-faq-a{max-height:160px;padding:0 0 22px}
+.fi-faq-a p{font-size:.85rem;color:var(--text-mid);font-weight:300;line-height:1.9}
+
+/* === CTA BANNER === */
+.fi-cta-banner{padding:80px 40px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));text-align:center;position:relative;overflow:hidden}
+.fi-cta-banner::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(232,168,56,.1),transparent 60%);pointer-events:none}
+.fi-cta-banner h2{font-family:var(--font-h);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;color:#fff;margin-bottom:12px;position:relative;z-index:1}
+.fi-cta-banner h2 span{color:var(--gold)}
+.fi-cta-banner p{color:rgba(255,255,255,.45);font-size:.9rem;font-weight:300;margin-bottom:32px;position:relative;z-index:1}
+.fi-cta-banner-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.fi-cta-banner .fi-btn-gold{background:var(--gold);color:var(--blue-dark);padding:16px 40px;font-family:var(--font-h);font-size:.85rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all .3s}
+.fi-cta-banner .fi-btn-gold:hover{background:var(--gold-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,168,56,.3)}
+.fi-cta-banner .fi-btn-white{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2);padding:16px 40px;font-family:var(--font-h);font-size:.85rem;font-weight:700;border-radius:8px;cursor:pointer;transition:all .3s}
+.fi-cta-banner .fi-btn-white:hover{border-color:var(--gold);color:var(--gold)}
+
+/* === FOOTER === */
+.fi-footer{padding:48px 40px;background:var(--blue-dark)}
+.fi-footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.fi-footer p{font-size:.72rem;color:rgba(255,255,255,.25)}
+.fi-footer a{color:rgba(232,168,56,.35);font-size:.72rem}
+.fi-footer a:hover{color:var(--gold)}
+
+.fi-demo-bar{position:fixed;bottom:0;left:0;width:100%;background:var(--gold);color:var(--blue-dark);text-align:center;padding:8px 20px;font-family:var(--font-h);font-size:.68rem;font-weight:700;letter-spacing:2px;z-index:9999}
+.fi-demo-bar a{color:var(--blue-dark);text-decoration:underline}
+
+/* === MOBILE === */
+@media(max-width:900px){
+  .fi-hero-content{grid-template-columns:1fr;gap:40px;padding:60px 24px}
+  .fi-hero-form{max-width:440px}
+}
+@media(max-width:768px){
+  .fi-ham{display:flex}
+  .fi-nav-links{position:fixed;top:0;right:-100%;width:75vw;max-width:300px;height:100vh;background:var(--bg);flex-direction:column;justify-content:center;padding:40px;gap:20px;transition:right .4s var(--ease-out);z-index:1001;box-shadow:-8px 0 40px rgba(0,0,0,.1)}
+  .fi-nav-links.open{right:0}
+  .fi-nav-phone{display:none}
+  .fi-svc-grid{grid-template-columns:1fr 1fr}
+  .fi-split-inner{grid-template-columns:1fr;gap:40px}
+  .fi-split.flip .fi-split-inner{direction:ltr}
+  .fi-steps-grid{grid-template-columns:1fr 1fr;gap:40px}
+  .fi-steps-grid::before{display:none}
+  .fi-reviews-grid{grid-template-columns:1fr}
+  .fi-footer-inner{flex-direction:column;gap:8px;text-align:center}
+  .fi-trust-divider{display:none}
+  .fi-hero-badges{justify-content:center}
+  .fi-hero-text{text-align:center}
+  .fi-hero-text p{margin-left:auto;margin-right:auto}
+}
+@media(max-width:480px){
+  .fi-svc-grid{grid-template-columns:1fr}
+  .fi-steps-grid{grid-template-columns:1fr}
+}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+
+<!-- Promo bar -->
+<div class="fi-promo"><strong>LIMITED TIME:</strong> Book 3+ jobs &mdash; get 10% off your total. <a href="#quote" style="color:var(--blue);text-decoration:underline;font-weight:700">Get Your Bid &rarr;</a></div>
+
+<!-- Nav -->
+<nav class="fi-nav">
+  <div class="fi-nav-inner">
+    <div class="fi-logo">ARTISAN HANDYMAN SERVICES</div>
+    <div class="fi-nav-links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="fi-nav-right">
+      <a href="#contact" class="fi-nav-phone">&#9743; Contact Us</a>
+      <a href="#quote" class="fi-nav-cta">Get a Free Bid</a>
+      <div class="fi-ham" role="button" tabindex="0" aria-label="Menu"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero with form -->
+<section class="fi-hero" id="quote">
+  <div class="fi-hero-bg">
+    <img src="https://images.pexels.com/photos/3855223/pexels-photo-3855223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Handyman inspecting home">
+  </div>
+  <div class="fi-hero-content">
+    <div class="fi-hero-text">
+      <h1>One Call.<br><span>Everything Fixed.</span></h1>
+      <p>Lee's Summit&rsquo;s most trusted handyman. Drywall, plumbing, electrical, decks, assembly &mdash; we do it all, and we do it right the first time. No trip fees. No surprises.</p>
+      <div class="fi-hero-badges">
+        <div class="fi-hero-badge"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 4.9 Rating</div>
+        <div class="fi-hero-badge"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Licensed &amp; Insured</div>
+        <div class="fi-hero-badge"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> 2,400+ Jobs Done</div>
+      </div>
+    </div>
+    <div class="fi-hero-form">
+      <h3>Get Your Free Bid</h3>
+      <p class="fi-form-sub">Tell us what needs fixing. We&rsquo;ll respond within the hour.</p>
+      <label>Your Name</label>
+      <input type="text" placeholder="John Smith">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="(816) 555-1234">
+      <label>What Needs Fixing?</label>
+      <select>
+        <option value="" disabled selected>Select a service</option>
+        <option>General Repairs</option>
+        <option>Drywall &amp; Painting</option>
+        <option>Plumbing Fix</option>
+        <option>Electrical / Fixtures</option>
+        <option>Furniture Assembly</option>
+        <option>Deck &amp; Fence</option>
+        <option>Flooring</option>
+        <option>Multiple Jobs (Honey-Do List)</option>
+      </select>
+      <label>Describe the Job</label>
+      <textarea placeholder="E.g. Two drywall holes in hallway, leaky kitchen faucet, mount TV in bedroom..."></textarea>
+      <button class="fi-hero-form-btn" type="button">Get My Free Bid &rarr;</button>
+      <div class="fi-hero-form-trust">
+        <span>No trip fees</span>
+        <span>No obligation</span>
+        <span>Same-day response</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust bar -->
+<div class="fi-trust-bar">
+  <div class="fi-trust-inner">
+    <div class="fi-trust-stat"><div class="fi-trust-stat-num">2,400+</div><div class="fi-trust-stat-label">Jobs Completed</div></div>
+    <div class="fi-trust-divider"></div>
+    <div class="fi-trust-stat"><div class="fi-trust-stat-num">4.9 &#9733;</div><div class="fi-trust-stat-label">Google Rating</div></div>
+    <div class="fi-trust-divider"></div>
+    <div class="fi-trust-stat"><div class="fi-trust-stat-num">10+</div><div class="fi-trust-stat-label">Years Experience</div></div>
+    <div class="fi-trust-divider"></div>
+    <div class="fi-trust-stat"><div class="fi-trust-stat-num">1 Year</div><div class="fi-trust-stat-label">Workmanship Warranty</div></div>
+  </div>
+</div>
+
+<!-- Services — Icon grid -->
+<section class="fi-services" id="services">
+  <div class="fi-services-inner">
+    <div class="rev">
+      <div class="fi-section-tag">Our Services</div>
+      <div class="fi-section-title">What We <span>Fix</span></div>
+      <p class="fi-section-desc">From squeaky doors to full deck rebuilds. One call, one guy, everything handled.</p>
+    </div>
+    <div class="fi-svc-grid">
+      <div class="fi-svc-item rev">
+        <div class="fi-svc-icon">&#128295;</div>
+        <h4>General Repairs</h4>
+        <p>Doors, cabinets, hardware, locks, hinges, weather stripping &mdash; the stuff that&rsquo;s been bugging you.</p>
+        <div class="fi-svc-from">From $85/hr</div>
+      </div>
+      <div class="fi-svc-item rev">
+        <div class="fi-svc-icon">&#127912;</div>
+        <h4>Drywall &amp; Painting</h4>
+        <p>Patches, texture matching, accent walls, full room repaints. Invisible repairs.</p>
+        <div class="fi-svc-from">From $150</div>
+      </div>
+      <div class="fi-svc-item rev">
+        <div class="fi-svc-icon">&#128167;</div>
+        <h4>Plumbing Fixes</h4>
+        <p>Leaky faucets, running toilets, garbage disposals, under-sink repairs.</p>
+        <div class="fi-svc-from">From $95</div>
+      </div>
+      <div class="fi-svc-item rev">
+        <div class="fi-svc-icon">&#9889;</div>
+        <h4>Electrical &amp; Fixtures</h4>
+        <p>Ceiling fans, light fixtures, outlets, switches, smart home installs. Safe &amp; to code.</p>
+        <div class="fi-svc-from">From $110</div>
+      </div>
+      <div class="fi-svc-item rev">
+        <div class="fi-svc-icon">&#128218;</div>
+        <h4>Assembly &amp; Mounting</h4>
+        <p>Furniture, shelving, TV mounts, curtain rods, baby gates. Built right.</p>
+        <div class="fi-svc-from">From $75</div>
+      </div>
+      <div class="fi-svc-item rev">
+        <div class="fi-svc-icon">&#127795;</div>
+        <h4>Deck &amp; Fence</h4>
+        <p>Rotted boards, leaning posts, gate repairs, staining, full rebuilds.</p>
+        <div class="fi-svc-from">From $300</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 50/50: Why Us -->
+<section class="fi-split" id="about">
+  <div class="fi-split-inner">
+    <div class="fi-split-img rev">
+      <img src="https://images.pexels.com/photos/8092/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Builder smiling in workwear" loading="lazy">
+      <div class="fi-split-img-badge"><span class="num">10+</span> Years in the Trade</div>
+    </div>
+    <div class="fi-split-text rev">
+      <div class="fi-section-tag">Why Artisan Handyman</div>
+      <h2>Your Home.<br><span>Our Reputation.</span></h2>
+      <p>We started because every homeowner deserves a handyman who shows up on time, does clean work, and charges exactly what he quoted. No games.</p>
+      <ul class="fi-check-list">
+        <li><span class="check">&#10003;</span> Fully licensed, insured &amp; background checked</li>
+        <li><span class="check">&#10003;</span> Same-day response, same-week service</li>
+        <li><span class="check">&#10003;</span> We leave it cleaner than we found it</li>
+        <li><span class="check">&#10003;</span> 1-year warranty on all workmanship</li>
+        <li><span class="check">&#10003;</span> No trip charges, ever</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 50/50: Honey-Do List -->
+<section class="fi-split alt flip">
+  <div class="fi-split-inner">
+    <div class="fi-split-img rev">
+      <img src="https://images.pexels.com/photos/10143477/pexels-photo-10143477.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Worker drilling hinge on window frame" loading="lazy">
+      <div class="fi-split-img-badge"><span class="num">3+</span> Jobs? Save 10%</div>
+    </div>
+    <div class="fi-split-text rev">
+      <div class="fi-section-tag">Save More</div>
+      <h2>Got a <span>Honey-Do List?</span></h2>
+      <p>Most clients save money by batching multiple jobs into one visit. Send us your full list &mdash; we&rsquo;ll knock it all out and give you 10% off when you book 3 or more.</p>
+      <ul class="fi-check-list">
+        <li><span class="check">&#10003;</span> Batch jobs = lower total cost</li>
+        <li><span class="check">&#10003;</span> One visit, everything done</li>
+        <li><span class="check">&#10003;</span> 10% multi-job discount automatically applied</li>
+        <li><span class="check">&#10003;</span> Perfect for move-in/move-out punch lists</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="fi-steps">
+  <div class="fi-steps-inner">
+    <div class="fi-steps-header rev">
+      <div class="fi-section-tag">How It Works</div>
+      <div class="fi-section-title" style="color:#fff">Simple. Honest. <span>Done Right.</span></div>
+    </div>
+    <div class="fi-steps-grid">
+      <div class="fi-step-card rev">
+        <div class="fi-step-num">1</div>
+        <h4>Send Your List</h4>
+        <p>Text, call, or fill out the form with everything that needs fixing.</p>
+      </div>
+      <div class="fi-step-card rev">
+        <div class="fi-step-num">2</div>
+        <h4>Get a Bid</h4>
+        <p>We quote the job upfront. No trip fees. No hidden charges. Your approval first.</p>
+      </div>
+      <div class="fi-step-card rev">
+        <div class="fi-step-num">3</div>
+        <h4>We Fix It</h4>
+        <p>On time, clean work. We walk you through everything when we&rsquo;re done.</p>
+      </div>
+      <div class="fi-step-card rev">
+        <div class="fi-step-num">4</div>
+        <h4>Guaranteed</h4>
+        <p>1-year warranty. If it doesn&rsquo;t hold up, we come back free. Period.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="fi-reviews" id="reviews">
+  <div class="fi-reviews-inner">
+    <div class="rev">
+      <div class="fi-section-tag">Reviews</div>
+      <div class="fi-section-title">What Homeowners <span>Say</span></div>
+    </div>
+    <div class="fi-reviews-grid">
+      <div class="fi-review-card rev">
+        <div class="fi-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="fi-review-text">&ldquo;Had a list of 8 things that bugged me for months. He knocked them all out in one visit. Drywall patch looks invisible. Fan works perfect. Price was exactly what he quoted.&rdquo;</p>
+        <div class="fi-review-author">
+          <div class="fi-review-avatar">KL</div>
+          <div><span class="fi-review-name">Karen L.</span><span class="fi-review-loc">Overland Park, KS</span></div>
+        </div>
+      </div>
+      <div class="fi-review-card rev">
+        <div class="fi-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="fi-review-text">&ldquo;Finally a handyman who texts back, shows up on time, and doesn&rsquo;t leave a mess. Fixed the faucet, rehung two doors, and mounted the TV. All in one afternoon.&rdquo;</p>
+        <div class="fi-review-author">
+          <div class="fi-review-avatar">DW</div>
+          <div><span class="fi-review-name">David W.</span><span class="fi-review-loc">Lee&rsquo;s Summit, MO</span></div>
+        </div>
+      </div>
+      <div class="fi-review-card rev">
+        <div class="fi-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="fi-review-text">&ldquo;Deck boards were rotting and fence was leaning. He replaced everything, stained it, looks brand new. Way cheaper than the contractor bids we got. Our guy now.&rdquo;</p>
+        <div class="fi-review-author">
+          <div class="fi-review-avatar">MJ</div>
+          <div><span class="fi-review-name">Mike &amp; Jen P.</span><span class="fi-review-loc">Lee's Summit, MO</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="rev" style="text-align:center;margin-top:36px;font-size:.72rem;color:var(--text-dim);font-style:italic">(Sample reviews &mdash; your real reviews appear here)</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="fi-faq" id="faq">
+  <div class="fi-faq-inner">
+    <div class="rev" style="text-align:center;margin-bottom:48px">
+      <div class="fi-section-tag">FAQ</div>
+      <div class="fi-section-title">Common <span>Questions</span></div>
+    </div>
+    <div class="fi-faq-item rev" onclick="toggleFaq(this)">
+      <div class="fi-faq-q"><h4>Do you charge a trip fee?</h4><div class="icon">+</div></div>
+      <div class="fi-faq-a"><p>No. Estimates are always free. We quote the job, you approve, then we work. No approval = no charge.</p></div>
+    </div>
+    <div class="fi-faq-item rev" onclick="toggleFaq(this)">
+      <div class="fi-faq-q"><h4>Can I give you a list of multiple things?</h4><div class="icon">+</div></div>
+      <div class="fi-faq-a"><p>Absolutely &mdash; that&rsquo;s our specialty. Batch jobs into one visit and save. 3+ jobs gets you 10% off automatically.</p></div>
+    </div>
+    <div class="fi-faq-item rev" onclick="toggleFaq(this)">
+      <div class="fi-faq-q"><h4>What if the job is bigger than expected?</h4><div class="icon">+</div></div>
+      <div class="fi-faq-a"><p>We stop and talk to you first. Never do extra work without approval. If scope changes, we update the price before continuing.</p></div>
+    </div>
+    <div class="fi-faq-item rev" onclick="toggleFaq(this)">
+      <div class="fi-faq-q"><h4>Are you licensed and insured?</h4><div class="icon">+</div></div>
+      <div class="fi-faq-a"><p>Yes. Fully licensed, insured, and background checked. We provide proof of insurance for any job.</p></div>
+    </div>
+    <div class="fi-faq-item rev" onclick="toggleFaq(this)">
+      <div class="fi-faq-q"><h4>What areas do you cover?</h4><div class="icon">+</div></div>
+      <div class="fi-faq-a"><p>KC metro — Overland Park, Lee&rsquo;s Summit, Independence, Liberty, Blue Springs, Olathe and surrounding areas within 30 miles.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="fi-cta-banner">
+  <h2>Ready to Cross It <span>Off the List?</span></h2>
+  <p>Send us your list. We&rsquo;ll have a bid in your inbox within the hour.</p>
+  <div class="fi-cta-banner-btns">
+    <a href="#quote" class="fi-btn-gold">Get Your Free Bid &rarr;</a>
+    <a href="#contact" class="fi-btn-white">Call Contact Us</a>
+  </div>
+</section>
+
+<footer class="fi-footer">
+  <div class="fi-footer-inner">
+    <p>&copy; 2026 Artisan Handyman Services &bull; Lee's Summit, MO &bull; Contact Us</p>
+    <a href="https://herrmanonlineoutlook.com" target="_blank" rel="noopener">Built by HOO</a>
+  </div>
+</footer>
+
+<div class="fi-demo-bar">V4 HANDYMAN DEMO &mdash; <a href="https://herrmanonlineoutlook.com">HOO</a></div>
+
+<script>
+(function(){
+  var ham=document.querySelector('.fi-ham'),links=document.querySelector('.fi-nav-links');
+  ham.addEventListener('click',function(){links.classList.toggle('open')});
+  links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open')})});
+
+  var els=document.querySelectorAll('.rev');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}});
+    },{threshold:.05,rootMargin:'0px 0px -20px 0px'});
+    els.forEach(function(el,i){el.style.transitionDelay=(i%4)*80+'ms';io.observe(el)});
+  }else{els.forEach(function(p){p.classList.add('vis')})}
+})();
+
+function toggleFaq(el){
+  var w=el.classList.contains('open');
+  document.querySelectorAll('.fi-faq-item').forEach(function(i){i.classList.remove('open')});
+  if(!w)el.classList.add('open');
+}
+</script>
+
+<!-- HOO PROTECTION -->
+<div id="hoo-wm" style="position:fixed;bottom:12px;right:16px;z-index:99998;font-family:monospace;font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.15);pointer-events:none;user-select:none">DEMO &mdash; BUILT BY HOO</div>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12')e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c'))e.preventDefault();
+    if(e.ctrlKey&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))e.preventDefault();
+  });
+  document.body.style.userSelect='none';
+  document.body.style.webkitUserSelect='none';
+  document.addEventListener('dragstart',function(e){e.preventDefault()});
+  console.log('%c⚠ This demo is protected intellectual property of HOO (herrmanonlineoutlook.com). Unauthorized copying is prohibited.','color:red;font-size:14px;font-weight:bold');
+})();
+</script>
+</body>
+</html>
