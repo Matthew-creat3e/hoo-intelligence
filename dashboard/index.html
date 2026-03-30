@@ -1274,7 +1274,7 @@ function renderCallQueue() {
     const tag = isDue ? '<span class="badge b-urgent" style="margin-left:8px">CALLBACK DUE</span>' : (callLog.length === 0 ? '<span class="badge b-engine" style="margin-left:8px">NEW</span>' : `<span class="badge b-today" style="margin-left:8px">${callLog.length} calls</span>`);
 
     // Build clean demo URL
-    const cleanName = biz.replace(/[^a-zA-Z0-9\\s]/g, '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+    const cleanName = biz.replace(/[^a-zA-Z0-9\s]/g, '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
     const demoUrl = 'https://matthew-creat3e.github.io/hoo-intelligence/demos/' + cleanName + '.html';
 
     // Call history
