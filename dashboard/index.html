@@ -301,8 +301,8 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 
         <div class="g4" style="margin-bottom:16px">
           <div class="metric"><div class="m-lbl">MRR</div><div class="m-val gold" id="t-mrr">$0</div><div class="m-sub">Goal: $1,000/mo</div></div>
-          <div class="metric"><div class="m-lbl">Hot Leads</div><div class="m-val red" id="t-hot">23</div><div class="m-sub" id="t-hot-sub">2 WARM · 0 closed</div></div>
-          <div class="metric"><div class="m-lbl">Follow-Ups Due</div><div class="m-val amber" id="t-followup">14</div><div class="m-sub" id="t-fu-sub">Sent 3 days ago</div></div>
+          <div class="metric"><div class="m-lbl">Total Leads</div><div class="m-val gold" id="t-hot">0</div><div class="m-sub" id="t-hot-sub">0 contacted · 0 replied</div></div>
+          <div class="metric"><div class="m-lbl">Replies</div><div class="m-val amber" id="t-followup">0</div><div class="m-sub" id="t-fu-sub">No replies yet</div></div>
           <div class="metric"><div class="m-lbl">Stores Live</div><div class="m-val green">3</div><div class="m-sub">NoReturn · TCB · HOO</div></div>
         </div>
 
@@ -315,45 +315,33 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
             <div class="task-item" id="task-0">
               <div class="task-check" onclick="checkTask(0)"></div>
               <div class="task-body">
-                <div class="task-title">Call Glendon Thomas <span class="task-tag t-urgent">CALL NOW</span></div>
-                <div class="task-detail">(816) 569-4465 · Tattoos by Glendon · Liberty · Score 80</div>
-                <div class="task-script">"Hey Glendon, my name's Matthew — I build websites for local businesses. I noticed Tattoos by Glendon doesn't have a website. I'll build it free — you only pay if you love it. Got 5 minutes?"</div>
-                <button class="task-btn" onclick="copyText('(816) 569-4465')">Copy number</button>
+                <div class="task-title">Hunt fresh leads <span class="task-tag t-urgent">START HERE</span></div>
+                <div class="task-detail">Pipeline is clean — time to fill it with new leads using the v3 premium demo engine</div>
+                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
+                <button class="task-btn" onclick="copyText('find leads in Kansas City for cleaning businesses')">Copy Claude prompt</button>
               </div>
             </div>
 
             <div class="task-item" id="task-1">
               <div class="task-check" onclick="checkTask(1)"></div>
               <div class="task-body">
-                <div class="task-title">Send follow-up emails <span class="task-tag t-today">TODAY</span></div>
-                <div class="task-detail">14 leads emailed 3 days ago — check replies, send Template 3 to non-responders</div>
-                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
-                <button class="task-btn" onclick="copyText('Check my email replies and draft follow-up emails for all 14 leads that have not responded yet. Use Template 3.')">Copy Claude prompt</button>
+                <div class="task-title">Review & approve demos <span class="task-tag t-engine">WAR ROOM</span></div>
+                <div class="task-detail">After hunting, review the new premium demos in Approvals tab — approve to send</div>
+                <button class="task-btn" onclick="nav(document.querySelector('[data-page=approvals]'))">Go to Approvals</button>
               </div>
             </div>
 
             <div class="task-item" id="task-2">
               <div class="task-check" onclick="checkTask(2)"></div>
               <div class="task-body">
-                <div class="task-title">Hunt new leads <span class="task-tag t-engine">ENGINE</span></div>
-                <div class="task-detail">Run the lead engine — find 10+ new businesses with no websites in KC metro</div>
-                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
-                <button class="task-btn" onclick="copyText('find me leads in Kansas City and Liberty for cleaning, handyman, and lawn care businesses')">Copy command</button>
+                <div class="task-title">Apply for Shopify Partner <span class="task-tag t-urgent">MONEY</span></div>
+                <div class="task-detail">15 min, free — passive income on every client store forever. You're leaving money on the table.</div>
+                <button class="task-btn" onclick="openLink('https://partners.shopify.com')">Open partners.shopify.com</button>
               </div>
             </div>
 
             <div class="task-item" id="task-3">
               <div class="task-check" onclick="checkTask(3)"></div>
-              <div class="task-body">
-                <div class="task-title">Build a client demo <span class="task-tag t-build">BUILD</span></div>
-                <div class="task-detail">Build a free demo for your #1 lead before you call — show don't tell</div>
-                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
-                <button class="task-btn" onclick="copyText('build a demo homepage for a tattoo shop in Liberty MO called Tattoos by Glendon. Dark theme, gold accents, hero section with booking CTA.')">Copy command</button>
-              </div>
-            </div>
-
-            <div class="task-item" id="task-4">
-              <div class="task-check" onclick="checkTask(4)"></div>
               <div class="task-body">
                 <div class="task-title">Post to Facebook <span class="task-tag t-social">SOCIAL</span></div>
                 <div class="task-detail">Post the God Quest before/after — your existing portfolio content is ready</div>
@@ -362,8 +350,8 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
               </div>
             </div>
 
-            <div class="task-item" id="task-5">
-              <div class="task-check" onclick="checkTask(5)"></div>
+            <div class="task-item" id="task-4">
+              <div class="task-check" onclick="checkTask(4)"></div>
               <div class="task-body">
                 <div class="task-title">End of day commit <span class="task-tag t-engine">GIT</span></div>
                 <div class="task-detail">Save today's work to GitHub — the system grows permanently</div>
@@ -434,7 +422,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
               <div style="margin-bottom:10px">
                 <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
                   <span style="color:var(--muted)">$0 → $1,000/mo MRR</span>
-                  <span style="color:var(--gold)">0 / 10 clients</span>
+                  <span style="color:var(--gold)">0 / 10 paying clients</span>
                 </div>
                 <div class="prog"><div class="prog-fill" style="width:0%"></div></div>
               </div>
@@ -446,7 +434,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
                 <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">50 clients</span><span style="font-size:12px;color:var(--gold2)">$5,000/mo · hire help · scale</span></div>
               </div>
               <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">
-                25 hot leads in pipeline now. One yes from Glendon = first dollar. <span style="color:var(--gold2)">Make the call.</span>
+                Fresh start. New premium demos. <span style="color:var(--gold2)">Hunt leads → approve demos → send → close.</span>
               </div>
             </div>
 
@@ -611,21 +599,25 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div>
               <div class="page-title">Call Queue</div>
-              <div class="page-sub">Leads with phone but no email - call them, get their email, send the demo</div>
+              <div class="page-sub">Cold call → mention the demo → get their email → send it</div>
             </div>
-            <button class="btn-sm btn-gold" onclick="loadCallQueue()">Refresh</button>
+            <button class="btn-sm btn-gold" onclick="loadCallQueue()">↻ Refresh</button>
           </div>
         </div>
-        <div id="call-queue-list">
-          <div class="empty-state">
-            <div class="empty-icon">📞</div>
-            <div class="empty-text">No calls needed</div>
-            <div class="empty-sub">All pending leads have email addresses</div>
-          </div>
+        <div class="g4" style="margin-bottom:16px">
+          <div class="metric"><div class="m-lbl">To Call</div><div class="m-val gold" id="cq-total">0</div></div>
+          <div class="metric"><div class="m-lbl">Called Today</div><div class="m-val blue" id="cq-called">0</div></div>
+          <div class="metric"><div class="m-lbl">Demos Sent</div><div class="m-val green" id="cq-sent">0</div></div>
+          <div class="metric"><div class="m-lbl">Dead</div><div class="m-val red" id="cq-dead">0</div></div>
         </div>
-        <div id="call-queue-sent" style="margin-top:24px;display:none">
-          <div style="font-family:var(--fh);font-size:18px;letter-spacing:2px;color:var(--green);margin-bottom:12px">SENT TODAY</div>
-          <div id="call-queue-sent-list"></div>
+        <div id="call-queue-list"></div>
+        <div id="call-queue-followup" style="margin-top:24px;display:none">
+          <div style="font-family:var(--fh);font-size:18px;letter-spacing:2px;color:var(--green);margin-bottom:12px">FOLLOW-UP (DEMO SENT)</div>
+          <div id="call-queue-followup-list"></div>
+        </div>
+        <div id="call-queue-callbacks" style="margin-top:24px;display:none">
+          <div style="font-family:var(--fh);font-size:18px;letter-spacing:2px;color:var(--amber);margin-bottom:12px">CALLBACKS DUE</div>
+          <div id="call-queue-callback-list"></div>
         </div>
       </div>
 
@@ -739,20 +731,9 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 
 <script>
 // ── STATIC FALLBACK DATA (used when not running in Electron) ──────────────
-const STATIC_LEADS = [
-  {id:"LEAD-001",business:"Tattoos by Glendon",owner:"Glendon Thomas",phone:"(816) 569-4465",city:"Liberty",industry:"tattoo",score:80,tier:"HOT",stage:"found"},
-  {id:"LEAD-002",business:"Spence's Fences",owner:"Seth",phone:"(816) 878-7631",city:"Grain Valley",industry:"fencing",score:70,tier:"HOT",stage:"found"},
-  {id:"LEAD-003",business:"KC Soul Sistas",owner:"",phone:"(816) 678-9492",city:"Grandview",industry:"food truck",score:70,tier:"HOT",stage:"found"},
-  {id:"LEAD-004",business:"Always Green Landscape",owner:"",phone:"(913) 617-2936",city:"Belton",industry:"landscaping",score:70,tier:"HOT",stage:"found"},
-  {id:"LEAD-005",business:"Fast Track Handyman",owner:"Kenneth Hedges",phone:"(816) 405-7161",city:"Independence",industry:"handyman",score:65,tier:"HOT",stage:"found"},
-  {id:"LEAD-006",business:"Raytown Auto Detail",owner:"",phone:"",city:"Raytown",industry:"auto detailing",score:60,tier:"HOT",stage:"emailed"},
-  {id:"LEAD-007",business:"Blue Springs Cleaning Co",owner:"",phone:"",city:"Blue Springs",industry:"cleaning",score:60,tier:"HOT",stage:"emailed"},
-  {id:"LEAD-008",business:"Lee's Summit Lawn Care",owner:"",phone:"",city:"Lee's Summit",industry:"lawn care",score:55,tier:"HOT",stage:"emailed"},
-  {id:"LEAD-009",business:"KC Mobile Mechanic",owner:"",phone:"",city:"Kansas City",industry:"mobile mechanic",score:55,tier:"HOT",stage:"emailed"},
-  {id:"LEAD-010",business:"Overland Park Pet Grooming",owner:"",phone:"",city:"Overland Park",industry:"pet grooming",score:55,tier:"HOT",stage:"emailed"},
-];
+const STATIC_LEADS = [];
 
-const STATIC_PIPELINE = {total:25,hot:23,warm:2,contacted:14,replied:0,closed:0};
+const STATIC_PIPELINE = {total:0,hot:0,warm:0,contacted:0,replied:0,closed:0};
 const STATIC_MRR = 0;
 const STATIC_GOAL = 1000;
 
@@ -787,15 +768,9 @@ async function loadLearning() {
   }
   if (!learning) {
     learning = {
-      email_stats:{sent:14,replied:0},
+      email_stats:{sent:0,replied:0},
       sms_stats:{sent:0,replied:0},
-      by_industry:{
-        tattoo:{contacted:1,responded:0,notes:"Personal call recommended"},
-        fencing:{contacted:1,responded:0,notes:"Seasonal — spring/summer"},
-        "food truck":{contacted:1,responded:0,notes:"Facebook heavy"},
-        landscaping:{contacted:1,responded:0,notes:"Phone converts better"},
-        handyman:{contacted:1,responded:0,notes:"Angle: jobs you're missing"}
-      }
+      by_industry:{}
     };
   }
 }
@@ -811,17 +786,16 @@ async function loadQueue() {
 
 // ── RENDER: TODAY ──────────────────────────────────────────────────────────
 function renderToday() {
-  const hot = leads.filter(l => l.tier === 'HOT').length;
+  const total = leads.length;
   const contacted = leads.filter(l => l.stage === 'emailed' || l.stage === 'replied' || l.stage === 'closed').length;
   const replied = leads.filter(l => l.stage === 'replied').length;
-  const followupDue = contacted - replied;
 
-  document.getElementById('t-hot').textContent = hot;
-  document.getElementById('t-hot-sub').textContent = `${leads.filter(l=>l.tier==='WARM').length} WARM`;
-  document.getElementById('t-followup').textContent = followupDue;
-  document.getElementById('t-fu-sub').textContent = 'Follow-ups due today';
+  document.getElementById('t-hot').textContent = total;
+  document.getElementById('t-hot-sub').textContent = `${contacted} contacted · ${replied} replied`;
+  document.getElementById('t-followup').textContent = replied;
+  document.getElementById('t-fu-sub').textContent = replied > 0 ? `${replied} reply — follow up!` : 'No replies yet';
   document.getElementById('badge-urgent').textContent = 3;
-  document.getElementById('badge-leads').textContent = leads.length;
+  document.getElementById('badge-leads').textContent = total;
 
   const mrr = STATIC_MRR;
   document.getElementById('t-mrr').textContent = '$' + mrr.toLocaleString();
@@ -861,7 +835,7 @@ function renderPipeline() {
 // ── RENDER: TOP 5 ──────────────────────────────────────────────────────────
 function renderTop5() {
   const top5 = [...leads]
-    .filter(l => l.tier === 'HOT')
+    .filter(l => l.phone && (l.stage === 'found' || l.stage === 'emailed'))
     .sort((a,b) => (b.score||0) - (a.score||0))
     .slice(0, 5);
 
@@ -1226,16 +1200,50 @@ let callQueueLeads = [];
 const sentToday = [];
 
 async function loadCallQueue() {
-  if (!isElectron) return;
-  const all = await window.hoo.readApprovals() || [];
-  callQueueLeads = all.filter(a => {
-    if (a.status !== 'pending') return false;
-    const email = (a.lead?.email || '').trim();
-    const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
-    return noEmail || a.needs_call === true;
-  });
+  let all = [];
+  if (isElectron) {
+    all = await window.hoo.readApprovals() || [];
+  } else {
+    all = approvals || [];
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  callQueueLeads = [];
+  let followUps = [];
+  let callbacks = [];
+  let deadCount = 0;
+  let sentCount = 0;
+  let calledToday = 0;
+
+  for (const a of all) {
+    if (a.status === 'dead') { deadCount++; continue; }
+    if (a.status === 'demo-sent') { followUps.push(a); sentCount++; continue; }
+    if (a.status === 'callback') {
+      if (a.callback_date && a.callback_date <= today) {
+        callbacks.push(a); // Due for callback
+      } else {
+        callbacks.push(a); // Future callback
+      }
+      continue;
+    }
+    // call-queue, reached, pending — all go to main queue
+    callQueueLeads.push(a);
+    const todayCalls = (a.call_log || []).filter(c => c.date && c.date.startsWith(today));
+    if (todayCalls.length > 0) calledToday++;
+  }
+
+  // Add due callbacks to top of queue
+  callQueueLeads = [...callbacks.filter(a => a.callback_date && a.callback_date <= today), ...callQueueLeads];
+
   document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
+  document.getElementById('cq-total').textContent = callQueueLeads.length;
+  document.getElementById('cq-called').textContent = calledToday;
+  document.getElementById('cq-sent').textContent = sentCount;
+  document.getElementById('cq-dead').textContent = deadCount;
+
   renderCallQueue();
+  renderFollowUps(followUps, today);
+  renderCallbacks(callbacks.filter(a => !a.callback_date || a.callback_date > today));
 }
 
 function renderCallQueue() {
@@ -1243,13 +1251,13 @@ function renderCallQueue() {
   if (!callQueueLeads.length) {
     container.innerHTML = `<div class="empty-state">
       <div class="empty-icon">📞</div>
-      <div class="empty-text">No calls needed</div>
-      <div class="empty-sub">All pending leads have email addresses</div>
+      <div class="empty-text">No calls in queue</div>
+      <div class="empty-sub">Run: node engine/tools/pipeline-orchestrator.js run</div>
     </div>`;
     return;
   }
 
-  container.innerHTML = callQueueLeads.map((a, i) => {
+  container.innerHTML = callQueueLeads.map(a => {
     const l = a.lead || {};
     const biz = l.business || 'Unknown';
     const owner = l.owner || '';
@@ -1259,119 +1267,148 @@ function renderCallQueue() {
     const state = l.state || 'MO';
     const industry = l.industry || '';
     const leadId = a.id || '';
-    const ownerName = owner || 'there';
+    const cs = a.call_script || {};
+    const callLog = a.call_log || [];
+    const isDue = a.callback_date && a.callback_date <= new Date().toISOString().split('T')[0];
+    const borderColor = isDue ? 'var(--amber)' : (callLog.length > 0 ? 'var(--blue)' : 'var(--gold)');
+    const tag = isDue ? '<span class="badge b-urgent" style="margin-left:8px">CALLBACK DUE</span>' : (callLog.length === 0 ? '<span class="badge b-engine" style="margin-left:8px">NEW</span>' : `<span class="badge b-today" style="margin-left:8px">${callLog.length} calls</span>`);
 
-    return `<div class="card" id="cq-card-${leadId}" style="margin-bottom:12px;border-left:3px solid var(--gold)">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    // Build clean demo URL
+    const cleanName = biz.replace(/[^a-zA-Z0-9\\s]/g, '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+    const demoUrl = 'https://matthew-creat3e.github.io/hoo-intelligence/demos/' + cleanName + '.html';
+
+    // Call history
+    const historyHtml = callLog.length > 0 ? `<div style="margin-bottom:12px;padding:8px 10px;background:var(--card2);border-radius:4px;border:1px solid var(--border)">
+      <div style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px">Call History</div>
+      ${callLog.map(c => `<div style="font-size:11px;color:var(--muted);padding:2px 0">${c.display_date || c.date?.split('T')[0] || '?'} — <span style="color:${c.outcome === 'reached-send-demo' ? 'var(--green)' : c.outcome === 'not-interested' ? 'var(--red)' : 'var(--amber)'}">${c.outcome}</span></div>`).join('')}
+    </div>` : '';
+
+    // Script sections
+    const openerText = cs.opener || `Hey ${owner || 'there'}, this is Matthew from HOO out of Kansas City. I do web design for local ${industry} businesses. Got a quick second?`;
+    const hookText = cs.hook || `I noticed ${biz} doesn't have a website yet. So I actually went ahead and built you one — completely free.`;
+    const pitchText = cs.pitch || `It's a full custom homepage — mobile-ready, the whole thing. What's the best email to send it to?`;
+    const vmText = cs.voicemail || `Hey ${owner || 'there'}, this is Matthew — I do websites for ${industry} businesses. I built a free website for ${biz}. Give me a call back at 804-957-1003.`;
+
+    return `<div class="card" id="cq-card-${leadId}" style="margin-bottom:14px;border-left:3px solid ${borderColor}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
         <div>
-          <div style="font-size:18px;font-weight:700;color:var(--gold);font-family:var(--fh);letter-spacing:2px;margin-bottom:2px">${biz}</div>
-          <div style="font-size:12px;color:var(--muted)">${owner ? owner + ' · ' : ''}${city} ${state} · ${industry}</div>
+          <div style="font-size:18px;font-weight:700;color:var(--gold);font-family:var(--fh);letter-spacing:2px;margin-bottom:2px">${biz}${tag}</div>
+          <div style="font-size:12px;color:var(--muted)">${owner ? owner + ' · ' : ''}${city}, ${state} · ${industry}${l.score ? ' · Score: ' + l.score : ''}</div>
         </div>
         <div style="text-align:right">
-          <a href="tel:${phoneClean}" style="font-family:var(--fh);font-size:22px;letter-spacing:2px;color:var(--gold);text-decoration:none">${phone}</a>
+          ${phone ? `<a href="tel:${phoneClean}" style="font-family:var(--fh);font-size:24px;letter-spacing:2px;color:var(--gold);text-decoration:none">${phone}</a>` : '<span style="font-size:13px;color:var(--red)">NO PHONE</span>'}
           <div style="font-size:10px;color:var(--muted);margin-top:2px">${leadId}</div>
         </div>
       </div>
-      <div style="background:rgba(200,149,46,.08);border:1px solid rgba(200,149,46,.2);border-radius:6px;padding:12px;margin-bottom:14px">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px">Call Script</div>
-        <div style="font-size:12px;color:var(--text);line-height:1.6">"Hey ${ownerName}, this is Matthew from HOO - I built ${biz} a free website. Can I send it over? What's the best email?"</div>
+
+      ${historyHtml}
+
+      <details style="margin-bottom:12px">
+        <summary style="cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);padding:8px 0">📋 Call Script (click to expand)</summary>
+        <div style="background:rgba(200,149,46,.06);border:1px solid rgba(200,149,46,.15);border-radius:6px;padding:14px;margin-top:4px">
+          <div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Opener:</span><div class="task-script">${openerText}</div></div>
+          <div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Hook:</span><div class="task-script">${hookText}</div></div>
+          <div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Pitch:</span><div class="task-script">${pitchText}</div></div>
+          <div><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Voicemail:</span><div class="task-script">${vmText}</div></div>
+        </div>
+      </details>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="btn-sm btn-gold" onclick="window.open('${demoUrl}','_blank')" style="padding:8px 16px">👁 Preview Demo</button>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
-        <button class="btn-sm btn-gold" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')" style="padding:10px 18px;white-space:nowrap">Preview Demo</button>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center">
-        <input type="email" id="cq-email-${leadId}" placeholder="Enter email they give you..." style="flex:1;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:10px 14px;border-radius:4px;font-family:var(--fb);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'">
-        <button class="btn-sm" id="cq-send-${leadId}" style="border-color:var(--green);color:var(--green);padding:10px 18px;white-space:nowrap" onclick="cqSendDemo('${leadId}',this)">Send Demo</button>
-        <button class="btn-sm" id="cq-reject-${leadId}" style="border-color:var(--red);color:var(--red);padding:10px 14px;white-space:nowrap" onclick="cqReject('${leadId}',this)">Not Interested</button>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input type="email" id="cq-email-${leadId}" placeholder="Email from the call..." value="${l.email && l.email !== '[no email]' ? l.email : ''}" style="flex:1;min-width:180px;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:9px 12px;border-radius:4px;font-family:var(--fb);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'">
+        <button class="btn-sm" style="border-color:var(--green);color:var(--green);padding:8px 14px" onclick="cqLogCall('${leadId}','send-demo',this)">📞 Reached — Send Demo</button>
+        <button class="btn-sm" style="border-color:var(--amber);color:var(--amber);padding:8px 14px" onclick="cqLogCall('${leadId}','voicemail',this)">📱 Voicemail</button>
+        <button class="btn-sm" style="padding:8px 14px" onclick="cqLogCall('${leadId}','no-answer',this)">❌ No Answer</button>
+        <button class="btn-sm" style="border-color:var(--red);color:var(--red);padding:8px 14px" onclick="cqLogCall('${leadId}','not-interested',this)">🚫 Not Interested</button>
       </div>
     </div>`;
   }).join('');
 }
 
-async function cqSendDemo(leadId, btn) {
-  if (!isElectron) { toast('Run in Electron'); return; }
-  const emailInput = document.getElementById('cq-email-' + leadId);
-  const email = (emailInput?.value || '').trim();
-  if (!email || !email.includes('@')) {
-    toast('Enter a valid email first');
-    emailInput?.focus();
-    return;
-  }
-
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-
-  try {
-    const result = await window.hoo.addEmailAndSend(leadId, email);
-    if (result && result.success) {
-      toast('✅ Demo sent to ' + email);
-      const card = document.getElementById('cq-card-' + leadId);
-      const biz = card?.querySelector('[style*="font-size:18px"]')?.textContent || leadId;
-
-      // Remove from queue
-      callQueueLeads = callQueueLeads.filter(a => a.id !== leadId);
-      if (card) card.remove();
-      if (!callQueueLeads.length) renderCallQueue();
-      document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
-
-      // Add to Sent Today
-      sentToday.push({ biz, email, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
-      renderSentToday();
-
-      // Refresh approvals in background
-      loadApprovals().then(renderApprovals);
-    } else {
-      const errMsg = result?.error || 'unknown error';
-      toast('❌ Failed: ' + errMsg);
-      alert('Send failed:\n\n' + errMsg);
-      btn.textContent = 'Send Demo';
-      btn.disabled = false;
-    }
-  } catch (e) {
-    toast('❌ Error: ' + e.message);
-    alert('Send error:\n\n' + e.message);
-    btn.textContent = 'Send Demo';
-    btn.disabled = false;
-  }
-}
-
-async function cqReject(leadId, btn) {
-  if (!isElectron) { toast('Run in Electron'); return; }
-  btn.textContent = 'Rejecting...';
-  btn.disabled = true;
-
-  const result = await window.hoo.rejectLeadById(leadId);
-  if (result && result.success) {
-    toast('❌ Marked as not interested');
-    const card = document.getElementById('cq-card-' + leadId);
-    callQueueLeads = callQueueLeads.filter(a => a.id !== leadId);
-    if (card) card.remove();
-    if (!callQueueLeads.length) renderCallQueue();
-    document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
-
-    // Refresh approvals in background
-    loadApprovals().then(renderApprovals);
-  } else {
-    toast('Reject failed');
-    btn.textContent = 'Not Interested';
-    btn.disabled = false;
-  }
-}
-
-function renderSentToday() {
-  const section = document.getElementById('call-queue-sent');
-  const list = document.getElementById('call-queue-sent-list');
-  if (!sentToday.length) { section.style.display = 'none'; return; }
+function renderFollowUps(followUps, today) {
+  const section = document.getElementById('call-queue-followup');
+  const list = document.getElementById('call-queue-followup-list');
+  if (!followUps.length) { section.style.display = 'none'; return; }
   section.style.display = 'block';
-  list.innerHTML = sentToday.map(s => `
-    <div class="card" style="margin-bottom:8px;border-left:3px solid var(--green);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <span style="font-weight:600">${s.biz}</span>
-        <span style="color:var(--muted);margin-left:8px">→ ${s.email}</span>
+  list.innerHTML = followUps.map(a => {
+    const l = a.lead || {};
+    const nextFU = (a.follow_up_dates || []).find(d => d >= today) || 'done';
+    const isDue = nextFU <= today;
+    return `<div class="card" style="margin-bottom:8px;border-left:3px solid var(--green);padding:12px 14px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <span style="font-weight:600;color:var(--text)">${l.business || '?'}</span>
+          <span style="color:var(--muted);margin-left:8px">Demo sent ${a.email_sent_date || '?'}</span>
+        </div>
+        <div>
+          ${isDue ? '<span class="badge b-urgent">FOLLOW UP TODAY</span>' : `<span style="font-size:11px;color:var(--muted)">Next: ${nextFU}</span>`}
+        </div>
       </div>
-      <span style="font-size:11px;color:var(--muted)">${s.time}</span>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+}
+
+function renderCallbacks(futureCallbacks) {
+  const section = document.getElementById('call-queue-callbacks');
+  const list = document.getElementById('call-queue-callback-list');
+  if (!futureCallbacks.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = futureCallbacks.map(a => {
+    const l = a.lead || {};
+    const lastCall = (a.call_log || []).slice(-1)[0];
+    return `<div class="card" style="margin-bottom:8px;border-left:3px solid var(--amber);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <span style="font-weight:600">${l.business || '?'}</span>
+        <span style="color:var(--muted);margin-left:8px">${lastCall ? lastCall.outcome : '?'} — ${lastCall ? lastCall.display_date : ''}</span>
+      </div>
+      <span style="font-size:11px;color:var(--amber)">Callback: ${a.callback_date || '?'}</span>
+    </div>`;
+  }).join('');
+}
+
+async function cqLogCall(leadId, outcome, btn) {
+  const origText = btn.textContent;
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  if (outcome === 'send-demo') {
+    const emailInput = document.getElementById('cq-email-' + leadId);
+    const email = (emailInput?.value || '').trim();
+    if (!email || !email.includes('@')) {
+      toast('Get their email on the call first!');
+      emailInput?.focus();
+      btn.textContent = origText;
+      btn.disabled = false;
+      return;
+    }
+  }
+
+  if (isElectron) {
+    try {
+      const result = await window.hoo.logCall(leadId, outcome);
+      if (outcome === 'send-demo') {
+        const email = document.getElementById('cq-email-' + leadId)?.value?.trim();
+        if (email) await window.hoo.addEmailAndSend(leadId, email);
+      }
+      toast(outcome === 'send-demo' ? '✅ Demo sent!' : outcome === 'not-interested' ? '🚫 Removed' : '📞 Call logged');
+    } catch(e) { toast('Error: ' + e.message); }
+  } else {
+    // Browser mode — show CLI command
+    const fn = `APPROVAL-${leadId}.json`;
+    if (outcome === 'send-demo') {
+      const email = document.getElementById('cq-email-' + leadId)?.value?.trim() || 'EMAIL';
+      toast(`Run: node engine/tools/pipeline-orchestrator.js add-email ${leadId} ${email} && node engine/tools/pipeline-orchestrator.js log-call ${fn} send-demo`);
+    } else {
+      toast(`Run: node engine/tools/pipeline-orchestrator.js log-call ${fn} ${outcome}`);
+    }
+  }
+
+  btn.textContent = origText;
+  btn.disabled = false;
+  loadCallQueue();
 }
 
 // ── BOOT ──────────────────────────────────────────────────────────────────
