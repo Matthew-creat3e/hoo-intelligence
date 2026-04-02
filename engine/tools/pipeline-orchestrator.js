@@ -442,17 +442,33 @@ Return as a JSON array only.`;
       continue;
     }
 
-    // If Claude said no_website, try common URL patterns to double-check
+    // If Claude said no_website, try common URL patterns AND abbreviations to double-check
     if (candidate.no_website === true || !givenUrl) {
       const slug = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/\s+/g, '');
       const slugDash = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      // Build abbreviation patterns (e.g. "Waste-N-Away Disposal LLC" → "wnadisposal")
+      const words = bizName.replace(/LLC|Inc|Co\.?|Corp/gi, '').replace(/[^a-zA-Z\s-]/g, '').split(/[\s-]+/).filter(w => w.length > 0);
+      const abbrev = words.map(w => w[0].toLowerCase()).join('');
+      const lastWord = (words[words.length - 1] || '').toLowerCase();
+      const abbrevFull = words.slice(0, -1).map(w => w[0].toLowerCase()).join('') + lastWord;
+      // Try first word + last word (e.g. "waste" + "disposal" = "wastedisposal")
+      const firstWord = (words[0] || '').toLowerCase();
+      const firstLast = firstWord + lastWord;
       const guessUrls = [
         `https://www.${slugDash}.com`,
         `https://${slugDash}.com`,
         `https://www.${slug}.com`,
         `https://${slug}.com`,
+        `https://www.${abbrevFull}.com`,
+        `https://${abbrevFull}.com`,
+        `https://www.${abbrev}.com`,
+        `https://www.${firstLast}.com`,
+        `https://${firstLast}.com`,
+        `https://www.${firstWord}.com`,
       ];
-      for (const guessUrl of guessUrls) {
+      // Remove duplicates
+      const uniqueUrls = [...new Set(guessUrls)];
+      for (const guessUrl of uniqueUrls) {
         const isLive = await checkUrl(guessUrl);
         if (isLive) {
           console.log(`  ⚠️  ${bizName} has a website at ${guessUrl} — SKIPPING`);
