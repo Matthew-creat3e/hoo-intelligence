@@ -4,208 +4,118 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>HOO Command Center</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#050505;--card:#0D0D0D;--card2:#111;--border:#1C1C1C;--border2:#2A2A2A;
-  --gold:#C8952E;--gold2:#E8B84B;--text:#F0EAE0;--muted:#888880;--dim:#3A3A38;
-  --green:#4CAF50;--amber:#FF9800;--red:#EF5350;--blue:#42A5F5;
+  --bg:#050505;--bg2:#0A0A0A;--card:#0D0D0D;--card2:#111;--card3:#161616;
+  --border:#1A1A1A;--border2:#252525;--border3:#333;
+  --gold:#C8952E;--gold2:#E8B84B;--gold-dim:rgba(200,149,46,.15);
+  --text:#F0EAE0;--muted:#888880;--dim:#3A3A38;
+  --green:#4CAF50;--green-dim:rgba(76,175,80,.12);
+  --amber:#FF9800;--amber-dim:rgba(255,152,0,.12);
+  --red:#EF5350;--red-dim:rgba(239,83,80,.12);
+  --blue:#42A5F5;--blue-dim:rgba(66,165,245,.12);
   --fh:'Bebas Neue',sans-serif;--fb:'Syne',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);font-size:13px;overflow:hidden}
+button{font-family:var(--fb);cursor:pointer}
+input,select,textarea{font-family:var(--fb);font-size:12px}
 
-/* APP SHELL */
-.app{display:grid;grid-template-rows:48px 1fr;height:100vh}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:var(--card);-webkit-app-region:drag}
-.logo{font-family:var(--fh);font-size:24px;letter-spacing:3px;color:var(--gold)}
-.tagline{font-size:11px;color:var(--muted);margin-left:12px}
-.topbar-right{display:flex;align-items:center;gap:14px;-webkit-app-region:no-drag}
-#clock{font-size:12px;color:var(--muted)}
-.btn-sm{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 12px;border-radius:4px;cursor:pointer;font-family:var(--fb);font-size:11px;transition:all .2s}
-.btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+/* ── APP SHELL ── */
+.app{display:grid;grid-template-rows:44px 1fr;height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:var(--card);border-bottom:1px solid var(--border);-webkit-app-region:drag}
+.logo{font-family:var(--fh);font-size:22px;letter-spacing:4px;color:var(--gold)}
+.logo span{color:var(--muted);font-size:12px;letter-spacing:1px;margin-left:8px;font-family:var(--fb)}
+.topbar-r{display:flex;align-items:center;gap:12px;-webkit-app-region:no-drag}
+#clock{font-size:11px;color:var(--dim);font-family:var(--fh);letter-spacing:2px}
+.body{display:grid;grid-template-columns:180px 1fr;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.side{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.side-section{padding:16px 0 8px}
+.side-label{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;padding:0 14px;margin-bottom:6px}
+.nav{display:flex;align-items:center;gap:8px;padding:9px 14px;color:var(--muted);font-size:12px;cursor:pointer;border-left:2px solid transparent;transition:all .12s}
+.nav:hover{color:var(--text);background:rgba(200,149,46,.03)}
+.nav.on{color:var(--gold);border-left-color:var(--gold);background:rgba(200,149,46,.06)}
+.nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.nav .badge{margin-left:auto;font-size:9px;padding:1px 7px;border-radius:8px;font-weight:600}
+.bg-gold{background:var(--gold-dim);color:var(--gold)}
+.bg-red{background:var(--red-dim);color:var(--red)}
+.bg-green{background:var(--green-dim);color:var(--green)}
+.bg-amber{background:var(--amber-dim);color:var(--amber)}
+
+/* Sidebar stats */
+.side-stats{margin:auto 12px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px}
+.ss-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}
+.ss-label{color:var(--muted)}
+.ss-val{color:var(--gold);font-family:var(--fh);font-size:14px;letter-spacing:1px}
+.ss-divider{border-top:1px solid var(--border);margin:6px 0}
+
+/* ── MAIN ── */
+.main{overflow-y:auto;padding:20px}
+.main::-webkit-scrollbar{width:4px}
+.main::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.page{display:none}.page.on{display:block}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.page-title{font-family:var(--fh);font-size:28px;letter-spacing:2px}
+.page-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── COMPONENTS ── */
+.btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:6px 14px;border-radius:4px;font-size:11px;transition:all .15s;white-space:nowrap}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
 .btn-gold{border-color:var(--gold);color:var(--gold)}
 .btn-gold:hover{background:var(--gold);color:#000}
-.btn-red{border-color:var(--red);color:var(--red);-webkit-app-region:no-drag}
+.btn-green{border-color:var(--green);color:var(--green)}
+.btn-green:hover{background:var(--green);color:#000}
+.btn-red{border-color:var(--red);color:var(--red)}
 .btn-red:hover{background:var(--red);color:#000}
+.btn-amber{border-color:var(--amber);color:var(--amber)}
+.btn-amber:hover{background:var(--amber);color:#000}
+.btn-blue{border-color:var(--blue);color:var(--blue)}
+.btn-blue:hover{background:var(--blue);color:#000}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 
-.body{display:grid;grid-template-columns:210px 1fr;overflow:hidden}
+.card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px}
+.card-gold{border-left:3px solid var(--gold)}
+.card-amber{border-left:3px solid var(--amber)}
+.card-green{border-left:3px solid var(--green)}
+.card-red{border-left:3px solid var(--red)}
 
-/* SIDEBAR */
-.sidebar{border-right:1px solid var(--border);padding:12px 0;overflow-y:auto;display:flex;flex-direction:column;gap:0}
-.nav-label{font-size:9px;letter-spacing:2.5px;color:var(--dim);padding:0 14px;margin:14px 0 4px;text-transform:uppercase}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;color:var(--muted);font-size:12px;border-left:2px solid transparent;transition:all .15s}
-.nav-item:hover{color:var(--text);background:rgba(200,149,46,.04)}
-.nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(200,149,46,.07)}
-.nav-icon{font-size:14px;width:16px;text-align:center}
-.nav-badge{margin-left:auto;font-size:10px;background:var(--dim);padding:1px 7px;border-radius:10px}
-.nav-badge.alert{background:rgba(239,83,80,.2);color:var(--red)}
-.nav-badge.gold{background:rgba(200,149,46,.2);color:var(--gold)}
+.input{background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:8px 12px;border-radius:4px;font-size:12px;outline:none;width:100%;transition:border-color .15s}
+.input:focus{border-color:var(--gold)}
+select.input{appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23888880' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
 
-.mrr-box{margin:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px}
-.mrr-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.mrr-val{font-family:var(--fh);font-size:32px;color:var(--gold);letter-spacing:1px;line-height:1.1}
-.mrr-goal{font-size:10px;color:var(--dim);margin-top:2px}
-.prog{background:var(--border);border-radius:4px;height:4px;margin-top:8px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width .8s}
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px}
+.m-label{font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.m-val{font-family:var(--fh);font-size:32px;letter-spacing:1px;line-height:1}
+.m-sub{font-size:10px;color:var(--dim);margin-top:2px}
 
-/* MAIN */
-.main{overflow-y:auto;padding:20px}
-.page{display:none}
-.page.active{display:block}
-.page-head{margin-bottom:20px}
-.page-title{font-family:var(--fh);font-size:34px;letter-spacing:2px;color:var(--text)}
-.page-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.tag{font-size:9px;padding:2px 8px;border-radius:8px;font-weight:600;display:inline-block}
+.t-new{background:var(--gold-dim);color:var(--gold)}
+.t-callback{background:var(--amber-dim);color:var(--amber)}
+.t-due{background:var(--red-dim);color:var(--red)}
+.t-sent{background:var(--green-dim);color:var(--green)}
+.t-dead{background:var(--red-dim);color:var(--red)}
+.t-reached{background:var(--blue-dim);color:var(--blue)}
 
-/* CARDS */
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
-.card-label{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.empty{text-align:center;padding:60px 20px;color:var(--dim)}
+.empty-icon{font-size:28px;margin-bottom:8px;opacity:.5}
+.empty-text{font-size:13px;color:var(--muted)}
 
-/* METRICS */
-.metric{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
-.m-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
-.m-val{font-family:var(--fh);font-size:40px;letter-spacing:1px;line-height:1}
-.m-sub{font-size:11px;color:var(--muted);margin-top:4px}
-.gold{color:var(--gold)}.red{color:var(--red)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}
+.script-box{background:rgba(200,149,46,.04);border:1px solid rgba(200,149,46,.1);border-radius:4px;padding:10px 12px;margin:4px 0}
+.script-label{font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:3px}
+.script-text{font-size:12px;color:var(--text);line-height:1.6;font-style:italic;color:var(--gold2)}
 
-/* ALERTS */
-.alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.alert-item:last-child{border-bottom:none}
-.badge{font-size:10px;padding:2px 9px;border-radius:10px;white-space:nowrap;font-weight:600;flex-shrink:0;margin-top:1px}
-.b-urgent{background:rgba(239,83,80,.15);color:var(--red);border:1px solid rgba(239,83,80,.3)}
-.b-today{background:rgba(255,152,0,.15);color:var(--amber);border:1px solid rgba(255,152,0,.3)}
-.b-engine{background:rgba(200,149,46,.15);color:var(--gold);border:1px solid rgba(200,149,46,.3)}
-.b-done{background:rgba(76,175,80,.12);color:var(--green);border:1px solid rgba(76,175,80,.3)}
-.alert-body{flex:1}
-.alert-text{color:var(--text);line-height:1.5}
-.alert-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.history-item{font-size:11px;color:var(--muted);padding:3px 0;display:flex;gap:8px}
+.history-outcome{font-weight:600}
 
-/* LEAD TABLE */
-.lead-tbl{width:100%}
-.lead-tbl th{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0 0 8px;font-weight:400;text-align:left}
-.lead-tbl td{padding:8px 0;border-bottom:1px solid var(--border);vertical-align:middle}
-.lead-tbl tr:last-child td{border-bottom:none}
-.score-pill{font-size:10px;font-weight:600;padding:2px 9px;border-radius:10px;display:inline-block}
-.s-hot{background:rgba(239,83,80,.15);color:var(--red)}
-.s-warm{background:rgba(255,152,0,.15);color:var(--amber)}
-.s-cold{background:rgba(136,136,128,.1);color:var(--muted)}
-.stage-pill{font-size:10px;padding:2px 9px;border-radius:10px;display:inline-block}
-.st-found{background:rgba(66,165,245,.12);color:var(--blue)}
-.st-emailed{background:rgba(255,152,0,.12);color:var(--amber)}
-.st-replied{background:rgba(76,175,80,.12);color:var(--green)}
-.st-closed{background:rgba(200,149,46,.2);color:var(--gold)}
-.phone-link{color:var(--blue);cursor:pointer;font-size:12px}
-.phone-link:hover{color:var(--gold2)}
+.log-box{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;font-family:monospace;font-size:11px;color:var(--muted);max-height:400px;overflow-y:auto;white-space:pre-wrap;line-height:1.6}
 
-/* STORE STATUS */
-.store-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
-.store-name{font-family:var(--fh);font-size:20px;letter-spacing:1px}
-.store-url{font-size:11px;color:var(--blue)}
-.sec-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)}
-.sec-row:last-child{border-bottom:none}
-.sec-name{font-size:12px}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;flex-shrink:0}
-.d-live{background:var(--green);box-shadow:0 0 6px rgba(76,175,80,.5)}
-.d-built{background:var(--amber)}
-.d-missing{background:var(--red)}
-.d-warn{background:var(--gold)}
-.sec-status{display:flex;align-items:center;font-size:11px;color:var(--muted)}
-
-/* SOCIAL QUEUE */
-.post-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
-.post-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.plat{font-size:10px;font-weight:600;padding:2px 10px;border-radius:10px;border:1px solid}
-.p-fb{background:rgba(66,103,178,.15);color:#7B9FD4;border-color:rgba(66,103,178,.3)}
-.p-ig{background:rgba(225,48,108,.12);color:#E1306C;border-color:rgba(225,48,108,.3)}
-.p-tk{background:rgba(105,201,208,.1);color:#69C9D0;border-color:rgba(105,201,208,.2)}
-.post-cap{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
-.post-actions{display:flex;gap:8px}
-.btn-approve{background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.3);color:var(--green);padding:4px 14px;border-radius:4px;cursor:pointer;font-family:var(--fb);font-size:11px}
-.btn-approve:hover{background:rgba(76,175,80,.2)}
-.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty-icon{font-size:32px;margin-bottom:10px;opacity:.4}
-.empty-text{font-size:13px}
-.empty-sub{font-size:11px;margin-top:6px;color:var(--dim)}
-
-/* ENGINE STATUS */
-.eng-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.eng-row:last-child{border-bottom:none}
-.eng-indicator{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.e-run{background:var(--green);box-shadow:0 0 8px rgba(76,175,80,.6);animation:pulse 2s infinite}
-.e-setup{background:var(--amber)}
-.e-off{background:var(--red)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.eng-name{font-size:13px;font-weight:500;flex:1}
-.eng-detail{font-size:11px;color:var(--muted)}
-.eng-action{font-size:11px;color:var(--gold);cursor:pointer}
-.eng-action:hover{text-decoration:underline}
-
-/* LEARNING TABLE */
-.learn-tbl{width:100%}
-.learn-tbl th{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0 0 8px;text-align:left;font-weight:400}
-.learn-tbl td{padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
-.learn-tbl tr:last-child td{border-bottom:none}
-.rate-bar-wrap{background:var(--border);border-radius:3px;height:4px;width:80px;overflow:hidden;display:inline-block}
-.rate-bar{height:100%;background:var(--gold);border-radius:3px}
-
-/* TASK LIST */
-.task-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
-.task-item:last-child{border-bottom:none}
-.task-item.done .task-title{text-decoration:line-through;color:var(--muted)}
-.task-item.done .task-detail{color:var(--dim)}
-.task-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);cursor:pointer;flex-shrink:0;margin-top:2px;transition:all .2s;position:relative}
-.task-check:hover{border-color:var(--gold)}
-.task-item.done .task-check{background:var(--green);border-color:var(--green)}
-.task-item.done .task-check::after{content:'✓';position:absolute;top:-1px;left:2px;font-size:12px;color:#000;font-weight:700}
-.task-body{flex:1}
-.task-title{font-size:13px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.task-detail{font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.5}
-.task-script{font-size:11px;color:var(--gold2);background:rgba(200,149,46,.06);border-left:2px solid var(--gold);padding:6px 10px;border-radius:0 4px 4px 0;margin-bottom:8px;line-height:1.6;font-style:italic}
-.task-cmd{font-size:11px;color:var(--muted);margin-bottom:6px}
-.task-tag{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;letter-spacing:.5px}
-.t-urgent{background:rgba(239,83,80,.15);color:var(--red);border:1px solid rgba(239,83,80,.3)}
-.t-today{background:rgba(255,152,0,.15);color:var(--amber);border:1px solid rgba(255,152,0,.3)}
-.t-engine{background:rgba(200,149,46,.15);color:var(--gold);border:1px solid rgba(200,149,46,.3)}
-.t-build{background:rgba(66,165,245,.12);color:var(--blue);border:1px solid rgba(66,165,245,.3)}
-.t-social{background:rgba(225,48,108,.1);color:#E1306C;border:1px solid rgba(225,48,108,.2)}
-.task-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 12px;border-radius:4px;cursor:pointer;font-family:var(--fb);font-size:11px;transition:all .2s}
-.task-btn:hover{border-color:var(--gold);color:var(--gold)}
-
-/* COMMAND ROWS */
-.cmd-row{padding:7px 0;border-bottom:1px solid var(--border)}
-.cmd-row:last-child{border-bottom:none}
-.cmd-label{font-size:10px;color:var(--muted);margin-bottom:3px;letter-spacing:.5px}
-.cmd-code{font-size:12px;color:var(--text);background:rgba(255,255,255,.03);padding:4px 8px;border-radius:4px;border:1px solid var(--border)}
-.cmd-code code{font-family:monospace;color:var(--gold2)}
-.copy-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:2px 8px;border-radius:3px;cursor:pointer;font-size:10px;font-family:var(--fb);flex-shrink:0}
-.copy-btn:hover{border-color:var(--gold);color:var(--gold)}
-
-/* MILESTONE */
-.milestone-row{display:flex;align-items:center;gap:8px;padding:3px 0}
-
-/* WEEK GRID */
-.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:4px}
-.week-day{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:10px}
-.week-day.today{border-color:var(--gold);background:rgba(200,149,46,.05)}
-.week-day-name{font-family:var(--fh);font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--muted)}
-.week-day.today .week-day-name{color:var(--gold)}
-.week-task{font-size:11px;color:var(--muted);padding:3px 0;border-bottom:1px solid var(--border);line-height:1.4}
-.week-task:last-child{border-bottom:none}
-
-/* SCROLL */
-.main::-webkit-scrollbar,.sidebar::-webkit-scrollbar{width:4px}
-.main::-webkit-scrollbar-track,.sidebar::-webkit-scrollbar-track{background:transparent}
-.main::-webkit-scrollbar-thumb,.sidebar::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
-
-/* TOAST */
+/* Toast */
 #toast{position:fixed;bottom:20px;right:20px;background:var(--gold);color:#000;padding:10px 18px;border-radius:6px;font-size:12px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999}
 #toast.show{opacity:1}
-
-/* DIVIDER */
-hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 </style>
 </head>
 <body>
@@ -213,512 +123,151 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 
   <!-- TOPBAR -->
   <div class="topbar">
-    <div style="display:flex;align-items:center">
-      <div class="logo">HOO</div>
-      <div class="tagline">herrmanonlineoutlook.com — build free, pay on approval</div>
-    </div>
-    <div class="topbar-right">
+    <div class="logo">HOO <span>Command Center</span></div>
+    <div class="topbar-r">
       <span id="clock"></span>
-      <button class="btn-sm" onclick="loadAll()">↻ Refresh</button>
-      <button class="btn-sm btn-red" onclick="openLink('https://partners.shopify.com')">Partner Dashboard ↗</button>
+      <button class="btn btn-gold" onclick="refresh()">Refresh</button>
     </div>
   </div>
 
   <div class="body">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="mrr-box">
-        <div class="mrr-lbl">Monthly Recurring</div>
-        <div class="mrr-val" id="mrr-val">$0</div>
-        <div class="mrr-goal">Goal: $1,000/mo</div>
-        <div class="prog"><div class="prog-fill" id="mrr-bar" style="width:0%"></div></div>
+    <div class="side">
+      <div class="side-section">
+        <div class="side-label">Pipeline</div>
+        <div class="nav on" data-tab="calls" onclick="switchTab(this)">
+          <span class="nav-icon">📞</span> Calls <span class="badge bg-gold" id="b-calls">0</span>
+        </div>
+        <div class="nav" data-tab="followup" onclick="switchTab(this)">
+          <span class="nav-icon">📧</span> Follow-Up <span class="badge bg-green" id="b-followup">0</span>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Engine</div>
+        <div class="nav" data-tab="hunt" onclick="switchTab(this)">
+          <span class="nav-icon">🔍</span> Hunt Leads
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Intelligence</div>
+        <div class="nav" data-tab="stats" onclick="switchTab(this)">
+          <span class="nav-icon">📊</span> Stats
+        </div>
       </div>
 
-      <div class="nav-label">Overview</div>
-      <div class="nav-item active" data-page="today" onclick="nav(this)">
-        <span class="nav-icon">◈</span> Today's Briefing
-        <span class="nav-badge alert" id="badge-urgent">3</span>
-      </div>
-
-      <div class="nav-label">Lead Engine</div>
-      <div class="nav-item" data-page="pipeline" onclick="nav(this)">
-        <span class="nav-icon">◎</span> Pipeline
-        <span class="nav-badge alert" id="badge-leads">25</span>
-      </div>
-      <div class="nav-item" data-page="top5" onclick="nav(this)">
-        <span class="nav-icon">☎</span> Top 5 Calls
-      </div>
-      <div class="nav-item" data-page="learning" onclick="nav(this)">
-        <span class="nav-icon">◑</span> What's Working
-      </div>
-
-      <div class="nav-label">Build Engine</div>
-      <div class="nav-item" data-page="stores" onclick="nav(this)">
-        <span class="nav-icon">◻</span> Store Status
-      </div>
-
-      <div class="nav-label">Social Engine</div>
-      <div class="nav-item" data-page="social" onclick="nav(this)">
-        <span class="nav-icon">◈</span> Post Queue
-        <span class="nav-badge gold" id="badge-queue">0</span>
-      </div>
-
-      <div class="nav-label">Pipeline</div>
-      <div class="nav-item" data-page="call-queue" onclick="nav(this)" id="call-queue-tab">
-        <span class="nav-icon">📞</span> Call Queue
-        <span class="nav-badge gold" id="badge-calls">0</span>
-      </div>
-      <div class="nav-item" data-page="approvals" onclick="nav(this)">
-        <span class="nav-icon">✓</span> Approvals
-        <span class="nav-badge gold" id="badge-approvals">0</span>
-      </div>
-
-      <div class="nav-label">System</div>
-      <div class="nav-item" data-page="engines" onclick="nav(this)">
-        <span class="nav-icon">⚙</span> Engine Status
+      <!-- Sidebar live stats -->
+      <div class="side-stats">
+        <div class="ss-row"><span class="ss-label">Today</span><span class="ss-val" id="ss-today">0</span></div>
+        <div class="ss-row"><span class="ss-label">Sent</span><span class="ss-val" id="ss-sent">0</span></div>
+        <div class="ss-divider"></div>
+        <div class="ss-row"><span class="ss-label">Pipeline</span><span class="ss-val" id="ss-pipeline">0</span></div>
+        <div class="ss-row"><span class="ss-label">MRR</span><span class="ss-val" id="ss-mrr">$0</span></div>
       </div>
     </div>
 
     <!-- MAIN CONTENT -->
     <div class="main">
 
+      <!-- ═══════════════════ CALLS TAB ═══════════════════ -->
+      <div class="page on" id="tab-calls">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">CALL QUEUE</div>
+            <div class="page-sub">Cold call → mention the demo → get their email → send it</div>
+          </div>
+          <button class="btn btn-gold" onclick="refresh()">Refresh</button>
+        </div>
+        <div class="metric-row">
+          <div class="metric"><div class="m-label">To Call</div><div class="m-val" style="color:var(--gold)" id="m-tocall">0</div></div>
+          <div class="metric"><div class="m-label">Called Today</div><div class="m-val" style="color:var(--blue)" id="m-today">0</div></div>
+          <div class="metric"><div class="m-label">Demos Sent</div><div class="m-val" style="color:var(--green)" id="m-sent">0</div></div>
+          <div class="metric"><div class="m-label">Dead</div><div class="m-val" style="color:var(--red)" id="m-dead">0</div></div>
+        </div>
+        <div id="call-list"></div>
+      </div>
 
-      <!-- CEO OPERATIONS CENTER -->
-      <div class="page active" id="page-today">
-        <div class="page-head">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+      <!-- ═══════════════════ FOLLOW-UP TAB ═══════════════════ -->
+      <div class="page" id="tab-followup">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">FOLLOW-UP</div>
+            <div class="page-sub">Demos sent — follow up until they close or pass</div>
+          </div>
+        </div>
+        <div id="followup-list"></div>
+      </div>
+
+      <!-- ═══════════════════ HUNT TAB ═══════════════════ -->
+      <div class="page" id="tab-hunt">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">HUNT LEADS</div>
+            <div class="page-sub">Find local businesses with no website — build V4 demos automatically</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
             <div>
-              <div class="page-title">CEO Operations Center</div>
-              <div class="page-sub" id="today-date">Loading...</div>
+              <div class="m-label" style="margin-bottom:4px">Count</div>
+              <select class="input" id="hunt-count" style="width:80px">
+                <option value="2">2</option>
+                <option value="4" selected>4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+              </select>
             </div>
-            <div style="text-align:right">
-              <div style="font-size:11px;color:var(--muted)">Daily mission</div>
-              <div style="font-size:13px;color:var(--gold);font-weight:500">Find. Build. Close. Repeat.</div>
-            </div>
+            <button class="btn btn-gold" id="hunt-btn" onclick="startHunt()" style="padding:8px 24px;font-size:13px">🚀 Start Hunt</button>
+            <span id="hunt-status" style="font-size:11px;color:var(--muted)"></span>
           </div>
         </div>
+        <div class="log-box" id="hunt-log" style="display:none"></div>
+      </div>
 
-        <div class="g4" style="margin-bottom:16px">
-          <div class="metric"><div class="m-lbl">MRR</div><div class="m-val gold" id="t-mrr">$0</div><div class="m-sub">Goal: $1,000/mo</div></div>
-          <div class="metric"><div class="m-lbl">Total Leads</div><div class="m-val gold" id="t-hot">0</div><div class="m-sub" id="t-hot-sub">0 contacted · 0 replied</div></div>
-          <div class="metric"><div class="m-lbl">Replies</div><div class="m-val amber" id="t-followup">0</div><div class="m-sub" id="t-fu-sub">No replies yet</div></div>
-          <div class="metric"><div class="m-lbl">Stores Live</div><div class="m-val green">3</div><div class="m-sub">NoReturn · TCB · HOO</div></div>
+      <!-- ═══════════════════ STATS TAB ═══════════════════ -->
+      <div class="page" id="tab-stats">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">INTELLIGENCE</div>
+            <div class="page-sub">What's working — gets smarter with every call</div>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric"><div class="m-label">Total Calls</div><div class="m-val" style="color:var(--gold)" id="st-total">0</div></div>
+          <div class="metric"><div class="m-label">Pickup Rate</div><div class="m-val" style="color:var(--green)" id="st-pickup">0%</div></div>
+          <div class="metric"><div class="m-label">Demos Sent</div><div class="m-val" style="color:var(--blue)" id="st-demos">0</div></div>
+          <div class="metric"><div class="m-label">Interested</div><div class="m-val" style="color:var(--gold)" id="st-interested">0</div></div>
         </div>
 
-        <div class="g2" style="margin-bottom:12px">
-
-          <!-- DAILY TASKS -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <!-- Best Industries -->
           <div class="card">
-            <div class="card-label">Today's actions — check off as you go</div>
-
-            <div class="task-item" id="task-0">
-              <div class="task-check" onclick="checkTask(0)"></div>
-              <div class="task-body">
-                <div class="task-title">Hunt fresh leads <span class="task-tag t-urgent">START HERE</span></div>
-                <div class="task-detail">Pipeline is clean — time to fill it with new leads using the v3 premium demo engine</div>
-                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
-                <button class="task-btn" onclick="copyText('find leads in Kansas City for cleaning businesses')">Copy Claude prompt</button>
-              </div>
-            </div>
-
-            <div class="task-item" id="task-1">
-              <div class="task-check" onclick="checkTask(1)"></div>
-              <div class="task-body">
-                <div class="task-title">Review & approve demos <span class="task-tag t-engine">WAR ROOM</span></div>
-                <div class="task-detail">After hunting, review the new premium demos in Approvals tab — approve to send</div>
-                <button class="task-btn" onclick="nav(document.querySelector('[data-page=approvals]'))">Go to Approvals</button>
-              </div>
-            </div>
-
-            <div class="task-item" id="task-2">
-              <div class="task-check" onclick="checkTask(2)"></div>
-              <div class="task-body">
-                <div class="task-title">Apply for Shopify Partner <span class="task-tag t-urgent">MONEY</span></div>
-                <div class="task-detail">15 min, free — passive income on every client store forever. You're leaving money on the table.</div>
-                <button class="task-btn" onclick="openLink('https://partners.shopify.com')">Open partners.shopify.com</button>
-              </div>
-            </div>
-
-            <div class="task-item" id="task-3">
-              <div class="task-check" onclick="checkTask(3)"></div>
-              <div class="task-body">
-                <div class="task-title">Post to Facebook <span class="task-tag t-social">SOCIAL</span></div>
-                <div class="task-detail">Post the God Quest before/after — your existing portfolio content is ready</div>
-                <div class="task-cmd">VS Code terminal → type into Claude Code:</div>
-                <button class="task-btn" onclick="copyText('create a Facebook post for the God Quest NoReturn Apparel build. Before and after. HOO voice. Include herrmanonlineoutlook.com')">Copy command</button>
-              </div>
-            </div>
-
-            <div class="task-item" id="task-4">
-              <div class="task-check" onclick="checkTask(4)"></div>
-              <div class="task-body">
-                <div class="task-title">End of day commit <span class="task-tag t-engine">GIT</span></div>
-                <div class="task-detail">Save today's work to GitHub — the system grows permanently</div>
-                <div class="task-cmd">PowerShell:</div>
-                <button class="task-btn" id="git-btn" onclick="copyGit()">Copy git command</button>
-              </div>
-            </div>
-
+            <div class="m-label" style="margin-bottom:10px">Best Industries (by pickup rate)</div>
+            <div id="st-industries"><span class="empty-text">No data yet — start calling</span></div>
           </div>
-
-          <!-- RIGHT COLUMN -->
-          <div style="display:flex;flex-direction:column;gap:12px">
-
-            <!-- CLAUDE CODE COMMANDS -->
-            <div class="card">
-              <div class="card-label">Claude Code commands — type these in VS Code terminal</div>
-              <div class="cmd-row">
-                <div class="cmd-label">1. Open terminal</div>
-                <div class="cmd-code">Ctrl + ` (backtick key)</div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">2. Start AI brain</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>claude</code><button class="copy-btn" onclick="copyText('claude')">copy</button>
-                </div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">Morning briefing</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>morning briefing</code><button class="copy-btn" onclick="copyText('morning briefing')">copy</button>
-                </div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">Find leads</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>find leads in [city] for [industry]</code><button class="copy-btn" onclick="copyText('find leads in Kansas City for cleaning businesses')">copy</button>
-                </div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">Build a section</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>build a hero for [business name]</code><button class="copy-btn" onclick="copyText('build a hero section for a cleaning business in Kansas City MO')">copy</button>
-                </div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">Create social post</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>create social content for [build]</code><button class="copy-btn" onclick="copyText('create social content for the build I just finished. HOO voice. Facebook and Instagram.')">copy</button>
-                </div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">Audit a website</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>audit [url]</code><button class="copy-btn" onclick="copyText('audit noreturnapparel.com and tell me the top 5 issues')">copy</button>
-                </div>
-              </div>
-              <div class="cmd-row">
-                <div class="cmd-label">End session</div>
-                <div class="cmd-code" style="display:flex;justify-content:space-between;align-items:center">
-                  <code>end session</code><button class="copy-btn" onclick="copyText('end session')">copy</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- REVENUE TRACKER -->
-            <div class="card">
-              <div class="card-label">Revenue path — what each milestone means</div>
-              <div style="margin-bottom:10px">
-                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
-                  <span style="color:var(--muted)">$0 → $1,000/mo MRR</span>
-                  <span style="color:var(--gold)">0 / 10 paying clients</span>
-                </div>
-                <div class="prog"><div class="prog-fill" style="width:0%"></div></div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:7px">
-                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">5 clients</span><span style="font-size:12px;color:var(--gold)">$375–500/mo · car payment</span></div>
-                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">10 clients</span><span style="font-size:12px;color:var(--gold)">$750–1,000/mo · bills breathing</span></div>
-                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">20 clients</span><span style="font-size:12px;color:var(--gold)">$1,500–2,000/mo · Shelby stops worrying</span></div>
-                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">35 clients</span><span style="font-size:12px;color:var(--gold)">$2,500–3,500/mo · leave construction</span></div>
-                <div class="milestone-row"><span class="dot d-missing"></span><span style="font-size:12px;flex:1">50 clients</span><span style="font-size:12px;color:var(--gold2)">$5,000/mo · hire help · scale</span></div>
-              </div>
-              <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">
-                Fresh start. New premium demos. <span style="color:var(--gold2)">Hunt leads → approve demos → send → close.</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- WEEKLY RHYTHM -->
-        <div class="card">
-          <div class="card-label">Weekly rhythm — what to do each day</div>
-          <div class="week-grid" id="week-grid"></div>
-        </div>
-
-      </div>
-
-      <!-- PIPELINE PAGE -->
-      <div class="page" id="page-pipeline">
-        <div class="page-head">
-          <div class="page-title">Lead Pipeline</div>
-          <div class="page-sub">All leads — click phone to copy · Stage auto-updates from n8n</div>
-        </div>
-        <div class="g4" style="margin-bottom:16px">
-          <div class="metric"><div class="m-lbl">Total</div><div class="m-val gold" id="p-total">—</div></div>
-          <div class="metric"><div class="m-lbl">HOT</div><div class="m-val red" id="p-hot">—</div><div class="m-sub">Score 50+</div></div>
-          <div class="metric"><div class="m-lbl">Contacted</div><div class="m-val amber" id="p-contacted">—</div></div>
-          <div class="metric"><div class="m-lbl">Replied</div><div class="m-val green" id="p-replied">—</div></div>
-        </div>
-        <div class="card" style="overflow-x:auto">
-          <table class="lead-tbl" id="pipeline-table">
-            <thead>
-              <tr>
-                <th>Score</th><th>Business</th><th>Industry</th><th>City</th>
-                <th>Phone</th><th>Stage</th><th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="pipeline-body">
-              <tr><td colspan="7" style="color:var(--muted);padding:20px 0;text-align:center">Loading leads...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- TOP 5 PAGE -->
-      <div class="page" id="page-top5">
-        <div class="page-head">
-          <div class="page-title">Top 5 Calls</div>
-          <div class="page-sub">Matthew handles these personally — highest-score uncalled leads</div>
-        </div>
-        <div id="top5-cards">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-
-      <!-- LEARNING PAGE -->
-      <div class="page" id="page-learning">
-        <div class="page-head">
-          <div class="page-title">What's Working</div>
-          <div class="page-sub">Auto-updated from engine/data/learning.json every session</div>
-        </div>
-        <div class="g2" style="margin-bottom:12px">
-          <div class="metric"><div class="m-lbl">Emails Sent</div><div class="m-val gold" id="l-sent">—</div></div>
-          <div class="metric"><div class="m-lbl">Reply Rate</div><div class="m-val" id="l-reply">—</div><div class="m-sub">Industry avg: ~8-12%</div></div>
-        </div>
-        <div class="card">
-          <div class="card-label">Industry Performance</div>
-          <table class="learn-tbl" id="industry-table">
-            <thead><tr><th>Industry</th><th>Contacted</th><th>Responded</th><th>Rate</th><th>Notes</th></tr></thead>
-            <tbody id="industry-body">
-              <tr><td colspan="5" style="color:var(--muted);padding:20px 0">Loading...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- STORES PAGE -->
-      <div class="page" id="page-stores">
-        <div class="page-head">
-          <div class="page-title">Store Status</div>
-          <div class="page-sub">All three stores — section by section</div>
-        </div>
-        <div class="g3">
-
-          <!-- NoReturn -->
+          <!-- Best Times -->
           <div class="card">
-            <div class="store-hdr">
-              <div class="store-name gold">NoReturn Apparel</div>
-              <a class="store-url" href="https://noreturnapparel.com" target="_blank">noreturnapparel.com ↗</a>
-            </div>
-            <div>
-              <div class="sec-row"><span class="sec-name">God Quest</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Best Sellers</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Anime Collection</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Fatherhood Ascended</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">No Return Core</span><span class="sec-status"><span class="dot d-built"></span>Built, not pasted</span></div>
-              <div class="sec-row"><span class="sec-name">Collections Landing</span><span class="sec-status"><span class="dot d-built"></span>Built, not pasted</span></div>
-              <div class="sec-row"><span class="sec-name">Hats & Headwear</span><span class="sec-status"><span class="dot d-built"></span>Built, not pasted</span></div>
-              <div class="sec-row"><span class="sec-name">Live or Die</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-              <div class="sec-row"><span class="sec-name">New Arrivals</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-            </div>
-            <hr class="divider">
-            <div style="font-size:11px;color:var(--red)">⚠ Issues: Double marquee (FREE SHIPPING), wrong hrefs, 0 reviews, no email popup</div>
+            <div class="m-label" style="margin-bottom:10px">Best Call Times</div>
+            <div id="st-times"><span class="empty-text">No data yet</span></div>
           </div>
-
-          <!-- TCB -->
+          <!-- Top Objections -->
           <div class="card">
-            <div class="store-hdr">
-              <div class="store-name gold">TCB Collections</div>
-              <span class="store-url" style="color:var(--muted)">1TrueDispensery — demo</span>
-            </div>
-            <div>
-              <div class="sec-row"><span class="sec-name">Age Gate</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Hero Section</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Collections Grid</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Deals & Discounts</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-              <div class="sec-row"><span class="sec-name">Rewards Program</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-              <div class="sec-row"><span class="sec-name">Strains Guide</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-              <div class="sec-row"><span class="sec-name">About Section</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-              <div class="sec-row"><span class="sec-name">CTA / Footer</span><span class="sec-status"><span class="dot d-missing"></span>Not built</span></div>
-            </div>
-            <hr class="divider">
-            <div style="font-size:11px;color:var(--muted)">Demo portfolio store — awaiting real collection photos</div>
+            <div class="m-label" style="margin-bottom:10px">Top Objections</div>
+            <div id="st-objections"><span class="empty-text">No data yet</span></div>
           </div>
-
-          <!-- HOO Site -->
+          <!-- Best Days -->
           <div class="card">
-            <div class="store-hdr">
-              <div class="store-name gold">HOO Site</div>
-              <a class="store-url" href="https://herrmanonlineoutlook.com" target="_blank">herrmanonlineoutlook.com ↗</a>
-            </div>
-            <div>
-              <div class="sec-row"><span class="sec-name">Hero Section</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">How It Works</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Our Work / Portfolio</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">What's Included</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Pricing</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-              <div class="sec-row"><span class="sec-name">Contact Form</span><span class="sec-status"><span class="dot d-live"></span>Live</span></div>
-            </div>
-            <hr class="divider">
-            <div style="font-size:11px;color:var(--green)">✓ All 6 sections live · Formspree: xaqpwgkd</div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- SOCIAL QUEUE PAGE -->
-      <div class="page" id="page-social">
-        <div class="page-head">
-          <div class="page-title">Post Queue</div>
-          <div class="page-sub">Approve posts to move them to social-engine/posted/</div>
-        </div>
-        <div id="queue-list">
-          <div class="empty-state">
-            <div class="empty-icon">◈</div>
-            <div class="empty-text">Queue is empty</div>
-            <div class="empty-sub">Run: node social-engine/post-manager.js library — to generate content from existing builds</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CALL QUEUE PAGE -->
-      <div class="page" id="page-call-queue">
-        <div class="page-head">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div>
-              <div class="page-title">Call Queue</div>
-              <div class="page-sub">Cold call → mention the demo → get their email → send it</div>
-            </div>
-            <button class="btn-sm btn-gold" onclick="loadCallQueue()">↻ Refresh</button>
-          </div>
-        </div>
-        <div class="g4" style="margin-bottom:16px">
-          <div class="metric"><div class="m-lbl">To Call</div><div class="m-val gold" id="cq-total">0</div></div>
-          <div class="metric"><div class="m-lbl">Called Today</div><div class="m-val blue" id="cq-called">0</div></div>
-          <div class="metric"><div class="m-lbl">Demos Sent</div><div class="m-val green" id="cq-sent">0</div></div>
-          <div class="metric"><div class="m-lbl">Dead</div><div class="m-val red" id="cq-dead">0</div></div>
-        </div>
-        <div id="call-queue-list"></div>
-        <div id="call-queue-followup" style="margin-top:24px;display:none">
-          <div style="font-family:var(--fh);font-size:18px;letter-spacing:2px;color:var(--green);margin-bottom:12px">FOLLOW-UP (DEMO SENT)</div>
-          <div id="call-queue-followup-list"></div>
-        </div>
-        <div id="call-queue-callbacks" style="margin-top:24px;display:none">
-          <div style="font-family:var(--fh);font-size:18px;letter-spacing:2px;color:var(--amber);margin-bottom:12px">CALLBACKS DUE</div>
-          <div id="call-queue-callback-list"></div>
-        </div>
-      </div>
-
-      <!-- APPROVALS PAGE -->
-      <div class="page" id="page-approvals">
-        <div class="page-head">
-          <div class="page-title">Approvals</div>
-          <div class="page-sub">Review demos, emails, and social content — approve to send, reject to skip</div>
-        </div>
-        <div class="g3" style="margin-bottom:16px">
-          <div class="metric"><div class="m-lbl">Pending</div><div class="m-val amber" id="a-pending">—</div></div>
-          <div class="metric"><div class="m-lbl">Sent</div><div class="m-val green" id="a-sent">—</div></div>
-          <div class="metric"><div class="m-lbl">Rejected</div><div class="m-val red" id="a-rejected">—</div></div>
-        </div>
-        <div id="approvals-list">
-          <div class="empty-state">
-            <div class="empty-icon">✓</div>
-            <div class="empty-text">No approvals yet</div>
-            <div class="empty-sub">Run: <code style="background:var(--border2);padding:2px 6px;border-radius:3px">node engine/tools/pipeline-orchestrator.js run</code></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ENGINES PAGE -->
-      <div class="page" id="page-engines">
-        <div class="page-head">
-          <div class="page-title">Engine Status</div>
-          <div class="page-sub">All three engines — setup status and actions</div>
-        </div>
-        <div class="g2">
-          <div class="card">
-            <div class="card-label">Lead Engine v3.0</div>
-            <div id="engine-list">
-              <div class="eng-row">
-                <div class="eng-indicator e-setup"></div>
-                <div style="flex:1">
-                  <div class="eng-name">Crawl4AI Scraper</div>
-                  <div class="eng-detail">Not installed · pip install crawl4ai playwright</div>
-                </div>
-                <span class="eng-action" onclick="copyCmd('pip install crawl4ai playwright && playwright install chromium')">Copy install</span>
-              </div>
-              <div class="eng-row">
-                <div class="eng-indicator e-setup"></div>
-                <div style="flex:1">
-                  <div class="eng-name">Twilio SMS</div>
-                  <div class="eng-detail">Not configured · add credentials to .env</div>
-                </div>
-                <span class="eng-action" onclick="openLink('https://twilio.com')">twilio.com ↗</span>
-              </div>
-              <div class="eng-row">
-                <div class="eng-indicator e-setup"></div>
-                <div style="flex:1">
-                  <div class="eng-name">n8n Automation</div>
-                  <div class="eng-detail">Not running · see n8n/SETUP.md</div>
-                </div>
-                <span class="eng-action" onclick="copyCmd('docker run -d --name n8n --restart always -p 5678:5678 -v n8n_data:/home/node/.n8n -e GENERIC_TIMEZONE=America/Chicago docker.n8n.io/n8nio/n8n')">Copy docker cmd</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-label">Social Engine</div>
-            <div>
-              <div class="eng-row">
-                <div class="eng-indicator e-setup"></div>
-                <div style="flex:1">
-                  <div class="eng-name">Post Manager</div>
-                  <div class="eng-detail">social-engine/post-manager.js — ready to run</div>
-                </div>
-                <span class="eng-action" onclick="copyCmd('node social-engine/post-manager.js library')">Generate library</span>
-              </div>
-              <div class="eng-row">
-                <div class="eng-indicator e-setup"></div>
-                <div style="flex:1">
-                  <div class="eng-name">n8n Social Webhook</div>
-                  <div class="eng-detail">Needs n8n running first</div>
-                </div>
-              </div>
-            </div>
-            <hr class="divider">
-            <div class="card-label">Shopify Partner</div>
-            <div class="eng-row">
-              <div class="eng-indicator e-off"></div>
-              <div style="flex:1">
-                <div class="eng-name">Partner Account</div>
-                <div class="eng-detail">NOT APPLIED — losing passive income on every lead closed</div>
-              </div>
-              <span class="eng-action" onclick="openLink('https://partners.shopify.com')">Apply now ↗</span>
-            </div>
+            <div class="m-label" style="margin-bottom:10px">Best Days</div>
+            <div id="st-days"><span class="empty-text">No data yet</span></div>
           </div>
         </div>
 
-        <div class="card" style="margin-top:12px">
-          <div class="card-label">Quick Commands</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px">
-            <button class="btn-sm" onclick="copyCmd('python engine/tools/install-verify.py')">Run install-verify.py</button>
-            <button class="btn-sm" onclick="copyCmd('python engine/tools/lead-hunter-v3.py --city "Kansas City" --industry tattoo')">Hunt leads</button>
-            <button class="btn-sm" onclick="copyCmd('node engine/tools/sms-engine.js test \"+18049571003\" \"HOO test\" --live')">Test SMS</button>
-            <button class="btn-sm" onclick="copyCmd('node social-engine/post-manager.js library')">Generate social library</button>
-            <button class="btn-sm" onclick="copyCmd('git add memory/ workspaces/ && git commit -m \"session update\" && git push')">Commit session</button>
-            <button class="btn-sm" onclick="copyCmd('cd C:\\Users\\Matth\\hoo-workspace && claude')">Launch Claude Code</button>
+        <!-- Funnel -->
+        <div class="card" style="margin-top:16px">
+          <div class="m-label" style="margin-bottom:10px">Conversion Funnel</div>
+          <div id="st-funnel" style="display:flex;align-items:center;gap:12px;font-family:var(--fh);font-size:18px;letter-spacing:1px">
+            <span style="color:var(--muted)">No data</span>
           </div>
         </div>
       </div>
@@ -730,693 +279,406 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 <div id="toast"></div>
 
 <script>
-// ── STATIC FALLBACK DATA (used when not running in Electron) ──────────────
-const STATIC_LEADS = [];
-
-const STATIC_PIPELINE = {total:0,hot:0,warm:0,contacted:0,replied:0,closed:0};
-const STATIC_MRR = 0;
-const STATIC_GOAL = 1000;
-
-// ── STATE ──────────────────────────────────────────────────────────────────
-let leads = [];
-let learning = null;
-let queuePosts = [];
+// ── STATE ────────────────────────────────────────────────────────────────────
 const isElectron = typeof window.hoo !== 'undefined';
+let approvals = [];
+let stats = {};
 
-// ── INIT ──────────────────────────────────────────────────────────────────
-async function loadAll() {
-  await Promise.all([loadLeads(), loadLearning(), loadQueue()]);
-  renderToday();
-  renderPipeline();
-  renderTop5();
-  renderLearning();
-  renderQueue();
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function switchTab(el) {
+  document.querySelectorAll('.nav').forEach(n => n.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('tab-' + el.dataset.tab).classList.add('on');
 }
 
-async function loadLeads() {
-  if (isElectron) {
-    const raw = await window.hoo.readLeads();
-    leads = raw && raw.length ? raw : STATIC_LEADS;
-  } else {
-    leads = STATIC_LEADS;
-  }
-}
-
-async function loadLearning() {
-  if (isElectron) {
-    learning = await window.hoo.readJSON('engine/data/learning.json');
-  }
-  if (!learning) {
-    learning = {
-      email_stats:{sent:0,replied:0},
-      sms_stats:{sent:0,replied:0},
-      by_industry:{}
-    };
-  }
-}
-
-async function loadQueue() {
-  if (isElectron) {
-    queuePosts = await window.hoo.readQueue() || [];
-  } else {
-    queuePosts = [];
-  }
-  document.getElementById('badge-queue').textContent = queuePosts.length || '0';
-}
-
-// ── RENDER: TODAY ──────────────────────────────────────────────────────────
-function renderToday() {
-  const total = leads.length;
-  const contacted = leads.filter(l => l.stage === 'emailed' || l.stage === 'replied' || l.stage === 'closed').length;
-  const replied = leads.filter(l => l.stage === 'replied').length;
-
-  document.getElementById('t-hot').textContent = total;
-  document.getElementById('t-hot-sub').textContent = `${contacted} contacted · ${replied} replied`;
-  document.getElementById('t-followup').textContent = replied;
-  document.getElementById('t-fu-sub').textContent = replied > 0 ? `${replied} reply — follow up!` : 'No replies yet';
-  document.getElementById('badge-urgent').textContent = 3;
-  document.getElementById('badge-leads').textContent = total;
-
-  const mrr = STATIC_MRR;
-  document.getElementById('t-mrr').textContent = '$' + mrr.toLocaleString();
-  document.getElementById('mrr-val').textContent = '$' + mrr.toLocaleString();
-  const pct = Math.round((mrr / STATIC_GOAL) * 100);
-  document.getElementById('mrr-bar').style.width = pct + '%';
-}
-
-// ── RENDER: PIPELINE ──────────────────────────────────────────────────────
-function renderPipeline() {
-  const hot = leads.filter(l=>l.tier==='HOT').length;
-  const contacted = leads.filter(l=>['emailed','replied','closed'].includes(l.stage)).length;
-  const replied = leads.filter(l=>l.stage==='replied').length;
-  document.getElementById('p-total').textContent = leads.length;
-  document.getElementById('p-hot').textContent = hot;
-  document.getElementById('p-contacted').textContent = contacted;
-  document.getElementById('p-replied').textContent = replied;
-
-  const sorted = [...leads].sort((a,b) => (b.score||0) - (a.score||0));
-  const tbody = document.getElementById('pipeline-body');
-  tbody.innerHTML = sorted.map(l => {
-    const tierClass = l.tier === 'HOT' ? 's-hot' : l.tier === 'WARM' ? 's-warm' : 's-cold';
-    const stageClass = {found:'st-found',emailed:'st-emailed',replied:'st-replied',closed:'st-closed'}[l.stage] || 'st-found';
-    const phone = l.phone ? `<span class="phone-link" onclick="copyPhone('${l.phone}')" title="Click to copy">${l.phone}</span>` : '<span style="color:var(--dim)">—</span>';
-    return `<tr>
-      <td><span class="score-pill ${tierClass}">${l.score || '—'}</span></td>
-      <td><div style="font-size:13px;font-weight:500">${l.business||'Unknown'}</div>${l.owner?`<div style="font-size:11px;color:var(--muted)">${l.owner}</div>`:''}</td>
-      <td style="color:var(--muted);font-size:12px">${l.industry||'—'}</td>
-      <td style="color:var(--muted);font-size:12px">${l.city||'—'}</td>
-      <td>${phone}</td>
-      <td><span class="stage-pill ${stageClass}">${l.stage||'found'}</span></td>
-      <td><button class="btn-sm" onclick="scriptPrompt('${(l.business||'').replace(/'/g,"\\'")}','${l.industry||''}','${l.city||''}','${l.phone||''}')">Script</button></td>
-    </tr>`;
-  }).join('');
-}
-
-// ── RENDER: TOP 5 ──────────────────────────────────────────────────────────
-function renderTop5() {
-  const top5 = [...leads]
-    .filter(l => l.phone && (l.stage === 'found' || l.stage === 'emailed'))
-    .sort((a,b) => (b.score||0) - (a.score||0))
-    .slice(0, 5);
-
-  const container = document.getElementById('top5-cards');
-  container.innerHTML = top5.map((l, i) => `
-    <div class="card" style="margin-bottom:12px;border-left:3px solid var(--gold)">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-            <span style="font-family:var(--fh);font-size:28px;color:var(--gold)">${i+1}</span>
-            <div>
-              <div style="font-size:15px;font-weight:500">${l.business}</div>
-              ${l.owner ? `<div style="font-size:12px;color:var(--muted)">${l.owner} · ${l.city}, MO · ${l.industry}</div>` : `<div style="font-size:12px;color:var(--muted)">${l.city}, MO · ${l.industry}</div>`}
-            </div>
-          </div>
-          ${l.phone ? `<div style="font-size:16px;color:var(--blue);font-weight:500;margin-bottom:8px;cursor:pointer" onclick="copyPhone('${l.phone}')">${l.phone} <span style="font-size:11px;color:var(--muted)">(click to copy)</span></div>` : ''}
-          <div style="font-size:12px;color:var(--muted);line-height:1.6">
-            <span class="score-pill s-hot">Score ${l.score}</span>
-            <span style="margin-left:8px">No website found — strong close candidate</span>
-          </div>
-        </div>
-        <button class="btn-sm btn-gold" style="white-space:nowrap;margin-top:4px"
-          onclick="scriptPrompt('${(l.business||'').replace(/'/g,"\\'")}','${l.industry||''}','${l.city||''}','${l.phone||''}')">
-          Get Call Script ↗
-        </button>
-      </div>
-    </div>
-  `).join('') || '<div class="empty-state"><div class="empty-text">No HOT leads loaded yet</div><div class="empty-sub">Add LEAD-*.json files to engine/leads/ then refresh</div></div>';
-}
-
-// ── RENDER: LEARNING ──────────────────────────────────────────────────────
-function renderLearning() {
-  const sent = learning?.email_stats?.sent || 0;
-  const replied = learning?.email_stats?.replied || 0;
-  const rate = sent > 0 ? ((replied/sent)*100).toFixed(1) + '%' : '—';
-  document.getElementById('l-sent').textContent = sent;
-  document.getElementById('l-reply').textContent = rate;
-
-  const industries = learning?.by_industry || {};
-  const tbody = document.getElementById('industry-body');
-  const rows = Object.entries(industries)
-    .filter(([,v]) => v.contacted > 0)
-    .sort((a,b) => b[1].contacted - a[1].contacted);
-
-  tbody.innerHTML = rows.length ? rows.map(([name, v]) => {
-    const rate = v.contacted > 0 ? Math.round((v.responded/v.contacted)*100) : 0;
-    return `<tr>
-      <td style="text-transform:capitalize;font-weight:500">${name}</td>
-      <td style="color:var(--muted)">${v.contacted}</td>
-      <td style="color:var(--muted)">${v.responded}</td>
-      <td><div class="rate-bar-wrap"><div class="rate-bar" style="width:${Math.min(rate*5,100)}%"></div></div> <span style="color:var(--muted);font-size:11px;margin-left:4px">${rate}%</span></td>
-      <td style="color:var(--muted);font-size:11px">${v.notes||'—'}</td>
-    </tr>`;
-  }).join('') : '<tr><td colspan="5" style="color:var(--muted);padding:20px 0">No outreach data yet — start the lead engine</td></tr>';
-}
-
-// ── RENDER: SOCIAL QUEUE ──────────────────────────────────────────────────
-function renderQueue() {
-  const container = document.getElementById('queue-list');
-  if (!queuePosts.length) {
-    container.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">◈</div>
-      <div class="empty-text">Queue is empty</div>
-      <div class="empty-sub">Run: <code style="background:var(--border2);padding:2px 6px;border-radius:3px">node social-engine/post-manager.js library</code></div>
-    </div>`;
-    return;
-  }
-  container.innerHTML = queuePosts.map(p => {
-    const platClass = {facebook:'p-fb',instagram:'p-ig',tiktok:'p-tk'}[p.platform] || 'p-fb';
-    return `<div class="post-card">
-      <div class="post-hdr">
-        <span class="plat ${platClass}">${p.platform || 'facebook'}</span>
-        <span style="font-size:11px;color:var(--muted)">${p.date || ''}</span>
-      </div>
-      <div class="post-cap">${p.caption || p.content || '—'}</div>
-      <div class="post-actions">
-        <button class="btn-approve" onclick="approvePost('${p.filename}',this)">✓ Approve & Move</button>
-        <button class="btn-sm">Edit</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ── ACTIONS ───────────────────────────────────────────────────────────────
-function nav(el) {
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  el.classList.add('active');
-  const page = el.dataset.page;
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-}
-
-function copyPhone(phone) {
-  navigator.clipboard.writeText(phone).then(() => toast('Copied: ' + phone));
-}
-
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard'));
-}
-
-function copyCmd(cmd) {
-  navigator.clipboard.writeText(cmd).then(() => toast('Command copied to clipboard'));
-}
-
-function openLink(url) {
-  if (window.hoo && window.hoo.openExternal) {
-    window.hoo.openExternal(url);
-  } else {
-    window.open(url, '_blank');
-  }
-}
-
-function scriptPrompt(business, industry, city, phone) {
-  const script = `Write me a phone call script for calling ${business} — ${industry} business in ${city}, MO. They have no website. Use the HOO "build free, pay on approval" angle. Their phone: ${phone}. Keep it under 60 seconds. Natural, blue-collar tone. Not salesy.`;
-  navigator.clipboard.writeText(script).then(() =>
-    toast('Script prompt copied — paste into Claude chat')
-  );
-}
-
-async function approvePost(filename, btn) {
-  if (!isElectron) { toast('Run in Electron to approve posts'); return; }
-  const ok = await window.hoo.approvePost(filename);
-  if (ok) {
-    btn.closest('.post-card').style.opacity = '0.4';
-    btn.textContent = '✓ Moved to posted/';
-    btn.disabled = true;
-    toast('Post approved and moved to posted/');
-    queuePosts = queuePosts.filter(p => p.filename !== filename);
-    document.getElementById('badge-queue').textContent = queuePosts.length;
-  }
-}
-
+// ── TOAST ────────────────────────────────────────────────────────────────────
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ── TASKS ─────────────────────────────────────────────────────────────────
-const taskState = JSON.parse(localStorage.getItem('hoo-tasks-'+new Date().toDateString()) || '{}');
-
-function checkTask(i) {
-  taskState[i] = !taskState[i];
-  localStorage.setItem('hoo-tasks-'+new Date().toDateString(), JSON.stringify(taskState));
-  const el = document.getElementById('task-'+i);
-  el.classList.toggle('done', taskState[i]);
-}
-
-function initTasks() {
-  Object.keys(taskState).forEach(i => {
-    const el = document.getElementById('task-'+i);
-    if (el && taskState[i]) el.classList.add('done');
-  });
-}
-
-function copyGit() {
-  const d = new Date().toISOString().slice(0,10);
-  copyText('cd C:\\Users\\Matth\\hoo-workspace && git add memory/ workspaces/ && git commit -m "session '+d+' — daily ops" && git push');
-}
-
-// ── WEEK GRID ─────────────────────────────────────────────────────────────
-function renderWeekGrid() {
-  const days = [
-    {name:'Monday',   tasks:['Morning briefing','Make top 5 calls','Check pipeline replies']},
-    {name:'Tuesday',  tasks:['Build client demos','Hunt new leads','Email new prospects']},
-    {name:'Wednesday',tasks:['Build sessions','Paste built sections','Client follow-ups']},
-    {name:'Thursday', tasks:['Follow-up emails','Approve social posts','Post content live']},
-    {name:'Friday',   tasks:['Weekly debrief','Git commit + push','Plan next week']},
-    {name:'Saturday', tasks:['1 new section build','Generate social library','Let engines run']},
-    {name:'Sunday',   tasks:['Rest — family first','Review the week','Set Monday goals']},
-  ];
-  const todayIdx = (new Date().getDay() + 6) % 7;
-  document.getElementById('week-grid').innerHTML = days.map((d,i) => `
-    <div class="week-day ${i===todayIdx?'today':''}">
-      <div class="week-day-name">${d.name}</div>
-      ${d.tasks.map(t=>`<div class="week-task">${t}</div>`).join('')}
-    </div>
-  `).join('');
-}
-
-// ── CLOCK ─────────────────────────────────────────────────────────────────
+// ── CLOCK ────────────────────────────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
-  document.getElementById('today-date').textContent = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
-setInterval(updateClock, 1000);
+setInterval(updateClock, 30000);
 updateClock();
 
-// ── APPROVALS ────────────────────────────────────────────────────────────
-let approvals = [];
-
-async function loadApprovals() {
+// ── LOAD DATA ────────────────────────────────────────────────────────────────
+async function refresh() {
   if (isElectron) {
     approvals = await window.hoo.readApprovals() || [];
-  } else {
-    approvals = [];
+    stats = await window.hoo.readStats() || {};
   }
-  // Badge only counts pending leads WITH email (ready to send)
-  const readyToSend = approvals.filter(a => {
-    if (a.status !== 'pending') return false;
-    const email = (a.lead?.email || '').trim();
-    const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
-    return !noEmail;
-  }).length;
-  document.getElementById('badge-approvals').textContent = readyToSend || '0';
+  renderCalls();
+  renderFollowUp();
+  renderStats();
+  renderSidebar();
 }
 
-function renderApprovals() {
-  // Only show pending leads WITH email in Approvals tab
-  // No-email leads go to Call Queue. Sent/Rejected only show in Pipeline.
-  const readyToSend = approvals.filter(a => {
-    if (a.status !== 'pending') return false;
-    const email = (a.lead?.email || '').trim();
-    const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
-    return !noEmail;
-  });
-
-  const sent = approvals.filter(a => a.status === 'sent').length;
-  const rejected = approvals.filter(a => a.status === 'rejected').length;
-  document.getElementById('a-pending').textContent = readyToSend.length;
-  document.getElementById('a-sent').textContent = sent;
-  document.getElementById('a-rejected').textContent = rejected;
-  document.getElementById('badge-approvals').textContent = readyToSend.length || '0';
-
-  const container = document.getElementById('approvals-list');
-  if (!readyToSend.length) {
-    container.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">✓</div>
-      <div class="empty-text">No approvals waiting</div>
-      <div class="empty-sub">Leads with email appear here ready to send. No-email leads are in Call Queue.</div>
-    </div>`;
-    return;
-  }
-
-  container.innerHTML = readyToSend.map(a => {
-    const l = a.lead || {};
-    const tierClass = l.tier === 'HOT' ? 's-hot' : l.tier === 'WARM' ? 's-warm' : 's-cold';
-    const fn = a._filename || '';
-
-    return `<div class="card" style="margin-bottom:12px;border-left:3px solid var(--amber)">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
-        <div>
-          <div style="font-size:16px;font-weight:600;margin-bottom:4px">${l.business || 'Unknown'}</div>
-          <div style="font-size:12px;color:var(--muted)">${l.owner ? l.owner + ' · ' : ''}${l.city || ''}, ${l.state || 'MO'} · ${l.industry || ''}</div>
-          <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
-            <span class="score-pill ${tierClass}">${l.score || '—'}</span>
-            <span style="font-size:11px;color:var(--amber)">⏳ PENDING</span>
-            <span style="font-size:11px;color:var(--muted)">${a.created_date || ''}</span>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn-sm btn-gold" onclick="previewDemo('${(a.demo_path||'').replace(/'/g,"\\'")}')">Preview Demo</button>
-          <button class="btn-sm" style="border-color:var(--green);color:var(--green)" onclick="approveLead('${fn}',this)">Approve & Send</button>
-          <button class="btn-sm" style="border-color:var(--red);color:var(--red)" onclick="rejectLead('${fn}',this)">Reject</button>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px">
-          <div class="card-label">Email Preview</div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TO: ${a.email_preview?.to || '[no email]'}</div>
-          <div style="font-size:11px;color:var(--gold);margin-bottom:8px">SUBJECT: ${a.email_preview?.subject || ''}</div>
-          <div style="font-size:11px;color:var(--muted);line-height:1.6;white-space:pre-line;max-height:180px;overflow-y:auto">${a.email_preview?.body || ''}</div>
-        </div>
-        <div style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px">
-          <div class="card-label">Social Captions</div>
-          <div id="social-tabs-${a.id}" style="display:flex;gap:6px;margin-bottom:8px">
-            <span class="plat p-fb" style="cursor:pointer" onclick="showCaption('${a.id}','facebook')">facebook</span>
-            <span class="plat p-ig" style="cursor:pointer" onclick="showCaption('${a.id}','instagram')">instagram</span>
-            <span class="plat p-tk" style="cursor:pointer" onclick="showCaption('${a.id}','tiktok')">tiktok</span>
-          </div>
-          <div id="caption-${a.id}" style="font-size:11px;color:var(--muted);line-height:1.6;white-space:pre-line;max-height:180px;overflow-y:auto">${a.social_captions?.facebook || ''}</div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+// ── SIDEBAR STATS ────────────────────────────────────────────────────────────
+function renderSidebar() {
+  document.getElementById('ss-today').textContent = stats.today || 0;
+  document.getElementById('ss-sent').textContent = stats.demosSent || 0;
+  document.getElementById('ss-pipeline').textContent = stats.pipeline?.callQueue || 0;
+  document.getElementById('ss-mrr').textContent = '$0';
 }
 
-function showCaption(leadId, platform) {
-  const a = approvals.find(x => x.id === leadId);
-  if (!a || !a.social_captions) return;
-  document.getElementById('caption-' + leadId).textContent = a.social_captions[platform] || '';
-}
-
-async function previewDemo(demoPath) {
-  if (isElectron) {
-    await window.hoo.openDemo(demoPath);
-  } else {
-    toast('Run in Electron to preview demos');
-  }
-}
-
-async function approveLead(filename, btn) {
-  if (!isElectron) { toast('Run in Electron to approve'); return; }
-
-  // Check if lead has an email — if not, route to Call Queue
-  const a = approvals.find(x => x._filename === filename);
-  const email = (a?.lead?.email || '').trim();
-  const noEmail = !email || email === '[no email]' || email === 'null' || email === 'undefined';
-
-  if (noEmail) {
-    btn.textContent = 'Moving...';
-    btn.disabled = true;
-    const result = await window.hoo.moveToCallQueue(filename);
-    if (result && result.success) {
-      toast('📞 Moved to Call Queue — no email found');
-      await loadApprovals();
-      renderApprovals();
-      await loadCallQueue();
-    } else {
-      toast('❌ Failed: ' + (result?.error || 'unknown'));
-      btn.textContent = 'Approve & Send';
-      btn.disabled = false;
-    }
-    return;
-  }
-
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  try {
-    const result = await window.hoo.approveLead(filename);
-    if (result && result.success) {
-      toast('✅ Approved & sent: ' + result.business);
-      await loadApprovals();
-      renderApprovals();
-      await loadCallQueue();
-    } else {
-      const errMsg = result?.error || 'unknown error';
-      toast('❌ Failed: ' + errMsg);
-      alert('Send failed:\n\n' + errMsg);
-      btn.textContent = 'Approve & Send';
-      btn.disabled = false;
-    }
-  } catch (e) {
-    toast('❌ Error: ' + e.message);
-    alert('Send error:\n\n' + e.message);
-    btn.textContent = 'Approve & Send';
-    btn.disabled = false;
-  }
-}
-
-async function rejectLead(filename, btn) {
-  if (!isElectron) { toast('Run in Electron to reject'); return; }
-  btn.textContent = 'Rejecting...';
-  btn.disabled = true;
-  const result = await window.hoo.rejectLead(filename);
-  if (result && result.success) {
-    toast(result.replaced ? 'Rejected — hunting replacement...' : 'Lead rejected');
-    await loadApprovals();
-    renderApprovals();
-  } else {
-    toast('Reject failed');
-    btn.textContent = 'Reject';
-    btn.disabled = false;
-  }
-}
-
-// ── CALL QUEUE ────────────────────────────────────────────────────────────
-let callQueueLeads = [];
-const sentToday = [];
-
-async function loadCallQueue() {
-  let all = [];
-  if (isElectron) {
-    all = await window.hoo.readApprovals() || [];
-  } else {
-    all = approvals || [];
-  }
-
+// ── RENDER: CALLS TAB ────────────────────────────────────────────────────────
+function renderCalls() {
   const today = new Date().toISOString().split('T')[0];
-  callQueueLeads = [];
-  let followUps = [];
-  let callbacks = [];
-  let deadCount = 0;
-  let sentCount = 0;
-  let calledToday = 0;
+  const queue = [];
+  let sentCount = 0, deadCount = 0, calledToday = 0;
 
-  for (const a of all) {
+  for (const a of approvals) {
     if (a.status === 'dead') { deadCount++; continue; }
-    if (a.status === 'demo-sent') { followUps.push(a); sentCount++; continue; }
-    if (a.status === 'callback') {
-      if (a.callback_date && a.callback_date <= today) {
-        callbacks.push(a); // Due for callback
-      } else {
-        callbacks.push(a); // Future callback
-      }
-      continue;
-    }
-    // call-queue, reached, pending — all go to main queue
-    callQueueLeads.push(a);
+    if (a.status === 'demo-sent' || a.status === 'interested') { sentCount++; continue; }
+    // call-queue, reached, callback, pending — all go to queue
+    queue.push(a);
     const todayCalls = (a.call_log || []).filter(c => c.date && c.date.startsWith(today));
     if (todayCalls.length > 0) calledToday++;
   }
 
-  // Add due callbacks to top of queue
-  callQueueLeads = [...callbacks.filter(a => a.callback_date && a.callback_date <= today), ...callQueueLeads];
+  // Sort: callbacks due today first, then new, then future callbacks
+  queue.sort((a, b) => {
+    const aDue = a.callback_date && a.callback_date <= today;
+    const bDue = b.callback_date && b.callback_date <= today;
+    if (aDue && !bDue) return -1;
+    if (!aDue && bDue) return 1;
+    const aNew = (a.call_log || []).length === 0;
+    const bNew = (b.call_log || []).length === 0;
+    if (aNew && !bNew) return -1;
+    if (!aNew && bNew) return 1;
+    return 0;
+  });
 
-  document.getElementById('badge-calls').textContent = callQueueLeads.length || '0';
-  document.getElementById('cq-total').textContent = callQueueLeads.length;
-  document.getElementById('cq-called').textContent = calledToday;
-  document.getElementById('cq-sent').textContent = sentCount;
-  document.getElementById('cq-dead').textContent = deadCount;
+  document.getElementById('m-tocall').textContent = queue.length;
+  document.getElementById('m-today').textContent = calledToday;
+  document.getElementById('m-sent').textContent = sentCount;
+  document.getElementById('m-dead').textContent = deadCount;
+  document.getElementById('b-calls').textContent = queue.length;
 
-  renderCallQueue();
-  renderFollowUps(followUps, today);
-  renderCallbacks(callbacks.filter(a => !a.callback_date || a.callback_date > today));
-}
-
-function renderCallQueue() {
-  const container = document.getElementById('call-queue-list');
-  if (!callQueueLeads.length) {
-    container.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📞</div>
-      <div class="empty-text">No calls in queue</div>
-      <div class="empty-sub">Run: node engine/tools/pipeline-orchestrator.js run</div>
-    </div>`;
+  const container = document.getElementById('call-list');
+  if (!queue.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">📞</div><div class="empty-text">No calls in queue — go to Hunt to find leads</div></div>';
     return;
   }
 
-  container.innerHTML = callQueueLeads.map(a => {
+  container.innerHTML = queue.map(a => {
     const l = a.lead || {};
-    const biz = l.business || 'Unknown';
-    const owner = l.owner || '';
+    const fn = a._filename || '';
+    const biz = l.business || '?';
     const phone = l.phone || '';
     const phoneClean = phone.replace(/\D/g, '');
-    const city = l.city || '';
-    const state = l.state || 'MO';
-    const industry = l.industry || '';
-    const leadId = a.id || '';
     const cs = a.call_script || {};
     const callLog = a.call_log || [];
-    const isDue = a.callback_date && a.callback_date <= new Date().toISOString().split('T')[0];
-    const borderColor = isDue ? 'var(--amber)' : (callLog.length > 0 ? 'var(--blue)' : 'var(--gold)');
-    const tag = isDue ? '<span class="badge b-urgent" style="margin-left:8px">CALLBACK DUE</span>' : (callLog.length === 0 ? '<span class="badge b-engine" style="margin-left:8px">NEW</span>' : `<span class="badge b-today" style="margin-left:8px">${callLog.length} calls</span>`);
+    const isDue = a.callback_date && a.callback_date <= today;
+    const isNew = callLog.length === 0;
+    const tag = isDue ? '<span class="tag t-due">CALLBACK DUE</span>' : isNew ? '<span class="tag t-new">NEW</span>' : `<span class="tag t-callback">${callLog.length} calls</span>`;
 
-    // Build clean demo URL
     const cleanName = biz.replace(/[^a-zA-Z0-9\s]/g, '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
     const demoUrl = 'https://matthew-creat3e.github.io/hoo-intelligence/demos/' + cleanName + '.html';
 
     // Call history
-    const historyHtml = callLog.length > 0 ? `<div style="margin-bottom:12px;padding:8px 10px;background:var(--card2);border-radius:4px;border:1px solid var(--border)">
-      <div style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px">Call History</div>
-      ${callLog.map(c => `<div style="font-size:11px;color:var(--muted);padding:2px 0">${c.display_date || c.date?.split('T')[0] || '?'} — <span style="color:${c.outcome === 'reached-send-demo' ? 'var(--green)' : c.outcome === 'not-interested' ? 'var(--red)' : 'var(--amber)'}">${c.outcome}</span></div>`).join('')}
+    const histHtml = callLog.length ? `<div style="margin:8px 0;padding:6px 8px;background:var(--card2);border-radius:4px">
+      <div class="m-label" style="margin-bottom:4px">Call History</div>
+      ${callLog.map(c => `<div class="history-item"><span>${c.display_date || ''}</span><span class="history-outcome" style="color:${c.outcome.includes('send') ? 'var(--green)' : c.outcome === 'not-interested' ? 'var(--red)' : 'var(--amber)'}">${c.outcome}</span>${c.objection && c.objection !== 'none' ? `<span style="color:var(--dim)">— ${c.objection}</span>` : ''}${c.notes ? `<span style="color:var(--dim)">"${c.notes}"</span>` : ''}</div>`).join('')}
     </div>` : '';
 
-    // Script sections
-    const openerText = cs.opener || `Hey ${owner || 'there'}, this is Matthew from HOO out of Kansas City. I do web design for local ${industry} businesses. Got a quick second?`;
-    const hookText = cs.hook || `I noticed ${biz} doesn't have a website yet. So I actually went ahead and built you one — completely free.`;
-    const pitchText = cs.pitch || `It's a full custom homepage — mobile-ready, the whole thing. What's the best email to send it to?`;
-    const vmText = cs.voicemail || `Hey ${owner || 'there'}, this is Matthew — I do websites for ${industry} businesses. I built a free website for ${biz}. Give me a call back at 804-957-1003.`;
+    // Script
+    const opener = cs.opener || '';
+    const hook = cs.hook || '';
+    const pitch = cs.pitch || '';
+    const vm = cs.voicemail || '';
 
-    return `<div class="card" id="cq-card-${leadId}" style="margin-bottom:14px;border-left:3px solid ${borderColor}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+    return `<div class="card card-gold" id="card-${a.id}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <div>
-          <div style="font-size:18px;font-weight:700;color:var(--gold);font-family:var(--fh);letter-spacing:2px;margin-bottom:2px">${biz}${tag}</div>
-          <div style="font-size:12px;color:var(--muted)">${owner ? owner + ' · ' : ''}${city}, ${state} · ${industry}${l.score ? ' · Score: ' + l.score : ''}</div>
+          <div style="font-family:var(--fh);font-size:20px;letter-spacing:2px;color:var(--gold)">${biz} ${tag}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${l.owner ? l.owner + ' · ' : ''}${l.city || ''}, ${l.state || 'MO'} · ${l.industry || ''} · Score: ${l.score || '?'}</div>
         </div>
         <div style="text-align:right">
-          ${phone ? `<a href="tel:${phoneClean}" style="font-family:var(--fh);font-size:24px;letter-spacing:2px;color:var(--gold);text-decoration:none">${phone}</a>` : '<span style="font-size:13px;color:var(--red)">NO PHONE</span>'}
-          <div style="font-size:10px;color:var(--muted);margin-top:2px">${leadId}</div>
+          ${phone ? `<a href="tel:${phoneClean}" style="font-family:var(--fh);font-size:22px;letter-spacing:2px;color:var(--gold);text-decoration:none">${phone}</a>` : '<span style="color:var(--red);font-size:12px">NO PHONE</span>'}
+          <div style="font-size:9px;color:var(--dim);margin-top:2px">${a.id}</div>
         </div>
       </div>
 
-      ${historyHtml}
+      ${histHtml}
 
-      <details style="margin-bottom:12px">
-        <summary style="cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);padding:8px 0">📋 Call Script (click to expand)</summary>
-        <div style="background:rgba(200,149,46,.06);border:1px solid rgba(200,149,46,.15);border-radius:6px;padding:14px;margin-top:4px">
-          <div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Opener:</span><div class="task-script">${openerText}</div></div>
-          <div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Hook:</span><div class="task-script">${hookText}</div></div>
-          <div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Pitch:</span><div class="task-script">${pitchText}</div></div>
-          <div><span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Voicemail:</span><div class="task-script">${vmText}</div></div>
+      <details style="margin:8px 0">
+        <summary style="cursor:pointer;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:4px 0">📋 Call Script</summary>
+        <div style="margin-top:6px">
+          ${opener ? `<div class="script-box"><div class="script-label">Opener</div><div class="script-text">${opener}</div></div>` : ''}
+          ${hook ? `<div class="script-box"><div class="script-label">Hook</div><div class="script-text">${hook}</div></div>` : ''}
+          ${pitch ? `<div class="script-box"><div class="script-label">Pitch</div><div class="script-text">${pitch}</div></div>` : ''}
+          ${vm ? `<div class="script-box"><div class="script-label">Voicemail</div><div class="script-text">${vm}</div></div>` : ''}
         </div>
       </details>
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-        <button class="btn-sm btn-gold" onclick="window.open('${demoUrl}','_blank')" style="padding:8px 16px">👁 Preview Demo</button>
-      </div>
+      <div style="margin:10px 0"><button class="btn btn-blue" onclick="window.open('${demoUrl}','_blank')">👁 Preview Demo</button></div>
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <input type="email" id="cq-email-${leadId}" placeholder="Email from the call..." value="${l.email && l.email !== '[no email]' ? l.email : ''}" style="flex:1;min-width:180px;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:9px 12px;border-radius:4px;font-family:var(--fb);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'">
-        <button class="btn-sm" style="border-color:var(--green);color:var(--green);padding:8px 14px" onclick="cqLogCall('${leadId}','send-demo',this)">📞 Reached — Send Demo</button>
-        <button class="btn-sm" style="border-color:var(--amber);color:var(--amber);padding:8px 14px" onclick="cqLogCall('${leadId}','voicemail',this)">📱 Voicemail</button>
-        <button class="btn-sm" style="padding:8px 14px" onclick="cqLogCall('${leadId}','no-answer',this)">❌ No Answer</button>
-        <button class="btn-sm" style="border-color:var(--red);color:var(--red);padding:8px 14px" onclick="cqLogCall('${leadId}','not-interested',this)">🚫 Not Interested</button>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:4px;padding:12px;margin-top:8px">
+        <div class="m-label" style="margin-bottom:8px">Log This Call</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+          <div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:3px">Outcome</div>
+            <select class="input" id="outcome-${a.id}">
+              <option value="reached">Reached</option>
+              <option value="voicemail">Voicemail</option>
+              <option value="no-answer">No Answer</option>
+              <option value="not-interested">Not Interested</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:3px">Objection</div>
+            <select class="input" id="objection-${a.id}">
+              <option value="none">None</option>
+              <option value="dont-need">Don't need one</option>
+              <option value="too-expensive">Too expensive</option>
+              <option value="too-busy">Too busy</option>
+              <option value="have-facebook">Have Facebook</option>
+              <option value="do-it-myself">Can do it myself</option>
+              <option value="have-someone">Already have someone</option>
+              <option value="call-back">Call back later</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:3px">Warmth</div>
+            <select class="input" id="warmth-${a.id}">
+              <option value="cold">Cold</option>
+              <option value="lukewarm">Lukewarm</option>
+              <option value="interested">Interested</option>
+              <option value="hot">Hot</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <input class="input" id="email-${a.id}" placeholder="Email (if they gave it)" value="${l.email && l.email !== '[no email]' ? l.email : ''}">
+          <input class="input" id="notes-${a.id}" placeholder="Notes (what they said)">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-green" onclick="logCall('${fn}','${a.id}',true)">📞 Log + Send Demo</button>
+          <button class="btn" onclick="logCall('${fn}','${a.id}',false)">📞 Log Call Only</button>
+          <button class="btn btn-red" style="margin-left:auto" onclick="markDead('${fn}','${a.id}')">🚫 Dead</button>
+        </div>
       </div>
     </div>`;
   }).join('');
 }
 
-function renderFollowUps(followUps, today) {
-  const section = document.getElementById('call-queue-followup');
-  const list = document.getElementById('call-queue-followup-list');
-  if (!followUps.length) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  list.innerHTML = followUps.map(a => {
+// ── RENDER: FOLLOW-UP TAB ────────────────────────────────────────────────────
+function renderFollowUp() {
+  const today = new Date().toISOString().split('T')[0];
+  const followups = approvals.filter(a => a.status === 'demo-sent' || a.status === 'interested');
+  document.getElementById('b-followup').textContent = followups.length;
+
+  const container = document.getElementById('followup-list');
+  if (!followups.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">📧</div><div class="empty-text">No follow-ups yet — send some demos first</div></div>';
+    return;
+  }
+
+  // Sort by next follow-up date
+  followups.sort((a, b) => {
+    const aNext = (a.follow_up_dates || []).find(d => d >= today) || '9999';
+    const bNext = (b.follow_up_dates || []).find(d => d >= today) || '9999';
+    return aNext.localeCompare(bNext);
+  });
+
+  container.innerHTML = followups.map(a => {
     const l = a.lead || {};
+    const fn = a._filename || '';
     const nextFU = (a.follow_up_dates || []).find(d => d >= today) || 'done';
     const isDue = nextFU <= today;
-    return `<div class="card" style="margin-bottom:8px;border-left:3px solid var(--green);padding:12px 14px">
-      <div style="display:flex;align-items:center;justify-content:space-between">
+    const borderClass = isDue ? 'card-red' : 'card-green';
+    const fuLog = (a.followup_log || []);
+
+    return `<div class="card ${borderClass}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <div>
-          <span style="font-weight:600;color:var(--text)">${l.business || '?'}</span>
-          <span style="color:var(--muted);margin-left:8px">Demo sent ${a.email_sent_date || '?'}</span>
+          <span style="font-family:var(--fh);font-size:16px;letter-spacing:2px">${l.business || '?'}</span>
+          <span style="color:var(--muted);font-size:11px;margin-left:8px">Demo sent ${a.email_sent_date || '?'}</span>
         </div>
         <div>
-          ${isDue ? '<span class="badge b-urgent">FOLLOW UP TODAY</span>' : `<span style="font-size:11px;color:var(--muted)">Next: ${nextFU}</span>`}
+          ${isDue ? '<span class="tag t-due">FOLLOW UP TODAY</span>' : `<span style="font-size:11px;color:var(--muted)">Next: ${nextFU}</span>`}
         </div>
+      </div>
+      ${fuLog.length ? `<div style="margin-bottom:8px;font-size:11px;color:var(--dim)">${fuLog.map(f => `${f.display_date}: ${f.outcome}${f.notes ? ' — ' + f.notes : ''}`).join('<br>')}</div>` : ''}
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="input" id="fu-notes-${a.id}" placeholder="Follow-up notes..." style="flex:1">
+        <button class="btn btn-green" onclick="logFollowUp('${fn}','${a.id}','interested')">💰 Interested</button>
+        <button class="btn btn-amber" onclick="logFollowUp('${fn}','${a.id}','no-response')">📞 No Response</button>
+        <button class="btn btn-red" onclick="logFollowUp('${fn}','${a.id}','not-interested')">🚫 Dead</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function renderCallbacks(futureCallbacks) {
-  const section = document.getElementById('call-queue-callbacks');
-  const list = document.getElementById('call-queue-callback-list');
-  if (!futureCallbacks.length) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  list.innerHTML = futureCallbacks.map(a => {
-    const l = a.lead || {};
-    const lastCall = (a.call_log || []).slice(-1)[0];
-    return `<div class="card" style="margin-bottom:8px;border-left:3px solid var(--amber);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <span style="font-weight:600">${l.business || '?'}</span>
-        <span style="color:var(--muted);margin-left:8px">${lastCall ? lastCall.outcome : '?'} — ${lastCall ? lastCall.display_date : ''}</span>
-      </div>
-      <span style="font-size:11px;color:var(--amber)">Callback: ${a.callback_date || '?'}</span>
-    </div>`;
-  }).join('');
-}
+// ── RENDER: STATS TAB ────────────────────────────────────────────────────────
+function renderStats() {
+  if (!stats || stats.error) return;
 
-async function cqLogCall(leadId, outcome, btn) {
-  const origText = btn.textContent;
-  btn.textContent = '...';
-  btn.disabled = true;
+  document.getElementById('st-total').textContent = stats.total || 0;
+  document.getElementById('st-pickup').textContent = (stats.pickupRate || 0) + '%';
+  document.getElementById('st-demos').textContent = stats.demosSent || 0;
+  document.getElementById('st-interested').textContent = stats.interested || 0;
 
-  if (outcome === 'send-demo') {
-    const emailInput = document.getElementById('cq-email-' + leadId);
-    const email = (emailInput?.value || '').trim();
-    if (!email || !email.includes('@')) {
-      toast('Get their email on the call first!');
-      emailInput?.focus();
-      btn.textContent = origText;
-      btn.disabled = false;
-      return;
-    }
+  // Industries
+  const indEl = document.getElementById('st-industries');
+  if (stats.bestIndustries?.length) {
+    indEl.innerHTML = stats.bestIndustries.map((d, i) => `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+        <span>${i + 1}. ${d.industry}</span>
+        <span style="color:var(--green)">${d.rate}% pickup (${d.reached}/${d.calls})</span>
+      </div>`).join('');
   }
 
-  if (isElectron) {
-    try {
-      const result = await window.hoo.logCall(leadId, outcome);
-      if (outcome === 'send-demo') {
-        const email = document.getElementById('cq-email-' + leadId)?.value?.trim();
-        if (email) await window.hoo.addEmailAndSend(leadId, email);
-      }
-      toast(outcome === 'send-demo' ? '✅ Demo sent!' : outcome === 'not-interested' ? '🚫 Removed' : '📞 Call logged');
-    } catch(e) { toast('Error: ' + e.message); }
-  } else {
-    // Browser mode — show CLI command
-    const fn = `APPROVAL-${leadId}.json`;
-    if (outcome === 'send-demo') {
-      const email = document.getElementById('cq-email-' + leadId)?.value?.trim() || 'EMAIL';
-      toast(`Run: node engine/tools/pipeline-orchestrator.js add-email ${leadId} ${email} && node engine/tools/pipeline-orchestrator.js log-call ${fn} send-demo`);
+  // Times
+  const timeEl = document.getElementById('st-times');
+  if (stats.bestTimes?.length) {
+    timeEl.innerHTML = stats.bestTimes.slice(0, 6).map(d => {
+      const label = d.hour > 12 ? (d.hour - 12) + ' PM' : d.hour + ' AM';
+      return `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+        <span>${label}</span>
+        <span style="color:var(--green)">${d.rate}% pickup (${d.reached}/${d.calls})</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Objections
+  const objEl = document.getElementById('st-objections');
+  if (stats.topObjections?.length) {
+    objEl.innerHTML = stats.topObjections.map(d => `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+        <span>${d.objection}</span>
+        <span style="color:var(--amber)">${d.count} (${d.pct}%)</span>
+      </div>`).join('');
+  }
+
+  // Days
+  const dayEl = document.getElementById('st-days');
+  if (stats.bestDays?.length) {
+    dayEl.innerHTML = stats.bestDays.map(d => `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+        <span>${d.day}</span>
+        <span style="color:var(--green)">${d.rate}% pickup (${d.reached}/${d.calls})</span>
+      </div>`).join('');
+  }
+
+  // Funnel
+  const p = stats.pipeline || {};
+  document.getElementById('st-funnel').innerHTML = `
+    <span style="color:var(--gold)">${stats.total || 0} calls</span>
+    <span style="color:var(--dim)">→</span>
+    <span style="color:var(--blue)">${stats.reached || 0} reached</span>
+    <span style="color:var(--dim)">→</span>
+    <span style="color:var(--green)">${stats.demosSent || 0} demos</span>
+    <span style="color:var(--dim)">→</span>
+    <span style="color:var(--gold)">${stats.interested || 0} interested</span>
+  `;
+}
+
+// ── ACTIONS ──────────────────────────────────────────────────────────────────
+async function logCall(filename, leadId, sendDemo) {
+  const outcome = document.getElementById('outcome-' + leadId)?.value || 'reached';
+  const objection = document.getElementById('objection-' + leadId)?.value || 'none';
+  const warmth = document.getElementById('warmth-' + leadId)?.value || 'unknown';
+  const email = document.getElementById('email-' + leadId)?.value?.trim() || '';
+  const notes = document.getElementById('notes-' + leadId)?.value?.trim() || '';
+
+  if (sendDemo && (!email || !email.includes('@'))) {
+    toast('Enter their email to send the demo');
+    document.getElementById('email-' + leadId)?.focus();
+    return;
+  }
+
+  if (!isElectron) {
+    toast('Run in Electron to log calls');
+    return;
+  }
+
+  // Log the call
+  const result = await window.hoo.logCall(filename, {
+    outcome: sendDemo ? 'send-demo' : outcome,
+    objection, warmth, email, notes
+  });
+
+  if (!result.success) { toast('Error: ' + result.error); return; }
+
+  // Send demo email if requested
+  if (sendDemo && email) {
+    toast('Sending demo...');
+    const sendResult = await window.hoo.sendDemoEmail(filename, email);
+    if (sendResult.success) {
+      toast('✅ Demo sent to ' + email);
     } else {
-      toast(`Run: node engine/tools/pipeline-orchestrator.js log-call ${fn} ${outcome}`);
+      toast('❌ Send failed: ' + sendResult.error);
     }
+  } else {
+    toast('📞 Call logged — ' + (sendDemo ? 'send-demo' : outcome));
   }
 
-  btn.textContent = origText;
-  btn.disabled = false;
-  loadCallQueue();
+  refresh();
 }
 
-// ── BOOT ──────────────────────────────────────────────────────────────────
-loadAll();
-loadApprovals().then(renderApprovals);
-loadCallQueue();
-initTasks();
-renderWeekGrid();
+async function markDead(filename, leadId) {
+  if (!isElectron) return;
+  const notes = document.getElementById('notes-' + leadId)?.value?.trim() || '';
+  const objection = document.getElementById('objection-' + leadId)?.value || 'none';
+  await window.hoo.logCall(filename, { outcome: 'not-interested', objection, warmth: 'cold', notes });
+  toast('🚫 Marked as dead');
+  refresh();
+}
+
+async function logFollowUp(filename, leadId, outcome) {
+  if (!isElectron) return;
+  const notes = document.getElementById('fu-notes-' + leadId)?.value?.trim() || '';
+  await window.hoo.logFollowup(filename, outcome, notes);
+  toast(outcome === 'interested' ? '💰 Interested!' : outcome === 'not-interested' ? '🚫 Dead' : '📞 Rescheduled');
+  refresh();
+}
+
+// ── HUNT ─────────────────────────────────────────────────────────────────────
+let hunting = false;
+async function startHunt() {
+  if (hunting) return;
+  if (!isElectron) { toast('Run in Electron'); return; }
+
+  hunting = true;
+  const btn = document.getElementById('hunt-btn');
+  const logBox = document.getElementById('hunt-log');
+  const status = document.getElementById('hunt-status');
+  const count = parseInt(document.getElementById('hunt-count').value) || 4;
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Hunting...';
+  status.textContent = 'Searching for leads...';
+  logBox.style.display = 'block';
+  logBox.textContent = '';
+
+  // Listen for live log updates
+  window.hoo.onHuntLog((data) => {
+    logBox.textContent += data;
+    logBox.scrollTop = logBox.scrollHeight;
+  });
+
+  const result = await window.hoo.runHunt(count);
+
+  hunting = false;
+  btn.disabled = false;
+  btn.textContent = '🚀 Start Hunt';
+  status.textContent = result.success ? '✅ Hunt complete' : '❌ Hunt failed';
+
+  refresh();
+}
+
+// ── BOOT ─────────────────────────────────────────────────────────────────────
+refresh();
 </script>
 </body>
 </html>
