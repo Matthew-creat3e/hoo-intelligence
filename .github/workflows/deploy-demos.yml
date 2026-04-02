@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'outputs/demos/**'
+      - 'demos/**'
       - 'docs/**'
       - '.github/workflows/deploy-demos.yml'
   workflow_dispatch:
@@ -31,8 +32,13 @@ jobs:
       - name: Build pages directory
         run: |
           mkdir -p _site/demos
-          # Copy all demo HTML files
+          # Copy all demo HTML files — both LEAD-xxx and clean-named versions
           cp outputs/demos/LEAD-*.html _site/demos/ 2>/dev/null || true
+          cp outputs/demos/v4-*.html _site/demos/ 2>/dev/null || true
+          # Copy clean-named demos (customer-facing URLs like GentrysMobileCarDetailingLlc.html)
+          for f in demos/*.html; do
+            cp "$f" _site/demos/ 2>/dev/null || true
+          done
           # Copy docs index if exists
           cp docs/index.html _site/index.html 2>/dev/null || true
           # Generate demos index
@@ -41,7 +47,8 @@ jobs:
           echo 'a{color:#C8952E;text-decoration:none}a:hover{color:#E8B84B}h1{font-family:"Bebas Neue",sans-serif;color:#C8952E;letter-spacing:3px}' >> _site/demos/index.html
           echo '.card{border:1px solid rgba(200,149,46,.2);padding:16px;margin:8px 0;transition:border-color .3s}.card:hover{border-color:#C8952E}</style></head>' >> _site/demos/index.html
           echo '<body><h1>HOO DEMOS</h1><p style="color:rgba(240,234,224,.6)">Built by HOO — herrmanonlineoutlook.com</p><hr style="border-color:rgba(200,149,46,.2);margin:20px 0">' >> _site/demos/index.html
-          for f in _site/demos/LEAD-*.html; do
+          for f in _site/demos/*.html; do
+            [ "$(basename "$f")" = "index.html" ] && continue
             name=$(basename "$f" .html)
             echo "<div class='card'><a href='${name}.html'>${name}</a></div>" >> _site/demos/index.html
           done
