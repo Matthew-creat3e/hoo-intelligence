@@ -402,83 +402,92 @@ Return as a JSON array only.`;
 
   console.log(`  📝  Claude returned ${candidates.length} candidates for "${industry}" in "${city}"`);
 
-  // ── WEBSITE VERIFICATION — check each candidate for a real website ──────
-  console.log(`  🔍  Verifying websites...`);
+  // ── WEBSITE VERIFICATION — independent web search per candidate ──────────
+  // Don't trust Claude's no_website flag. Actually search for each business
+  // and check if they have ANY website — .com, .wix, .vercel, .square, anything.
+  console.log(`  🔍  Independently verifying each lead has NO website...`);
   for (const candidate of candidates) {
     const bizName = (candidate.business_name || '').trim();
-    const givenUrl = (candidate.website_url || '').trim();
+    const bizCity = candidate.city || city.split(' ')[0];
+    const bizState = candidate.state || 'MO';
 
-    // If Claude said they have a website URL, verify it actually works
-    if (givenUrl && givenUrl.length > 5 && !givenUrl.includes('facebook.com') && !givenUrl.includes('yelp.com')) {
-      // Add protocol if missing
-      const urlsToCheck = [];
-      if (givenUrl.startsWith('http')) {
-        urlsToCheck.push(givenUrl);
-      } else {
-        urlsToCheck.push(`https://${givenUrl}`, `https://www.${givenUrl}`);
-      }
-      for (const testUrl of urlsToCheck) {
-        const isLive = await checkUrl(testUrl);
-        if (isLive) {
-          console.log(`  ⚠️  ${bizName} has a working website: ${testUrl} — SKIPPING`);
-          candidate._has_website = true;
-          candidate.no_website = false;
-          break;
-        }
-      }
-      // Even if URL check failed, if Claude provided a URL, mark it — they likely have a site
-      if (!candidate._has_website && givenUrl.length > 8) {
-        console.log(`  ⚠️  ${bizName} has website_url "${givenUrl}" (unreachable but still risky) — SKIPPING`);
-        candidate._has_website = true;
-        candidate.no_website = false;
-      }
-      if (candidate._has_website) continue;
-    }
-
-    // If Claude explicitly said no_website is false, skip regardless
-    if (candidate.no_website === false) {
-      console.log(`  ⚠️  ${bizName} marked no_website=false by Claude — SKIPPING`);
+    // If Claude already said they have a website, skip immediately
+    if (candidate.no_website === false || (candidate.website_url && candidate.website_url.length > 8)) {
+      console.log(`  ⚠️  ${bizName} — Claude flagged website "${candidate.website_url}" — SKIPPING`);
       candidate._has_website = true;
       continue;
     }
 
-    // If Claude said no_website, try common URL patterns AND abbreviations to double-check
-    if (candidate.no_website === true || !givenUrl) {
-      const slug = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/\s+/g, '');
-      const slugDash = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-      // Build abbreviation patterns (e.g. "Waste-N-Away Disposal LLC" → "wnadisposal")
-      const words = bizName.replace(/LLC|Inc|Co\.?|Corp/gi, '').replace(/[^a-zA-Z\s-]/g, '').split(/[\s-]+/).filter(w => w.length > 0);
-      const abbrev = words.map(w => w[0].toLowerCase()).join('');
-      const lastWord = (words[words.length - 1] || '').toLowerCase();
-      const abbrevFull = words.slice(0, -1).map(w => w[0].toLowerCase()).join('') + lastWord;
-      // Try first word + last word (e.g. "waste" + "disposal" = "wastedisposal")
-      const firstWord = (words[0] || '').toLowerCase();
-      const firstLast = firstWord + lastWord;
-      const guessUrls = [
-        `https://www.${slugDash}.com`,
-        `https://${slugDash}.com`,
-        `https://www.${slug}.com`,
-        `https://${slug}.com`,
-        `https://www.${abbrevFull}.com`,
-        `https://${abbrevFull}.com`,
-        `https://www.${abbrev}.com`,
-        `https://www.${firstLast}.com`,
-        `https://${firstLast}.com`,
-        `https://www.${firstWord}.com`,
-      ];
-      // Remove duplicates
-      const uniqueUrls = [...new Set(guessUrls)];
-      for (const guessUrl of uniqueUrls) {
-        const isLive = await checkUrl(guessUrl);
-        if (isLive) {
-          console.log(`  ⚠️  ${bizName} has a website at ${guessUrl} — SKIPPING`);
+    // Independent verification: ask Claude to search for their website
+    try {
+      const verifyResponse = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5',
+          max_tokens: 300,
+          system: `You verify if a business has its own website. Search for the business.
+Facebook pages, Yelp listings, Google Maps listings, Nextdoor pages, and directory listings (BBB, Manta, Yellow Pages, Angi, Thumbtack) are NOT websites.
+A website is a domain they OWN — like businessname.com, or a site on Wix, Squarespace, Weebly, GoDaddy, WordPress, Shopify, Vercel, Google Sites, Square, or any other hosting platform.
+Answer ONLY in this exact format: YES url-here OR NO
+Nothing else. One word answer + URL if yes.`,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{
+            role: 'user',
+            content: `Does "${bizName}" in ${bizCity}, ${bizState} have their own website? Search for them now.`
+          }]
+        })
+      });
+
+      if (verifyResponse.ok) {
+        const verifyData = await verifyResponse.json();
+        let verifyText = (verifyData.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
+
+        // Handle tool_use continuation
+        if (!verifyText && verifyData.stop_reason === 'tool_use') {
+          const toolBlocks = verifyData.content.filter(b => b.type === 'tool_use');
+          const toolResults = toolBlocks.map(b => ({ type: 'tool_result', tool_use_id: b.id, content: 'Search complete. Now answer: does this business have their own website? YES url OR NO' }));
+          const cont = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+            body: JSON.stringify({
+              model: 'claude-haiku-4-5', max_tokens: 300,
+              tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+              messages: [
+                { role: 'user', content: `Does "${bizName}" in ${bizCity}, ${bizState} have their own website?` },
+                { role: 'assistant', content: verifyData.content },
+                { role: 'user', content: toolResults }
+              ]
+            })
+          });
+          if (cont.ok) {
+            const contData = await cont.json();
+            verifyText = (contData.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
+          }
+        }
+
+        const hasWebsite = verifyText.toUpperCase().startsWith('YES');
+        if (hasWebsite) {
+          const urlMatch = verifyText.match(/https?:\/\/[^\s"'<>]+|[a-z0-9-]+\.[a-z]{2,}/i);
+          const foundUrl = urlMatch ? urlMatch[0] : 'unknown';
+          console.log(`  ⚠️  ${bizName} HAS A WEBSITE: ${foundUrl} — SKIPPING`);
           candidate._has_website = true;
           candidate.no_website = false;
-          candidate.website_url = guessUrl;
-          break;
+          candidate.website_url = foundUrl;
+        } else {
+          console.log(`  ✅  ${bizName} — verified NO website`);
         }
       }
+    } catch (verifyErr) {
+      console.log(`  ⚠️  ${bizName} — verification failed: ${verifyErr.message} — keeping lead`);
     }
+
+    // Small delay to avoid rate limits between verification calls
+    await sleep(2000);
   }
 
   // Filter out leads that have real websites
