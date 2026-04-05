@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Apex Digital | Lead Generation That Actually Works</title>
+<meta name="description" content="Apex Digital helps local businesses get more leads, more calls, and more customers with done-for-you websites, SEO, and ad management.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#0F172A;--primary-light:#1E293B;--primary-mid:#334155;
+  --accent:#3B82F6;--accent-light:#60A5FA;--accent-dark:#2563EB;--accent-glow:rgba(59,130,246,.15);
+  --orange:#F97316;--orange-light:#FB923C;
+  --purple:#8B5CF6;--purple-light:#A78BFA;
+  --white:#FFFFFF;--off:#F8FAFC;--off2:#F1F5F9;
+  --text:#0F172A;--text-mid:#475569;--text-dim:#94A3B8;
+  --border:rgba(15,23,42,.06);--border2:rgba(15,23,42,.1);
+  --shadow:0 4px 24px rgba(0,0,0,.06);--shadow-lg:0 20px 60px rgba(0,0,0,.12);--shadow-xl:0 30px 80px rgba(0,0,0,.18);
+  --font-h:'Oswald',sans-serif;--font-b:'Inter',sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);--ease-out:cubic-bezier(.16,1,.3,1);
+  --max:1140px;--radius:12px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--text);font-family:var(--font-b);line-height:1.7;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+img{max-width:100%;display:block}
+
+.rv{opacity:0;transform:translateY(28px);transition:all .8s var(--ease-out)}
+.rv.vis{opacity:1;transform:none}
+.rv-left{opacity:0;transform:translateX(-40px);transition:all .8s var(--ease-out)}
+.rv-left.vis{opacity:1;transform:none}
+.rv-right{opacity:0;transform:translateX(40px);transition:all .8s var(--ease-out)}
+.rv-right.vis{opacity:1;transform:none}
+.rv-scale{opacity:0;transform:scale(.92);transition:all .8s var(--ease-out)}
+.rv-scale.vis{opacity:1;transform:none}
+
+/* ═══ TOP BAR ═══ */
+.topbar{background:var(--primary);padding:8px 0}
+.topbar-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:center;gap:28px;padding:0 24px;flex-wrap:wrap}
+.topbar span,.topbar a{color:rgba(255,255,255,.7);font-size:.72rem;font-weight:500;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.topbar a:hover{color:#fff}
+.tb-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.06)}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.nav-logo-icon::after{content:'';position:absolute;top:50%;left:50%;width:18px;height:18px;border:2.5px solid #fff;border-radius:3px;transform:translate(-50%,-50%) rotate(45deg)}
+.nav-logo-text{font-family:var(--font-h);font-size:1.4rem;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:1.5px}
+.nav-logo-text span{color:var(--accent)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:.82rem;font-weight:500;color:var(--text-mid);transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-phone{font-weight:700;color:var(--primary)!important;font-size:.95rem;display:flex;align-items:center;gap:6px}
+.nav-cta{background:var(--accent);color:#fff!important;padding:10px 24px;border-radius:var(--radius);font-weight:600;font-size:.82rem;transition:all .2s;border:none;cursor:pointer;letter-spacing:.3px}
+.nav-cta:hover{background:var(--accent-light);transform:translateY(-1px);box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.ham{display:none;flex-direction:column;gap:4px;cursor:pointer;z-index:101}
+.ham span{width:22px;height:2px;background:var(--text);transition:all .3s}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;min-height:94vh;display:flex;align-items:center;overflow:hidden;background:var(--primary)}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-img-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1920&q=80') center/cover;opacity:.08}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 25s linear infinite}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+.hero-glow1{position:absolute;top:-10%;right:10%;width:600px;height:600px;background:radial-gradient(circle,rgba(59,130,246,.15),transparent 70%);border-radius:50%;filter:blur(60px);animation:float1 8s ease-in-out infinite}
+.hero-glow2{position:absolute;bottom:-10%;left:5%;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.12),transparent 70%);border-radius:50%;filter:blur(60px);animation:float2 10s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,30px)}}
+.hero-inner{max-width:var(--max);margin:0 auto;padding:60px 24px 80px;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;position:relative;z-index:2}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);color:var(--accent-light);font-size:.7rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:20px;margin-bottom:16px;border:1px solid rgba(59,130,246,.15)}
+.hero-tag .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+.hero h1{font-family:var(--font-h);font-size:clamp(2.4rem,5.5vw,3.8rem);line-height:1.05;color:#fff;margin-bottom:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.hero h1 em{color:var(--accent-light);font-style:normal;position:relative;display:inline-block}
+.hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;width:100%;height:4px;background:var(--accent);border-radius:2px;opacity:.4}
+.hero-sub{font-size:1.02rem;color:rgba(255,255,255,.55);line-height:1.75;margin-bottom:24px;max-width:460px}
+.hero-metrics{display:flex;gap:32px}
+.hero-metric{text-align:left}
+.hero-metric-val{font-family:var(--font-h);font-size:2.2rem;color:#fff;line-height:1;font-weight:700;display:flex;align-items:baseline;gap:2px}
+.hero-metric-val span{font-size:1rem;color:var(--accent-light)}
+.hero-metric-label{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Hero Form */
+.hero-form{background:var(--white);border-radius:20px;padding:36px;box-shadow:0 25px 80px rgba(0,0,0,.35);position:relative;border:1px solid rgba(255,255,255,.08)}
+.hero-form::before{content:'';position:absolute;top:-1px;left:32px;right:32px;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--orange));border-radius:0 0 3px 3px}
+.hero-form h2{font-family:var(--font-h);font-size:1.5rem;color:var(--text);margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.hero-form .form-sub{font-size:.85rem;color:var(--text-mid);margin-bottom:20px}
+.hero-form .form-sub strong{color:var(--accent)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.form-field{display:flex;flex-direction:column;gap:3px}
+.form-field.full{grid-column:1/-1}
+.form-field label{font-size:.68rem;font-weight:600;letter-spacing:.5px;color:var(--text-mid);text-transform:uppercase}
+.form-field input,.form-field select,.form-field textarea{padding:12px 14px;border:1.5px solid var(--border2);border-radius:8px;font-size:.88rem;font-family:var(--font-b);color:var(--text);background:var(--off);transition:all .2s;outline:none}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.form-submit{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:700;font-family:var(--font-h);cursor:pointer;transition:all .25s;margin-top:8px;text-transform:uppercase;letter-spacing:1.5px}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(59,130,246,.35)}
+.form-trust{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;font-size:.72rem;color:var(--text-dim)}
+.form-trust span{display:flex;align-items:center;gap:4px}
+
+/* ═══ LOGO BAR ═══ */
+.logos{background:var(--white);padding:32px 24px;border-bottom:1px solid var(--border)}
+.logos-inner{max-width:var(--max);margin:0 auto;text-align:center}
+.logos-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:16px}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;opacity:.35;filter:grayscale(1)}
+.logos-row span{font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--text);letter-spacing:1px;text-transform:uppercase}
+
+/* ═══ IMAGE SHOWCASE SECTION ═══ */
+.showcase{padding:100px 24px;background:var(--off);position:relative;overflow:hidden}
+.showcase-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.showcase-img{position:relative}
+.showcase-img img{width:100%;border-radius:16px;box-shadow:var(--shadow-xl);position:relative;z-index:2}
+.showcase-img::before{content:'';position:absolute;top:-12px;left:-12px;right:12px;bottom:12px;border:2px solid var(--accent);border-radius:20px;opacity:.15;z-index:1}
+.showcase-img::after{content:'';position:absolute;top:20%;right:-30px;width:120px;height:120px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:20px;opacity:.1;z-index:0;filter:blur(20px)}
+.showcase-float{position:absolute;z-index:3;background:var(--white);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:12px;animation:floatCard 4s ease-in-out infinite}
+.showcase-float-1{bottom:-20px;right:-10px}
+.showcase-float-2{top:20px;left:-20px;animation-delay:-2s}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.showcase-float-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.showcase-float-icon.green{background:rgba(16,185,129,.1);color:#10B981}
+.showcase-float-icon.blue{background:rgba(59,130,246,.1);color:var(--accent)}
+.showcase-float-text{font-size:.78rem;font-weight:600;color:var(--text)}
+.showcase-float-sub{font-size:.65rem;color:var(--text-dim)}
+.section-tag{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.section-tag::before{content:'';width:20px;height:2px;background:var(--accent)}
+.section-title{font-family:var(--font-h);font-size:clamp(1.6rem,4vw,2.6rem);color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.section-sub{font-size:.92rem;color:var(--text-mid);max-width:480px;margin-bottom:28px;line-height:1.7}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.check-list li{font-size:.88rem;color:var(--text-mid);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.check-list li::before{content:'';width:22px;height:22px;border-radius:50%;background:rgba(59,130,246,.08);border:1.5px solid var(--accent);flex-shrink:0;margin-top:1px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233B82F6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.showcase-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--accent);color:#fff;border-radius:var(--radius);font-weight:700;font-family:var(--font-h);font-size:.9rem;text-transform:uppercase;letter-spacing:1px;transition:all .25s}
+.showcase-cta:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.25);color:#fff}
+
+/* ═══ RESULTS WITH IMAGES ═══ */
+.results{padding:100px 24px;background:var(--white);position:relative;overflow:hidden}
+.results-inner{max-width:var(--max);margin:0 auto}
+.results-header{text-align:center;margin-bottom:48px}
+.results-header .section-tag{justify-content:center}
+.results-header .section-sub{margin:0 auto}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.result-card{background:var(--off);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .4s var(--ease)}
+.result-card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-6px)}
+.result-card-img{position:relative;height:180px;overflow:hidden}
+.result-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.result-card:hover .result-card-img img{transform:scale(1.05)}
+.result-card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(15,23,42,.7) 100%)}
+.result-card-stat{position:absolute;bottom:12px;left:16px;font-family:var(--font-h);font-size:2.4rem;font-weight:700;color:#fff;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.result-card-stat span{font-size:1rem;color:var(--accent-light)}
+.result-card-body{padding:24px}
+.result-card-body h3{font-family:var(--font-h);font-size:1rem;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.result-card-body p{font-size:.82rem;color:var(--text-mid);line-height:1.65}
+
+/* ═══ FULL-WIDTH IMAGE BREAK ═══ */
+.img-break{position:relative;height:420px;overflow:hidden}
+.img-break img{width:100%;height:100%;object-fit:cover}
+.img-break-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.85),rgba(30,41,59,.75))}
+.img-break-content{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.img-break-inner{text-align:center;max-width:700px;padding:0 24px}
+.img-break-inner h2{font-family:var(--font-h);font-size:clamp(1.8rem,5vw,3rem);color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;line-height:1.1}
+.img-break-inner h2 em{color:var(--accent-light);font-style:normal}
+.img-break-inner p{font-size:1rem;color:rgba(255,255,255,.6);margin-bottom:24px;line-height:1.7}
+.img-break-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--accent);color:#fff;border-radius:var(--radius);font-weight:700;font-family:var(--font-h);font-size:.9rem;text-transform:uppercase;letter-spacing:1px;transition:all .25s}
+.img-break-btn:hover{background:var(--accent-light);transform:translateY(-2px);box-shadow:0 8px 30px rgba(59,130,246,.35);color:#fff}
+
+/* ═══ SERVICES ═══ */
+.services{padding:100px 24px;background:var(--off)}
+.services-inner{max-width:var(--max);margin:0 auto}
+.services-header{text-align:center;margin-bottom:48px}
+.services-header .section-tag{justify-content:center}
+.services-header .section-sub{margin:0 auto}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.svc-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .4s var(--ease);display:flex;flex-direction:column}
+.svc-card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-5px)}
+.svc-card-img{height:160px;overflow:hidden;position:relative}
+.svc-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.svc-card:hover .svc-card-img img{transform:scale(1.08)}
+.svc-card-img-tag{position:absolute;top:12px;left:12px;background:rgba(15,23,42,.8);backdrop-filter:blur(8px);color:#fff;font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:6px}
+.svc-card-body{padding:24px;display:flex;flex-direction:column;flex:1}
+.svc-card-body h3{font-family:var(--font-h);font-size:1.05rem;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}
+.svc-card-body p{font-size:.82rem;color:var(--text-mid);line-height:1.65;flex:1}
+.svc-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:.78rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;transition:all .2s}
+.svc-cta:hover{gap:10px}
+
+/* ═══ PROCESS ═══ */
+.process{padding:100px 24px;background:var(--white)}
+.process-inner{max-width:var(--max);margin:0 auto}
+.process-header{text-align:center;margin-bottom:48px}
+.process-header .section-tag{justify-content:center}
+.process-header .section-sub{margin:0 auto}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
+.process-grid::before{content:'';position:absolute;top:48px;left:70px;right:70px;height:2px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--orange),#10B981);opacity:.15}
+.process-step{text-align:center;position:relative;z-index:1}
+.process-num{width:56px;height:56px;background:var(--white);border:2px solid var(--accent);border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:1.3rem;font-weight:700;color:var(--accent);margin:0 auto 16px;transition:all .3s;box-shadow:var(--shadow)}
+.process-step:hover .process-num{background:var(--accent);color:#fff;transform:scale(1.1) rotate(-3deg)}
+.process-step h4{font-family:var(--font-h);font-size:.9rem;font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.process-step p{font-size:.78rem;color:var(--text-mid);line-height:1.6;max-width:200px;margin:0 auto}
+
+/* ═══ MINI CTA ═══ */
+.mini-cta{background:linear-gradient(135deg,var(--primary) 0%,#1E293B 100%);padding:36px 24px;text-align:center;position:relative;overflow:hidden}
+.mini-cta::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:40px 40px}
+.mini-cta-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;position:relative;z-index:1}
+.mini-cta h3{font-family:var(--font-h);font-size:clamp(1.1rem,3vw,1.5rem);color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.mini-cta-btn{background:var(--accent);color:#fff;padding:13px 32px;border-radius:var(--radius);font-weight:700;font-size:.85rem;font-family:var(--font-h);text-transform:uppercase;letter-spacing:1px;transition:all .25s}
+.mini-cta-btn:hover{background:var(--accent-light);transform:translateY(-2px);box-shadow:0 6px 24px rgba(59,130,246,.3);color:#fff}
+.mini-cta-phone{color:var(--orange-light);font-family:var(--font-h);font-size:1.2rem;font-weight:600}
+.mini-cta-phone:hover{color:#fff}
+
+/* ═══ PORTFOLIO SHOWCASE ═══ */
+.portfolio{padding:100px 24px;background:var(--primary);position:relative;overflow:hidden}
+.portfolio::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.02) 1px,transparent 1px);background-size:60px 60px}
+.portfolio-glow{position:absolute;top:20%;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(59,130,246,.08),transparent 70%);border-radius:50%;filter:blur(60px)}
+.portfolio-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:2}
+.portfolio-header{text-align:center;margin-bottom:48px}
+.portfolio-header .section-tag{color:var(--accent-light)}
+.portfolio-header .section-tag::before{background:var(--accent-light)}
+.portfolio-header .section-title{color:#fff}
+.portfolio-header .section-sub{color:rgba(255,255,255,.5);margin:0 auto}
+.portfolio-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.portfolio-card{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;group:true}
+.portfolio-card img{width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .6s var(--ease);display:block}
+.portfolio-card:hover img{transform:scale(1.05)}
+.portfolio-card-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(15,23,42,.9) 100%);transition:all .3s}
+.portfolio-card:hover .portfolio-card-overlay{background:linear-gradient(180deg,transparent 10%,rgba(15,23,42,.95) 100%)}
+.portfolio-card-info{position:absolute;bottom:0;left:0;right:0;padding:24px;z-index:2}
+.portfolio-card-tag{font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-light);margin-bottom:6px}
+.portfolio-card-info h3{font-family:var(--font-h);font-size:1.3rem;color:#fff;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.portfolio-card-info p{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.5}
+.portfolio-card-stat{position:absolute;top:16px;right:16px;background:rgba(59,130,246,.9);color:#fff;font-family:var(--font-h);font-size:.85rem;font-weight:700;padding:6px 14px;border-radius:8px;letter-spacing:.5px}
+
+/* ═══ REVIEWS ═══ */
+.proof{padding:100px 24px;background:var(--white)}
+.proof-inner{max-width:var(--max);margin:0 auto}
+.proof-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px}
+.proof-big{display:flex;align-items:center;gap:16px}
+.proof-score{font-family:var(--font-h);font-size:4rem;color:var(--text);line-height:1;font-weight:700}
+.proof-stars{color:var(--orange);font-size:1.3rem;margin-bottom:2px}
+.proof-count{font-size:.82rem;color:var(--text-mid)}
+.proof-badges{display:flex;gap:10px;flex-wrap:wrap}
+.proof-badge{background:rgba(59,130,246,.06);color:var(--accent);font-size:.72rem;font-weight:600;padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px;border:1px solid rgba(59,130,246,.1)}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.review-card{background:var(--off);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative}
+.review-card:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.review-card::before{content:'\201C';position:absolute;top:12px;right:20px;font-size:3.5rem;font-family:Georgia,serif;color:rgba(59,130,246,.06);line-height:1}
+.review-stars{color:var(--orange);font-size:.85rem;margin-bottom:10px}
+.review-text{font-size:.88rem;color:var(--text);line-height:1.7;margin-bottom:14px}
+.review-author{display:flex;align-items:center;gap:10px}
+.review-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:#fff}
+.review-avatar.av1{background:linear-gradient(135deg,var(--accent),var(--purple))}
+.review-avatar.av2{background:linear-gradient(135deg,var(--orange),#EF4444)}
+.review-avatar.av3{background:linear-gradient(135deg,#10B981,#14B8A6)}
+.review-name{font-size:.8rem;font-weight:600;color:var(--text)}
+.review-role{font-size:.7rem;color:var(--text-dim)}
+
+/* ═══ FAQ ═══ */
+.faq{padding:80px 24px;background:var(--off)}
+.faq-inner{max-width:720px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:36px}
+.faq-header .section-tag{justify-content:center}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all .3s}
+.faq-item:hover{border-color:var(--accent)}
+.faq-q{padding:18px 24px;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q::after{content:'+';font-family:var(--font-h);font-size:1.3rem;color:var(--accent);transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);padding:0 24px}
+.faq-item.open .faq-a{max-height:200px;padding:0 24px 18px}
+.faq-a p{font-size:.85rem;color:var(--text-mid);line-height:1.7}
+
+/* ═══ BOTTOM CTA ═══ */
+.cta{padding:100px 24px;position:relative;overflow:hidden}
+.cta-bg{position:absolute;inset:0}
+.cta-bg img{width:100%;height:100%;object-fit:cover}
+.cta-bg-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(30,41,59,.88))}
+.cta-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:2}
+.cta-text h2{font-family:var(--font-h);font-size:clamp(1.8rem,4vw,2.8rem);color:#fff;margin-bottom:12px;line-height:1.1;text-transform:uppercase;letter-spacing:.5px}
+.cta-text p{font-size:1rem;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.7}
+.cta-phone{font-family:var(--font-h);font-size:2rem;color:var(--orange-light);display:flex;align-items:center;gap:8px;margin-bottom:24px;font-weight:600}
+.cta-phone:hover{color:#fff}
+.cta-checks{list-style:none;display:flex;flex-direction:column;gap:10px}
+.cta-checks li{color:rgba(255,255,255,.65);font-size:.88rem;display:flex;align-items:center;gap:10px}
+.cta-checks li::before{content:'';width:20px;height:20px;border-radius:50%;background:rgba(59,130,246,.15);border:1.5px solid var(--accent);flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233B82F6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.form-card{background:var(--white);border-radius:20px;padding:36px;box-shadow:0 25px 80px rgba(0,0,0,.2)}
+.form-card h3{font-family:var(--font-h);font-size:1.3rem;color:var(--text);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.form-card .form-sub{font-size:.82rem;color:var(--text-mid);margin-bottom:18px}
+
+/* ═══ HOO STAMP ═══ */
+.hoo-stamp{background:var(--primary);padding:48px 24px;text-align:center;border-top:2px solid rgba(59,130,246,.1)}
+.hoo-stamp-inner{max-width:600px;margin:0 auto}
+.hoo-stamp-badge{display:inline-flex;align-items:center;gap:12px;background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.1);border-radius:16px;padding:20px 32px;margin-bottom:16px}
+.hoo-stamp-logo{width:48px;height:48px;background:linear-gradient(135deg,#C8952E,#E8B84B);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:var(--primary);letter-spacing:1px}
+.hoo-stamp-text{text-align:left}
+.hoo-stamp-name{font-family:var(--font-h);font-size:1.1rem;color:#fff;text-transform:uppercase;letter-spacing:2px;font-weight:700}
+.hoo-stamp-sub{font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:.5px}
+.hoo-stamp p{font-size:.82rem;color:rgba(255,255,255,.35);line-height:1.6;max-width:440px;margin:0 auto}
+.hoo-stamp-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:#C8952E;font-size:.8rem;font-weight:600;letter-spacing:.5px;transition:all .2s}
+.hoo-stamp-link:hover{color:#E8B84B;gap:10px}
+
+/* ═══ FOOTER ═══ */
+.footer{background:#070B14;padding:48px 24px 24px;color:rgba(255,255,255,.6)}
+.footer-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:8px;position:relative;overflow:hidden}
+.footer-logo-icon::after{content:'';position:absolute;top:50%;left:50%;width:14px;height:14px;border:2px solid #fff;border-radius:2px;transform:translate(-50%,-50%) rotate(45deg)}
+.footer h4{font-family:var(--font-h);font-size:.95rem;color:#fff;letter-spacing:1px;margin-bottom:12px;text-transform:uppercase}
+.footer p,.footer a{font-size:.8rem;line-height:1.8;color:rgba(255,255,255,.45)}
+.footer a:hover{color:var(--accent-light)}
+.footer-brand{font-family:var(--font-h);font-size:1.2rem;color:#fff;text-transform:uppercase;letter-spacing:1.5px}
+.footer-brand span{color:var(--accent)}
+.footer-bottom{max-width:var(--max);margin:24px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.2)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:24px;padding:48px 20px}
+  .hero{min-height:auto}
+  .hero-metrics{gap:20px}
+  .nav-links{display:none}
+  .ham{display:flex}
+  .svc-grid,.results-grid{grid-template-columns:1fr}
+  .review-grid{grid-template-columns:1fr}
+  .cta-inner{grid-template-columns:1fr;gap:32px}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .mini-cta-inner{flex-direction:column;gap:12px}
+  .hero-form,.form-card{padding:24px}
+  .showcase-inner{grid-template-columns:1fr;gap:32px}
+  .showcase-float{display:none}
+  .portfolio-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:repeat(2,1fr);gap:24px}
+  .process-grid::before{display:none}
+  .proof-header{flex-direction:column;align-items:flex-start}
+  .img-break{height:320px}
+  .hoo-stamp-badge{flex-direction:column;text-align:center}
+  .hoo-stamp-text{text-align:center}
+}
+@media(min-width:769px) and (max-width:1024px){
+  .svc-grid,.results-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .process-grid{grid-template-columns:repeat(2,1fr)}
+  .process-grid::before{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span><span class="tb-dot"></span> Accepting New Clients</span>
+    <a href="tel:8169550100">(816) 955-0100</a>
+    <span>&#128293; 3 spots left this month</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon"></div>
+      <span class="nav-logo-text">Apex <span>Digital</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#results">Results</a>
+      <a href="#services">Services</a>
+      <a href="#work">Our Work</a>
+      <a href="#reviews">Reviews</a>
+      <a href="tel:8169550100" class="nav-phone">&#9742; (816) 955-0100</a>
+      <a href="#top-form" class="nav-cta">Free Strategy Call</a>
+    </div>
+    <div class="ham" onclick="document.querySelector('.nav-links').classList.toggle('mob-show')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-img-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-glow1"></div>
+    <div class="hero-glow2"></div>
+  </div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag rv"><span class="dot"></span> Lead Generation Agency</div>
+      <h1 class="rv">We Fill Your <em>Pipeline</em> So You Can Focus on <em>Closing</em></h1>
+      <p class="hero-sub rv">Websites, ads, and automations built to generate real leads for local businesses. No fluff. No vanity metrics. Just calls, quotes, and customers.</p>
+      <div class="hero-metrics rv">
+        <div class="hero-metric"><div class="hero-metric-val">2.4M<span>+</span></div><div class="hero-metric-label">Leads Generated</div></div>
+        <div class="hero-metric"><div class="hero-metric-val">340<span>%</span></div><div class="hero-metric-label">Avg. ROI</div></div>
+        <div class="hero-metric"><div class="hero-metric-val">150<span>+</span></div><div class="hero-metric-label">Clients Served</div></div>
+      </div>
+    </div>
+    <div class="hero-form rv" id="top-form">
+      <h2>Get Your Free Strategy Call</h2>
+      <p class="form-sub">See how many leads you're leaving on the table. <strong>No obligation.</strong></p>
+      <form action="https://formspree.io/f/DEMO" method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="John Smith" required>
+          </div>
+          <div class="form-field">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="(816) 555-0000" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Business Name</label>
+            <input type="text" name="business" placeholder="Your business name" required>
+          </div>
+          <div class="form-field">
+            <label>What Do You Need?</label>
+            <select name="service" required>
+              <option value="">Select...</option>
+              <option>Website That Converts</option>
+              <option>Google Ads Management</option>
+              <option>Facebook/Meta Ads</option>
+              <option>SEO &amp; Google Maps</option>
+              <option>Full Lead Gen System</option>
+              <option>Not Sure &mdash; Need Advice</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field full">
+          <label>Monthly Marketing Budget</label>
+          <select name="budget">
+            <option value="">Select range...</option>
+            <option>Under $500/mo</option>
+            <option>$500 - $1,500/mo</option>
+            <option>$1,500 - $3,000/mo</option>
+            <option>$3,000+/mo</option>
+          </select>
+        </div>
+        <button type="submit" class="form-submit">Book My Free Strategy Call &rarr;</button>
+      </form>
+      <div class="form-trust">
+        <span>&#10003; Free audit included</span>
+        <span>&#9733; 5-star rated</span>
+        <span>&#128274; No spam, ever</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Client Logos -->
+<div class="logos rv">
+  <div class="logos-inner">
+    <div class="logos-label">Trusted by 150+ Local Businesses</div>
+    <div class="logos-row">
+      <span>Precision Roofing</span>
+      <span>KC Lawn Pro</span>
+      <span>Midwest HVAC</span>
+      <span>Elite Plumbing</span>
+      <span>BlueLine Electric</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SHOWCASE — Image + Copy ═══ -->
+<section class="showcase">
+  <div class="showcase-inner">
+    <div class="showcase-img rv-left">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=85" alt="Live marketing analytics dashboard with lead tracking charts and conversion data">
+      <div class="showcase-float showcase-float-1">
+        <div class="showcase-float-icon green">&#128200;</div>
+        <div>
+          <div class="showcase-float-text">+47 New Leads</div>
+          <div class="showcase-float-sub">This week</div>
+        </div>
+      </div>
+      <div class="showcase-float showcase-float-2">
+        <div class="showcase-float-icon blue">&#128176;</div>
+        <div>
+          <div class="showcase-float-text">$12,400 Revenue</div>
+          <div class="showcase-float-sub">From ad spend of $2,800</div>
+        </div>
+      </div>
+    </div>
+    <div class="rv-right">
+      <div class="section-tag">Why Apex Digital</div>
+      <h2 class="section-title">Marketing That Pays for Itself</h2>
+      <p class="section-sub">Most agencies sell you impressions and clicks. We sell you customers. Every dollar you spend is tracked back to real revenue.</p>
+      <ul class="check-list">
+        <li>Real-time dashboard showing every lead, call, and form fill</li>
+        <li>Dedicated account manager who knows your industry</li>
+        <li>Custom-built websites designed to convert, not just look pretty</li>
+        <li>Month-to-month &mdash; no long-term contracts</li>
+      </ul>
+      <a href="#top-form" class="showcase-cta">See What We Can Do For You &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RESULTS — Image Cards ═══ -->
+<section class="results" id="results">
+  <div class="results-inner">
+    <div class="results-header">
+      <div class="section-tag rv">Proven Results</div>
+      <h2 class="section-title rv">Numbers Don't Lie</h2>
+      <p class="section-sub rv">Average results across our client base in the first 90 days.</p>
+    </div>
+    <div class="results-grid">
+      <div class="result-card rv">
+        <div class="result-card-img">
+          <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80" alt="Business owner's phone ringing with new customer leads" loading="lazy">
+          <div class="result-card-img-overlay"></div>
+          <div class="result-card-stat">312%<span> more leads</span></div>
+        </div>
+        <div class="result-card-body">
+          <h3>More Website Leads</h3>
+          <p>Average increase in form submissions and calls from organic and paid traffic combined.</p>
+        </div>
+      </div>
+      <div class="result-card rv">
+        <div class="result-card-img">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80" alt="Cash register and revenue tracking showing return on ad spend" loading="lazy">
+          <div class="result-card-img-overlay"></div>
+          <div class="result-card-stat">4.2x<span> ROAS</span></div>
+        </div>
+        <div class="result-card-body">
+          <h3>Return on Ad Spend</h3>
+          <p>For every $1 spent on ads, our clients average $4.20 back in closed revenue.</p>
+        </div>
+      </div>
+      <div class="result-card rv">
+        <div class="result-card-img">
+          <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&q=80" alt="Targeted digital ad campaign reducing cost per lead" loading="lazy">
+          <div class="result-card-img-overlay"></div>
+          <div class="result-card-stat">67%<span> lower CPL</span></div>
+        </div>
+        <div class="result-card-body">
+          <h3>Lower Cost Per Lead</h3>
+          <p>Optimized landing pages, targeting, and follow-up automations cut waste fast.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FULL-WIDTH IMAGE BREAK ═══ -->
+<div class="img-break">
+  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80" alt="Marketing team reviewing campaign strategy on whiteboard with data charts" loading="lazy">
+  <div class="img-break-overlay"></div>
+  <div class="img-break-content">
+    <div class="img-break-inner rv-scale">
+      <h2>Stop Losing Leads to <em>Your Competition</em></h2>
+      <p>While you're thinking about it, they're already running ads. Let's fix that.</p>
+      <a href="#top-form" class="img-break-btn">Get Your Free Strategy Call &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES — With Images ═══ -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <div class="section-tag rv">What We Do</div>
+      <h2 class="section-title rv">Everything You Need to Dominate Locally</h2>
+      <p class="section-sub rv">We don't just build websites. We build lead machines.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card rv">
+        <div class="svc-card-img">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80" alt="High-converting business website displayed on laptop with contact form visible" loading="lazy">
+          <div class="svc-card-img-tag">Core</div>
+        </div>
+        <div class="svc-card-body">
+          <h3>High-Converting Websites</h3>
+          <p>Not a brochure &mdash; a 24/7 lead machine built to turn visitors into phone calls and form fills.</p>
+          <a href="#top-form" class="svc-cta">Get Started &rarr;</a>
+        </div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-card-img">
+          <img src="https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600&q=80" alt="Google Ads search results showing paid ad placements at top of page" loading="lazy">
+          <div class="svc-card-img-tag">Paid</div>
+        </div>
+        <div class="svc-card-body">
+          <h3>Google Ads &amp; PPC</h3>
+          <p>Show up at the top when people search for what you do. We manage the budget, you answer the phone.</p>
+          <a href="#top-form" class="svc-cta">Get Started &rarr;</a>
+        </div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-card-img">
+          <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=600&q=80" alt="Facebook and Instagram ads manager on smartphone showing targeted campaigns" loading="lazy">
+          <div class="svc-card-img-tag">Social</div>
+        </div>
+        <div class="svc-card-body">
+          <h3>Facebook &amp; Meta Ads</h3>
+          <p>Targeted campaigns that put your business in front of ideal customers. Real leads, not likes.</p>
+          <a href="#top-form" class="svc-cta">Get Started &rarr;</a>
+        </div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-card-img">
+          <img src="https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&q=80" alt="Google Maps local business listing with reviews and directions on phone" loading="lazy">
+          <div class="svc-card-img-tag">Organic</div>
+        </div>
+        <div class="svc-card-body">
+          <h3>SEO &amp; Google Maps</h3>
+          <p>Rank higher on Google, get found on Maps, build long-term organic traffic that doesn't cost per click.</p>
+          <a href="#top-form" class="svc-cta">Get Started &rarr;</a>
+        </div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-card-img">
+          <img src="https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=600&q=80" alt="Email marketing automation sequence with follow-up messages on screen" loading="lazy">
+          <div class="svc-card-img-tag">Auto</div>
+        </div>
+        <div class="svc-card-body">
+          <h3>Automation &amp; Follow-Up</h3>
+          <p>Instant text-back, email sequences, appointment booking &mdash; so no lead falls through the cracks.</p>
+          <a href="#top-form" class="svc-cta">Get Started &rarr;</a>
+        </div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-card-img">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Real-time reporting dashboard with ROI charts, lead counts, and ad performance metrics" loading="lazy">
+          <div class="svc-card-img-tag">Data</div>
+        </div>
+        <div class="svc-card-body">
+          <h3>Reporting &amp; Analytics</h3>
+          <p>Live dashboard showing calls, leads, ad spend, and ROI. Always know what's working.</p>
+          <a href="#top-form" class="svc-cta">Get Started &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mini CTA -->
+<div class="mini-cta">
+  <div class="mini-cta-inner">
+    <h3>Ready to Get More Calls?</h3>
+    <a href="#top-form" class="mini-cta-btn">Free Strategy Call &rarr;</a>
+    <span style="color:rgba(255,255,255,.3)">or call</span>
+    <a href="tel:8169550100" class="mini-cta-phone">(816) 955-0100</a>
+  </div>
+</div>
+
+<!-- ═══ PROCESS ═══ -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <div class="process-header">
+      <div class="section-tag rv">How It Works</div>
+      <h2 class="section-title rv">From Zero to Leads in 4 Steps</h2>
+      <p class="section-sub rv">We handle the heavy lifting. You focus on running your business.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step rv">
+        <div class="process-num">1</div>
+        <h4>Strategy Call</h4>
+        <p>We audit your setup, competitors, and market opportunity. Free, 30 minutes.</p>
+      </div>
+      <div class="process-step rv">
+        <div class="process-num">2</div>
+        <h4>Custom Plan</h4>
+        <p>Lead gen strategy specific to your industry, city, and budget. No cookie cutters.</p>
+      </div>
+      <div class="process-step rv">
+        <div class="process-num">3</div>
+        <h4>Launch &amp; Optimize</h4>
+        <p>Website, ads, automations go live. We test, tweak, and optimize daily.</p>
+      </div>
+      <div class="process-step rv">
+        <div class="process-num">4</div>
+        <h4>Leads Roll In</h4>
+        <p>Phone rings, forms fill up, calendar books. We report ROI monthly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PORTFOLIO — Dark Section ═══ -->
+<section class="portfolio" id="work">
+  <div class="portfolio-glow"></div>
+  <div class="portfolio-inner">
+    <div class="portfolio-header">
+      <div class="section-tag rv">Our Work</div>
+      <h2 class="section-title rv">Websites That Generate Revenue</h2>
+      <p class="section-sub rv">Real client builds. Real results. Every site is built to convert visitors into paying customers.</p>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-card rv">
+        <img src="https://images.unsplash.com/photo-1632759145351-1d592919f522?w=800&q=80" alt="Roofer installing shingles on residential roof with tools and safety gear" loading="lazy">
+        <div class="portfolio-card-overlay"></div>
+        <div class="portfolio-card-stat">+187% leads</div>
+        <div class="portfolio-card-info">
+          <div class="portfolio-card-tag">Roofing</div>
+          <h3>Precision Roofing KC</h3>
+          <p>Website + Google Ads &mdash; 187% more leads in 60 days</p>
+        </div>
+      </div>
+      <div class="portfolio-card rv">
+        <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&q=80" alt="HVAC technician servicing outdoor air conditioning unit at residential home" loading="lazy">
+        <div class="portfolio-card-overlay"></div>
+        <div class="portfolio-card-stat">43 new customers</div>
+        <div class="portfolio-card-info">
+          <div class="portfolio-card-tag">HVAC</div>
+          <h3>Midwest Heating &amp; Air</h3>
+          <p>Full lead gen system &mdash; 43 new customers first 60 days</p>
+        </div>
+      </div>
+      <div class="portfolio-card rv">
+        <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&q=80" alt="Professional plumber repairing pipes under kitchen sink with wrench" loading="lazy">
+        <div class="portfolio-card-overlay"></div>
+        <div class="portfolio-card-stat">4.8x ROAS</div>
+        <div class="portfolio-card-info">
+          <div class="portfolio-card-tag">Plumbing</div>
+          <h3>Elite Plumbing Solutions</h3>
+          <p>Facebook Ads + landing pages &mdash; 4.8x return on ad spend</p>
+        </div>
+      </div>
+      <div class="portfolio-card rv">
+        <img src="https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=800&q=80" alt="Professional lawn mower creating clean stripes on a manicured residential lawn" loading="lazy">
+        <div class="portfolio-card-overlay"></div>
+        <div class="portfolio-card-stat">$52K revenue</div>
+        <div class="portfolio-card-info">
+          <div class="portfolio-card-tag">Lawn Care</div>
+          <h3>KC Lawn Pro</h3>
+          <p>Website + SEO + automation &mdash; $52K new revenue in 90 days</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REVIEWS ═══ -->
+<section class="proof" id="reviews">
+  <div class="proof-inner">
+    <div class="proof-header rv">
+      <div class="proof-big">
+        <div class="proof-score">4.9</div>
+        <div>
+          <div class="proof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="proof-count">Based on 87 Client Reviews</div>
+        </div>
+      </div>
+      <div class="proof-badges">
+        <div class="proof-badge">&#10003; Google Partner</div>
+        <div class="proof-badge">&#128640; 150+ Clients</div>
+        <div class="proof-badge">&#128205; Kansas City Based</div>
+      </div>
+    </div>
+    <div class="review-grid">
+      <div class="review-card rv">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="review-text">"We went from maybe 5 calls a week to 30+. Apex rebuilt our site and ran ads &mdash; the ROI paid for itself in the first month. Best money we've ever spent."</div>
+        <div class="review-author">
+          <div class="review-avatar av1">MK</div>
+          <div><div class="review-name">Mike Kowalski</div><div class="review-role">Owner, Precision Roofing</div></div>
+        </div>
+      </div>
+      <div class="review-card rv">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="review-text">"I was skeptical about agencies &mdash; burned before. Apex showed me the numbers every week. 43 new customers in 60 days. I'm a believer now."</div>
+        <div class="review-author">
+          <div class="review-avatar av2">JS</div>
+          <div><div class="review-name">Jessica Simmons</div><div class="review-role">Owner, CleanRight KC</div></div>
+        </div>
+      </div>
+      <div class="review-card rv">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="review-text">"They built us a website in a week that outperforms the $8K site we had before. The automation follow-up alone saved us 10 hours a week."</div>
+        <div class="review-author">
+          <div class="review-avatar av3">DL</div>
+          <div><div class="review-name">David Lopez</div><div class="review-role">Owner, Elite Plumbing</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Full-width image break 2 -->
+<div class="img-break">
+  <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=1920&q=80" alt="Business owner at desk with phone and laptop looking at growing lead numbers" loading="lazy">
+  <div class="img-break-overlay"></div>
+  <div class="img-break-content">
+    <div class="img-break-inner rv-scale">
+      <h2>Your Competitors Are Running Ads <em>Right Now</em></h2>
+      <p>Every day without a lead system is money left on the table. Let's change that.</p>
+      <a href="#top-form" class="img-break-btn">Catch Up &mdash; Book a Free Call &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="section-tag rv">FAQ</div>
+      <h2 class="section-title rv">Common Questions</h2>
+    </div>
+    <div class="faq-item rv">
+      <div class="faq-q">How fast will I see results?</div>
+      <div class="faq-a"><p>Paid ads generate leads within 24-48 hours. SEO takes 60-90 days to ramp but builds compounding traffic. Most clients see ROI within the first 30 days.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <div class="faq-q">Do I need a big budget to start?</div>
+      <div class="faq-a"><p>No. We work with businesses spending $500/month on ads. We'll tell you honestly what budget makes sense for your market.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <div class="faq-q">What industries do you work with?</div>
+      <div class="faq-a"><p>Local service businesses &mdash; roofing, HVAC, plumbing, lawn care, cleaning, auto repair, and more. If you serve a local area, we can help.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <div class="faq-q">Am I locked into a contract?</div>
+      <div class="faq-a"><p>No long-term contracts. Month-to-month after the initial 90-day onboarding. We keep you because of results, not paperwork.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <div class="faq-q">What makes you different from other agencies?</div>
+      <div class="faq-a"><p>We only work with local businesses. We build everything in-house. And we report on leads and revenue, not impressions and clicks.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="cta" id="contact">
+  <div class="cta-bg">
+    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80" alt="Business handshake partnership agreement after successful marketing results" loading="lazy">
+    <div class="cta-bg-overlay"></div>
+  </div>
+  <div class="cta-inner">
+    <div class="cta-text rv">
+      <h2>Ready to Get More <em style="color:var(--accent-light);font-style:normal">Leads</em> Than You Can Handle?</h2>
+      <p>Book a free strategy call. We'll audit your current setup, show you where you're losing leads, and build a plan to fix it.</p>
+      <a href="tel:8169550100" class="cta-phone">&#9742; (816) 955-0100</a>
+      <ul class="cta-checks">
+        <li>Free website &amp; ad audit</li>
+        <li>Custom strategy for your industry</li>
+        <li>No contracts, no commitment</li>
+        <li>Results in 30 days or less</li>
+      </ul>
+    </div>
+    <div class="form-card rv">
+      <h3>Book Your Strategy Call</h3>
+      <p class="form-sub">Limited spots available this month.</p>
+      <form action="https://formspree.io/f/DEMO" method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-field">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="(816) 555-0000" required>
+          </div>
+        </div>
+        <div class="form-field full" style="margin-bottom:10px">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="you@email.com" required>
+        </div>
+        <div class="form-field full" style="margin-bottom:10px">
+          <label>Biggest marketing challenge?</label>
+          <input type="text" name="challenge" placeholder="Not enough leads, wasting money on ads...">
+        </div>
+        <button type="submit" class="form-submit">Book My Free Call &rarr;</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOO STAMP ═══ -->
+<div class="hoo-stamp">
+  <div class="hoo-stamp-inner">
+    <div class="hoo-stamp-badge">
+      <div class="hoo-stamp-logo">HOO</div>
+      <div class="hoo-stamp-text">
+        <div class="hoo-stamp-name">Built by HOO</div>
+        <div class="hoo-stamp-sub">Herrman Online Outlooks &mdash; Kansas City</div>
+      </div>
+    </div>
+    <p>Custom website design &amp; development for local businesses. Build free, pay on approval.</p>
+    <a href="https://herrmanonlineoutlook.com" class="hoo-stamp-link">Want a site like this? Let's talk &rarr;</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <div class="footer-logo-icon"></div>
+        <span class="footer-brand">Apex <span>Digital</span></span>
+      </div>
+      <p style="margin-top:12px">Lead generation for local businesses that want to grow. Kansas City based, nationwide results.</p>
+      <p style="margin-top:12px"><a href="tel:8169550100">(816) 955-0100</a></p>
+      <p><a href="mailto:hello@apexdigital.com">hello@apexdigital.com</a></p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <p><a href="#services">Websites</a></p>
+      <p><a href="#services">Google Ads</a></p>
+      <p><a href="#services">Facebook Ads</a></p>
+      <p><a href="#services">SEO</a></p>
+      <p><a href="#services">Automation</a></p>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <p><a href="#results">Results</a></p>
+      <p><a href="#reviews">Reviews</a></p>
+      <p><a href="#work">Our Work</a></p>
+      <p><a href="#contact">Contact</a></p>
+    </div>
+    <div>
+      <h4>Get Started</h4>
+      <p>Free strategy call</p>
+      <p>Free website audit</p>
+      <p>No contracts</p>
+      <p style="margin-top:12px"><a href="#top-form" style="color:var(--accent-light)">Book a Call &rarr;</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Apex Digital. All rights reserved.</span>
+    <span>Website by <a href="https://herrmanonlineoutlook.com" style="color:#C8952E">HOO</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+
+  // Scroll reveal — handles all animation classes
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e,i){if(e.isIntersecting){e.target.style.transitionDelay=(i%5)*80+'ms';e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(function(el){obs.observe(el)});
+
+  // Mobile nav
+  var ham=document.querySelector('.ham');
+  if(ham){var s=document.createElement('style');s.textContent='.mob-show{display:flex!important;position:absolute;top:100%;left:0;right:0;background:var(--white);flex-direction:column;padding:20px 24px;border-bottom:1px solid var(--border);box-shadow:var(--shadow-lg);gap:14px!important;z-index:99}.mob-show .nav-cta{text-align:center}';document.head.appendChild(s);document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.querySelector('.nav-links').classList.remove('mob-show')})})}
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-nav.offsetHeight-10,behavior:'smooth'})}})});
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){var item=this.parentElement;var wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open')});if(!wasOpen)item.classList.add('open')})});
+
+  // Protection
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+  console.log('%c\u26A0 DEMO \u2014 Built by HOO (herrmanonlineoutlook.com)','color:#C8952E;font-size:14px;font-weight:bold');
+})();
+</script>
+</body>
+</html>
