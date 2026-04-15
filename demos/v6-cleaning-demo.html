@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pristine Clean KC | Kansas City's Trusted Cleaning Service</title>
+<meta name="description" content="Pristine Clean KC — Kansas City's top-rated cleaning. Deep cleans, recurring, move in/out. Bonded, insured, background-checked.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080C18;--bg2:#0E1424;--bg3:#141D30;--surface:rgba(255,255,255,.035);
+  --light:#F0F4FA;--light2:#E4EAF4;--light-text:#1E293B;--light-mid:#475569;--light-dim:#94A3B8;--light-bdr:rgba(15,23,42,.08);
+  --accent:#38BDF8;--accent2:#0EA5E9;--accent-dark:#0284C7;--glow:rgba(56,189,248,.1);
+  --mint:#34D399;--mglow:rgba(52,211,153,.08);
+  --lav:#A78BFA;--lglow:rgba(167,139,250,.08);
+  --text:#F1F5F9;--tm:rgba(241,245,249,.5);--td:rgba(241,245,249,.25);
+  --bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.1);
+  --font-h:'Outfit',sans-serif;--font-b:'DM Sans',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);--max:1100px;--r:16px;
+}
+html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:.92rem;line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
+.rv{opacity:0;transform:translateY(20px);transition:all .65s var(--ease)}.rv.vis{opacity:1;transform:none}
+.rv-left{opacity:0;transform:translateX(-30px);transition:all .7s var(--ease)}.rv-left.vis{opacity:1;transform:none}
+.rv-right{opacity:0;transform:translateX(30px);transition:all .7s var(--ease)}.rv-right.vis{opacity:1;transform:none}
+.rv-scale{opacity:0;transform:scale(.9);transition:all .7s var(--ease)}.rv-scale.vis{opacity:1;transform:none}
+
+/* Shimmer on price */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.qc-price{background:linear-gradient(90deg,var(--accent) 0%,#7DD3FC 40%,var(--accent) 80%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s ease-in-out infinite}
+
+/* Image hover zoom */
+.svc-img img{transition:transform .6s var(--ease)}
+.svc-img:hover img{transform:scale(1.05)}
+.hero-img img{transition:transform .8s var(--ease)}
+.hero-img:hover img{transform:scale(1.03)}
+
+/* Sparkle float on hero */
+.sparkle{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
+@keyframes sparkFloat{0%{opacity:0;transform:translateY(0) scale(0)}30%{opacity:1;transform:translateY(-20px) scale(1)}70%{opacity:.6;transform:translateY(-60px) scale(.8)}100%{opacity:0;transform:translateY(-100px) scale(0)}}
+
+/* Glowing pulse ring on trust icons */
+@keyframes trustPulse{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,.15)}50%{box-shadow:0 0 0 8px rgba(14,165,233,0)}}
+.ht-icon{animation:trustPulse 3s ease infinite}
+
+/* Card entrance stagger */
+.clean-card{opacity:0;transform:translateY(16px);transition:all .5s var(--ease)}
+.clean-card.vis{opacity:1;transform:none}
+
+/* Before/after label pulse */
+@keyframes lblPulse{0%,100%{opacity:.8}50%{opacity:1}}
+.ba-lbl{animation:lblPulse 2s ease infinite}
+
+/* Process step hover glow */
+.step:hover .step-num{border-color:var(--accent);box-shadow:0 0 24px rgba(14,165,233,.12);transform:scale(1.08)}
+
+/* ═══ CLEANING VAN — fixed CTA ═══ */
+.van-cta{position:fixed;bottom:24px;right:24px;z-index:95;cursor:pointer;opacity:0;transform:translateX(100px);transition:all .6s var(--ease);pointer-events:none}
+.van-cta.vis{opacity:1;transform:translateX(0);pointer-events:all}
+.van-wrap{position:relative;display:flex;align-items:flex-end;gap:0}
+.van-bubble{position:absolute;top:-52px;right:0;background:#fff;border:1px solid var(--light-bdr);border-radius:14px 14px 14px 4px;padding:10px 16px;box-shadow:0 8px 28px rgba(0,0,0,.12);white-space:nowrap;animation:vanBob 3s ease-in-out infinite}
+@keyframes vanBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.van-bubble-text{font-family:var(--font-h);font-size:.78rem;font-weight:700;color:var(--light-text);letter-spacing:.2px}
+.van-bubble-text em{color:var(--accent2);font-style:normal}
+.van-bubble-close{position:absolute;top:-6px;left:-6px;width:18px;height:18px;background:var(--light);border:1px solid var(--light-bdr);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--light-dim);cursor:pointer;line-height:1}
+.van-body{width:120px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));transition:transform .3s var(--ease)}
+.van-wrap:hover .van-body{transform:scale(1.05) translateY(-2px)}
+/* Van bounce on scroll */
+@keyframes vanDrive{0%{transform:translateY(0)}50%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+.van-cta.vis .van-body{animation:vanDrive 2s ease-in-out infinite}
+/* Exhaust bubbles */
+.van-exhaust{position:absolute;bottom:8px;left:-8px;display:flex;gap:3px}
+.van-puff{width:8px;height:8px;border-radius:50%;background:rgba(56,189,248,.15);animation:puff 2s ease-in-out infinite}
+.van-puff:nth-child(2){width:6px;height:6px;animation-delay:.4s;opacity:.6}
+.van-puff:nth-child(3){width:4px;height:4px;animation-delay:.8s;opacity:.3}
+@keyframes puff{0%{transform:translateX(0) scale(1);opacity:.5}100%{transform:translateX(-20px) scale(2);opacity:0}}
+@media(max-width:768px){.van-cta{right:12px;bottom:12px}.van-body{width:90px}.van-bubble{top:-46px;padding:8px 12px}.van-bubble-text{font-size:.7rem}}
+
+/* ═══ CERT BADGES — real industry certs ═══ */
+.certs{padding:48px 24px;background:var(--light);border-bottom:1px solid var(--light-bdr)}
+.certs-inner{max-width:var(--max);margin:0 auto}
+.certs-label{text-align:center;font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--light-dim);margin-bottom:20px}
+.certs-row{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
+.cert{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#fff;border:1px solid var(--light-bdr);border-radius:12px;transition:all .3s;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.cert:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.06);border-color:rgba(14,165,233,.12)}
+.cert-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:.3px}
+.cert-info{line-height:1.3}
+.cert-name{font-size:.72rem;font-weight:700;color:var(--light-text)}
+.cert-detail{font-size:.6rem;color:var(--light-dim)}
+
+/* ═══ COUNTERS — animated stat strip ═══ */
+.stat-strip{padding:60px 24px;background:var(--bg2);border-top:1px solid var(--bdr)}
+.stat-strip-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center}
+.stat-strip-item{padding:20px;border-right:1px solid var(--bdr)}
+.stat-strip-item:last-child{border-right:none}
+.stat-strip-num{font-family:var(--font-h);font-size:2.4rem;font-weight:800;color:var(--text);letter-spacing:-1px;line-height:1}
+.stat-strip-num .cnt{display:inline}
+.stat-strip-suf{color:var(--accent);font-size:1.2rem}
+.stat-strip-lbl{font-size:.65rem;color:var(--td);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* Typing animation for hero badge */
+@keyframes typeIn{from{width:0}to{width:100%}}
+.hero-badge{overflow:hidden;white-space:nowrap;animation:typeIn .8s var(--ease) .5s both}
+
+/* Parallax tilt on hero image */
+.hero-img{transition:transform .4s var(--ease)}
+
+/* Glow ring animation on service badges */
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.2)}50%{box-shadow:0 0 0 6px rgba(56,189,248,0)}}
+.svc-img-badge{animation:badgeGlow 2.5s ease infinite}
+
+/* ═══ FLOOR PLAN — 3D architectural ═══ */
+.fp-perspective{perspective:1200px;transform-style:preserve-3d}
+.fp-perspective svg{transform:rotateX(12deg) rotateZ(-1deg);transform-origin:center center;transition:transform .5s var(--ease)}
+.fp-perspective:hover svg{transform:rotateX(8deg) rotateZ(0deg)}
+.fp-room{cursor:pointer}
+.fp-room .fp-floor{transition:all .4s var(--ease)}
+.fp-room .fp-glow{transition:opacity .5s var(--ease)}
+.fp-room .fp-label{transition:all .3s}
+.fp-room .fp-price{transition:all .3s}
+.fp-room .fp-check-dot,.fp-room .fp-check-text{transition:all .35s var(--ease)}
+.fp-room:hover .fp-floor{fill:rgba(255,255,255,.04)}
+.fp-room:hover .fp-label{fill:rgba(255,255,255,.7)}
+.fp-room.on .fp-floor{fill:rgba(255,255,255,.02)}
+.fp-room.on .fp-glow{opacity:1!important}
+.fp-room.on .fp-label{fill:#fff!important;font-size:19px}
+.fp-room.on .fp-price{opacity:1;font-size:16px}
+.fp-room.on .fp-check-dot{opacity:1;r:14}
+.fp-room.on .fp-check-text{opacity:1}
+/* Sparkle burst on select */
+@keyframes fpBurst{0%{r:0;opacity:.8;stroke-width:3}100%{r:40;opacity:0;stroke-width:0}}
+@media(max-width:768px){.fp-perspective svg{transform:rotateX(4deg)}}
+
+/* ═══ MIST PARTICLES ═══ */
+.mist{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.mist-p{position:absolute;border-radius:50%;background:rgba(56,189,248,.04);filter:blur(1px);animation:mistF linear infinite;will-change:transform}
+@keyframes mistF{0%{transform:translate(0,0) scale(1);opacity:0}20%{opacity:.6}80%{opacity:.3}100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(8,12,24,.82);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr);height:64px;display:flex;align-items:center;padding:0 32px}
+.nav.scrolled{background:rgba(8,12,24,.96);box-shadow:0 4px 32px rgba(0,0,0,.3)}
+.ni{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;width:100%}
+.nl{display:flex;align-items:center;gap:10px;font-family:var(--font-h);font-size:1.25rem;font-weight:700;color:var(--text);letter-spacing:-.3px}
+/* Spray bottle logo mark */
+.nl-mark{width:32px;height:32px;position:relative}
+.nl-mark svg{width:100%;height:100%}
+.nl span{color:var(--accent)}
+.nk{display:flex;gap:28px;align-items:center}
+.nk a{font-size:.78rem;font-weight:500;color:var(--tm);transition:color .2s;letter-spacing:.3px}
+.nk a:hover{color:var(--accent)}
+.nk-phone{font-weight:600;color:var(--text)!important;font-size:.82rem}
+.nk-cta{background:var(--accent);color:var(--bg)!important;padding:9px 22px;border-radius:100px;font-weight:700;font-size:.78rem;transition:all .2s}
+.nk-cta:hover{background:var(--accent2);box-shadow:0 4px 20px rgba(56,189,248,.3)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101}.ham span{width:20px;height:2px;background:var(--text);border-radius:2px}
+
+/* ═══ HERO — FULL WIDTH, QUOTE INTEGRATED ═══ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:0 24px;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-20%;right:-10%;width:900px;height:900px;background:radial-gradient(circle,rgba(56,189,248,.07),transparent 60%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-20%;left:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(167,139,250,.05),transparent 60%);border-radius:50%}
+.hero-inner{max-width:var(--max);margin:0 auto;width:100%;position:relative;z-index:2}
+.hero-top{display:grid;grid-template-columns:1fr 420px;gap:72px;align-items:center;margin-bottom:64px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.1);color:var(--accent);font-size:.68rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:24px}
+.hero-badge .dot{width:6px;height:6px;background:var(--mint);border-radius:50%;animation:bk 2s ease infinite}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--font-h);font-size:clamp(2.8rem,6vw,4.2rem);line-height:1.05;margin-bottom:24px;font-weight:800;letter-spacing:-1.5px}
+.hero h1 .hl{color:var(--accent);position:relative;display:inline-block}
+.hero h1 .hl::after{content:'';position:absolute;bottom:4px;left:-3px;right:-3px;height:8px;background:rgba(56,189,248,.12);border-radius:3px;z-index:-1}
+.hero-sub{font-size:1.05rem;color:var(--tm);line-height:1.85;margin-bottom:36px;max-width:440px}
+.hero-stats{display:flex;gap:40px;margin-bottom:32px}
+.hero-stat-val{font-family:var(--font-h);font-size:1.8rem;font-weight:800;color:var(--text);letter-spacing:-1px}
+.hero-stat-val span{color:var(--accent);font-size:.9rem}
+.hero-stat-lbl{font-size:.65rem;color:var(--td);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{padding:14px 30px;border-radius:100px;font-weight:700;font-size:.85rem;font-family:var(--font-h);transition:all .25s;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:8px;letter-spacing:.2px}
+.btn-p{background:var(--accent);color:var(--bg);box-shadow:0 4px 24px rgba(56,189,248,.25)}
+.btn-p:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(56,189,248,.35);color:var(--bg)}
+.btn-g{background:transparent;color:var(--text);border:1.5px solid var(--bdr2)}
+.btn-g:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ═══ HERO QUOTE CARD — spray bottle themed ═══ */
+.quote-card{background:var(--bg2);border:1px solid var(--bdr2);border-radius:24px;padding:36px 32px;position:relative;overflow:hidden}
+.quote-card::before{content:'';position:absolute;top:-1px;left:28px;right:28px;height:2px;background:linear-gradient(90deg,var(--accent),var(--lav))}
+/* Spray mist effect inside card */
+.qc-mist{position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle at 100% 0%,rgba(56,189,248,.06),transparent 70%);pointer-events:none}
+.qc-head{display:flex;align-items:center;gap:10px;margin-bottom:20px;position:relative;z-index:1}
+.qc-icon{width:40px;height:40px;border-radius:12px;background:var(--glow);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.qc-title{font-family:var(--font-h);font-size:1.15rem;font-weight:700;letter-spacing:-.2px}
+.qc-sub{font-size:.72rem;color:var(--td)}
+
+/* Toggle row selectors */
+.qc-group{margin-bottom:18px;position:relative;z-index:1}
+.qc-label{font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--td);margin-bottom:8px}
+.qc-pills{display:flex;gap:6px;flex-wrap:wrap}
+.qc-pill{padding:8px 16px;border-radius:100px;font-size:.75rem;font-weight:600;color:var(--tm);background:rgba(255,255,255,.03);border:1px solid var(--bdr);cursor:pointer;transition:all .2s;font-family:var(--font-b)}
+.qc-pill:hover{border-color:rgba(56,189,248,.2);color:var(--text)}
+.qc-pill.on{background:var(--accent);border-color:var(--accent);color:var(--bg);box-shadow:0 2px 12px rgba(56,189,248,.2)}
+
+/* Add-on toggles */
+.qc-addons{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.qc-addon{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid var(--bdr);cursor:pointer;transition:all .2s;font-size:.75rem;color:var(--tm);background:rgba(255,255,255,.02)}
+.qc-addon:hover{border-color:rgba(56,189,248,.15)}
+.qc-addon.on{border-color:var(--accent);background:rgba(56,189,248,.05);color:var(--accent)}
+.qc-addon-dot{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--bdr2);flex-shrink:0;transition:all .15s;position:relative}
+.qc-addon.on .qc-addon-dot{background:var(--accent);border-color:var(--accent)}
+.qc-addon.on .qc-addon-dot::after{content:'';position:absolute;top:2px;left:4px;width:4px;height:6px;border-right:1.5px solid var(--bg);border-bottom:1.5px solid var(--bg);transform:rotate(45deg)}
+
+/* Price display */
+.qc-price-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;margin:12px 0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);position:relative;z-index:1}
+.qc-price-label{font-size:.72rem;color:var(--td);text-transform:uppercase;letter-spacing:.5px}
+.qc-price{font-family:var(--font-h);font-size:2.4rem;font-weight:800;color:var(--accent);letter-spacing:-1px}
+.qc-price-note{font-size:.65rem;color:var(--td)}
+.qc-submit{width:100%;padding:14px;background:var(--accent);color:var(--bg);border:none;border-radius:100px;font-size:.88rem;font-weight:700;font-family:var(--font-h);cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(56,189,248,.25);letter-spacing:.3px;position:relative;z-index:1}
+.qc-submit:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 6px 28px rgba(56,189,248,.35)}
+.qc-trust{display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:.65rem;color:var(--td);position:relative;z-index:1}
+
+/* ═══ HERO BOTTOM — scrolling trust ═══ */
+.hero-trust{display:flex;gap:48px;justify-content:center;flex-wrap:wrap}
+.ht{display:flex;align-items:center;gap:8px;opacity:.4;transition:opacity .3s}
+.ht:hover{opacity:.8}
+.ht-icon{font-size:1.1rem}
+.ht-text{font-size:.7rem;font-weight:600;color:var(--text);line-height:1.3}
+.ht-text span{display:block;font-weight:400;color:var(--td);font-size:.62rem}
+
+/* ═══ WHAT WE CLEAN — horizontal scroll cards ═══ */
+.clean{padding:100px 24px;background:var(--light);border-top:none;color:var(--light-text)}
+.clean-inner{max-width:var(--max);margin:0 auto}
+.sec-head{margin-bottom:48px}
+.sec-head.center{text-align:center}
+.sec-head.center .ssub{margin:0 auto}
+.stag{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.stag::before{content:'';width:16px;height:1.5px;background:var(--accent)}
+.stitle{font-family:var(--font-h);font-size:clamp(1.6rem,3.5vw,2.4rem);margin-bottom:10px;font-weight:800;letter-spacing:-.8px}
+.ssub{font-size:.88rem;color:var(--tm);max-width:440px;line-height:1.8}
+/* Light section overrides */
+.clean .stitle,.svc .stitle,.steps .stitle,.faq .stitle,.map .stitle{color:var(--light-text)}
+.clean .ssub,.svc .ssub,.steps .ssub,.faq .ssub,.map .ssub{color:var(--light-mid)}
+.clean .stag,.svc .stag,.steps .stag,.faq .stag,.map .stag{color:var(--accent2)}
+
+.clean-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+.clean-scroll::-webkit-scrollbar{height:4px}
+.clean-scroll::-webkit-scrollbar-track{background:var(--bdr)}
+.clean-scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px}
+.clean-card{min-width:280px;flex-shrink:0;background:#fff;border:1px solid var(--light-bdr);border-radius:20px;padding:28px 24px;scroll-snap-align:start;transition:all .3s;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.clean-card:hover{border-color:rgba(14,165,233,.15);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.clean-card h3{color:var(--light-text)}
+.cc-emoji{font-size:2rem;margin-bottom:14px;display:block}
+.clean-card h3{font-family:var(--font-h);font-size:1rem;font-weight:700;margin-bottom:12px;letter-spacing:-.2px}
+.cc-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.cc-list li{font-size:.78rem;color:var(--light-mid);display:flex;align-items:center;gap:8px}
+.cc-list li::before{content:'';width:14px;height:14px;border-radius:4px;flex-shrink:0;background:var(--mglow);border:1px solid rgba(52,211,153,.15);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 24 24' fill='none' stroke='%2334D399' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+
+/* ═══ SERVICES — split image/text alternating ═══ */
+.svc{padding:100px 24px;background:#fff;color:var(--light-text)}
+.svc-inner{max-width:var(--max);margin:0 auto}
+.svc-row{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-bottom:80px}
+.svc-row:last-child{margin-bottom:0}
+.svc-row.flip .svc-img{order:2}
+.svc-row.flip .svc-text{order:1}
+.svc-img{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--light-bdr);box-shadow:0 8px 32px rgba(0,0,0,.08)}
+.svc-img img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.8) saturate(1.1)}
+.svc-img-badge{position:absolute;top:16px;left:16px;background:rgba(8,12,24,.8);backdrop-filter:blur(10px);color:var(--text);padding:6px 14px;border-radius:100px;font-size:.65rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.svc-img-badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%}
+.svc-text h3{font-family:var(--font-h);font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;margin-bottom:14px;letter-spacing:-.5px;color:var(--light-text)}
+.svc-text p{font-size:.88rem;color:var(--light-mid);line-height:1.85;margin-bottom:20px}
+.svc-feats{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.svc-feats li{font-size:.82rem;color:var(--light-mid);display:flex;align-items:center;gap:10px}
+.svc-feats li::before{content:'';width:18px;height:18px;border-radius:6px;flex-shrink:0;background:var(--glow);border:1px solid rgba(56,189,248,.15);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%2338BDF8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.svc-link{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--accent);transition:gap .2s}
+.svc-link:hover{gap:10px}
+
+/* ═══ PROCESS — vertical timeline (not horizontal) ═══ */
+.steps{padding:100px 24px;background:var(--light);color:var(--light-text)}
+.steps-inner{max-width:600px;margin:0 auto}
+.steps-header{text-align:center;margin-bottom:56px}
+.step{display:flex;gap:24px;margin-bottom:40px;position:relative}
+.step:last-child{margin-bottom:0}
+.step::before{content:'';position:absolute;left:23px;top:56px;bottom:-40px;width:1px;background:linear-gradient(180deg,rgba(14,165,233,.2),transparent)}
+.step:last-child::before{display:none}
+.step-num{width:48px;height:48px;border-radius:14px;background:#fff;border:1px solid var(--light-bdr);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;transition:all .3s}
+.step:hover .step-num{border-color:var(--accent);box-shadow:0 0 20px var(--glow);transform:scale(1.05)}
+.step-content h4{font-family:var(--font-h);font-size:1.05rem;font-weight:700;margin-bottom:4px;letter-spacing:-.2px;color:var(--light-text)}
+.step-content p{font-size:.82rem;color:var(--light-mid);line-height:1.7}
+
+/* ═══ BEFORE/AFTER ═══ */
+.ba{padding:100px 24px;background:var(--bg)}
+.ba-inner{max-width:var(--max);margin:0 auto}
+.ba-header{text-align:center;margin-bottom:48px}
+.ba-header .ssub{margin:0 auto}
+.ba-wrap{max-width:800px;margin:0 auto;position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/9;user-select:none;cursor:col-resize;border:1px solid var(--bdr);box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.ba-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba-aft{clip-path:inset(0 0 0 50%)}
+.ba-handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--accent);z-index:5;transform:translateX(-50%);box-shadow:0 0 12px rgba(56,189,248,.3)}
+.ba-handle::before{content:'';position:absolute;top:50%;left:50%;width:40px;height:40px;background:var(--accent);border:2px solid #fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.ba-handle::after{content:'\2194';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:.9rem;font-weight:700;z-index:6}
+.ba-lbl{position:absolute;bottom:16px;padding:5px 14px;background:rgba(8,12,24,.75);backdrop-filter:blur(8px);color:var(--text);font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-radius:100px;z-index:4;border:1px solid var(--bdr)}
+.ba-lbl-b{left:16px}.ba-lbl-a{right:16px}
+
+/* ═══ REVIEWS — big quote layout ═══ */
+.reviews{padding:100px 24px;background:var(--bg2);border-top:1px solid var(--bdr)}
+.reviews-inner{max-width:var(--max);margin:0 auto}
+.reviews-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px}
+.reviews-score{display:flex;align-items:center;gap:12px}
+.reviews-score-num{font-family:var(--font-h);font-size:3rem;font-weight:800;letter-spacing:-1px}
+.reviews-score-detail{font-size:.75rem;color:var(--tm);line-height:1.4}
+.reviews-score-stars{color:#FBBF24;font-size:.9rem}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rev-card{background:var(--surface);border:1px solid var(--bdr);border-radius:20px;padding:28px;transition:all .3s;position:relative}
+.rev-card:hover{border-color:rgba(56,189,248,.1);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
+.rev-card::before{content:'\201C';position:absolute;top:12px;right:20px;font-size:2.5rem;font-family:Georgia,serif;color:rgba(56,189,248,.05);line-height:1}
+.rev-stars{color:#FBBF24;font-size:.7rem;margin-bottom:10px;letter-spacing:2px}
+.rev-text{font-size:.82rem;color:var(--tm);line-height:1.85;margin-bottom:16px}
+.rev-who{display:flex;align-items:center;gap:8px}
+.rev-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff;flex-shrink:0}
+.rev-name{font-size:.75rem;font-weight:600}.rev-role{font-size:.62rem;color:var(--td)}
+
+/* ═══ MAP ═══ */
+.map{padding:100px 24px;background:#fff;color:var(--light-text)}
+.map-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.map-areas{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.map-col h4{font-family:var(--font-h);font-size:.82rem;font-weight:700;margin-bottom:8px}
+.map-col ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.map-col li{font-size:.78rem;color:var(--light-mid);padding-left:12px;position:relative;line-height:1.5}
+.map-col li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;background:var(--accent);border-radius:50%}
+.map-frame{height:420px;border-radius:20px;overflow:hidden;border:1px solid var(--light-bdr);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.map-frame iframe{width:100%;height:100%}
+
+/* ═══ FAQ ═══ */
+.faq{padding:100px 24px;background:var(--light)}
+.faq-inner{max-width:640px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:36px}
+.fq{background:#fff;border:1px solid var(--light-bdr);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.fq:hover{border-color:rgba(14,165,233,.15)}
+.fq-q{padding:18px 22px;font-size:.85rem;font-weight:600;color:var(--light-text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.fq-q::after{content:'+';font-size:1.1rem;color:var(--accent);transition:transform .3s;font-weight:300}
+.fq.open .fq-q::after{transform:rotate(45deg)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .35s var(--ease);padding:0 22px}
+.fq.open .fq-a{max-height:180px;padding:0 22px 18px}
+.fq-a p{font-size:.8rem;color:var(--light-mid);line-height:1.8}
+
+/* ═══ CTA ═══ */
+.cta-final{padding:80px 24px;background:linear-gradient(135deg,var(--accent2),var(--lav));text-align:center;position:relative;overflow:hidden}
+.cta-final::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,.06);border-radius:50%}
+.cta-f-inner{max-width:520px;margin:0 auto;position:relative;z-index:2}
+.cta-final h2{font-family:var(--font-h);font-size:clamp(1.6rem,3.5vw,2.4rem);color:#fff;margin-bottom:10px;font-weight:800;letter-spacing:-.5px}
+.cta-final p{font-size:.92rem;color:rgba(255,255,255,.7);margin-bottom:24px;line-height:1.7}
+.cta-final-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:#fff;color:var(--accent2);border-radius:100px;font-weight:700;font-family:var(--font-h);font-size:.95rem;transition:all .25s;box-shadow:0 8px 28px rgba(0,0,0,.15)}
+.cta-final-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.2);color:var(--accent2)}
+.cta-final-phone{display:block;margin-top:14px;color:rgba(255,255,255,.55);font-size:.82rem}
+.cta-final-phone:hover{color:#fff}
+
+/* ═══ FOOTER ═══ */
+.footer{background:#050810;padding:48px 24px 24px;color:rgba(255,255,255,.35)}
+.footer-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+.footer h4{font-family:var(--font-h);font-size:.82rem;color:var(--text);margin-bottom:12px;font-weight:700}
+.footer p,.footer a{font-size:.75rem;line-height:2;color:rgba(255,255,255,.3)}
+.footer a:hover{color:var(--accent)}
+.f-brand{font-family:var(--font-h);font-size:1.1rem;color:var(--text);font-weight:700;letter-spacing:-.3px}
+.f-brand span{color:var(--accent)}
+.f-btm{max-width:var(--max);margin:16px auto 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;font-size:.62rem;color:rgba(255,255,255,.12)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  .hero-top{grid-template-columns:1fr;gap:40px}
+  .hero{min-height:auto;padding:60px 24px}
+  .nk{display:none}.ham{display:flex}
+  .svc-row,.svc-row.flip .svc-img,.svc-row.flip .svc-text{grid-template-columns:1fr;display:grid}
+  .svc-row.flip .svc-img{order:0}.svc-row.flip .svc-text{order:0}
+  .clean-card{min-width:260px}
+  .rev-grid{grid-template-columns:1fr}
+  .map-inner{grid-template-columns:1fr}
+  .map-frame{height:280px}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:24px}
+  .qc-addons{grid-template-columns:1fr}
+  .steps-inner{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="mist" id="mist"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="ni">
+    <a href="#" class="nl">
+      <div class="nl-mark"><svg viewBox="0 0 32 32" fill="none"><rect x="12" y="2" width="8" height="6" rx="2" fill="#38BDF8" opacity=".6"/><path d="M10 8h12v4c0 6-2 14-6 18-4-4-6-12-6-18V8z" fill="#38BDF8" opacity=".3" stroke="#38BDF8" stroke-width="1"/><circle cx="16" cy="5" r="1" fill="#fff" opacity=".5"/><line x1="10" y1="14" x2="6" y2="11" stroke="#38BDF8" stroke-width="1" opacity=".4"/><line x1="10" y1="16" x2="5" y2="15" stroke="#38BDF8" stroke-width="1" opacity=".3"/><line x1="10" y1="18" x2="6" y2="20" stroke="#38BDF8" stroke-width="1" opacity=".2"/></svg></div>
+      Pristine <span>Clean</span>
+    </a>
+    <div class="nk">
+      <a href="#services">Services</a>
+      <a href="#work">Our Work</a>
+      <a href="#reviews">Reviews</a>
+      <a href="tel:8165550147" class="nk-phone">&#9742; (816) 555-0147</a>
+      <a href="#top-quote" class="nk-cta">Get a Quote</a>
+    </div>
+    <div class="ham" onclick="document.querySelector('.nk').classList.toggle('mob-show')"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div>
+        <div class="hero-badge rv"><span class="dot"></span> Same-Day Available</div>
+        <h1 class="rv">A home that feels <span class="hl">brand new.</span></h1>
+        <p class="hero-sub rv">Professional cleaning for Kansas City homes and offices. Bonded, insured, background-checked. We bring everything &mdash; you just enjoy the results.</p>
+        <div class="hero-stats rv">
+          <div><div class="hero-stat-val">3,200<span>+</span></div><div class="hero-stat-lbl">Homes Cleaned</div></div>
+          <div><div class="hero-stat-val">5.0</div><div class="hero-stat-lbl">Google Rating</div></div>
+          <div><div class="hero-stat-val">8<span>yrs</span></div><div class="hero-stat-lbl">In Business</div></div>
+        </div>
+        <div class="hero-btns rv">
+          <a href="#top-quote" class="btn btn-p">Get Instant Quote &#8594;</a>
+          <a href="tel:8165550147" class="btn btn-g">&#9742; Call Now</a>
+        </div>
+      </div>
+
+      <!-- QUOTE CARD — always visible, no wizard steps -->
+      <div class="quote-card rv" id="top-quote">
+        <div class="qc-mist"></div>
+        <div class="qc-head">
+          <div class="qc-icon">&#10024;</div>
+          <div><div class="qc-title">Build Your Clean</div><div class="qc-sub">Pick options &mdash; see your price live</div></div>
+        </div>
+
+        <div class="qc-group">
+          <div class="qc-label">Service</div>
+          <div class="qc-pills" id="qcType">
+            <div class="qc-pill on" data-p="0" onclick="qPill(this,'qcType')">Deep Clean</div>
+            <div class="qc-pill" data-p="-25" onclick="qPill(this,'qcType')">Recurring</div>
+            <div class="qc-pill" data-p="35" onclick="qPill(this,'qcType')">Move In/Out</div>
+            <div class="qc-pill" data-p="60" onclick="qPill(this,'qcType')">Post-Reno</div>
+          </div>
+        </div>
+
+        <div class="qc-group">
+          <div class="qc-label">Home Size</div>
+          <div class="qc-pills" id="qcSize">
+            <div class="qc-pill" data-p="130" onclick="qPill(this,'qcSize')">1-2 Bed</div>
+            <div class="qc-pill on" data-p="190" onclick="qPill(this,'qcSize')">3 Bed</div>
+            <div class="qc-pill" data-p="260" onclick="qPill(this,'qcSize')">4 Bed</div>
+            <div class="qc-pill" data-p="340" onclick="qPill(this,'qcSize')">5+ Bed</div>
+          </div>
+        </div>
+
+        <div class="qc-group">
+          <div class="qc-label">Add-Ons</div>
+          <div class="qc-addons" id="qcAdd">
+            <div class="qc-addon" data-p="40" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Inside Fridge</div>
+            <div class="qc-addon" data-p="45" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Inside Oven</div>
+            <div class="qc-addon" data-p="55" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Windows</div>
+            <div class="qc-addon" data-p="70" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Carpet Clean</div>
+          </div>
+        </div>
+
+        <div class="qc-price-row">
+          <div><div class="qc-price-label">Your Estimate</div><div class="qc-price-note">Final quote after walkthrough</div></div>
+          <div class="qc-price" id="qcPrice">$190</div>
+        </div>
+
+        <button class="qc-submit" onclick="window.location.href='tel:8165550147'">Book This Clean &rarr;</button>
+        <div class="qc-trust">
+          <span>&#9989; Bonded &amp; Insured</span>
+          <span>&#128170; Guaranteed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-trust rv">
+      <div class="ht"><span class="ht-icon">&#128737;</span><div class="ht-text">Bonded &amp; Insured<span>Full coverage</span></div></div>
+      <div class="ht"><span class="ht-icon">&#9989;</span><div class="ht-text">Background Checked<span>Every team member</span></div></div>
+      <div class="ht"><span class="ht-icon">&#127807;</span><div class="ht-text">Eco-Friendly<span>Non-toxic products</span></div></div>
+      <div class="ht"><span class="ht-icon">&#128170;</span><div class="ht-text">Satisfaction Guarantee<span>Free re-clean</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<div class="certs">
+  <div class="certs-inner">
+    <div class="certs-label">Trusted &amp; Certified</div>
+    <div class="certs-row">
+      <div class="cert rv"><div class="cert-icon" style="background:#1E3A5F">BBB</div><div class="cert-info"><div class="cert-name">BBB Accredited</div><div class="cert-detail">A+ Rating &bull; 0 Complaints</div></div></div>
+      <div class="cert rv"><div class="cert-icon" style="background:#2D6A4F">ISSA</div><div class="cert-info"><div class="cert-name">ISSA Member</div><div class="cert-detail">Intl. Sanitary Supply Assoc.</div></div></div>
+      <div class="cert rv"><div class="cert-icon" style="background:#7C3AED">ARCSI</div><div class="cert-info"><div class="cert-name">ARCSI Certified</div><div class="cert-detail">Assoc. of Residential Cleaning</div></div></div>
+      <div class="cert rv"><div class="cert-icon" style="background:#0284C7">MO</div><div class="cert-info"><div class="cert-name">MO Licensed</div><div class="cert-detail">License #KC-CLN-4821</div></div></div>
+      <div class="cert rv"><div class="cert-icon" style="background:#059669">EPA</div><div class="cert-info"><div class="cert-name">EPA Safer Choice</div><div class="cert-detail">Approved cleaning products</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ANIMATED STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-strip-inner rv" id="statStrip">
+    <div class="stat-strip-item"><div class="stat-strip-num"><span class="cnt" data-target="3200">0</span><span class="stat-strip-suf">+</span></div><div class="stat-strip-lbl">Homes Cleaned</div></div>
+    <div class="stat-strip-item"><div class="stat-strip-num"><span class="cnt" data-target="99">0</span><span class="stat-strip-suf">%</span></div><div class="stat-strip-lbl">Satisfaction</div></div>
+    <div class="stat-strip-item"><div class="stat-strip-num"><span class="cnt" data-target="312">0</span><span class="stat-strip-suf">+</span></div><div class="stat-strip-lbl">5-Star Reviews</div></div>
+    <div class="stat-strip-item"><div class="stat-strip-num"><span class="cnt" data-target="8">0</span><span class="stat-strip-suf"> Yrs</span></div><div class="stat-strip-lbl">In Business</div></div>
+  </div>
+</div>
+
+<!-- ═══ 3D FLOOR PLAN QUOTE ═══ -->
+<section id="floorplan" style="padding:100px 24px;background:var(--bg);position:relative;overflow:hidden">
+  <div style="position:absolute;top:50%;left:50%;width:1000px;height:1000px;background:radial-gradient(circle,rgba(56,189,248,.03),transparent 50%);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none"></div>
+  <div style="max-width:900px;margin:0 auto;position:relative;z-index:2">
+    <div style="text-align:center;margin-bottom:48px">
+      <div class="stag rv" style="justify-content:center;color:var(--accent)">Interactive Quote</div>
+      <h2 class="stitle rv">Tap the Rooms You Want Cleaned</h2>
+      <p class="ssub rv" style="margin:0 auto;color:var(--tm)">Click any room on the floor plan. Watch your quote build live.</p>
+    </div>
+
+    <!-- 3D TILTED FLOOR PLAN -->
+    <div class="fp-perspective rv">
+      <svg id="floorPlan" viewBox="0 0 820 560" style="width:100%;height:auto;display:block;filter:drop-shadow(0 40px 60px rgba(0,0,0,.4))" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Wall pattern -->
+          <pattern id="wallPat" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#1E293B"/><rect width="3" height="3" fill="#253347"/></pattern>
+          <!-- Room gradients -->
+          <linearGradient id="gKitchen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F97316" stop-opacity=".18"/><stop offset="1" stop-color="#F97316" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gLiving" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10B981" stop-opacity=".18"/><stop offset="1" stop-color="#10B981" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gDining" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F59E0B" stop-opacity=".18"/><stop offset="1" stop-color="#F59E0B" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gMasterBed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6" stop-opacity=".18"/><stop offset="1" stop-color="#8B5CF6" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gMasterBath" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0EA5E9" stop-opacity=".2"/><stop offset="1" stop-color="#0EA5E9" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gBed2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A78BFA" stop-opacity=".18"/><stop offset="1" stop-color="#A78BFA" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gBath2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4" stop-opacity=".2"/><stop offset="1" stop-color="#06B6D4" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gBed3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C084FC" stop-opacity=".18"/><stop offset="1" stop-color="#C084FC" stop-opacity=".06"/></linearGradient>
+          <linearGradient id="gHall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#64748B" stop-opacity=".15"/><stop offset="1" stop-color="#64748B" stop-opacity=".05"/></linearGradient>
+          <linearGradient id="gLaundry" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EC4899" stop-opacity=".18"/><stop offset="1" stop-color="#EC4899" stop-opacity=".06"/></linearGradient>
+          <!-- Floor texture -->
+          <pattern id="floorTex" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><line x1="0" y1="20" x2="20" y2="0" stroke="rgba(255,255,255,.015)" stroke-width=".5"/></pattern>
+        </defs>
+
+        <!-- FOUNDATION SHADOW -->
+        <rect x="24" y="24" width="776" height="516" rx="4" fill="rgba(0,0,0,.3)" filter="url(#none)"/>
+        <!-- OUTER WALLS — thick -->
+        <rect x="16" y="16" width="788" height="528" rx="4" fill="url(#wallPat)" stroke="rgba(255,255,255,.15)" stroke-width="1.5"/>
+        <!-- Inner floor base -->
+        <rect x="28" y="28" width="764" height="504" rx="2" fill="#0C1220"/>
+        <rect x="28" y="28" width="764" height="504" rx="2" fill="url(#floorTex)"/>
+
+        <!-- ═══ WALLS (thick internal) ═══ -->
+        <!-- Horizontal divider top/bottom halves -->
+        <rect x="28" y="254" width="764" height="10" fill="url(#wallPat)"/>
+        <!-- Vertical walls top row -->
+        <rect x="278" y="28" width="10" height="226" fill="url(#wallPat)"/>
+        <rect x="578" y="28" width="10" height="226" fill="url(#wallPat)"/>
+        <!-- Vertical walls bottom row -->
+        <rect x="258" y="264" width="10" height="268" fill="url(#wallPat)"/>
+        <rect x="448" y="264" width="10" height="140" fill="url(#wallPat)"/>
+        <rect x="618" y="264" width="10" height="140" fill="url(#wallPat)"/>
+        <!-- Bottom row horizontal -->
+        <rect x="268" y="400" width="542" height="10" fill="url(#wallPat)"/>
+
+        <!-- ═══ DOORS (gaps in walls + arc swings) ═══ -->
+        <!-- Kitchen→Living door -->
+        <rect x="278" y="130" width="10" height="50" fill="#0C1220"/>
+        <path d="M288 130 Q288 170 318 180" fill="none" stroke="rgba(56,189,248,.12)" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Living→Dining door -->
+        <rect x="578" y="120" width="10" height="50" fill="#0C1220"/>
+        <path d="M578 120 Q578 160 548 170" fill="none" stroke="rgba(56,189,248,.12)" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Kitchen→MasterBed -->
+        <rect x="120" y="254" width="50" height="10" fill="#0C1220"/>
+        <path d="M120 264 Q150 264 170 294" fill="none" stroke="rgba(56,189,248,.12)" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Living→MasterBath -->
+        <rect x="330" y="254" width="50" height="10" fill="#0C1220"/>
+        <!-- Living→Bed2 -->
+        <rect x="500" y="254" width="50" height="10" fill="#0C1220"/>
+        <!-- Dining→Bath2 -->
+        <rect x="660" y="254" width="50" height="10" fill="#0C1220"/>
+        <!-- MasterBath→Bed3 -->
+        <rect x="330" y="400" width="50" height="10" fill="#0C1220"/>
+        <!-- Bed2→Hall -->
+        <rect x="448" y="340" width="10" height="40" fill="#0C1220"/>
+        <!-- Hall→Laundry -->
+        <rect x="618" y="440" width="10" height="40" fill="#0C1220"/>
+
+        <!-- ═══ ROOMS (clickable) ═══ -->
+
+        <!-- KITCHEN -->
+        <g class="fp-room" data-room="kitchen" data-price="45" data-color="#F97316" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="29" y="29" width="249" height="225" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="29" y="29" width="249" height="225" class="fp-glow" fill="url(#gKitchen)" opacity="0"/>
+          <!-- Countertops L-shape -->
+          <rect x="36" y="36" width="120" height="14" rx="2" fill="rgba(255,255,255,.07)"/>
+          <rect x="36" y="36" width="14" height="80" rx="2" fill="rgba(255,255,255,.07)"/>
+          <!-- Stove -->
+          <rect x="180" y="36" width="44" height="34" rx="3" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
+          <circle cx="194" cy="50" r="5" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <circle cx="210" cy="50" r="5" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <!-- Sink -->
+          <rect x="100" y="36" width="30" height="14" rx="6" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <!-- Island -->
+          <rect x="90" y="160" width="100" height="50" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          <!-- Fridge -->
+          <rect x="232" y="36" width="36" height="50" rx="3" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <!-- Labels -->
+          <text x="153" y="128" text-anchor="middle" font-family="Outfit,sans-serif" font-size="18" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Kitchen</text>
+          <text x="153" y="148" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" font-weight="700" class="fp-price" fill="rgba(249,115,22,.3)">$45</text>
+          <circle class="fp-check-dot" cx="250" cy="48" r="12" fill="#F97316" opacity="0"/><text class="fp-check-text" x="250" y="53" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- LIVING ROOM -->
+        <g class="fp-room" data-room="living" data-price="35" data-color="#10B981" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="289" y="29" width="289" height="225" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="289" y="29" width="289" height="225" class="fp-glow" fill="url(#gLiving)" opacity="0"/>
+          <!-- Couch -->
+          <rect x="360" y="170" width="120" height="40" rx="6" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <rect x="352" y="168" width="12" height="44" rx="4" fill="rgba(255,255,255,.04)"/>
+          <rect x="482" y="168" width="12" height="44" rx="4" fill="rgba(255,255,255,.04)"/>
+          <!-- Coffee table -->
+          <rect x="390" y="140" width="60" height="24" rx="3" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <!-- TV -->
+          <rect x="380" y="40" width="80" height="6" rx="2" fill="rgba(255,255,255,.06)"/>
+          <rect x="416" y="46" width="8" height="14" rx="1" fill="rgba(255,255,255,.04)"/>
+          <text x="433" y="128" text-anchor="middle" font-family="Outfit,sans-serif" font-size="18" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Living Room</text>
+          <text x="433" y="148" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" font-weight="700" class="fp-price" fill="rgba(16,185,129,.3)">$35</text>
+          <circle class="fp-check-dot" cx="548" cy="48" r="12" fill="#10B981" opacity="0"/><text class="fp-check-text" x="548" y="53" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- DINING -->
+        <g class="fp-room" data-room="dining" data-price="25" data-color="#F59E0B" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="589" y="29" width="202" height="225" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="589" y="29" width="202" height="225" class="fp-glow" fill="url(#gDining)" opacity="0"/>
+          <!-- Table -->
+          <rect x="640" y="100" width="80" height="55" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          <!-- Chairs -->
+          <rect x="650" y="88" width="16" height="10" rx="3" fill="rgba(255,255,255,.04)"/>
+          <rect x="694" y="88" width="16" height="10" rx="3" fill="rgba(255,255,255,.04)"/>
+          <rect x="650" y="157" width="16" height="10" rx="3" fill="rgba(255,255,255,.04)"/>
+          <rect x="694" y="157" width="16" height="10" rx="3" fill="rgba(255,255,255,.04)"/>
+          <rect x="628" y="115" width="10" height="16" rx="3" fill="rgba(255,255,255,.04)"/>
+          <rect x="722" y="115" width="10" height="16" rx="3" fill="rgba(255,255,255,.04)"/>
+          <!-- Window -->
+          <rect x="650" y="32" width="80" height="4" fill="rgba(56,189,248,.1)"/><rect x="650" y="32" width="80" height="4" rx="1" fill="none" stroke="rgba(56,189,248,.15)" stroke-width="1"/>
+          <text x="690" y="210" text-anchor="middle" font-family="Outfit,sans-serif" font-size="17" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Dining</text>
+          <text x="690" y="230" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" font-weight="700" class="fp-price" fill="rgba(245,158,11,.3)">$25</text>
+          <circle class="fp-check-dot" cx="766" cy="48" r="12" fill="#F59E0B" opacity="0"/><text class="fp-check-text" x="766" y="53" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- MASTER BEDROOM -->
+        <g class="fp-room" data-room="master-bed" data-price="30" data-color="#8B5CF6" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="29" y="265" width="229" height="267" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="29" y="265" width="229" height="267" class="fp-glow" fill="url(#gMasterBed)" opacity="0"/>
+          <!-- Bed -->
+          <rect x="65" y="330" width="110" height="80" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <rect x="65" y="322" width="110" height="14" rx="4" fill="rgba(255,255,255,.04)"/>
+          <rect x="70" y="326" width="48" height="8" rx="2" fill="rgba(255,255,255,.03)"/>
+          <rect x="122" y="326" width="48" height="8" rx="2" fill="rgba(255,255,255,.03)"/>
+          <!-- Nightstands -->
+          <rect x="42" y="350" width="20" height="20" rx="3" fill="rgba(255,255,255,.03)"/>
+          <rect x="178" y="350" width="20" height="20" rx="3" fill="rgba(255,255,255,.03)"/>
+          <!-- Dresser -->
+          <rect x="80" y="470" width="80" height="24" rx="3" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <!-- Window -->
+          <rect x="32" y="380" width="4" height="60" fill="rgba(56,189,248,.1)"/>
+          <text x="143" y="300" text-anchor="middle" font-family="Outfit,sans-serif" font-size="17" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Master Bed</text>
+          <text x="143" y="320" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" font-weight="700" class="fp-price" fill="rgba(139,92,246,.3)">$30</text>
+          <circle class="fp-check-dot" cx="232" cy="284" r="12" fill="#8B5CF6" opacity="0"/><text class="fp-check-text" x="232" y="289" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- MASTER BATH -->
+        <g class="fp-room" data-room="master-bath" data-price="35" data-color="#0EA5E9" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="269" y="265" width="179" height="135" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="269" y="265" width="179" height="135" class="fp-glow" fill="url(#gMasterBath)" opacity="0"/>
+          <!-- Bathtub -->
+          <rect x="286" y="280" width="70" height="36" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/>
+          <!-- Toilet -->
+          <rect x="400" y="340" width="22" height="28" rx="8" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          <circle cx="411" cy="338" r="8" fill="rgba(255,255,255,.03)"/>
+          <!-- Vanity -->
+          <rect x="286" y="370" width="60" height="16" rx="2" fill="rgba(255,255,255,.05)"/>
+          <circle cx="300" cy="378" r="5" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <circle cx="330" cy="378" r="5" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <text x="358" y="330" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Master Bath</text>
+          <text x="358" y="348" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(14,165,233,.35)">$35</text>
+          <circle class="fp-check-dot" cx="424" cy="282" r="12" fill="#0EA5E9" opacity="0"/><text class="fp-check-text" x="424" y="287" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- BEDROOM 2 -->
+        <g class="fp-room" data-room="bed2" data-price="25" data-color="#A78BFA" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="459" y="265" width="159" height="135" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="459" y="265" width="159" height="135" class="fp-glow" fill="url(#gBed2)" opacity="0"/>
+          <!-- Bed -->
+          <rect x="480" y="290" width="70" height="55" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          <rect x="480" y="284" width="70" height="10" rx="3" fill="rgba(255,255,255,.03)"/>
+          <!-- Desk -->
+          <rect x="570" y="280" width="30" height="50" rx="2" fill="rgba(255,255,255,.03)"/>
+          <text x="538" y="370" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Bedroom 2</text>
+          <text x="538" y="388" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(167,139,250,.35)">$25</text>
+          <circle class="fp-check-dot" cx="594" cy="282" r="12" fill="#A78BFA" opacity="0"/><text class="fp-check-text" x="594" y="287" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- BATHROOM 2 -->
+        <g class="fp-room" data-room="bath2" data-price="30" data-color="#06B6D4" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="629" y="265" width="162" height="135" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="629" y="265" width="162" height="135" class="fp-glow" fill="url(#gBath2)" opacity="0"/>
+          <!-- Toilet -->
+          <rect x="650" y="290" width="20" height="26" rx="7" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          <circle cx="660" cy="288" r="7" fill="rgba(255,255,255,.03)"/>
+          <!-- Shower -->
+          <rect x="720" y="275" width="55" height="55" rx="4" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="4 2"/>
+          <!-- Vanity -->
+          <rect x="645" y="360" width="50" height="14" rx="2" fill="rgba(255,255,255,.04)"/>
+          <circle cx="660" cy="367" r="4" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <text x="710" y="350" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Bath 2</text>
+          <text x="710" y="368" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(6,182,212,.35)">$30</text>
+          <circle class="fp-check-dot" cx="766" cy="282" r="12" fill="#06B6D4" opacity="0"/><text class="fp-check-text" x="766" y="287" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- BEDROOM 3 -->
+        <g class="fp-room" data-room="bed3" data-price="25" data-color="#C084FC" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="269" y="411" width="179" height="121" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="269" y="411" width="179" height="121" class="fp-glow" fill="url(#gBed3)" opacity="0"/>
+          <!-- Bed -->
+          <rect x="300" y="430" width="65" height="50" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          <rect x="300" y="425" width="65" height="8" rx="2" fill="rgba(255,255,255,.03)"/>
+          <text x="358" y="500" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Bedroom 3</text>
+          <text x="358" y="518" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(192,132,252,.35)">$25</text>
+          <circle class="fp-check-dot" cx="424" cy="428" r="12" fill="#C084FC" opacity="0"/><text class="fp-check-text" x="424" y="433" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- HALLWAY -->
+        <g class="fp-room" data-room="hallway" data-price="15" data-color="#64748B" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="459" y="411" width="159" height="121" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="459" y="411" width="159" height="121" class="fp-glow" fill="url(#gHall)" opacity="0"/>
+          <text x="538" y="470" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,.4)" class="fp-label">Hallway</text>
+          <text x="538" y="490" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(100,116,139,.35)">$15</text>
+          <circle class="fp-check-dot" cx="594" cy="428" r="12" fill="#64748B" opacity="0"/><text class="fp-check-text" x="594" y="433" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- LAUNDRY -->
+        <g class="fp-room" data-room="laundry" data-price="20" data-color="#EC4899" onclick="fpToggle(this)" style="cursor:pointer">
+          <rect x="629" y="411" width="162" height="121" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <rect x="629" y="411" width="162" height="121" class="fp-glow" fill="url(#gLaundry)" opacity="0"/>
+          <!-- Washer + Dryer -->
+          <rect x="660" y="430" width="40" height="40" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <circle cx="680" cy="450" r="12" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <circle cx="680" cy="450" r="5" fill="rgba(255,255,255,.03)"/>
+          <rect x="705" y="430" width="40" height="40" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <circle cx="725" cy="450" r="12" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <text x="710" y="500" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" font-weight="700" fill="rgba(255,255,255,.45)" class="fp-label">Laundry</text>
+          <text x="710" y="518" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(236,72,153,.35)">$20</text>
+          <circle class="fp-check-dot" cx="766" cy="428" r="12" fill="#EC4899" opacity="0"/><text class="fp-check-text" x="766" y="433" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" opacity="0">&#10003;</text>
+        </g>
+
+        <!-- WINDOWS (blue lines on exterior walls) -->
+        <rect x="29" y="80" width="4" height="50" fill="rgba(56,189,248,.12)" rx="1"/>
+        <rect x="29" y="430" width="4" height="60" fill="rgba(56,189,248,.12)" rx="1"/>
+        <rect x="350" y="29" width="60" height="4" fill="rgba(56,189,248,.12)" rx="1"/>
+        <rect x="650" y="29" width="80" height="4" fill="rgba(56,189,248,.12)" rx="1"/>
+        <rect x="787" y="300" width="4" height="50" fill="rgba(56,189,248,.12)" rx="1"/>
+        <rect x="787" y="440" width="4" height="50" fill="rgba(56,189,248,.12)" rx="1"/>
+        <rect x="350" y="529" width="80" height="4" fill="rgba(56,189,248,.12)" rx="1"/>
+
+        <!-- COMPASS -->
+        <g transform="translate(760,50)">
+          <circle r="16" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <text y="-4" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.3)" font-family="Outfit" font-weight="700">N</text>
+          <line x1="0" y1="2" x2="0" y2="10" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+        </g>
+
+        <!-- SCALE BAR -->
+        <g transform="translate(40,540)">
+          <line x1="0" y1="0" x2="80" y2="0" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <line x1="0" y1="-3" x2="0" y2="3" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <line x1="80" y1="-3" x2="80" y2="3" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <text x="40" y="12" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.2)" font-family="DM Sans">10 ft</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- SELECT ALL / CLEAR -->
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:24px" class="rv">
+      <button onclick="fpAll()" style="padding:8px 20px;border-radius:100px;font-size:.75rem;font-weight:600;color:var(--accent);background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);cursor:pointer;font-family:var(--font-b);transition:all .2s">Select All Rooms</button>
+      <button onclick="fpClear()" style="padding:8px 20px;border-radius:100px;font-size:.75rem;font-weight:600;color:var(--tm);background:rgba(255,255,255,.03);border:1px solid var(--bdr);cursor:pointer;font-family:var(--font-b);transition:all .2s">Clear</button>
+    </div>
+
+    <!-- Quote total bar -->
+    <div style="margin-top:24px;background:var(--bg2);border:1px solid var(--bdr2);border-radius:20px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px" class="rv">
+      <div>
+        <div style="font-size:.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--td)">Rooms Selected</div>
+        <div id="fpRoomList" style="font-size:.85rem;color:var(--tm);margin-top:4px;line-height:1.6">None yet &mdash; tap the rooms above</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:24px">
+        <div style="text-align:right">
+          <div style="font-size:.58rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--td)">Estimate</div>
+          <div id="fpTotal" style="font-family:var(--font-h);font-size:2.6rem;font-weight:800;color:var(--accent);letter-spacing:-1.5px;line-height:1;transition:all .3s var(--ease)">$0</div>
+        </div>
+        <a href="tel:8165550147" style="padding:16px 32px;background:var(--accent);color:var(--bg);border-radius:100px;font-weight:700;font-size:.88rem;font-family:var(--font-h);transition:all .25s;box-shadow:0 6px 24px rgba(56,189,248,.3);letter-spacing:.3px;white-space:nowrap;text-decoration:none">Book This Clean &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE CLEAN — horizontal scroll -->
+<section class="clean" id="services">
+  <div class="clean-inner">
+    <div class="sec-head rv">
+      <div class="stag">What We Clean</div>
+      <h2 class="stitle">Every Room. Every Detail.</h2>
+      <p class="ssub">Swipe through to see what gets done. Every item, every time.</p>
+    </div>
+    <div class="clean-scroll rv">
+      <div class="clean-card"><span class="cc-emoji">&#127859;</span><h3>Kitchen</h3><ul class="cc-list"><li>Countertops &amp; backsplash</li><li>Inside microwave &amp; oven</li><li>Sink scrubbed &amp; sanitized</li><li>Stovetop degreased</li><li>Floor mopped edge to edge</li><li>Trash emptied &amp; relined</li></ul></div>
+      <div class="clean-card"><span class="cc-emoji">&#128705;</span><h3>Bathrooms</h3><ul class="cc-list"><li>Toilet sanitized inside &amp; out</li><li>Shower &amp; tub scrubbed</li><li>Mirrors &amp; glass polished</li><li>Vanity &amp; counters wiped</li><li>Floor mopped &amp; grout cleaned</li><li>Chrome fixtures polished</li></ul></div>
+      <div class="clean-card"><span class="cc-emoji">&#128715;</span><h3>Living &amp; Bedrooms</h3><ul class="cc-list"><li>All surfaces dusted</li><li>Floors vacuumed &amp; mopped</li><li>Baseboards wiped</li><li>Light switches &amp; handles</li><li>Ceiling fans &amp; vents</li><li>Beds made on request</li></ul></div>
+      <div class="clean-card"><span class="cc-emoji">&#128682;</span><h3>Entryway &amp; Halls</h3><ul class="cc-list"><li>Front door &amp; handles</li><li>Shoe area tidied</li><li>Mirror &amp; console wiped</li><li>Floors swept &amp; mopped</li><li>Light fixtures dusted</li></ul></div>
+      <div class="clean-card"><span class="cc-emoji">&#127970;</span><h3>Office Spaces</h3><ul class="cc-list"><li>Desks &amp; workstations</li><li>Break room sanitized</li><li>Restrooms deep cleaned</li><li>Floors &amp; carpets</li><li>Windows &amp; glass</li><li>Trash &amp; recycling</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES — alternating image/text -->
+<section class="svc">
+  <div class="svc-inner">
+    <div class="sec-head center rv">
+      <div class="stag" style="justify-content:center">Our Services</div>
+      <h2 class="stitle">More Than Just a Wipe-Down</h2>
+      <p class="ssub">From weekly touch-ups to post-construction chaos. One call handles it all.</p>
+    </div>
+
+    <div class="svc-row rv">
+      <div class="svc-img rv-left"><img src="https://images.pexels.com/photos/4008518/pexels-photo-4008518.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Deep cleaning a home surface" loading="lazy"><div class="svc-img-badge">Most Popular</div></div>
+      <div class="svc-text rv-right">
+        <h3>Deep Cleaning</h3>
+        <p>Every corner, every surface. Baseboards, inside appliances, behind furniture. The full reset your home needs.</p>
+        <ul class="svc-feats"><li>Full kitchen &amp; appliance deep clean</li><li>Bathroom sanitization top to bottom</li><li>Baseboards, vents, light fixtures</li><li>2-3 cleaners, 4-6 hours</li></ul>
+        <a href="#top-quote" class="svc-link">Get a quote &rarr;</a>
+      </div>
+    </div>
+
+    <div class="svc-row flip rv">
+      <div class="svc-img rv-right"><img src="https://images.pexels.com/photos/4440541/pexels-photo-4440541.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Regular cleaning service mopping floor" loading="lazy"><div class="svc-img-badge">Best Value</div></div>
+      <div class="svc-text rv-left">
+        <h3>Recurring Service</h3>
+        <p>Weekly, biweekly, or monthly. Same trusted team every time. Discounted rates. Your home stays clean without thinking about it.</p>
+        <ul class="svc-feats"><li>Same team every visit</li><li>Custom cleaning checklist</li><li>15-20% savings vs. one-time</li><li>Flexible rescheduling</li></ul>
+        <a href="#top-quote" class="svc-link">Start recurring &rarr;</a>
+      </div>
+    </div>
+
+    <div class="svc-row rv">
+      <div class="svc-img rv-left"><img src="https://images.pexels.com/photos/6196566/pexels-photo-6196566.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Move-out cleaning floors" loading="lazy"><div class="svc-img-badge">Deposit Back</div></div>
+      <div class="svc-text rv-right">
+        <h3>Move In / Move Out</h3>
+        <p>Get your full deposit back. Inside cabinets, appliances, closets, garage. Landlord-ready guaranteed.</p>
+        <ul class="svc-feats"><li>Inside all cabinets &amp; closets</li><li>Appliance deep clean</li><li>Wall spot cleaning &amp; baseboards</li><li>Deposit-back guarantee</li></ul>
+        <a href="#top-quote" class="svc-link">Book move clean &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS — vertical timeline -->
+<section class="steps">
+  <div class="steps-inner">
+    <div class="steps-header">
+      <div class="stag rv" style="justify-content:center">How It Works</div>
+      <h2 class="stitle rv" style="text-align:center">4 Simple Steps</h2>
+    </div>
+    <div class="step rv"><div class="step-num">&#128242;</div><div class="step-content"><h4>Book Online or Call</h4><p>Takes 60 seconds. Pick your service, home size, and preferred date.</p></div></div>
+    <div class="step rv"><div class="step-num">&#128203;</div><div class="step-content"><h4>We Build Your Plan</h4><p>Custom cleaning checklist tailored to your home and priorities.</p></div></div>
+    <div class="step rv"><div class="step-num">&#10024;</div><div class="step-content"><h4>Our Team Cleans</h4><p>Vetted, bonded team arrives on time with all supplies and equipment.</p></div></div>
+    <div class="step rv"><div class="step-num">&#128522;</div><div class="step-content"><h4>You Walk In &amp; Relax</h4><p>Spotless home, guaranteed. Not happy? We re-clean for free.</p></div></div>
+  </div>
+</section>
+
+<!-- BEFORE/AFTER -->
+<section class="ba" id="work">
+  <div class="ba-inner">
+    <div class="ba-header">
+      <div class="stag rv" style="justify-content:center">Results</div>
+      <h2 class="stitle rv" style="text-align:center">See the Difference</h2>
+      <p class="ssub rv">Drag the slider to reveal the transformation.</p>
+    </div>
+    <div class="ba-wrap rv" id="baSlider">
+      <img class="ba-bef" src="https://images.pexels.com/photos/20374786/pexels-photo-20374786.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Before cleaning">
+      <img class="ba-aft" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="After cleaning">
+      <div class="ba-handle" id="baHandle"></div>
+      <div class="ba-lbl ba-lbl-b">Before</div>
+      <div class="ba-lbl ba-lbl-a">After</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-header rv">
+      <div class="reviews-score">
+        <div class="reviews-score-num">5.0</div>
+        <div class="reviews-score-detail"><span class="reviews-score-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><br>312 Google Reviews</div>
+      </div>
+      <div class="stag">What KC Says</div>
+    </div>
+    <div class="rev-grid">
+      <div class="rev-card rv">
+        <div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rev-text">"I've tried four services in KC. Pristine is the only one that cleans behind things. Moved furniture, got inside the oven, wiped baseboards. Hasn't looked this good since we bought it."</div>
+        <div class="rev-who"><div class="rev-av" style="background:linear-gradient(135deg,var(--accent),var(--lav))">LM</div><div><div class="rev-name">Lisa Martinez</div><div class="rev-role">Homeowner, Overland Park</div></div></div>
+      </div>
+      <div class="rev-card rv">
+        <div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rev-text">"Hired for move-out. Got every penny of our deposit back. Landlord called to ask who we used. That says it all."</div>
+        <div class="rev-who"><div class="rev-av" style="background:linear-gradient(135deg,var(--mint),#14B8A6)">JT</div><div><div class="rev-name">James Thompson</div><div class="rev-role">Renter, Kansas City</div></div></div>
+      </div>
+      <div class="rev-card rv">
+        <div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rev-text">"Weekly office clean after hours. Never a complaint. Break room and restrooms spotless every morning. Best commercial cleaning we've worked with."</div>
+        <div class="rev-who"><div class="rev-av" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">SK</div><div><div class="rev-name">Sarah Kim</div><div class="rev-role">Office Manager, Liberty</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map" id="area">
+  <div class="map-inner">
+    <div class="rv">
+      <div class="stag">Service Area</div>
+      <h2 class="stitle">Serving All of KC</h2>
+      <p class="ssub">30-mile radius. If you're in the metro, we've got you.</p>
+      <div class="map-areas">
+        <div class="map-col"><h4>Missouri</h4><ul><li>Kansas City</li><li>Lee's Summit</li><li>Independence</li><li>Blue Springs</li><li>Liberty</li><li>Gladstone</li></ul></div>
+        <div class="map-col"><h4>Kansas</h4><ul><li>Overland Park</li><li>Olathe</li><li>Lenexa</li><li>Shawnee</li><li>Leawood</li><li>Prairie Village</li></ul></div>
+      </div>
+      <a href="#top-quote" class="btn btn-p" style="margin-top:8px">Check Your Area &rarr;</a>
+    </div>
+    <div class="map-frame rv"><iframe src="https://maps.google.com/maps?q=Kansas+City,+MO&t=&z=10&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0" allowfullscreen="" loading="lazy"></iframe></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="faq-header"><div class="stag rv" style="justify-content:center">FAQ</div><h2 class="stitle rv" style="text-align:center">Quick Answers</h2></div>
+    <div class="fq rv"><div class="fq-q">How much does a cleaning cost?</div><div class="fq-a"><p>Deep cleans range $130-$340 by home size. Recurring saves 15-20%. Use the quote builder at the top for an instant estimate.</p></div></div>
+    <div class="fq rv"><div class="fq-q">Do I need to be home?</div><div class="fq-a"><p>Nope. Most clients give us a key or garage code. All cleaners are background-checked, bonded, and insured.</p></div></div>
+    <div class="fq rv"><div class="fq-q">What products do you use?</div><div class="fq-a"><p>Eco-friendly, non-toxic by default. Safe for kids, pets, and allergies. We can also use your preferred products.</p></div></div>
+    <div class="fq rv"><div class="fq-q">What if I'm not satisfied?</div><div class="fq-a"><p>We re-clean any areas free within 24 hours. No questions. That's our guarantee.</p></div></div>
+    <div class="fq rv"><div class="fq-q">How do I pay?</div><div class="fq-a"><p>Card, Venmo, Zelle, or cash. Payment after you're satisfied with the clean.</p></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-final">
+  <div class="cta-f-inner">
+    <h2>Ready for a Spotless Home?</h2>
+    <p>Book today. Same-day available. No contracts, no commitment.</p>
+    <a href="#top-quote" class="cta-final-btn">Get Instant Quote &rarr;</a>
+    <a href="tel:8165550147" class="cta-final-phone">or call (816) 555-0147</a>
+  </div>
+</section>
+
+<!-- CLEANING VAN CTA -->
+<div class="van-cta" id="vanCta" onclick="window.location.href='#top-quote'">
+  <div class="van-wrap">
+    <div class="van-bubble" id="vanBubble">
+      <div class="van-bubble-close" onclick="event.stopPropagation();this.parentElement.style.display='none'">&times;</div>
+      <div class="van-bubble-text">Book a clean <em>today!</em></div>
+    </div>
+    <div class="van-exhaust"><div class="van-puff"></div><div class="van-puff"></div><div class="van-puff"></div></div>
+    <svg class="van-body" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Van body -->
+      <rect x="10" y="30" width="140" height="50" rx="6" fill="#0EA5E9"/>
+      <rect x="10" y="30" width="140" height="50" rx="6" fill="url(#vanGrad)" opacity=".3"/>
+      <!-- Cabin -->
+      <path d="M150 45 L150 80 L185 80 L185 55 L170 45 Z" fill="#0284C7" stroke="#0EA5E9" stroke-width="1"/>
+      <!-- Windshield -->
+      <path d="M155 48 L168 48 L180 56 L180 65 L155 65 Z" fill="#38BDF8" opacity=".4"/>
+      <!-- Sparkle logo on van -->
+      <circle cx="80" cy="55" r="14" fill="#fff" opacity=".15"/>
+      <text x="80" y="60" text-anchor="middle" font-size="16" fill="#fff" opacity=".8">&#10024;</text>
+      <!-- Text on van -->
+      <text x="80" y="73" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" font-weight="700" fill="#fff" letter-spacing="1" opacity=".7">PRISTINE CLEAN</text>
+      <!-- Wheels -->
+      <circle cx="45" cy="82" r="12" fill="#1E293B" stroke="#334155" stroke-width="2"/>
+      <circle cx="45" cy="82" r="5" fill="#475569"/>
+      <circle cx="160" cy="82" r="12" fill="#1E293B" stroke="#334155" stroke-width="2"/>
+      <circle cx="160" cy="82" r="5" fill="#475569"/>
+      <!-- Headlight -->
+      <rect x="183" y="60" width="6" height="10" rx="2" fill="#FBBF24" opacity=".8"/>
+      <!-- Bumper -->
+      <rect x="5" y="75" width="8" height="8" rx="2" fill="#0284C7"/>
+      <defs><linearGradient id="vanGrad" x1="10" y1="30" x2="10" y2="80"><stop offset="0" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+    </svg>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div><div class="f-brand">Pristine <span>Clean</span></div><p style="margin-top:10px">Kansas City's trusted cleaning service.<br>8 years. 3,200+ homes.</p><p style="margin-top:10px"><a href="tel:8165550147">(816) 555-0147</a></p></div>
+    <div><h4>Services</h4><p><a href="#services">Deep Clean</a></p><p><a href="#services">Recurring</a></p><p><a href="#services">Move In/Out</a></p><p><a href="#services">Commercial</a></p></div>
+    <div><h4>Areas</h4><p>Kansas City, MO</p><p>Overland Park, KS</p><p>Lee's Summit</p><p>Liberty</p></div>
+    <div><h4>Hours</h4><p>Mon-Fri: 7am-6pm</p><p>Sat: 8am-2pm</p><p>Sun: Closed</p><p style="margin-top:10px"><a href="#top-quote" style="color:var(--accent)">Get a Quote &rarr;</a></p></div>
+  </div>
+  <div class="f-btm"><span>&copy; 2026 Pristine Clean KC</span><span>Website by <a href="https://herrmanonlineoutlook.com" style="color:#C8952E">HOO</a></span></div>
+</footer>
+
+<script>
+(function(){
+  // Mist particles
+  var mc=document.getElementById('mist');
+  for(var i=0;i<15;i++){var p=document.createElement('div');p.className='mist-p';var sz=Math.random()*6+2;p.style.width=sz+'px';p.style.height=sz+'px';p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';p.style.setProperty('--dx',(Math.random()*200-100)+'px');p.style.setProperty('--dy',(Math.random()*-300-50)+'px');p.style.animationDuration=(Math.random()*8+4)+'s';p.style.animationDelay=(-Math.random()*12)+'s';mc.appendChild(p)}
+
+  // Nav
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
+
+  // Reveal
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e,i){if(e.isIntersecting){e.target.style.transitionDelay=(i%4)*50+'ms';e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(function(el){obs.observe(el)});
+
+  // Sparkle particles in hero
+  var hero=document.querySelector('.hero');
+  if(hero){for(var j=0;j<8;j++){var sp=document.createElement('div');sp.className='sparkle';var sz=Math.random()*5+3;sp.style.width=sz+'px';sp.style.height=sz+'px';sp.style.left=Math.random()*60+'%';sp.style.top=(Math.random()*80+10)+'%';sp.style.background=j%3===0?'var(--mint)':j%3===1?'var(--accent)':'var(--lav)';sp.style.animation='sparkFloat '+(Math.random()*3+2)+'s ease-in-out '+(Math.random()*-5)+'s infinite';hero.appendChild(sp)}}
+
+  // Stagger clean cards on scroll
+  var ccObs=new IntersectionObserver(function(entries){if(entries[0].isIntersecting){document.querySelectorAll('.clean-card').forEach(function(c,i){setTimeout(function(){c.classList.add('vis')},i*120)});ccObs.disconnect()}},{threshold:.2});
+  var cleanScroll=document.querySelector('.clean-scroll');
+  if(cleanScroll)ccObs.observe(cleanScroll);
+
+  // Mobile nav
+  var s=document.createElement('style');s.textContent='.mob-show{display:flex!important;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,12,24,.97);flex-direction:column;padding:80px 40px;gap:20px;z-index:99;align-items:center;justify-content:center}.mob-show a{font-size:1rem!important;color:var(--text)!important;text-align:center}.mob-show .nk-cta{margin-top:12px}';document.head.appendChild(s);
+  document.querySelectorAll('.nk a').forEach(function(a){a.addEventListener('click',function(){document.querySelector('.nk').classList.remove('mob-show')})});
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-nav.offsetHeight-10,behavior:'smooth'})}})});
+
+  // FAQ
+  document.querySelectorAll('.fq-q').forEach(function(q){q.addEventListener('click',function(){var it=this.parentElement;var w=it.classList.contains('open');document.querySelectorAll('.fq').forEach(function(f){f.classList.remove('open')});if(!w)it.classList.add('open')})});
+
+  // Before/after
+  (function(){var w=document.getElementById('baSlider'),h=document.getElementById('baHandle');if(!w||!h)return;var d=false;function sp(x){var r=w.getBoundingClientRect();var p=Math.max(0,Math.min(1,(x-r.left)/r.width))*100;h.style.left=p+'%';w.querySelector('.ba-aft').style.clipPath='inset(0 0 0 '+p+'%)'}h.addEventListener('mousedown',function(e){e.preventDefault();d=true});h.addEventListener('touchstart',function(){d=true},{passive:true});document.addEventListener('mousemove',function(e){if(d)sp(e.clientX)});document.addEventListener('touchmove',function(e){if(d)sp(e.touches[0].clientX)},{passive:true});document.addEventListener('mouseup',function(){d=false});document.addEventListener('touchend',function(){d=false});w.addEventListener('click',function(e){sp(e.clientX)})})();
+
+  // Quote calculator
+  window.qPill=function(el,gid){document.querySelectorAll('#'+gid+' .qc-pill').forEach(function(p){p.classList.remove('on')});el.classList.add('on');qCalc()};
+  window.qAddon=function(el){el.classList.toggle('on');qCalc()};
+  function qCalc(){
+    var typeEl=document.querySelector('#qcType .qc-pill.on');
+    var sizeEl=document.querySelector('#qcSize .qc-pill.on');
+    var base=parseInt(sizeEl?sizeEl.getAttribute('data-p'):190);
+    var mod=parseInt(typeEl?typeEl.getAttribute('data-p'):0);
+    var add=0;document.querySelectorAll('#qcAdd .qc-addon.on').forEach(function(a){add+=parseInt(a.getAttribute('data-p')||0)});
+    document.getElementById('qcPrice').textContent='$'+Math.max(0,base+mod+add);
+  }
+
+  // Floor plan interactive quote
+  var fpNames={kitchen:'Kitchen',living:'Living Room',dining:'Dining','master-bed':'Master Bed','master-bath':'Master Bath',bed2:'Bedroom 2',bath2:'Bath 2',bed3:'Bedroom 3',hallway:'Hallway',laundry:'Laundry'};
+  window.fpToggle=function(g){
+    g.classList.toggle('on');
+    if(g.classList.contains('on')){
+      var c=g.getAttribute('data-color');
+      var floor=g.querySelector('.fp-floor');
+      var cx=parseFloat(floor.getAttribute('x'))+parseFloat(floor.getAttribute('width'))/2;
+      var cy=parseFloat(floor.getAttribute('y'))+parseFloat(floor.getAttribute('height'))/2;
+      var ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      ring.setAttribute('cx',cx);ring.setAttribute('cy',cy);ring.setAttribute('r','0');
+      ring.setAttribute('fill','none');ring.setAttribute('stroke',c);ring.setAttribute('stroke-width','2');
+      ring.style.animation='fpBurst .6s ease forwards';
+      document.getElementById('floorPlan').appendChild(ring);
+      setTimeout(function(){ring.remove()},700);
+      for(var s=0;s<5;s++){
+        var dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        var angle=Math.random()*Math.PI*2;var dist=20+Math.random()*30;
+        dot.setAttribute('cx',cx);dot.setAttribute('cy',cy);
+        dot.setAttribute('r',Math.random()*3+1);dot.setAttribute('fill',c);
+        dot.style.transition='all .5s ease';dot.style.opacity='1';
+        document.getElementById('floorPlan').appendChild(dot);
+        setTimeout((function(d,a,di){return function(){d.setAttribute('cx',parseFloat(d.getAttribute('cx'))+Math.cos(a)*di);d.setAttribute('cy',parseFloat(d.getAttribute('cy'))+Math.sin(a)*di);d.style.opacity='0'}})(dot,angle,dist),10);
+        setTimeout((function(d){return function(){d.remove()}})(dot),600);
+      }
+    }
+    fpCalc();
+    var el=document.getElementById('fpTotal');
+    el.style.transform='scale(1.2)';setTimeout(function(){el.style.transform='scale(1)'},250);
+  };
+  window.fpAll=function(){document.querySelectorAll('.fp-room').forEach(function(r){r.classList.add('on')});fpCalc()};
+  window.fpClear=function(){document.querySelectorAll('.fp-room').forEach(function(r){r.classList.remove('on')});fpCalc()};
+  function fpCalc(){
+    var total=0;var rooms=[];
+    document.querySelectorAll('.fp-room.on').forEach(function(r){
+      total+=parseInt(r.getAttribute('data-price'));
+      rooms.push(fpNames[r.getAttribute('data-room')]||r.getAttribute('data-room'));
+    });
+    document.getElementById('fpTotal').textContent='$'+total;
+    document.getElementById('fpRoomList').textContent=rooms.length?rooms.join(' \u00b7 '):'None yet \u2014 tap the rooms above';
+  }
+
+  // Cleaning van show on scroll
+  var van=document.getElementById('vanCta');
+  window.addEventListener('scroll',function(){if(van)van.classList.toggle('vis',window.scrollY>500)},{passive:true});
+
+  // Counter animation
+  var counted=false;
+  var cntObs=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting&&!counted){
+      counted=true;
+      document.querySelectorAll('.cnt').forEach(function(c){
+        var target=parseInt(c.getAttribute('data-target'));
+        var dur=1800;var start=null;
+        function anim(ts){
+          if(!start)start=ts;
+          var prog=Math.min((ts-start)/dur,1);
+          var eased=1-Math.pow(1-prog,3);
+          c.textContent=Math.floor(eased*target).toLocaleString();
+          if(prog<1)requestAnimationFrame(anim);
+          else c.textContent=target.toLocaleString();
+        }
+        requestAnimationFrame(anim);
+      });
+    }
+  },{threshold:.3});
+  var ss=document.getElementById('statStrip');
+  if(ss)cntObs.observe(ss);
+
+  // Protection
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+  console.log('%c\u26A0 DEMO \u2014 Built by HOO','color:#C8952E;font-size:14px;font-weight:bold');
+})();
+</script>
+</body>
+</html>
