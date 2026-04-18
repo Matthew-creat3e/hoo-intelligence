@@ -104,34 +104,104 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 @keyframes typeIn{from{width:0}to{width:100%}}
 .hero-badge{overflow:hidden;white-space:nowrap;animation:typeIn .8s var(--ease) .5s both}
 
-/* Parallax tilt on hero image */
-.hero-img{transition:transform .4s var(--ease)}
+/* Hero visual */
+.hero-visual{position:relative}
+.hero-img{border-radius:24px;overflow:hidden;border:1px solid var(--bdr);box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.hero-img img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.85) saturate(1.1);transition:transform .8s var(--ease)}
+.hero-img:hover img{transform:scale(1.03)}
+.hero-float{position:absolute;background:rgba(14,20,36,.85);backdrop-filter:blur(16px);border:1px solid var(--bdr2);border-radius:14px;padding:12px 18px;display:flex;align-items:center;gap:10px;z-index:3}
+.hero-float-1{bottom:-16px;right:20px}
+.hero-float-2{top:20px;left:-16px}
+.hf-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.hf-text{font-size:.72rem;font-weight:600;color:var(--text)}
+.hf-sub{font-size:.6rem;color:var(--td)}
 
 /* Glow ring animation on service badges */
 @keyframes badgeGlow{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.2)}50%{box-shadow:0 0 0 6px rgba(56,189,248,0)}}
 .svc-img-badge{animation:badgeGlow 2.5s ease infinite}
 
+/* Service images parallax shift on scroll */
+.svc-img{overflow:hidden}
+.svc-img img{transition:transform .6s var(--ease);filter:brightness(.85) saturate(1.1)}
+.svc-img:hover img{transform:scale(1.06)}
+
+/* Review card hover lift + glow */
+.rev-card{transition:all .35s var(--ease)}
+.rev-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.25),0 0 0 1px rgba(56,189,248,.08)}
+
+/* Cert badges stagger bounce */
+@keyframes certBounce{0%{transform:translateY(12px);opacity:0}100%{transform:none;opacity:1}}
+
+/* Floating animation for hero cards */
+@keyframes gentleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-float{animation:gentleFloat 4s ease-in-out infinite}
+.hero-float-2{animation-delay:-2s}
+
+/* Process step line glow */
+.step::before{background:linear-gradient(180deg,rgba(14,165,233,.25),rgba(167,139,250,.1),transparent)!important}
+
+/* Clean card hover scale */
+.clean-card{transition:all .4s var(--ease)}
+.clean-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,.1)}
+
+/* Pulsing glow on selected floor plan rooms */
+@keyframes selectedPulse{0%,100%{opacity:.25}50%{opacity:.35}}
+.fp-room.on .fp-img{animation:selectedPulse 3s ease infinite}
+
+/* Quote total shimmer */
+#fpTotal{background:linear-gradient(90deg,var(--accent) 0%,#7DD3FC 40%,var(--accent) 80%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s ease-in-out infinite}
+
+/* Map frame glow */
+.map-frame{transition:all .4s var(--ease)}
+.map-frame:hover{box-shadow:0 24px 64px rgba(0,0,0,.15),0 0 0 1px rgba(14,165,233,.1)}
+
 /* ═══ FLOOR PLAN — 3D architectural ═══ */
 .fp-perspective{perspective:1200px;transform-style:preserve-3d}
 .fp-perspective svg{transform:rotateX(12deg) rotateZ(-1deg);transform-origin:center center;transition:transform .5s var(--ease)}
 .fp-perspective:hover svg{transform:rotateX(8deg) rotateZ(0deg)}
-.fp-room{cursor:pointer}
-.fp-room .fp-floor{transition:all .4s var(--ease)}
+.fp-room{cursor:pointer;pointer-events:all}
+.fp-room *{pointer-events:none}
+.fp-room .fp-floor{transition:all .4s var(--ease);pointer-events:all}
 .fp-room .fp-glow{transition:opacity .5s var(--ease)}
 .fp-room .fp-label{transition:all .3s}
 .fp-room .fp-price{transition:all .3s}
 .fp-room .fp-check-dot,.fp-room .fp-check-text{transition:all .35s var(--ease)}
-.fp-room:hover .fp-floor{fill:rgba(255,255,255,.04)}
-.fp-room:hover .fp-label{fill:rgba(255,255,255,.7)}
+.fp-room .fp-img{transition:opacity .5s var(--ease)}
+.fp-room:hover .fp-img{opacity:.18}
+.fp-room:hover .fp-floor{fill:rgba(255,255,255,.05)}
+.fp-room:hover .fp-label{fill:rgba(255,255,255,.85)}
+.fp-room:hover .fp-price{opacity:.6}
+.fp-room.on .fp-img{opacity:.3!important}
+/* Glow pulse on selected rooms */
+@keyframes fpGlow{0%,100%{filter:drop-shadow(0 0 0 transparent)}50%{filter:drop-shadow(0 0 8px var(--room-color))}}
+.fp-room.on{animation:none}
+/* Room label entrance */
+@keyframes fpLabelPop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
 .fp-room.on .fp-floor{fill:rgba(255,255,255,.02)}
 .fp-room.on .fp-glow{opacity:1!important}
-.fp-room.on .fp-label{fill:#fff!important;font-size:19px}
-.fp-room.on .fp-price{opacity:1;font-size:16px}
+.fp-room .fp-label{fill:rgba(255,255,255,.7);font-size:17px;transition:all .4s var(--ease)}
+.fp-room .fp-price{font-size:15px;opacity:.6;font-weight:800;transition:all .4s var(--ease)}
+.fp-room.on .fp-label{fill:#fff!important;font-size:21px;filter:drop-shadow(0 0 8px rgba(255,255,255,.4))}
+.fp-room.on .fp-price{opacity:1;font-size:20px;filter:drop-shadow(0 2px 8px currentColor)}
 .fp-room.on .fp-check-dot{opacity:1;r:14}
 .fp-room.on .fp-check-text{opacity:1}
+/* Pulsing border glow on selected rooms */
+@keyframes fpBorderPulse{0%,100%{stroke-opacity:.4}50%{stroke-opacity:.9}}
+.fp-room.on .fp-floor{animation:fpBorderPulse 2s ease infinite;stroke-width:2}
 /* Sparkle burst on select */
-@keyframes fpBurst{0%{r:0;opacity:.8;stroke-width:3}100%{r:40;opacity:0;stroke-width:0}}
-@media(max-width:768px){.fp-perspective svg{transform:rotateX(4deg)}}
+@keyframes fpBurst{0%{r:0;opacity:.8;stroke-width:3}100%{r:50;opacity:0;stroke-width:0}}
+/* Bounce when selected */
+@keyframes fpBounce{0%{transform:scale(1)}30%{transform:scale(1.03)}60%{transform:scale(.98)}100%{transform:scale(1)}}
+.fp-room.on{animation:fpBounce .5s var(--ease)}
+@media(max-width:768px){
+  .fp-perspective svg{transform:rotateX(2deg) rotateZ(0deg);filter:drop-shadow(0 16px 30px rgba(0,0,0,.3))!important}
+  .fp-perspective{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px}
+  .fp-perspective svg{min-width:600px}
+  .fp-room .fp-label{font-size:14px!important}
+  .fp-room .fp-price{font-size:12px!important}
+  .fp-room.on .fp-label{font-size:16px!important}
+  .fp-room.on .fp-price{font-size:15px!important}
+}
 
 /* ═══ MIST PARTICLES ═══ */
 .mist{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -160,7 +230,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 .hero::before{content:'';position:absolute;top:-20%;right:-10%;width:900px;height:900px;background:radial-gradient(circle,rgba(56,189,248,.07),transparent 60%);border-radius:50%}
 .hero::after{content:'';position:absolute;bottom:-20%;left:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(167,139,250,.05),transparent 60%);border-radius:50%}
 .hero-inner{max-width:var(--max);margin:0 auto;width:100%;position:relative;z-index:2}
-.hero-top{display:grid;grid-template-columns:1fr 420px;gap:72px;align-items:center;margin-bottom:64px}
+.hero-top{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:64px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.1);color:var(--accent);font-size:.68rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:24px}
 .hero-badge .dot{width:6px;height:6px;background:var(--mint);border-radius:50%;animation:bk 2s ease infinite}
 @keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
@@ -224,8 +294,9 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 .ht-text span{display:block;font-weight:400;color:var(--td);font-size:.62rem}
 
 /* ═══ WHAT WE CLEAN — horizontal scroll cards ═══ */
-.clean{padding:100px 24px;background:var(--light);border-top:none;color:var(--light-text)}
-.clean-inner{max-width:var(--max);margin:0 auto}
+.clean{padding:100px 24px;background:var(--light) url('https://images.pexels.com/photos/9462224/pexels-photo-9462224.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover no-repeat;background-blend-mode:overlay;background-color:rgba(240,244,250,.96);border-top:none;color:var(--light-text);position:relative}
+.clean::before{content:'';position:absolute;inset:0;background:rgba(240,244,250,.93);pointer-events:none}
+.clean-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:2}
 .sec-head{margin-bottom:48px}
 .sec-head.center{text-align:center}
 .sec-head.center .ssub{margin:0 auto}
@@ -252,8 +323,9 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 .cc-list li::before{content:'';width:14px;height:14px;border-radius:4px;flex-shrink:0;background:var(--mglow);border:1px solid rgba(52,211,153,.15);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 24 24' fill='none' stroke='%2334D399' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
 
 /* ═══ SERVICES — split image/text alternating ═══ */
-.svc{padding:100px 24px;background:#fff;color:var(--light-text)}
-.svc-inner{max-width:var(--max);margin:0 auto}
+.svc{padding:100px 24px;background:#fff url('https://images.pexels.com/photos/4008518/pexels-photo-4008518.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover no-repeat;background-blend-mode:overlay;background-color:rgba(255,255,255,.96);color:var(--light-text);position:relative}
+.svc::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.92);pointer-events:none}
+.svc-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:2}
 .svc-row{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-bottom:80px}
 .svc-row:last-child{margin-bottom:0}
 .svc-row.flip .svc-img{order:2}
@@ -271,8 +343,9 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 .svc-link:hover{gap:10px}
 
 /* ═══ PROCESS — vertical timeline (not horizontal) ═══ */
-.steps{padding:100px 24px;background:var(--light);color:var(--light-text)}
-.steps-inner{max-width:600px;margin:0 auto}
+.steps{padding:100px 24px;background:var(--light) url('https://images.pexels.com/photos/6196566/pexels-photo-6196566.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover no-repeat;background-blend-mode:overlay;background-color:rgba(240,244,250,.95);color:var(--light-text);position:relative}
+.steps::before{content:'';position:absolute;inset:0;background:rgba(240,244,250,.9);pointer-events:none}
+.steps-inner{max-width:600px;margin:0 auto;position:relative;z-index:2}
 .steps-header{text-align:center;margin-bottom:56px}
 .step{display:flex;gap:24px;margin-bottom:40px;position:relative}
 .step:last-child{margin-bottom:0}
@@ -298,8 +371,9 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 .ba-lbl-b{left:16px}.ba-lbl-a{right:16px}
 
 /* ═══ REVIEWS — big quote layout ═══ */
-.reviews{padding:100px 24px;background:var(--bg2);border-top:1px solid var(--bdr)}
-.reviews-inner{max-width:var(--max);margin:0 auto}
+.reviews{padding:100px 24px;background:var(--bg2);border-top:1px solid var(--bdr);position:relative;overflow:hidden}
+.reviews::before{content:'';position:absolute;inset:0;background:url('https://images.pexels.com/photos/4440541/pexels-photo-4440541.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover;opacity:.04;filter:grayscale(1);pointer-events:none}
+.reviews-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:2}
 .reviews-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px}
 .reviews-score{display:flex;align-items:center;gap:12px}
 .reviews-score-num{font-family:var(--font-h);font-size:3rem;font-weight:800;letter-spacing:-1px}
@@ -341,7 +415,8 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 
 /* ═══ CTA ═══ */
 .cta-final{padding:80px 24px;background:linear-gradient(135deg,var(--accent2),var(--lav));text-align:center;position:relative;overflow:hidden}
-.cta-final::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,.06);border-radius:50%}
+.cta-final::before{content:'';position:absolute;inset:0;background:url('https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover;opacity:.08;filter:grayscale(1)}
+.cta-final::after{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,.06);border-radius:50%}
 .cta-f-inner{max-width:520px;margin:0 auto;position:relative;z-index:2}
 .cta-final h2{font-family:var(--font-h);font-size:clamp(1.6rem,3.5vw,2.4rem);color:#fff;margin-bottom:10px;font-weight:800;letter-spacing:-.5px}
 .cta-final p{font-size:.92rem;color:rgba(255,255,255,.7);margin-bottom:24px;line-height:1.7}
@@ -362,19 +437,45 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:768px){
-  .hero-top{grid-template-columns:1fr;gap:40px}
-  .hero{min-height:auto;padding:60px 24px}
+  .hero-top{grid-template-columns:1fr;gap:32px}
+  .hero{min-height:auto;padding:40px 16px 60px}
+  .hero-inner{padding:0}
+  .hero h1{font-size:clamp(2rem,8vw,2.8rem)}
+  .hero-sub{font-size:.95rem}
+  .hero-stats{gap:20px;flex-wrap:wrap}
+  .hero-stat-val{font-size:1.4rem}
+  .hero-btns{flex-direction:column;gap:10px}
+  .hero-btns .btn{width:100%;justify-content:center;text-align:center}
   .nk{display:none}.ham{display:flex}
-  .svc-row,.svc-row.flip .svc-img,.svc-row.flip .svc-text{grid-template-columns:1fr;display:grid}
+  .nav{padding:0 16px;height:56px}
+  .svc-row{grid-template-columns:1fr!important;gap:32px}
   .svc-row.flip .svc-img{order:0}.svc-row.flip .svc-text{order:0}
-  .clean-card{min-width:260px}
-  .rev-grid{grid-template-columns:1fr}
-  .map-inner{grid-template-columns:1fr}
+  .svc-inner .sec-head{text-align:left}
+  .svc-inner .sec-head .stag{justify-content:flex-start}
+  .clean-card{min-width:250px}
+  .rev-grid{grid-template-columns:1fr;gap:12px}
+  .map-inner{grid-template-columns:1fr;gap:32px}
   .map-frame{height:280px}
-  .footer-inner{grid-template-columns:1fr 1fr}
-  .hero-stats{gap:24px}
+  .footer-inner{grid-template-columns:1fr;gap:24px}
+  .f-btm{flex-direction:column;gap:8px;text-align:center}
+  .hero-stats{gap:16px}
+  .hero-trust{gap:24px}
+  .ht{flex:1 0 40%}
   .qc-addons{grid-template-columns:1fr}
   .steps-inner{max-width:100%}
+  .process-track{grid-template-columns:1fr!important;gap:16px}
+  .process-track::before{display:none!important}
+  .stat-strip-inner{grid-template-columns:repeat(2,1fr)}
+  .stat-strip-item{padding:16px 12px}
+  .stat-strip-num{font-size:1.8rem}
+  .certs-row{gap:12px}
+  .cert{padding:8px 14px;flex:1 0 calc(50% - 8px)}
+  .quote-card{padding:28px 20px}
+  .qc-pills{gap:4px}
+  .qc-pill{padding:7px 14px;font-size:.7rem}
+  .reviews-header{flex-direction:column;gap:12px}
+  .ba-wrap{aspect-ratio:3/2}
+  .hero-proof{flex-direction:column;gap:10px;align-items:flex-start}
 }
 </style>
 </head>
@@ -394,7 +495,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
       <a href="#work">Our Work</a>
       <a href="#reviews">Reviews</a>
       <a href="tel:8165550147" class="nk-phone">&#9742; (816) 555-0147</a>
-      <a href="#top-quote" class="nk-cta">Get a Quote</a>
+      <a href="#floorplan" class="nk-cta">Build Your Clean</a>
     </div>
     <div class="ham" onclick="document.querySelector('.nk').classList.toggle('mob-show')"><span></span><span></span><span></span></div>
   </div>
@@ -414,58 +515,26 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
           <div><div class="hero-stat-val">8<span>yrs</span></div><div class="hero-stat-lbl">In Business</div></div>
         </div>
         <div class="hero-btns rv">
-          <a href="#top-quote" class="btn btn-p">Get Instant Quote &#8594;</a>
+          <a href="#floorplan" class="btn btn-p">Build Your Clean &#8594;</a>
           <a href="tel:8165550147" class="btn btn-g">&#9742; Call Now</a>
         </div>
       </div>
 
-      <!-- QUOTE CARD — always visible, no wizard steps -->
-      <div class="quote-card rv" id="top-quote">
-        <div class="qc-mist"></div>
-        <div class="qc-head">
-          <div class="qc-icon">&#10024;</div>
-          <div><div class="qc-title">Build Your Clean</div><div class="qc-sub">Pick options &mdash; see your price live</div></div>
+      <!-- FLOOR PLAN IN HERO -->
+      <div class="rv" id="floorplan" style="position:relative">
+        <div class="fp-perspective" id="fpHeroWrap">
+          <!-- Floor plan SVG gets moved here by JS -->
         </div>
-
-        <div class="qc-group">
-          <div class="qc-label">Service</div>
-          <div class="qc-pills" id="qcType">
-            <div class="qc-pill on" data-p="0" onclick="qPill(this,'qcType')">Deep Clean</div>
-            <div class="qc-pill" data-p="-25" onclick="qPill(this,'qcType')">Recurring</div>
-            <div class="qc-pill" data-p="35" onclick="qPill(this,'qcType')">Move In/Out</div>
-            <div class="qc-pill" data-p="60" onclick="qPill(this,'qcType')">Post-Reno</div>
+        <!-- Mini total bar under floor plan -->
+        <div style="margin-top:16px;background:var(--bg2);border:1px solid var(--bdr2);border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div>
+            <div style="font-size:.58rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--td)">Selected</div>
+            <div id="fpRoomList" style="font-size:.75rem;color:var(--tm);margin-top:2px;line-height:1.5">Tap rooms above</div>
           </div>
-        </div>
-
-        <div class="qc-group">
-          <div class="qc-label">Home Size</div>
-          <div class="qc-pills" id="qcSize">
-            <div class="qc-pill" data-p="130" onclick="qPill(this,'qcSize')">1-2 Bed</div>
-            <div class="qc-pill on" data-p="190" onclick="qPill(this,'qcSize')">3 Bed</div>
-            <div class="qc-pill" data-p="260" onclick="qPill(this,'qcSize')">4 Bed</div>
-            <div class="qc-pill" data-p="340" onclick="qPill(this,'qcSize')">5+ Bed</div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <div id="fpTotal" style="font-family:var(--font-h);font-size:2rem;font-weight:800;color:var(--accent);letter-spacing:-1px;line-height:1;transition:all .3s var(--ease)">$0</div>
+            <a href="tel:8165550147" style="padding:12px 24px;background:var(--accent);color:var(--bg);border-radius:100px;font-weight:700;font-size:.78rem;font-family:var(--font-h);transition:all .25s;box-shadow:0 4px 16px rgba(56,189,248,.25);white-space:nowrap;text-decoration:none">Book &rarr;</a>
           </div>
-        </div>
-
-        <div class="qc-group">
-          <div class="qc-label">Add-Ons</div>
-          <div class="qc-addons" id="qcAdd">
-            <div class="qc-addon" data-p="40" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Inside Fridge</div>
-            <div class="qc-addon" data-p="45" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Inside Oven</div>
-            <div class="qc-addon" data-p="55" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Windows</div>
-            <div class="qc-addon" data-p="70" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Carpet Clean</div>
-          </div>
-        </div>
-
-        <div class="qc-price-row">
-          <div><div class="qc-price-label">Your Estimate</div><div class="qc-price-note">Final quote after walkthrough</div></div>
-          <div class="qc-price" id="qcPrice">$190</div>
-        </div>
-
-        <button class="qc-submit" onclick="window.location.href='tel:8165550147'">Book This Clean &rarr;</button>
-        <div class="qc-trust">
-          <span>&#9989; Bonded &amp; Insured</span>
-          <span>&#128170; Guaranteed</span>
         </div>
       </div>
     </div>
@@ -503,15 +572,8 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- ═══ 3D FLOOR PLAN QUOTE ═══ -->
-<section id="floorplan" style="padding:100px 24px;background:var(--bg);position:relative;overflow:hidden">
-  <div style="position:absolute;top:50%;left:50%;width:1000px;height:1000px;background:radial-gradient(circle,rgba(56,189,248,.03),transparent 50%);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none"></div>
-  <div style="max-width:900px;margin:0 auto;position:relative;z-index:2">
-    <div style="text-align:center;margin-bottom:48px">
-      <div class="stag rv" style="justify-content:center;color:var(--accent)">Interactive Quote</div>
-      <h2 class="stitle rv">Tap the Rooms You Want Cleaned</h2>
-      <p class="ssub rv" style="margin:0 auto;color:var(--tm)">Click any room on the floor plan. Watch your quote build live.</p>
-    </div>
+<!-- ═══ FLOOR PLAN SOURCE (hidden, moved to hero by JS) ═══ -->
+<div id="fpSource" style="display:none">
 
     <!-- 3D TILTED FLOOR PLAN -->
     <div class="fp-perspective rv">
@@ -532,6 +594,17 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
           <linearGradient id="gLaundry" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EC4899" stop-opacity=".18"/><stop offset="1" stop-color="#EC4899" stop-opacity=".06"/></linearGradient>
           <!-- Floor texture -->
           <pattern id="floorTex" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><line x1="0" y1="20" x2="20" y2="0" stroke="rgba(255,255,255,.015)" stroke-width=".5"/></pattern>
+          <!-- Room image clips -->
+          <clipPath id="clipKitchen"><rect x="29" y="29" width="249" height="225"/></clipPath>
+          <clipPath id="clipLiving"><rect x="289" y="29" width="289" height="225"/></clipPath>
+          <clipPath id="clipDining"><rect x="589" y="29" width="202" height="225"/></clipPath>
+          <clipPath id="clipMasterBed"><rect x="29" y="265" width="229" height="267"/></clipPath>
+          <clipPath id="clipMasterBath"><rect x="269" y="265" width="179" height="135"/></clipPath>
+          <clipPath id="clipBed2"><rect x="459" y="265" width="159" height="135"/></clipPath>
+          <clipPath id="clipBath2"><rect x="629" y="265" width="162" height="135"/></clipPath>
+          <clipPath id="clipBed3"><rect x="269" y="411" width="179" height="121"/></clipPath>
+          <clipPath id="clipHall"><rect x="459" y="411" width="159" height="121"/></clipPath>
+          <clipPath id="clipLaundry"><rect x="629" y="411" width="162" height="121"/></clipPath>
         </defs>
 
         <!-- FOUNDATION SHADOW -->
@@ -583,6 +656,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- KITCHEN -->
         <g class="fp-room" data-room="kitchen" data-price="45" data-color="#F97316" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="29" y="29" width="249" height="225" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=400" x="29" y="29" width="249" height="225" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipKitchen)" class="fp-img" opacity=".08"/>
           <rect x="29" y="29" width="249" height="225" class="fp-glow" fill="url(#gKitchen)" opacity="0"/>
           <!-- Countertops L-shape -->
           <rect x="36" y="36" width="120" height="14" rx="2" fill="rgba(255,255,255,.07)"/>
@@ -606,6 +680,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- LIVING ROOM -->
         <g class="fp-room" data-room="living" data-price="35" data-color="#10B981" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="289" y="29" width="289" height="225" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400" x="289" y="29" width="289" height="225" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipLiving)" class="fp-img" opacity=".08"/>
           <rect x="289" y="29" width="289" height="225" class="fp-glow" fill="url(#gLiving)" opacity="0"/>
           <!-- Couch -->
           <rect x="360" y="170" width="120" height="40" rx="6" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
@@ -624,6 +699,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- DINING -->
         <g class="fp-room" data-room="dining" data-price="25" data-color="#F59E0B" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="589" y="29" width="202" height="225" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=400" x="589" y="29" width="202" height="225" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipDining)" class="fp-img" opacity=".08"/>
           <rect x="589" y="29" width="202" height="225" class="fp-glow" fill="url(#gDining)" opacity="0"/>
           <!-- Table -->
           <rect x="640" y="100" width="80" height="55" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
@@ -644,6 +720,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- MASTER BEDROOM -->
         <g class="fp-room" data-room="master-bed" data-price="30" data-color="#8B5CF6" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="29" y="265" width="229" height="267" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=400" x="29" y="265" width="229" height="267" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipMasterBed)" class="fp-img" opacity=".08"/>
           <rect x="29" y="265" width="229" height="267" class="fp-glow" fill="url(#gMasterBed)" opacity="0"/>
           <!-- Bed -->
           <rect x="65" y="330" width="110" height="80" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
@@ -665,6 +742,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- MASTER BATH -->
         <g class="fp-room" data-room="master-bath" data-price="35" data-color="#0EA5E9" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="269" y="265" width="179" height="135" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/1910472/pexels-photo-1910472.jpeg?auto=compress&cs=tinysrgb&w=400" x="269" y="265" width="179" height="135" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipMasterBath)" class="fp-img" opacity=".08"/>
           <rect x="269" y="265" width="179" height="135" class="fp-glow" fill="url(#gMasterBath)" opacity="0"/>
           <!-- Bathtub -->
           <rect x="286" y="280" width="70" height="36" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/>
@@ -683,6 +761,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- BEDROOM 2 -->
         <g class="fp-room" data-room="bed2" data-price="25" data-color="#A78BFA" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="459" y="265" width="159" height="135" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/1454806/pexels-photo-1454806.jpeg?auto=compress&cs=tinysrgb&w=400" x="459" y="265" width="159" height="135" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipBed2)" class="fp-img" opacity=".08"/>
           <rect x="459" y="265" width="159" height="135" class="fp-glow" fill="url(#gBed2)" opacity="0"/>
           <!-- Bed -->
           <rect x="480" y="290" width="70" height="55" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
@@ -697,6 +776,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- BATHROOM 2 -->
         <g class="fp-room" data-room="bath2" data-price="30" data-color="#06B6D4" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="629" y="265" width="162" height="135" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/1457847/pexels-photo-1457847.jpeg?auto=compress&cs=tinysrgb&w=400" x="629" y="265" width="162" height="135" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipBath2)" class="fp-img" opacity=".08"/>
           <rect x="629" y="265" width="162" height="135" class="fp-glow" fill="url(#gBath2)" opacity="0"/>
           <!-- Toilet -->
           <rect x="650" y="290" width="20" height="26" rx="7" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
@@ -714,6 +794,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- BEDROOM 3 -->
         <g class="fp-room" data-room="bed3" data-price="25" data-color="#C084FC" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="269" y="411" width="179" height="121" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=400" x="269" y="411" width="179" height="121" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipBed3)" class="fp-img" opacity=".08"/>
           <rect x="269" y="411" width="179" height="121" class="fp-glow" fill="url(#gBed3)" opacity="0"/>
           <!-- Bed -->
           <rect x="300" y="430" width="65" height="50" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
@@ -726,6 +807,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- HALLWAY -->
         <g class="fp-room" data-room="hallway" data-price="15" data-color="#64748B" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="459" y="411" width="159" height="121" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/6196566/pexels-photo-6196566.jpeg?auto=compress&cs=tinysrgb&w=400" x="459" y="411" width="159" height="121" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipHall)" class="fp-img" opacity=".08"/>
           <rect x="459" y="411" width="159" height="121" class="fp-glow" fill="url(#gHall)" opacity="0"/>
           <text x="538" y="470" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,.4)" class="fp-label">Hallway</text>
           <text x="538" y="490" text-anchor="middle" font-family="Outfit,sans-serif" font-size="13" font-weight="700" class="fp-price" fill="rgba(100,116,139,.35)">$15</text>
@@ -735,6 +817,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <!-- LAUNDRY -->
         <g class="fp-room" data-room="laundry" data-price="20" data-color="#EC4899" onclick="fpToggle(this)" style="cursor:pointer">
           <rect x="629" y="411" width="162" height="121" class="fp-floor" fill="rgba(255,255,255,.015)"/>
+          <image href="https://images.pexels.com/photos/5591903/pexels-photo-5591903.jpeg?auto=compress&cs=tinysrgb&w=400" x="629" y="411" width="162" height="121" preserveAspectRatio="xMidYMid slice" clip-path="url(#clipLaundry)" class="fp-img" opacity=".08"/>
           <rect x="629" y="411" width="162" height="121" class="fp-glow" fill="url(#gLaundry)" opacity="0"/>
           <!-- Washer + Dryer -->
           <rect x="660" y="430" width="40" height="40" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
@@ -773,25 +856,51 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
       </svg>
     </div>
 
-    <!-- SELECT ALL / CLEAR -->
-    <div style="display:flex;justify-content:center;gap:12px;margin-top:24px" class="rv">
-      <button onclick="fpAll()" style="padding:8px 20px;border-radius:100px;font-size:.75rem;font-weight:600;color:var(--accent);background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);cursor:pointer;font-family:var(--font-b);transition:all .2s">Select All Rooms</button>
-      <button onclick="fpClear()" style="padding:8px 20px;border-radius:100px;font-size:.75rem;font-weight:600;color:var(--tm);background:rgba(255,255,255,.03);border:1px solid var(--bdr);cursor:pointer;font-family:var(--font-b);transition:all .2s">Clear</button>
-    </div>
+  </div>
+</div>
 
-    <!-- Quote total bar -->
-    <div style="margin-top:24px;background:var(--bg2);border:1px solid var(--bdr2);border-radius:20px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px" class="rv">
-      <div>
-        <div style="font-size:.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--td)">Rooms Selected</div>
-        <div id="fpRoomList" style="font-size:.85rem;color:var(--tm);margin-top:4px;line-height:1.6">None yet &mdash; tap the rooms above</div>
+<!-- ═══ QUICK QUOTE CARD ═══ -->
+<section style="padding:80px 24px;background:var(--bg2);border-top:1px solid var(--bdr)" id="top-quote">
+  <div style="max-width:560px;margin:0 auto">
+    <div class="quote-card rv">
+      <div class="qc-mist"></div>
+      <div class="qc-head">
+        <div class="qc-icon">&#10024;</div>
+        <div><div class="qc-title">Quick Quote</div><div class="qc-sub">Or use the floor plan above for room-by-room pricing</div></div>
       </div>
-      <div style="display:flex;align-items:center;gap:24px">
-        <div style="text-align:right">
-          <div style="font-size:.58rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--td)">Estimate</div>
-          <div id="fpTotal" style="font-family:var(--font-h);font-size:2.6rem;font-weight:800;color:var(--accent);letter-spacing:-1.5px;line-height:1;transition:all .3s var(--ease)">$0</div>
+      <div class="qc-group">
+        <div class="qc-label">Service</div>
+        <div class="qc-pills" id="qcType">
+          <div class="qc-pill on" data-p="0" onclick="qPill(this,'qcType')">Deep Clean</div>
+          <div class="qc-pill" data-p="-25" onclick="qPill(this,'qcType')">Recurring</div>
+          <div class="qc-pill" data-p="35" onclick="qPill(this,'qcType')">Move In/Out</div>
+          <div class="qc-pill" data-p="60" onclick="qPill(this,'qcType')">Post-Reno</div>
         </div>
-        <a href="tel:8165550147" style="padding:16px 32px;background:var(--accent);color:var(--bg);border-radius:100px;font-weight:700;font-size:.88rem;font-family:var(--font-h);transition:all .25s;box-shadow:0 6px 24px rgba(56,189,248,.3);letter-spacing:.3px;white-space:nowrap;text-decoration:none">Book This Clean &rarr;</a>
       </div>
+      <div class="qc-group">
+        <div class="qc-label">Home Size</div>
+        <div class="qc-pills" id="qcSize">
+          <div class="qc-pill" data-p="130" onclick="qPill(this,'qcSize')">1-2 Bed</div>
+          <div class="qc-pill on" data-p="190" onclick="qPill(this,'qcSize')">3 Bed</div>
+          <div class="qc-pill" data-p="260" onclick="qPill(this,'qcSize')">4 Bed</div>
+          <div class="qc-pill" data-p="340" onclick="qPill(this,'qcSize')">5+ Bed</div>
+        </div>
+      </div>
+      <div class="qc-group">
+        <div class="qc-label">Add-Ons</div>
+        <div class="qc-addons" id="qcAdd">
+          <div class="qc-addon" data-p="40" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Inside Fridge</div>
+          <div class="qc-addon" data-p="45" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Inside Oven</div>
+          <div class="qc-addon" data-p="55" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Windows</div>
+          <div class="qc-addon" data-p="70" onclick="qAddon(this)"><div class="qc-addon-dot"></div>Carpet Clean</div>
+        </div>
+      </div>
+      <div class="qc-price-row">
+        <div><div class="qc-price-label">Your Estimate</div><div class="qc-price-note">Final quote after walkthrough</div></div>
+        <div class="qc-price" id="qcPrice">$190</div>
+      </div>
+      <button class="qc-submit" onclick="window.location.href='tel:8165550147'">Book This Clean &rarr;</button>
+      <div class="qc-trust"><span>&#9989; Bonded &amp; Insured</span><span>&#128170; Guaranteed</span></div>
     </div>
   </div>
 </section>
@@ -829,7 +938,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <h3>Deep Cleaning</h3>
         <p>Every corner, every surface. Baseboards, inside appliances, behind furniture. The full reset your home needs.</p>
         <ul class="svc-feats"><li>Full kitchen &amp; appliance deep clean</li><li>Bathroom sanitization top to bottom</li><li>Baseboards, vents, light fixtures</li><li>2-3 cleaners, 4-6 hours</li></ul>
-        <a href="#top-quote" class="svc-link">Get a quote &rarr;</a>
+        <a href="#floorplan" class="svc-link">Get a quote &rarr;</a>
       </div>
     </div>
 
@@ -839,7 +948,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <h3>Recurring Service</h3>
         <p>Weekly, biweekly, or monthly. Same trusted team every time. Discounted rates. Your home stays clean without thinking about it.</p>
         <ul class="svc-feats"><li>Same team every visit</li><li>Custom cleaning checklist</li><li>15-20% savings vs. one-time</li><li>Flexible rescheduling</li></ul>
-        <a href="#top-quote" class="svc-link">Start recurring &rarr;</a>
+        <a href="#floorplan" class="svc-link">Start recurring &rarr;</a>
       </div>
     </div>
 
@@ -849,7 +958,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <h3>Move In / Move Out</h3>
         <p>Get your full deposit back. Inside cabinets, appliances, closets, garage. Landlord-ready guaranteed.</p>
         <ul class="svc-feats"><li>Inside all cabinets &amp; closets</li><li>Appliance deep clean</li><li>Wall spot cleaning &amp; baseboards</li><li>Deposit-back guarantee</li></ul>
-        <a href="#top-quote" class="svc-link">Book move clean &rarr;</a>
+        <a href="#floorplan" class="svc-link">Book move clean &rarr;</a>
       </div>
     </div>
   </div>
@@ -928,7 +1037,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
         <div class="map-col"><h4>Missouri</h4><ul><li>Kansas City</li><li>Lee's Summit</li><li>Independence</li><li>Blue Springs</li><li>Liberty</li><li>Gladstone</li></ul></div>
         <div class="map-col"><h4>Kansas</h4><ul><li>Overland Park</li><li>Olathe</li><li>Lenexa</li><li>Shawnee</li><li>Leawood</li><li>Prairie Village</li></ul></div>
       </div>
-      <a href="#top-quote" class="btn btn-p" style="margin-top:8px">Check Your Area &rarr;</a>
+      <a href="#floorplan" class="btn btn-p" style="margin-top:8px">Check Your Area &rarr;</a>
     </div>
     <div class="map-frame rv"><iframe src="https://maps.google.com/maps?q=Kansas+City,+MO&t=&z=10&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0" allowfullscreen="" loading="lazy"></iframe></div>
   </div>
@@ -951,7 +1060,7 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
   <div class="cta-f-inner">
     <h2>Ready for a Spotless Home?</h2>
     <p>Book today. Same-day available. No contracts, no commitment.</p>
-    <a href="#top-quote" class="cta-final-btn">Get Instant Quote &rarr;</a>
+    <a href="#floorplan" class="cta-final-btn">Get Instant Quote &rarr;</a>
     <a href="tel:8165550147" class="cta-final-phone">or call (816) 555-0147</a>
   </div>
 </section>
@@ -997,13 +1106,18 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
     <div><div class="f-brand">Pristine <span>Clean</span></div><p style="margin-top:10px">Kansas City's trusted cleaning service.<br>8 years. 3,200+ homes.</p><p style="margin-top:10px"><a href="tel:8165550147">(816) 555-0147</a></p></div>
     <div><h4>Services</h4><p><a href="#services">Deep Clean</a></p><p><a href="#services">Recurring</a></p><p><a href="#services">Move In/Out</a></p><p><a href="#services">Commercial</a></p></div>
     <div><h4>Areas</h4><p>Kansas City, MO</p><p>Overland Park, KS</p><p>Lee's Summit</p><p>Liberty</p></div>
-    <div><h4>Hours</h4><p>Mon-Fri: 7am-6pm</p><p>Sat: 8am-2pm</p><p>Sun: Closed</p><p style="margin-top:10px"><a href="#top-quote" style="color:var(--accent)">Get a Quote &rarr;</a></p></div>
+    <div><h4>Hours</h4><p>Mon-Fri: 7am-6pm</p><p>Sat: 8am-2pm</p><p>Sun: Closed</p><p style="margin-top:10px"><a href="#floorplan" style="color:var(--accent)">Get a Quote &rarr;</a></p></div>
   </div>
   <div class="f-btm"><span>&copy; 2026 Pristine Clean KC</span><span>Website by <a href="https://herrmanonlineoutlook.com" style="color:#C8952E">HOO</a></span></div>
 </footer>
 
 <script>
 (function(){
+  // Move floor plan SVG into hero
+  var fpSrc=document.getElementById('fpSource');
+  var fpDest=document.getElementById('fpHeroWrap');
+  if(fpSrc&&fpDest){var svg=fpSrc.querySelector('svg');if(svg){fpDest.appendChild(svg);svg.style.filter='drop-shadow(0 30px 50px rgba(0,0,0,.35))';fpSrc.remove()}}
+
   // Mist particles
   var mc=document.getElementById('mist');
   for(var i=0;i<15;i++){var p=document.createElement('div');p.className='mist-p';var sz=Math.random()*6+2;p.style.width=sz+'px';p.style.height=sz+'px';p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';p.style.setProperty('--dx',(Math.random()*200-100)+'px');p.style.setProperty('--dy',(Math.random()*-300-50)+'px');p.style.animationDuration=(Math.random()*8+4)+'s';p.style.animationDelay=(-Math.random()*12)+'s';mc.appendChild(p)}
@@ -1050,8 +1164,28 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
     document.getElementById('qcPrice').textContent='$'+Math.max(0,base+mod+add);
   }
 
-  // Floor plan interactive quote
+  // Floor plan — colorize prices and borders per room
   var fpNames={kitchen:'Kitchen',living:'Living Room',dining:'Dining','master-bed':'Master Bed','master-bath':'Master Bath',bed2:'Bedroom 2',bath2:'Bath 2',bed3:'Bedroom 3',hallway:'Hallway',laundry:'Laundry'};
+  document.querySelectorAll('.fp-room').forEach(function(r){
+    var c=r.getAttribute('data-color');
+    // Set price text to room color
+    var price=r.querySelector('.fp-price');
+    if(price){price.setAttribute('fill',c);price.style.opacity='.6'}
+    // Set floor stroke to room color when selected
+    var floor=r.querySelector('.fp-floor');
+    if(floor){floor.setAttribute('data-stroke-color',c)}
+  });
+  // Override on state to use room colors
+  var fpStyle=document.createElement('style');
+  document.querySelectorAll('.fp-room').forEach(function(r){
+    var room=r.getAttribute('data-room');
+    var c=r.getAttribute('data-color');
+    fpStyle.textContent+='.fp-room[data-room="'+room+'"].on .fp-floor{stroke:'+c+'!important}';
+    fpStyle.textContent+='.fp-room[data-room="'+room+'"].on .fp-price{fill:'+c+'!important;opacity:1!important}';
+    fpStyle.textContent+='.fp-room[data-room="'+room+'"] .fp-check-dot{fill:'+c+'}';
+  });
+  document.head.appendChild(fpStyle);
+
   window.fpToggle=function(g){
     g.classList.toggle('on');
     if(g.classList.contains('on')){
@@ -1059,19 +1193,24 @@ a{color:var(--accent);text-decoration:none}img{max-width:100%;display:block}
       var floor=g.querySelector('.fp-floor');
       var cx=parseFloat(floor.getAttribute('x'))+parseFloat(floor.getAttribute('width'))/2;
       var cy=parseFloat(floor.getAttribute('y'))+parseFloat(floor.getAttribute('height'))/2;
-      var ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
-      ring.setAttribute('cx',cx);ring.setAttribute('cy',cy);ring.setAttribute('r','0');
-      ring.setAttribute('fill','none');ring.setAttribute('stroke',c);ring.setAttribute('stroke-width','2');
-      ring.style.animation='fpBurst .6s ease forwards';
-      document.getElementById('floorPlan').appendChild(ring);
-      setTimeout(function(){ring.remove()},700);
-      for(var s=0;s<5;s++){
+      var svg=document.getElementById('floorPlan');
+      // Double expanding ring
+      for(var ri=0;ri<2;ri++){
+        var ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        ring.setAttribute('cx',cx);ring.setAttribute('cy',cy);ring.setAttribute('r','0');
+        ring.setAttribute('fill','none');ring.setAttribute('stroke',c);ring.setAttribute('stroke-width',ri===0?'2':'1');
+        ring.style.animation='fpBurst '+(ri===0?.6:.9)+'s ease '+(ri*.15)+'s forwards';
+        svg.appendChild(ring);
+        setTimeout((function(r){return function(){r.remove()}})(ring),1000);
+      }
+      // 8 sparkle particles in room color
+      for(var s=0;s<8;s++){
         var dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
-        var angle=Math.random()*Math.PI*2;var dist=20+Math.random()*30;
+        var angle=Math.random()*Math.PI*2;var dist=25+Math.random()*40;
         dot.setAttribute('cx',cx);dot.setAttribute('cy',cy);
-        dot.setAttribute('r',Math.random()*3+1);dot.setAttribute('fill',c);
-        dot.style.transition='all .5s ease';dot.style.opacity='1';
-        document.getElementById('floorPlan').appendChild(dot);
+        dot.setAttribute('r',Math.random()*3.5+1);dot.setAttribute('fill',c);
+        dot.style.transition='all .6s cubic-bezier(.16,1,.3,1)';dot.style.opacity='1';
+        svg.appendChild(dot);
         setTimeout((function(d,a,di){return function(){d.setAttribute('cx',parseFloat(d.getAttribute('cx'))+Math.cos(a)*di);d.setAttribute('cy',parseFloat(d.getAttribute('cy'))+Math.sin(a)*di);d.style.opacity='0'}})(dot,angle,dist),10);
         setTimeout((function(d){return function(){d.remove()}})(dot),600);
       }
