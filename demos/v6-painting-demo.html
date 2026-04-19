@@ -325,19 +325,37 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .lib-foot p{color:var(--muted);margin-bottom:1.2rem;font-size:.94rem}
 .lib-foot.empty .sel-preview{display:none}
 
-/* -------- WIZARD COLOR STEP -------- */
-.qc-colors{display:grid;grid-template-columns:repeat(6,1fr);gap:.3rem;margin-bottom:.7rem}
-@media(max-width:560px){.qc-colors{grid-template-columns:repeat(5,1fr)}}
-.qc-color{aspect-ratio:1/1;border-radius:6px;cursor:pointer;position:relative;background:var(--hx);transition:transform .15s ease,box-shadow .15s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-.qc-color:hover{transform:scale(1.08);z-index:2;box-shadow:0 6px 14px rgba(0,0,0,.4)}
-.qc-color.sel{box-shadow:0 0 0 2px var(--ink-2),0 0 0 4px var(--red);transform:scale(1.08);z-index:3}
-.qc-color-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);border:1px solid var(--line-2);color:var(--cream);padding:.3rem .55rem;border-radius:4px;font-size:.68rem;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease;z-index:10}
-.qc-color:hover .qc-color-tip{opacity:1}
-.qc-skip{width:100%;padding:.7rem;background:var(--glass);border:1px dashed var(--line-2);border-radius:10px;color:var(--muted);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;cursor:pointer;transition:all .15s ease}
+/* -------- WIZARD COLOR STEP (full 65-chip browser) -------- */
+.qc-fam-bar{display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none;margin-bottom:.7rem;padding-bottom:.2rem;-webkit-overflow-scrolling:touch}
+.qc-fam-bar::-webkit-scrollbar{display:none}
+.qc-fam{padding:.38rem .68rem;border-radius:999px;color:var(--muted);font-size:.72rem;font-weight:500;white-space:nowrap;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.06em;background:var(--glass);border:1px solid var(--line);transition:all .15s ease;display:inline-flex;align-items:center;gap:.35rem;flex-shrink:0;cursor:pointer}
+.qc-fam::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--fc,#555)}
+.qc-fam:hover{color:var(--cream);background:var(--glass-2)}
+.qc-fam.active{background:var(--red);color:#fff;border-color:var(--red)}
+.qc-fam.active::before{background:#fff}
+
+.qc-colors-wrap{max-height:210px;overflow-y:auto;overflow-x:hidden;padding:.2rem .1rem;margin-bottom:.6rem;-webkit-overflow-scrolling:touch;border-radius:8px;scrollbar-color:var(--line-2) transparent;scrollbar-width:thin}
+.qc-colors-wrap::-webkit-scrollbar{width:6px}
+.qc-colors-wrap::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}
+.qc-colors-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem}
+@media(max-width:640px){.qc-colors-grid{grid-template-columns:repeat(6,1fr);gap:.4rem}}
+@media(max-width:400px){.qc-colors-grid{grid-template-columns:repeat(5,1fr)}}
+.qc-color{aspect-ratio:1/1;border-radius:6px;cursor:pointer;position:relative;background:var(--hx);transition:transform .15s ease,box-shadow .15s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);min-width:36px;min-height:36px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.qc-color:hover{transform:scale(1.12);z-index:2;box-shadow:0 6px 14px rgba(0,0,0,.4)}
+.qc-color.sel{box-shadow:0 0 0 2px var(--ink-3),0 0 0 4px var(--red);transform:scale(1.12);z-index:3}
+.qc-color-check{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.4);width:16px;height:16px;opacity:0;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.qc-color.sel .qc-color-check{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.qc-color[data-light="1"] .qc-color-check{color:var(--ink)}
+
+.qc-color-sel{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;background:var(--glass);border:1px solid var(--line-2);border-radius:8px;margin-bottom:.6rem;font-size:.82rem;color:var(--muted);animation:popIn .3s ease-out}
+.qc-color-sel .qc-sel-sw{width:22px;height:22px;border-radius:50%;background:var(--sc,#333);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);flex-shrink:0}
+.qc-color-sel .qc-sel-text b{color:var(--cream);font-weight:500}
+.qc-color-sel .qc-sel-code{color:var(--dim);font-size:.74rem;margin-left:.3rem;font-family:'Oswald',sans-serif;letter-spacing:.05em}
+.qc-color-sel[hidden]{display:none}
+
+.qc-skip{width:100%;padding:.65rem;background:var(--glass);border:1px dashed var(--line-2);border-radius:10px;color:var(--muted);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.74rem;cursor:pointer;transition:all .15s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .qc-skip:hover{color:var(--cream);border-color:var(--muted);background:var(--glass-2)}
 .qc-skip.sel{background:rgba(230,57,70,.14);border:1px solid var(--red);border-style:solid;color:var(--red)}
-.qc-browse-link{display:inline-block;margin-top:.55rem;font-size:.76rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
-.qc-browse-link:hover{color:var(--cream)}
 
 /* Ballpark result — color chip pill */
 .r-color-pill{display:inline-flex;align-items:center;gap:.5rem;padding:.25rem .7rem .25rem .3rem;background:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;font-size:.78rem}
@@ -493,9 +511,48 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* -------- MISC -------- */
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);margin:0 auto;max-width:200px}
 @media(max-width:560px){
-  .hero-stats{grid-template-columns:1fr}
+  .hero-stats{grid-template-columns:repeat(3,1fr);gap:.5rem}
+  .hero-stats .stat-mini{padding:.7rem .5rem}
+  .hero-stats .stat-mini .n{font-size:1.1rem}
+  .hero-stats .stat-mini .l{font-size:.62rem}
   .tiles{grid-template-columns:repeat(2,1fr)}
   .tiles.two{grid-template-columns:1fr}
+  .hero{padding:3rem 0 3rem}
+  .section{padding:4rem 0}
+  .quote-card{padding:1.2rem;border-radius:16px}
+  .qc-stage{min-height:auto}
+  .hero h1{font-size:clamp(2.1rem,10vw,3rem);line-height:1.05}
+  .container{width:min(1240px,94%)}
+  .meet-photo{max-width:300px}
+  .pullquote{padding:4.5rem 0}
+  .faq-cta{position:static}
+  .nav-cta .btn{padding:.7rem 1rem;font-size:.85rem}
+  .hero-cta{gap:.5rem}
+  .hero-cta .btn{width:100%;justify-content:center}
+  .tile{padding:.8rem .5rem}
+  .tile svg{width:22px;height:22px}
+  .tile-t{font-size:.78rem}
+  .tile-s{font-size:.62rem}
+  .qc-heading{font-size:1.15rem}
+  .partners-logos{gap:1rem}
+}
+@media(max-width:400px){
+  .container{width:min(1240px,96%)}
+  .nav-inner{padding:.7rem 0}
+  .brand{font-size:.95rem}
+  .brand-logo{width:32px;height:32px}
+  .hero{padding:2rem 0}
+  .hero h1{font-size:2rem}
+  .hero-badges{gap:.35rem}
+  .hero-badge{padding:.3rem .55rem;font-size:.68rem}
+}
+
+/* Touch target fixes for any element a thumb will hit */
+@media(pointer:coarse){
+  .tab-btn,.faq-q,.tile,.qc-next,.qc-back,.qc-skip,.qc-fam,.lib-fil{min-height:44px}
+  .qc-color,.lib-chip{min-height:44px;min-width:44px}
+  .rev-card{padding:1.2rem}
+  button,a.btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 }
 </style>
 </head>
@@ -640,10 +697,28 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
         <!-- Step 4: Color -->
         <div class="qc-stage-inner" data-step="4">
-          <div class="qc-heading">Have a color in mind?</div>
-          <div class="qc-colors" id="qcColors"></div>
+          <div class="qc-heading">Pick a color <span style="color:var(--dim);font-weight:400;font-family:Inter;text-transform:none;letter-spacing:0;font-size:.82rem">(65 to browse)</span></div>
+          <div class="qc-fam-bar" id="qcFamBar">
+            <button class="qc-fam active" data-fam="popular" style="--fc:#E63946">Popular</button>
+            <button class="qc-fam" data-fam="whites" style="--fc:#EDE9DD">Whites</button>
+            <button class="qc-fam" data-fam="neutrals" style="--fc:#CDC3AD">Neutrals</button>
+            <button class="qc-fam" data-fam="grays" style="--fc:#A8A299">Grays</button>
+            <button class="qc-fam" data-fam="darks" style="--fc:#3D3A36">Darks</button>
+            <button class="qc-fam" data-fam="blues" style="--fc:#1E2A45">Blues</button>
+            <button class="qc-fam" data-fam="blues-light" style="--fc:#A9C0BB">Soft Blues</button>
+            <button class="qc-fam" data-fam="greens" style="--fc:#7F8871">Greens</button>
+            <button class="qc-fam" data-fam="earthy" style="--fc:#B07C59">Earthy</button>
+            <button class="qc-fam" data-fam="reds" style="--fc:#B4452C">Reds</button>
+            <button class="qc-fam" data-fam="yellows" style="--fc:#DCBF7B">Yellows</button>
+          </div>
+          <div class="qc-colors-wrap">
+            <div class="qc-colors-grid" id="qcColorsGrid"></div>
+          </div>
+          <div class="qc-color-sel" id="qcColorSel" hidden>
+            <span class="qc-sel-sw"></span>
+            <span class="qc-sel-text"><b class="qc-sel-name">—</b><span class="qc-sel-code"></span></span>
+          </div>
           <button class="qc-skip" id="qcSkipColor" data-k="color" data-v="skip">Skip — I'll decide at the walkthrough</button>
-          <a href="#library" class="qc-browse-link">Browse the full library →</a>
         </div>
 
         <!-- Step 5: Timeline -->
@@ -1600,42 +1675,82 @@ const COLORS = [
     });
   });
 
-  /* ---- Wizard color step: render a popular subset of chips ---- */
-  const popularIdxs = [0,1,2,8,9,15,16,23,24,27,31,32,38,40,44,50,56,60];  // 18 popular picks across families
-  const qcColorsEl = document.getElementById('qcColors');
-  qcColorsEl.innerHTML = popularIdxs.map(i=>{
-    const c = COLORS[i];
-    return `<div class="qc-color" data-idx="${i}" style="--hx:${c.hex}" title="${c.code} ${c.name}"><span class="qc-color-tip">${c.name}</span></div>`;
-  }).join('');
-  qcColorsEl.addEventListener('click',(e)=>{
+  /* ---- Wizard color step: full 65-chip browser with family filter ---- */
+  const POPULAR_IDXS = [0,1,2,8,15,23,24,25,30,32,38,44,50,56,60,64];
+  const qcGrid = document.getElementById('qcColorsGrid');
+  const qcSel = document.getElementById('qcColorSel');
+
+  const renderQcGrid = (fam='popular')=>{
+    const list = (fam==='popular')
+      ? POPULAR_IDXS.map(i=>({c:COLORS[i],idx:i}))
+      : COLORS.map((c,i)=>({c,idx:i})).filter(x=>x.c.family===fam);
+    qcGrid.innerHTML = list.map(({c,idx})=>`
+      <button class="qc-color" data-idx="${idx}" data-light="${c.light?1:0}" style="--hx:${c.hex}" aria-label="${c.code} ${c.name}" type="button">
+        <svg class="qc-color-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 13 10 18 20 7"/></svg>
+      </button>`).join('');
+    // Re-apply selection
+    if(typeof state.color === 'number'){
+      const sel = qcGrid.querySelector(`.qc-color[data-idx="${state.color}"]`);
+      if(sel) sel.classList.add('sel');
+    }
+  };
+
+  document.querySelectorAll('.qc-fam').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.qc-fam').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderQcGrid(btn.dataset.fam);
+    });
+  });
+
+  const applyColorSelection = (idx)=>{
+    const c = COLORS[idx];
+    document.querySelectorAll('#qcColorsGrid .qc-color').forEach(x=>x.classList.remove('sel'));
+    const chip = qcGrid.querySelector(`.qc-color[data-idx="${idx}"]`);
+    if(chip) chip.classList.add('sel');
+    document.getElementById('qcSkipColor').classList.remove('sel');
+    state.color = idx;
+    // Show selection preview
+    qcSel.hidden = false;
+    qcSel.style.setProperty('--sc',c.hex);
+    qcSel.querySelector('.qc-sel-sw').style.background = c.hex;
+    qcSel.querySelector('.qc-sel-name').textContent = c.name;
+    qcSel.querySelector('.qc-sel-code').textContent = c.code;
+    render();
+  };
+
+  qcGrid.addEventListener('click',(e)=>{
     const chip = e.target.closest('.qc-color');
     if(!chip) return;
     const idx = parseInt(chip.dataset.idx);
-    document.querySelectorAll('#qcColors .qc-color').forEach(x=>x.classList.remove('sel'));
-    chip.classList.add('sel');
-    document.getElementById('qcSkipColor').classList.remove('sel');
-    state.color = idx;
-    render();
-    setTimeout(()=>{ if(step<TOTAL && isStepValid()) advance(); },320);
+    applyColorSelection(idx);
+    setTimeout(()=>{ if(step<TOTAL && isStepValid()) advance(); },380);
   });
+
   document.getElementById('qcSkipColor').addEventListener('click',()=>{
-    document.querySelectorAll('#qcColors .qc-color').forEach(x=>x.classList.remove('sel'));
+    document.querySelectorAll('#qcColorsGrid .qc-color').forEach(x=>x.classList.remove('sel'));
     document.getElementById('qcSkipColor').classList.add('sel');
     state.color = 'skip';
+    qcSel.hidden = true;
     render();
     setTimeout(()=>{ if(step<TOTAL && isStepValid()) advance(); },220);
   });
-  /* Hook so the library section can seed the wizard color */
+
+  /* Hook so the library section can seed the wizard color + jump to wizard */
   window._qcSetColor = (idx)=>{
-    state.color = idx;
-    const chipInWiz = document.querySelector(`#qcColors .qc-color[data-idx="${idx}"]`);
-    if(chipInWiz){
-      document.querySelectorAll('#qcColors .qc-color').forEach(x=>x.classList.remove('sel'));
-      chipInWiz.classList.add('sel');
+    applyColorSelection(idx);
+    // Activate the matching family tab if not Popular (so the chip is visible)
+    const c = COLORS[idx];
+    const famBtn = document.querySelector(`.qc-fam[data-fam="${c.family}"]`);
+    if(famBtn && !POPULAR_IDXS.includes(idx)){
+      document.querySelectorAll('.qc-fam').forEach(b=>b.classList.remove('active'));
+      famBtn.classList.add('active');
+      renderQcGrid(c.family);
+      setTimeout(()=>applyColorSelection(idx),50);
     }
-    document.getElementById('qcSkipColor').classList.remove('sel');
-    render();
   };
+
+  renderQcGrid('popular');
 
   /* Contact inputs */
   ['qcName','qcPhone','qcAddress','qcEmail'].forEach(id=>{
