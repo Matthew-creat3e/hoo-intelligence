@@ -329,6 +329,32 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .lib-foot p{color:var(--muted);margin-bottom:1.2rem;font-size:.94rem}
 .lib-foot.empty .sel-preview{display:none}
 
+/* -------- STYLE STUDIO -------- */
+.studio{padding:5rem 0;background:var(--ink);position:relative}
+.studio::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:50px;background:linear-gradient(180deg,transparent,var(--line-2))}
+.studio-head{text-align:center;margin:0 auto 2.5rem;max-width:720px}
+.studio-head h3{font-family:'Fraunces',serif;font-weight:300;font-style:italic;text-transform:none;letter-spacing:-.01em;font-size:clamp(1.6rem,3vw,2.3rem);color:var(--cream);margin-bottom:.5rem}
+.studio-head h3 em{color:var(--red);font-style:italic}
+.studio-head p{color:var(--muted);font-size:.95rem}
+.studio-grid{display:grid;grid-template-columns:1fr;gap:1.2rem}
+@media(min-width:720px){.studio-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.studio-grid{grid-template-columns:repeat(3,1fr)}}
+.studio-card{position:relative;border-radius:var(--rad-lg);overflow:hidden;aspect-ratio:4/5;cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease;background:var(--ink-3)}
+.studio-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.studio-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(108%) saturate(96%);transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.studio-card:hover img{transform:scale(1.05)}
+.studio-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,16,.1) 0%,rgba(12,12,16,.25) 45%,rgba(12,12,16,.9) 85%,rgba(12,12,16,.96) 100%);pointer-events:none}
+.studio-body{position:absolute;left:0;right:0;bottom:0;padding:1.6rem 1.4rem 1.4rem;z-index:2}
+.studio-name{font-family:'Fraunces',serif;font-weight:300;font-size:1.7rem;line-height:1.08;color:var(--cream);margin-bottom:.4rem;letter-spacing:-.015em}
+.studio-name em{font-style:italic;color:var(--red)}
+.studio-tag{font-family:'Fraunces',serif;font-style:italic;font-size:.92rem;color:var(--cream);opacity:.85;margin-bottom:.9rem;line-height:1.4}
+.studio-swatches{display:flex;gap:.3rem;margin-bottom:.85rem}
+.studio-sw{width:20px;height:20px;border-radius:50%;background:var(--sc);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 2px 6px rgba(0,0,0,.3);position:relative}
+.studio-sw[data-lbl]::after{content:attr(data-lbl);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:.22rem .5rem;border-radius:4px;font-size:.62rem;font-family:'Oswald',sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease;border:1px solid var(--line-2)}
+.studio-sw:hover::after{opacity:1}
+.studio-meta{display:flex;justify-content:space-between;align-items:center;padding-top:.8rem;border-top:1px solid rgba(255,255,255,.12);font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-family:'Oswald',sans-serif}
+.studio-meta b{color:var(--cream);font-weight:500}
+
 /* -------- WIZARD COLOR STEP (full 65-chip browser) -------- */
 .qc-fam-bar{display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none;margin-bottom:.7rem;padding-bottom:.2rem;-webkit-overflow-scrolling:touch}
 .qc-fam-bar::-webkit-scrollbar{display:none}
@@ -989,11 +1015,37 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
 </section>
 
+<!-- Service Area + Map (moved up — "here's me, here's my territory") -->
+<section class="section map-sect" id="service-area">
+  <div class="container">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">02</span>Where I work</div>
+      <h2>Serving <em>greater Kansas City.</em></h2>
+      <p>Based in Overland Park. Most jobs within 25 miles. Free walkthroughs anywhere on the map.</p>
+    </div>
+    <div class="map-grid">
+      <div class="map-frame rv">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d197686.4!2d-94.68!3d39.05!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <div class="area-list rv">
+        <h4>Kansas</h4>
+        <ul>
+          <li>Overland Park</li><li>Leawood</li><li>Prairie Village</li><li>Olathe</li><li>Lenexa</li><li>Shawnee</li><li>Mission</li><li>Merriam</li><li>Fairway</li>
+        </ul>
+        <h4>Missouri</h4>
+        <ul>
+          <li>Kansas City</li><li>Brookside</li><li>Waldo</li><li>Westport</li><li>River Market</li><li>Lee's Summit</li><li>Liberty</li><li>Blue Springs</li><li>Gladstone</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Services Tabs -->
 <section class="section services" id="services">
   <div class="container">
     <div class="section-head rv">
-      <div class="eyebrow"><span class="eyebrow-num">02</span>What we paint</div>
+      <div class="eyebrow"><span class="eyebrow-num">03</span>What we paint</div>
       <h2>Four <em>specialties.</em> Zero corners cut.</h2>
       <p>We don't subcontract. Every brush is in the hand of a True Coat painter we've trained and trust.</p>
     </div>
@@ -1121,7 +1173,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <div class="container">
     <div class="pal-head rv">
       <div>
-        <div class="eyebrow"><span class="eyebrow-num">03</span>Curated palette</div>
+        <div class="eyebrow"><span class="eyebrow-num">04</span>Curated palette</div>
         <h2>Colors we <em>believe in.</em></h2>
       </div>
       <p class="pal-lead">Seven years of watching walls dry taught us which colors <strong>actually look right</strong> a year later, not just on Pinterest. These four are our shortlist — tested in KC light, KC homes, KC lifestyles.</p>
@@ -1175,36 +1227,114 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
 </section>
 
-<!-- Full Color Library -->
-<section class="library" id="library">
+<!-- Style Studio — curated aesthetic palettes -->
+<section class="studio" id="studio">
   <div class="container">
-    <div class="lib-head rv">
-      <h3>Or browse the <em>full library.</em></h3>
-      <p>65+ painter-approved colors from Sherwin-Williams &amp; Benjamin Moore, organized by family. Tap any chip to send it with your quote.</p>
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">05</span>Style studio</div>
+      <h2>Pick a <em>whole vibe.</em></h2>
+    </div>
+    <div class="studio-head rv">
+      <p>Can't decide on one color? Start with a style. Each combo below is a real palette we've used in KC homes — colors, finishes, and trim picks that play together.</p>
     </div>
 
-    <div class="lib-filters rv">
-      <button class="lib-fil active" data-fam="all" style="--fc:linear-gradient(90deg,#EDE9DD,#1E2A45,#3D3A36)">All <span id="libCountAll">65</span></button>
-      <button class="lib-fil" data-fam="whites" style="--fc:#EDE9DD">Whites</button>
-      <button class="lib-fil" data-fam="neutrals" style="--fc:#CDC3AD">Neutrals</button>
-      <button class="lib-fil" data-fam="grays" style="--fc:#A8A299">Grays</button>
-      <button class="lib-fil" data-fam="darks" style="--fc:#3D3A36">Darks</button>
-      <button class="lib-fil" data-fam="blues" style="--fc:#1E2A45">Blues</button>
-      <button class="lib-fil" data-fam="blues-light" style="--fc:#A9C0BB">Soft Blues</button>
-      <button class="lib-fil" data-fam="greens" style="--fc:#7F8871">Greens</button>
-      <button class="lib-fil" data-fam="earthy" style="--fc:#B07C59">Earthy</button>
-      <button class="lib-fil" data-fam="reds" style="--fc:#B4452C">Reds</button>
-      <button class="lib-fil" data-fam="yellows" style="--fc:#DCBF7B">Yellows</button>
-    </div>
+    <div class="studio-grid">
+      <!-- Modern Farmhouse -->
+      <div class="studio-card rv">
+        <img src="https://images.pexels.com/photos/7601069/pexels-photo-7601069.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Modern farmhouse interior">
+        <div class="studio-body">
+          <div class="studio-swatches">
+            <span class="studio-sw" style="--sc:#EFEAE0" data-lbl="Simply White"></span>
+            <span class="studio-sw" style="--sc:#3D3A36" data-lbl="Iron Ore"></span>
+            <span class="studio-sw" style="--sc:#CCC1AE" data-lbl="Accessible Beige"></span>
+            <span class="studio-sw" style="--sc:#575757" data-lbl="Peppercorn"></span>
+          </div>
+          <div class="studio-name">Modern <em>Farmhouse</em></div>
+          <div class="studio-tag">Crisp whites. Black trim. Iron hardware.</div>
+          <div class="studio-meta"><span>Best for</span><b>Kitchens · Open plans</b></div>
+        </div>
+      </div>
 
-    <div class="lib-counter rv"><span>Showing <b id="libShown">65</b> of <b>65</b> colors</span></div>
+      <!-- Moody Modern -->
+      <div class="studio-card rv">
+        <img src="https://images.pexels.com/photos/7649191/pexels-photo-7649191.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Moody modern bedroom with dark accent wall">
+        <div class="studio-body">
+          <div class="studio-swatches">
+            <span class="studio-sw" style="--sc:#1E2A45" data-lbl="Naval"></span>
+            <span class="studio-sw" style="--sc:#ECEAE0" data-lbl="White Dove"></span>
+            <span class="studio-sw" style="--sc:#CDC3AD" data-lbl="Revere Pewter"></span>
+            <span class="studio-sw" style="--sc:#C1A559" data-lbl="Dijon"></span>
+          </div>
+          <div class="studio-name">Moody <em>Modern</em></div>
+          <div class="studio-tag">Rich navy walls. Warm neutrals. Brass accents.</div>
+          <div class="studio-meta"><span>Best for</span><b>Bedrooms · Studies</b></div>
+        </div>
+      </div>
 
-    <div class="lib-grid rv" id="libGrid"></div>
+      <!-- Organic Minimalism -->
+      <div class="studio-card rv">
+        <img src="https://images.pexels.com/photos/7209222/pexels-photo-7209222.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Organic minimalist interior with warm neutrals">
+        <div class="studio-body">
+          <div class="studio-swatches">
+            <span class="studio-sw" style="--sc:#CDC3AD" data-lbl="Revere Pewter"></span>
+            <span class="studio-sw" style="--sc:#C8BCA1" data-lbl="Manchester Tan"></span>
+            <span class="studio-sw" style="--sc:#EBE4D4" data-lbl="Greek Villa"></span>
+            <span class="studio-sw" style="--sc:#9D9C7F" data-lbl="Artichoke"></span>
+          </div>
+          <div class="studio-name">Organic <em>Minimalism</em></div>
+          <div class="studio-tag">Earth tones. Quiet palette. Max calm.</div>
+          <div class="studio-meta"><span>Best for</span><b>Living · Yoga spaces</b></div>
+        </div>
+      </div>
 
-    <div class="lib-foot rv empty" id="libFoot">
-      <div class="sel-preview" id="libSelPreview"><span class="sel-swatch"></span><span><b class="sel-name">None selected</b> · <span class="sel-code"></span></span></div>
-      <p>Found the one? We'll bring a real sample to your walkthrough — so you can see it on your actual walls before we paint a drop.</p>
-      <a href="#quote" class="btn btn-primary" id="libCta">Start My Quote With This Color →</a>
+      <!-- Classic Craftsman -->
+      <div class="studio-card rv">
+        <img src="https://images.pexels.com/photos/2789711/pexels-photo-2789711.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Classic craftsman exterior">
+        <div class="studio-body">
+          <div class="studio-swatches">
+            <span class="studio-sw" style="--sc:#31473A" data-lbl="Hunter Green"></span>
+            <span class="studio-sw" style="--sc:#EFEAE0" data-lbl="Simply White"></span>
+            <span class="studio-sw" style="--sc:#3D3A36" data-lbl="Iron Ore"></span>
+            <span class="studio-sw" style="--sc:#6A3532" data-lbl="Cordovan"></span>
+          </div>
+          <div class="studio-name">Classic <em>Craftsman</em></div>
+          <div class="studio-tag">Heritage green. Natural wood. Timeless.</div>
+          <div class="studio-meta"><span>Best for</span><b>Exteriors · Dens</b></div>
+        </div>
+      </div>
+
+      <!-- Coastal Fresh -->
+      <div class="studio-card rv">
+        <img src="https://images.pexels.com/photos/5691471/pexels-photo-5691471.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Coastal fresh bright interior">
+        <div class="studio-body">
+          <div class="studio-swatches">
+            <span class="studio-sw" style="--sc:#A9C0BB" data-lbl="Palladian Blue"></span>
+            <span class="studio-sw" style="--sc:#EDECE6" data-lbl="Pure White"></span>
+            <span class="studio-sw" style="--sc:#C0C9BA" data-lbl="Sea Salt"></span>
+            <span class="studio-sw" style="--sc:#4B596B" data-lbl="Newburyport Blue"></span>
+          </div>
+          <div class="studio-name">Coastal <em>Fresh</em></div>
+          <div class="studio-tag">Water-clean blues. Crisp trim. Airy.</div>
+          <div class="studio-meta"><span>Best for</span><b>Baths · Bedrooms</b></div>
+        </div>
+      </div>
+
+      <!-- Urban Bold -->
+      <div class="studio-card rv">
+        <img src="https://images.pexels.com/photos/6301168/pexels-photo-6301168.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Urban bold modern interior">
+        <div class="studio-body">
+          <div class="studio-swatches">
+            <span class="studio-sw" style="--sc:#2E2D2A" data-lbl="Tricorn Black"></span>
+            <span class="studio-sw" style="--sc:#ECEAE0" data-lbl="White Dove"></span>
+            <span class="studio-sw" style="--sc:#5E574E" data-lbl="Urbane Bronze"></span>
+            <span class="studio-sw" style="--sc:#B4452C" data-lbl="Fireweed"></span>
+          </div>
+          <div class="studio-name">Urban <em>Bold</em></div>
+          <div class="studio-tag">Confident dark walls. Gallery-grade finish.</div>
+          <div class="studio-meta"><span>Best for</span><b>Accent walls · Dining</b></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1213,7 +1343,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <section class="section portfolio" id="work">
   <div class="container">
     <div class="section-head rv">
-      <div class="eyebrow"><span class="eyebrow-num">04</span>Recent transformations</div>
+      <div class="eyebrow"><span class="eyebrow-num">06</span>Recent transformations</div>
       <h2>Slide to <em>Flawless.</em></h2>
       <p>Every project below was painted by our crew in the last 90 days. Real KC homes, real customers, real results.</p>
     </div>
@@ -1266,7 +1396,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <section class="section reviews" id="reviews">
   <div class="container">
     <div class="section-head rv">
-      <div class="eyebrow"><span class="eyebrow-num">05</span>What KC is saying</div>
+      <div class="eyebrow"><span class="eyebrow-num">07</span>What KC is saying</div>
       <h2>We live and die by <em>the last review.</em></h2>
     </div>
 
@@ -1323,37 +1453,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
 </section>
 
-<!-- Service Area + Map -->
-<section class="section map-sect">
-  <div class="container">
-    <div class="section-head rv">
-      <div class="eyebrow"><span class="eyebrow-num">06</span>We come to you</div>
-      <h2>Serving <em>greater Kansas City.</em></h2>
-      <p>Based in Overland Park. Most of our jobs are within 25 miles.</p>
-    </div>
-    <div class="map-grid">
-      <div class="map-frame rv">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d197686.4!2d-94.68!3d39.05!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-      </div>
-      <div class="area-list rv">
-        <h4>Kansas</h4>
-        <ul>
-          <li>Overland Park</li><li>Leawood</li><li>Prairie Village</li><li>Olathe</li><li>Lenexa</li><li>Shawnee</li><li>Mission</li><li>Merriam</li><li>Fairway</li>
-        </ul>
-        <h4>Missouri</h4>
-        <ul>
-          <li>Kansas City</li><li>Brookside</li><li>Waldo</li><li>Westport</li><li>River Market</li><li>Lee's Summit</li><li>Liberty</li><li>Blue Springs</li><li>Gladstone</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section class="section" id="faq" style="background:var(--ink)">
   <div class="container">
     <div class="section-head rv">
-      <div class="eyebrow"><span class="eyebrow-num">07</span>Before you book</div>
+      <div class="eyebrow"><span class="eyebrow-num">08</span>Before you book</div>
       <h2>The questions <em>everyone asks.</em></h2>
     </div>
     <div class="faq-wrap">
