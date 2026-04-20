@@ -437,7 +437,31 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .pq-attr{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.82rem;color:var(--muted)}
 .pq-attr b{color:var(--cream);font-weight:500}
 
-/* -------- BEFORE/AFTER -------- */
+/* -------- PROCESS / HOW WE WORK -------- */
+.process-grid{display:grid;grid-template-columns:1fr;gap:1.2rem}
+@media(min-width:720px){.process-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.process-grid{grid-template-columns:repeat(3,1fr)}}
+.process-card{position:relative;background:var(--ink-3);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2.2rem 1.6rem 1.6rem;overflow:hidden;transition:transform .3s ease,border-color .3s ease}
+.process-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0;transition:opacity .3s ease}
+.process-card:hover{transform:translateY(-4px);border-color:var(--line-2);box-shadow:0 18px 40px rgba(0,0,0,.4)}
+.process-card:hover::before{opacity:1}
+.process-num{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(3.2rem,5vw,4.4rem);line-height:.9;color:var(--red);opacity:.25;position:absolute;top:1rem;right:1.2rem;letter-spacing:-.03em;transition:opacity .3s ease}
+.process-card:hover .process-num{opacity:.8}
+.process-icon{margin-bottom:1.2rem;width:46px;height:46px;border-radius:12px;background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);display:grid;place-items:center;color:var(--red);position:relative;z-index:1}
+.process-icon svg{width:22px;height:22px}
+.process-card h3{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--cream);margin-bottom:.55rem;font-size:1.05rem;position:relative;z-index:1}
+.process-card p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:.95rem;position:relative;z-index:1}
+.process-details{padding-top:.8rem;border-top:1px solid var(--line);font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-family:'Oswald',sans-serif;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.process-details b{color:var(--mint);font-weight:500}
+
+.process-promise{margin-top:2.5rem;padding:1.4rem 1.8rem;background:linear-gradient(160deg,rgba(43,232,197,.07),rgba(43,232,197,.02));border:1px solid rgba(43,232,197,.25);border-radius:14px;display:flex;gap:1rem;align-items:center}
+.process-promise-ico{width:42px;height:42px;border-radius:50%;background:rgba(43,232,197,.15);color:var(--mint);display:grid;place-items:center;flex-shrink:0}
+.process-promise-ico svg{width:20px;height:20px}
+.process-promise-text{color:var(--muted);font-size:.92rem;line-height:1.55}
+.process-promise-text b{color:var(--cream);font-weight:500}
+@media(max-width:560px){.process-promise{flex-direction:column;text-align:center;gap:.7rem}}
+
+/* -------- BEFORE/AFTER (retained for potential reuse) -------- */
 .portfolio{background:var(--ink-2)}
 .ba-wrap{position:relative;aspect-ratio:16/10;border-radius:var(--rad-lg);overflow:hidden;user-select:none;box-shadow:var(--shadow-2);max-width:1000px;margin:0 auto 2rem}
 .ba-img{position:absolute;inset:0;background-size:cover;background-position:center}
@@ -1339,44 +1363,88 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
 </section>
 
-<!-- Portfolio / Before-After -->
+<!-- How We Protect Your Home (formerly Slide to Flawless) -->
 <section class="section portfolio" id="work">
   <div class="container">
     <div class="section-head rv">
-      <div class="eyebrow"><span class="eyebrow-num">06</span>Recent transformations</div>
-      <h2>Slide to <em>Flawless.</em></h2>
-      <p>Every project below was painted by our crew in the last 90 days. Real KC homes, real customers, real results.</p>
+      <div class="eyebrow"><span class="eyebrow-num">06</span>How we protect your home</div>
+      <h2>The prep no one else <em>bothers with.</em></h2>
+      <p>You hired us to paint your house — not trash it. Here's exactly what happens <strong style="color:var(--text)">before a single drop of paint</strong> goes on the wall.</p>
     </div>
 
-    <div class="ba-wrap rv" id="baWrap">
-      <div class="ba-img ba-after"></div>
-      <div class="ba-img ba-before" id="baBefore"></div>
-      <div class="ba-label b">Before</div>
-      <div class="ba-label a">Flawless</div>
-      <div class="ba-handle" id="baHandle"></div>
+    <div class="process-grid">
+      <!-- 01 Pre-walk + plan -->
+      <div class="process-card rv">
+        <div class="process-num">01</div>
+        <div class="process-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+        </div>
+        <h3>Pre-walk + plan</h3>
+        <p>10 minutes together before a single tool comes off the truck. We flag off-limits areas, confirm colors, note pets and access points. No surprises once tarps are down.</p>
+        <div class="process-details"><span>Takes</span><b>10 minutes</b></div>
+      </div>
+
+      <!-- 02 Everything gets covered -->
+      <div class="process-card rv">
+        <div class="process-num">02</div>
+        <div class="process-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z"/></svg>
+        </div>
+        <h3>Everything gets covered</h3>
+        <p>Canvas drop cloths on every floor — never plastic, it slips. Furniture centered and wrapped. HVAC vents sealed so paint dust doesn't circulate. Light fixtures bagged.</p>
+        <div class="process-details"><span>Floors</span><b>Canvas · non-slip</b></div>
+      </div>
+
+      <!-- 03 Precision masking -->
+      <div class="process-card rv">
+        <div class="process-num">03</div>
+        <div class="process-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></svg>
+        </div>
+        <h3>Precision masking</h3>
+        <p>FrogTape on every baseboard, trim piece, outlet, switch plate, and window frame. Clean lines, zero bleed-through, no sticky residue when we pull it.</p>
+        <div class="process-details"><span>Tape</span><b>FrogTape Delicate</b></div>
+      </div>
+
+      <!-- 04 Repairs before paint -->
+      <div class="process-card rv">
+        <div class="process-num">04</div>
+        <div class="process-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>Repairs before paint</h3>
+        <p>Nail holes filled. Drywall cracks patched and sanded flush. Rotted exterior boards flagged and replaced. Loose caulk cut out and redone. Paint can't fix what's broken.</p>
+        <div class="process-details"><span>Included</span><b>Patch · Caulk · Replace</b></div>
+      </div>
+
+      <!-- 05 Dustless sanding -->
+      <div class="process-card rv">
+        <div class="process-num">05</div>
+        <div class="process-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-4M12 4l4 4M6 18l12-12M20 8l-4 4M10 14l-4 4"/><circle cx="6" cy="18" r="2"/></svg>
+        </div>
+        <h3>Dustless sanding</h3>
+        <p>Festool DC sanders with HEPA extraction on every handheld and pole sander. Near-zero dust in your air, on your photos, or in your food. Allergies + kids safe.</p>
+        <div class="process-details"><span>Extraction</span><b>HEPA · Festool</b></div>
+      </div>
+
+      <!-- 06 Clean exit -->
+      <div class="process-card rv">
+        <div class="process-num">06</div>
+        <div class="process-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Clean exit</h3>
+        <p>Two premium coats applied. Tape pulled clean while paint's still tacky (no chipping, ever). Vacuum on the way out. Furniture back exactly where it started. Walkthrough before we leave.</p>
+        <div class="process-details"><span>Final</span><b>Walkthrough + warranty</b></div>
+      </div>
     </div>
 
-    <div class="ba-projects rv">
-      <div class="proj active" data-before="https://images.pexels.com/photos/5691493/pexels-photo-5691493.jpeg?auto=compress&cs=tinysrgb&w=1600" data-after="https://images.pexels.com/photos/7649191/pexels-photo-7649191.jpeg?auto=compress&cs=tinysrgb&w=1600">
-        <h4>Leawood Master Suite</h4>
-        <p>Plain white walls to moody navy accent — SW Naval</p>
-        <div class="meta"><span>◷ 2 days</span><span>$1,840</span></div>
+    <div class="process-promise rv">
+      <div class="process-promise-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <div class="proj" data-before="https://images.pexels.com/photos/1212053/pexels-photo-1212053.jpeg?auto=compress&cs=tinysrgb&w=1600" data-after="https://images.pexels.com/photos/2789711/pexels-photo-2789711.jpeg?auto=compress&cs=tinysrgb&w=1600">
-        <h4>Overland Park Exterior</h4>
-        <p>Tired brown siding to modern white + black trim — full prep</p>
-        <div class="meta"><span>◷ 5 days</span><span>$7,200</span></div>
-      </div>
-      <div class="proj" data-before="https://images.pexels.com/photos/4119836/pexels-photo-4119836.jpeg?auto=compress&cs=tinysrgb&w=1600" data-after="https://images.pexels.com/photos/7601069/pexels-photo-7601069.jpeg?auto=compress&cs=tinysrgb&w=1600">
-        <h4>Prairie Village Kitchen</h4>
-        <p>Oak cabinets sprayed in Alabaster — new hardware</p>
-        <div class="meta"><span>◷ 6 days</span><span>$4,400</span></div>
-      </div>
-      <div class="proj" data-before="https://images.pexels.com/photos/1040893/pexels-photo-1040893.jpeg?auto=compress&cs=tinysrgb&w=1600" data-after="https://images.pexels.com/photos/6301168/pexels-photo-6301168.jpeg?auto=compress&cs=tinysrgb&w=1600">
-        <h4>Brookside Living Room</h4>
-        <p>Traditional beige to crisp modern finish — SW Emerald</p>
-        <div class="meta"><span>◷ 3 days</span><span>$2,650</span></div>
-      </div>
+      <div class="process-promise-text"><b>Our guarantee:</b> if any damage happens to your home during the job — a scuff on a baseboard, a drop on your floor, a scratch on your furniture — we fix it or replace it. Written into every contract. No arguments.</div>
     </div>
   </div>
 </section>
@@ -1593,11 +1661,12 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
   });
 });
 
-/* ---- Before/After Slider ---- */
+/* ---- Before/After Slider (guard — section may have been replaced) ---- */
 (function(){
   const wrap=document.getElementById('baWrap');
   const before=document.getElementById('baBefore');
   const handle=document.getElementById('baHandle');
+  if(!wrap || !handle || !before) return;
   let dragging=false;
   const setPos=(clientX)=>{
     const r=wrap.getBoundingClientRect();
