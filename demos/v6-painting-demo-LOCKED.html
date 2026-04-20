@@ -159,6 +159,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 @keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
 .r-eye{color:var(--cream);font-family:'Oswald',sans-serif;font-size:.8rem;text-transform:uppercase;letter-spacing:.24em;margin-bottom:.2rem}
 
+/* First-time buyer discount badge + was-line */
+.r-discount-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .8rem;background:rgba(43,232,197,.14);border:1px solid rgba(43,232,197,.38);border-radius:999px;font-size:.7rem;color:var(--mint);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-top:.65rem;animation:popIn .5s .45s backwards cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 20px rgba(43,232,197,.15)}
+.r-discount-badge svg{width:12px;height:12px;stroke-width:3;color:var(--mint)}
+.r-range-was{font-size:.72rem;color:var(--dim);margin-top:.4rem;letter-spacing:.02em;font-family:'Oswald',sans-serif;text-transform:uppercase;animation:popIn .4s .7s backwards ease-out}
+.r-range-was s{color:var(--dim);margin:0 .1rem}
+.r-range-was b{color:var(--mint);font-weight:500;margin-left:.35rem}
+.r-item-discount{color:var(--mint)!important;font-weight:600}
+
 /* Giant price */
 .r-price-wrap{padding:1.2rem 0 .3rem;animation:popIn .6s .2s backwards cubic-bezier(.34,1.56,.64,1)}
 .r-range{font-family:'Oswald',sans-serif;font-size:clamp(2.2rem,5.6vw,3.4rem);font-weight:700;letter-spacing:-.01em;line-height:1;margin-bottom:.5rem;background:linear-gradient(180deg,#fff 0%,#fff 50%,#F4EDE4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(255,255,255,.1)}
@@ -1002,10 +1010,15 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 13 10 18 20 7"/></svg>
               </div>
               <div class="r-eye">Your ballpark · locked</div>
+              <div class="r-discount-badge" id="rDiscountBadge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 13 10 18 20 7"/></svg>
+                $100 New Client Discount Applied
+              </div>
             </div>
 
             <div class="r-price-wrap">
               <div class="r-range"><span id="rLow">$0</span><span class="r-dash">–</span><span id="rHigh">$0</span></div>
+              <div class="r-range-was" id="rRangeWas">Before discount: <s id="rWasLow">$0</s> – <s id="rWasHigh">$0</s> <b>You save $100</b></div>
               <div class="r-conf">Based on 200+ KC jobs · final price needs 10 min on-site</div>
             </div>
 
@@ -2171,14 +2184,22 @@ const COLORS = [
   back.addEventListener('click',retreat);
 
   /* Calculate + render ballpark */
+  const NEW_CLIENT_DISCOUNT = 100;  // $100 off first paint job — matches deal strip
   const calc=()=>{
     const base=priceMap[state.service][state.scope];
     const mult=condMult[state.condition];
-    let low=Math.round(base[0]*mult/50)*50;
-    let high=Math.round(base[1]*mult/50)*50;
+    const rawLow=Math.round(base[0]*mult/50)*50;
+    const rawHigh=Math.round(base[1]*mult/50)*50;
+
+    // Apply new-client discount
+    const low = Math.max(rawLow - NEW_CLIENT_DISCOUNT, 500);
+    const high = Math.max(rawHigh - NEW_CLIENT_DISCOUNT, 600);
 
     document.getElementById('rLow').textContent = '$'+low.toLocaleString();
     document.getElementById('rHigh').textContent = '$'+high.toLocaleString();
+    // "Was" strikethrough line
+    document.getElementById('rWasLow').textContent = '$'+rawLow.toLocaleString();
+    document.getElementById('rWasHigh').textContent = '$'+rawHigh.toLocaleString();
 
     // Item breakdown
     const items=[];
@@ -2197,6 +2218,7 @@ const COLORS = [
     }
     items.push(['Timeline',timelineLabel]);
     items.push(['Warranty','5-year workmanship']);
+    items.push(['New client discount','<span class="r-item-discount">−$100.00</span>']);
 
     document.getElementById('rItems').innerHTML = items.map(
       ([k,v])=>`<div class="r-item"><span>${k}</span><strong>${v}</strong></div>`
