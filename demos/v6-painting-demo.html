@@ -566,9 +566,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);margin:0 auto;max-width:200px}
 @media(max-width:760px){
   .ticker{display:none}
-  .section{padding:3.6rem 0}
-  .section-head{margin-bottom:2rem}
-  .hero{padding:2.4rem 0 2.6rem}
+  .section{padding:2.8rem 0}
+  .section-head{margin-bottom:1.5rem}
+  .section-head p{font-size:.88rem;line-height:1.55}
+  .hero{padding:2.2rem 0 2.3rem}
   .hero-grid{gap:2rem}
   .hero-badges{margin-bottom:1rem;gap:.4rem}
   .hero-badge{padding:.32rem .65rem;font-size:.7rem}
@@ -606,13 +607,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .partner{font-size:.85rem;gap:.38rem}
   .partner-dot{width:7px;height:7px}
 
-  .stats{padding:3rem 0}
-  .stats-grid{gap:1.2rem}
+  .stats{padding:2.4rem 0}
+  .stats-grid{gap:.9rem}
   .stat{padding:.4rem}
   .stat .num{font-size:clamp(2rem,8vw,2.8rem)}
 
-  .meet{padding:3.4rem 0}
-  .meet-photo{max-width:260px;aspect-ratio:1/1}
+  .meet{padding:2.8rem 0}
+  .meet-grid{gap:1.4rem}
+  .meet-photo{max-width:220px;aspect-ratio:1/1}
   .meet-content h2{margin-bottom:.3rem}
   .meet-bio{font-size:.94rem;line-height:1.65}
   .meet-stats{gap:.45rem}
@@ -625,8 +627,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .tab-btn{padding:.6rem .95rem;font-size:.8rem}
   .tab-panel{gap:1.4rem}
 
-  .palette{padding:3.6rem 0 3rem}
-  .palette-grid{grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .palette{padding:2.6rem 0 2.2rem}
+  .palette-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}
   .pal-card{border-radius:14px}
   .pal-body{padding:1rem .9rem 1.1rem}
   .pal-name{font-size:1.3rem}
@@ -648,9 +650,33 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .ba-handle::before{width:36px;height:36px}
   .ba-projects{gap:.7rem}
 
-  .pullquote{padding:4rem 0}
-  .pq-body{font-size:clamp(1.4rem,6vw,2.1rem);line-height:1.25;margin-bottom:1.5rem}
-  .pq-eye{margin-bottom:1.6rem;font-size:.68rem}
+  /* Process (How we protect your home) — compact 2-col on phone */
+  .process-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}
+  .process-card{padding:1.4rem 1rem 1rem;border-radius:14px}
+  .process-num{font-size:2.6rem;top:.65rem;right:.85rem;opacity:.35}
+  .process-icon{width:36px;height:36px;border-radius:9px;margin-bottom:.8rem}
+  .process-icon svg{width:18px;height:18px}
+  .process-card h3{font-size:.82rem;letter-spacing:.03em;margin-bottom:.35rem}
+  .process-card p{font-size:.74rem;line-height:1.5;margin-bottom:.6rem}
+  .process-details{padding-top:.55rem;font-size:.58rem;letter-spacing:.06em;flex-direction:column;align-items:flex-start;gap:.15rem}
+  .process-promise{margin-top:1.6rem;padding:1.1rem 1.1rem;gap:.7rem}
+  .process-promise-ico{width:34px;height:34px}
+  .process-promise-ico svg{width:16px;height:16px}
+  .process-promise-text{font-size:.82rem;line-height:1.5}
+
+  /* Style Studio — 2-col on phone with shorter cards */
+  .studio-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}
+  .studio-card{aspect-ratio:3/4;border-radius:14px}
+  .studio-body{padding:1rem .9rem .95rem}
+  .studio-name{font-size:1.15rem;line-height:1.05;margin-bottom:.25rem}
+  .studio-tag{font-size:.75rem;margin-bottom:.55rem;line-height:1.35}
+  .studio-swatches{gap:.25rem;margin-bottom:.55rem}
+  .studio-sw{width:16px;height:16px}
+  .studio-meta{padding-top:.55rem;font-size:.58rem;letter-spacing:.08em}
+
+  .pullquote{padding:3rem 0}
+  .pq-body{font-size:clamp(1.35rem,5.8vw,1.95rem);line-height:1.25;margin-bottom:1.2rem}
+  .pq-eye{margin-bottom:1.2rem;font-size:.66rem}
 
   .rev-score{margin-bottom:2rem}
   .rev-score .big{font-size:clamp(2.8rem,14vw,4rem)}
@@ -696,6 +722,15 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .lib-grid{grid-template-columns:repeat(4,1fr)}
   .qc-colors-grid{grid-template-columns:repeat(6,1fr)}
   .palette-grid{grid-template-columns:1fr}
+  /* Tiny screen — process + studio stay 2-col for density, not 1-col */
+  .process-card{padding:1.15rem .85rem .9rem}
+  .process-num{font-size:2.1rem}
+  .process-card h3{font-size:.76rem}
+  .process-card p{font-size:.68rem;line-height:1.45}
+  .studio-body{padding:.85rem .75rem .8rem}
+  .studio-name{font-size:1rem}
+  .studio-tag{font-size:.68rem}
+  .studio-meta{font-size:.54rem}
   .partners-inner{flex-direction:column;text-align:center;gap:1rem}
   .partners-logos{justify-content:center}
   .sticky-cta a{padding:.7rem;font-size:.82rem}
