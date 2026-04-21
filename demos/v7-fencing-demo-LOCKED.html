@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ironline Fencing KC | Quote It. Book It. Done.</title>
+<meta name="description" content="Kansas City's premier fencing contractor. Wood, vinyl, aluminum, chain-link. Instant online quote — book your install week in under 3 minutes. Licensed, insured, 20-year warranty.">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<script>window.MAPBOX_TOKEN='__MAPBOX_TOKEN__';</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://ironlinefencing.kc/#business","name":"Ironline Fencing KC","image":"https://ironlinefencing.kc/og.jpg","telephone":"+18049571003","email":"hello@ironlinefencing.kc","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"1100 Main St","addressLocality":"Kansas City","addressRegion":"MO","postalCode":"64105","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":39.0997,"longitude":-94.5786},"url":"https://ironlinefencing.kc","areaServed":["Kansas City","Overland Park","Lee's Summit","Blue Springs","Shawnee","Olathe","Independence","Liberty"],"openingHours":"Mo-Sa 07:00-19:00","sameAs":[],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"284"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How fast can I get a quote?","acceptedAnswer":{"@type":"Answer","text":"Instant. Our online quote builder gives a ballpark in under 3 minutes, locked in writing within 24 hours after an on-site measure."}},
+{"@type":"Question","name":"Do you pull permits?","acceptedAnswer":{"@type":"Answer","text":"Yes. We handle every permit — city, county, and HOA — before a post hits the ground."}},
+{"@type":"Question","name":"How long does an install take?","acceptedAnswer":{"@type":"Answer","text":"Most residential fences: 1 to 3 days. Your quote includes a concrete install window, not a vague 'week of.'"}},
+{"@type":"Question","name":"What's your warranty?","acceptedAnswer":{"@type":"Answer","text":"Wood: 10 years. Vinyl: 25 years. Aluminum: 20 years. Chain-link: 5 years. Workmanship: lifetime."}},
+{"@type":"Question","name":"Do I need to call 811?","acceptedAnswer":{"@type":"Answer","text":"We call 811 for you. Underground utility locating is included in every install — no charge, no exceptions."}},
+{"@type":"Question","name":"Can I add gates or automation later?","acceptedAnswer":{"@type":"Answer","text":"Yes. But adding them during the initial install is roughly 40% cheaper than retrofitting."}},
+{"@type":"Question","name":"Whose side does the finished side face?","acceptedAnswer":{"@type":"Answer","text":"KC convention and most local HOAs require the finished side to face your neighbor. For both-sides-finished, ask about shadowbox or board-on-board."}},
+{"@type":"Question","name":"Do you do partial replacements?","acceptedAnswer":{"@type":"Answer","text":"Yes. Storm damage, rot, or a single heaved post — we match materials and repair only what's broken. Over ~40% damaged, full replacement is cheaper long-term."}},
+{"@type":"Question","name":"What if my fence is on the property line?","acceptedAnswer":{"@type":"Answer","text":"We pull county plat records and set posts 6 inches inside your line. For disputed lines we pause and recommend a formal survey before digging."}},
+{"@type":"Question","name":"Do KC suburbs require permits for fence replacement?","acceptedAnswer":{"@type":"Answer","text":"Kansas City MO usually doesn't require a permit for in-kind replacement. Overland Park, Leawood, and most Johnson County cities do. We file every permit for you."}}
+]}
+</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--bg2:#111111;--bg3:#181818;--surface:rgba(255,255,255,.025);
+  --text:#f5f5f5;--tm:rgba(245,245,245,.65);--td:rgba(245,245,245,.4);--tdd:rgba(245,245,245,.25);
+  --bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.11);--bdr3:rgba(255,255,255,.18);
+  --accent:#fbbf24;--accent2:#f59e0b;--accent3:#fcd34d;--glow:rgba(251,191,36,.12);
+  --success:#10b981;--sglow:rgba(16,185,129,.1);
+  --danger:#ef4444;
+  --font-d:'Archivo Black',sans-serif;--font-b:'Inter',sans-serif;--font-m:'JetBrains Mono',monospace;--font-s:'Fraunces','Times New Roman',serif;
+  --ease:cubic-bezier(.16,1,.3,1);--ease2:cubic-bezier(.34,1.56,.64,1);
+  --max:1140px;--r:14px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:.94rem;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent3)}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* Scroll reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.vis{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-32px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rv-l.vis{opacity:1;transform:none}
+.rv-r{opacity:0;transform:translateX(32px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rv-r.vis{opacity:1;transform:none}
+
+/* Utility — fence pattern SVG background (renders as darkened texture) */
+.fence-bg{position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='160' viewBox='0 0 80 160'%3E%3Cg fill='none' stroke='%23fbbf24' stroke-width='1.5'%3E%3Crect x='10' y='10' width='12' height='140'/%3E%3Crect x='34' y='10' width='12' height='140'/%3E%3Crect x='58' y='10' width='12' height='140'/%3E%3Cline x1='0' y1='40' x2='80' y2='40'/%3E%3Cline x1='0' y1='120' x2='80' y2='120'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.grid-bg{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(var(--accent) 1px,transparent 1px),linear-gradient(90deg,var(--accent) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+/* Shared */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:2}
+.eyebrow{font-family:var(--font-m);font-size:.65rem;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;display:inline-flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::before{content:'';width:24px;height:1px;background:var(--accent)}
+.eyebrow-num{font-family:var(--font-s);font-style:italic;font-weight:400;font-size:1.4rem;letter-spacing:-.02em;color:var(--text);opacity:.8;line-height:1;margin-right:2px;font-variation-settings:"opsz" 144,"SOFT" 40}
+.section-title{font-family:var(--font-d);font-size:clamp(1.9rem,4.2vw,2.9rem);line-height:1.02;letter-spacing:-.5px;margin-bottom:16px;text-transform:uppercase}
+.section-title .hl{color:var(--accent)}
+.section-title em{font-family:var(--font-s);font-style:italic;font-weight:400;text-transform:none;color:var(--accent);letter-spacing:-.02em;font-variation-settings:"opsz" 144,"SOFT" 50;display:inline-block}
+.section-sub{font-size:1rem;color:var(--tm);max-width:620px;line-height:1.65}
+.section-head{text-align:center;margin:0 auto 56px;max-width:720px}
+.section-head .eyebrow{justify-content:center}
+.section-head .eyebrow::after{content:'';width:24px;height:1px;background:var(--accent)}
+section{padding:96px 0;position:relative;overflow:hidden}
+
+/* ═══ NAV ═══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,.75);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid transparent;transition:all .3s var(--ease)}
+.nav.scrolled{background:rgba(10,10,10,.92);border-bottom-color:var(--bdr)}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-d);font-size:1.05rem;letter-spacing:.5px;text-transform:uppercase}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#000;font-family:var(--font-d);font-size:.95rem;position:relative;box-shadow:0 4px 16px rgba(251,191,36,.3)}
+.logo-mark::after{content:'';position:absolute;inset:3px;border:1.5px solid #000;border-radius:6px;opacity:.4}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:.78rem;color:var(--tm);font-weight:500;letter-spacing:.3px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+.nav-phone{display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:.76rem;font-weight:500;color:var(--text);padding:8px 12px;border-radius:100px;border:1px solid var(--bdr2);transition:all .2s}
+.nav-phone:hover{border-color:var(--accent);color:var(--accent)}
+.nav-btn{padding:9px 18px;background:var(--accent);color:#000;border-radius:100px;font-size:.76rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;font-family:var(--font-b);transition:all .2s;box-shadow:0 2px 14px rgba(251,191,36,.25)}
+.nav-btn:hover{background:var(--accent3);transform:translateY(-1px);box-shadow:0 4px 20px rgba(251,191,36,.4);color:#000}
+.menu-btn{display:none;width:40px;height:40px;border:1px solid var(--bdr2);border-radius:10px;align-items:center;justify-content:center}
+.menu-btn span{width:18px;height:1.5px;background:var(--text);position:relative}
+.menu-btn span::before,.menu-btn span::after{content:'';position:absolute;left:0;width:18px;height:1.5px;background:var(--text)}
+.menu-btn span::before{top:-6px}.menu-btn span::after{top:6px}
+
+/* ═══ HERO ═══ */
+.hero{padding-top:120px;padding-bottom:64px;min-height:100vh;display:flex;align-items:center;position:relative;background:var(--bg)}
+.hero-photo{position:absolute;inset:0;z-index:0;background:url('https://images.unsplash.com/photo-1657205059631-cb90c392f0c6?w=1920&auto=format&fit=crop') center/cover;opacity:.38}
+.hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.6) 0%,rgba(10,10,10,.45) 40%,rgba(10,10,10,.95) 100%),radial-gradient(ellipse at top right,rgba(251,191,36,.08),transparent 55%)}
+.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center;position:relative;z-index:3}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:100px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);font-size:.7rem;font-weight:500;color:var(--accent3);letter-spacing:.3px;margin-bottom:22px}
+.hero-badge-dot{width:18px;height:18px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#000;font-size:.55rem;font-weight:800}
+.hero-h1{font-family:var(--font-d);font-size:clamp(2.6rem,6.2vw,4.4rem);line-height:.98;letter-spacing:-1.5px;text-transform:uppercase;margin-bottom:22px}
+.hero-h1 em{font-family:var(--font-s);font-style:italic;font-weight:400;text-transform:none;color:var(--accent);letter-spacing:-.02em;display:inline-block;position:relative;font-variation-settings:"opsz" 144,"SOFT" 60}
+.hero-h1 .hl{color:var(--accent);position:relative;display:inline-block}
+.hero-h1 .hl::after{content:'';position:absolute;left:0;right:0;bottom:6px;height:3px;background:var(--accent);opacity:.28}
+.hero-sub{font-size:1.05rem;color:var(--tm);line-height:1.6;margin-bottom:32px;max-width:520px}
+.hero-stats{display:flex;gap:32px;padding-top:24px;border-top:1px solid var(--bdr)}
+.hstat-n{font-family:var(--font-d);font-size:1.75rem;color:var(--accent);line-height:1;letter-spacing:-.8px}
+.hstat-l{font-size:.68rem;color:var(--td);text-transform:uppercase;letter-spacing:1px;margin-top:6px}
+.hero-ctas{display:flex;gap:12px;margin-bottom:36px}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:16px 28px;background:var(--accent);color:#000;border-radius:100px;font-size:.85rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;box-shadow:0 4px 24px rgba(251,191,36,.28);transition:all .25s var(--ease);border:2px solid var(--accent)}
+.btn-primary:hover{background:var(--accent3);border-color:var(--accent3);color:#000;transform:translateY(-2px);box-shadow:0 8px 32px rgba(251,191,36,.5)}
+.btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:16px 26px;color:var(--text);border:2px solid var(--bdr2);border-radius:100px;font-size:.85rem;font-weight:600;letter-spacing:.3px;text-transform:uppercase;transition:all .25s var(--ease)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary svg,.btn-ghost svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* Hero visual — the quote widget is the visual */
+.hero-visual{position:relative}
+.hero-fence-deco{position:absolute;inset:-20px;opacity:.35;z-index:1;pointer-events:none}
+
+/* ═══ QUOTE WIDGET (the star) ═══ */
+.qw{position:relative;z-index:2;background:linear-gradient(145deg,var(--bg2),var(--bg3));border:1px solid var(--bdr2);border-radius:20px;padding:28px 26px 26px;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 0 1px rgba(251,191,36,.04) inset;overflow:hidden}
+.qw::before{content:'';position:absolute;top:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.qw-glow{position:absolute;top:-50%;right:-30%;width:80%;height:120%;background:radial-gradient(circle,rgba(251,191,36,.08),transparent 60%);pointer-events:none;z-index:0}
+.qw-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;position:relative;z-index:1}
+.qw-title{font-family:var(--font-d);font-size:1.15rem;text-transform:uppercase;letter-spacing:-.2px}
+.qw-step-label{font-family:var(--font-m);font-size:.7rem;color:var(--tm);font-weight:500}
+.qw-step-label span{color:var(--accent);font-weight:700}
+
+/* Progress bar */
+.qw-progress{display:flex;gap:4px;margin-bottom:26px;position:relative;z-index:1}
+.qw-progress-seg{flex:1;height:3px;background:var(--bdr2);border-radius:2px;overflow:hidden;position:relative}
+.qw-progress-seg::after{content:'';position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.qw-progress-seg.done::after{transform:scaleX(1)}
+.qw-progress-seg.active::after{transform:scaleX(1);background:linear-gradient(90deg,var(--accent),var(--accent3));animation:pulseBar 1.5s ease infinite}
+@keyframes pulseBar{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Steps */
+.qw-step{display:none;position:relative;z-index:1}
+.qw-step.active{display:block;animation:stepIn .4s var(--ease)}
+@keyframes stepIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.qw-step h4{font-family:var(--font-d);font-size:1rem;text-transform:uppercase;letter-spacing:.2px;margin-bottom:4px}
+.qw-step .qw-hint{font-size:.74rem;color:var(--tm);margin-bottom:18px}
+
+/* Choice cards */
+.qw-choices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px}
+.qw-choice{padding:14px 10px;border:1.5px solid var(--bdr2);border-radius:12px;background:var(--surface);cursor:pointer;transition:all .2s var(--ease);text-align:center;position:relative;overflow:hidden}
+.qw-choice:hover{border-color:var(--bdr3);background:rgba(255,255,255,.04);transform:translateY(-1px)}
+.qw-choice.on{border-color:var(--accent);background:rgba(251,191,36,.08);box-shadow:0 0 0 2px rgba(251,191,36,.15)}
+.qw-choice-icon{width:32px;height:32px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:var(--tm);transition:color .2s}
+.qw-choice-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.qw-choice.on .qw-choice-icon{color:var(--accent)}
+.qw-choice-label{font-size:.76rem;font-weight:600;color:var(--text);margin-bottom:2px}
+.qw-choice-sub{font-size:.62rem;color:var(--td);letter-spacing:.3px}
+
+/* Style picker — visual fence-style cards */
+.qw-styles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.qw-style{padding:10px 6px 8px;border:1.5px solid var(--bdr2);border-radius:10px;background:var(--surface);cursor:pointer;transition:all .2s var(--ease);text-align:center;position:relative}
+.qw-style:hover{border-color:var(--bdr3);background:rgba(255,255,255,.04);transform:translateY(-1px)}
+.qw-style.on{border-color:var(--accent);background:rgba(251,191,36,.08);box-shadow:0 0 0 2px rgba(251,191,36,.15)}
+.qw-style-pic{width:100%;height:46px;margin-bottom:6px;display:flex;align-items:flex-end;justify-content:center;color:var(--tm);transition:color .2s}
+.qw-style.on .qw-style-pic{color:var(--accent)}
+.qw-style-pic svg{height:44px;width:auto}
+.qw-style-name{font-size:.7rem;font-weight:700;color:var(--text);letter-spacing:.1px;margin-bottom:1px;line-height:1.1}
+.qw-style-tag{font-size:.55rem;color:var(--td);letter-spacing:.3px;font-family:var(--font-m);text-transform:uppercase}
+.qw-style.on .qw-style-tag{color:var(--accent3)}
+
+/* Material cards (bigger, richer) */
+.qw-materials{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qw-mat{padding:12px;border:1.5px solid var(--bdr2);border-radius:12px;background:var(--surface);cursor:pointer;transition:all .2s var(--ease);display:flex;align-items:center;gap:10px;position:relative}
+.qw-mat:hover{border-color:var(--bdr3)}
+.qw-mat.on{border-color:var(--accent);background:rgba(251,191,36,.06)}
+.qw-mat-swatch{width:44px;height:44px;border-radius:10px;flex-shrink:0;border:1px solid var(--bdr2);position:relative;overflow:hidden}
+.sw-wood{background:#3d2817 url('https://images.pexels.com/photos/6750192/pexels-photo-6750192.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;background-position:center}
+.sw-vinyl{background:#e8e8e8 url('https://images.pexels.com/photos/11693890/pexels-photo-11693890.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover}
+.sw-alum{background:#1a202c url('https://images.unsplash.com/photo-1715886741261-cbb80f21522f?w=800&auto=format&fit=crop') center/cover;position:relative}
+.sw-chain{background:#4a5568 url('https://images.pexels.com/photos/5860835/pexels-photo-5860835.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover}
+.qw-mat-info{flex:1;min-width:0}
+.qw-mat-name{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.qw-mat-meta{font-size:.62rem;color:var(--td);letter-spacing:.3px;display:flex;gap:6px}
+.qw-mat-meta strong{color:var(--accent);font-weight:700}
+
+/* Feet-step tabs (Draw vs Slider) */
+.qw-feet-tabs{display:flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--bdr2);border-radius:12px;margin-bottom:14px}
+.qw-feet-tab{flex:1;padding:9px 10px;border-radius:8px;font-size:.72rem;font-weight:600;color:var(--tm);letter-spacing:.2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;position:relative}
+.qw-feet-tab svg{width:13px;height:13px}
+.qw-feet-tab:hover{color:var(--text)}
+.qw-feet-tab.on{background:var(--accent);color:#000;box-shadow:0 2px 10px rgba(251,191,36,.25)}
+.qw-tab-badge{font-family:var(--font-m);font-size:.52rem;padding:1px 5px;border-radius:100px;background:#000;color:var(--accent);letter-spacing:.5px;font-weight:700;margin-left:2px}
+.qw-feet-tab.on .qw-tab-badge{background:#000;color:var(--accent)}
+
+/* Address row for Draw mode */
+.qw-draw-addr{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;background:rgba(0,0,0,.4);border:1px solid var(--bdr2);border-radius:10px;margin-bottom:10px;transition:border-color .2s}
+.qw-draw-addr:focus-within{border-color:var(--accent)}
+.qw-draw-addr-icon{width:15px;height:15px;color:var(--accent);flex-shrink:0}
+.qw-draw-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:.82rem;padding:10px 0}
+.qw-draw-input::placeholder{color:var(--tdd)}
+.qw-draw-go{padding:9px 16px;background:var(--accent);color:#000;border-radius:8px;font-size:.7rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;transition:all .2s}
+.qw-draw-go:hover{background:var(--accent3);transform:translateY(-1px)}
+
+/* Map container */
+.qw-map-wrap{position:relative;height:260px;border-radius:12px;overflow:hidden;border:1px solid var(--bdr2);background:#0a1218}
+#qwMap{position:absolute;inset:0;width:100%;height:100%}
+.qw-map-placeholder{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:linear-gradient(135deg,#0f1620,#0a1218);color:var(--tm)}
+.qw-map-placeholder.hidden{display:none}
+.qw-map-ph-icon{color:var(--accent);opacity:.5;margin-bottom:12px}
+.qw-map-ph-icon svg{width:44px;height:44px}
+.qw-map-ph-title{font-family:var(--font-d);font-size:.92rem;text-transform:uppercase;letter-spacing:.3px;color:var(--text);margin-bottom:4px}
+.qw-map-ph-sub{font-size:.72rem;color:var(--tm);max-width:240px;line-height:1.5}
+
+/* Map readout (feet counter, overlay) */
+.qw-map-readout{position:absolute;top:10px;left:10px;z-index:3;background:rgba(10,10,10,.85);backdrop-filter:blur(10px);border:1px solid rgba(251,191,36,.4);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(-6px);transition:all .3s var(--ease);pointer-events:none}
+.qw-map-readout.on{opacity:1;transform:none;pointer-events:auto}
+.qw-map-readout-val{font-family:var(--font-d);font-size:1.15rem;color:var(--accent);letter-spacing:-.3px;line-height:1}
+.qw-map-readout-val .unit{font-family:var(--font-m);font-size:.6rem;color:var(--tm);font-weight:500;margin-left:4px;letter-spacing:.4px;text-transform:uppercase}
+.qw-map-clear{padding:5px 9px;border:1px solid var(--bdr2);border-radius:6px;color:var(--tm);font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.6px;transition:all .15s;font-family:var(--font-m)}
+.qw-map-clear:hover{border-color:var(--danger);color:var(--danger)}
+.qw-map-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:3;background:rgba(10,10,10,.85);backdrop-filter:blur(10px);border:1px solid var(--bdr2);border-radius:100px;padding:5px 12px;font-family:var(--font-m);font-size:.6rem;color:var(--accent3);letter-spacing:.8px;text-transform:uppercase;opacity:0;transition:opacity .3s}
+.qw-map-hint.on{opacity:1}
+
+/* Map draw markers (injected via JS) */
+.qw-map-marker{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.72rem;border:2px solid #000;box-shadow:0 2px 8px rgba(0,0,0,.6),0 0 0 2px rgba(251,191,36,.25)}
+
+/* Slider */
+.qw-slider-wrap{padding:8px 0 4px}
+.qw-slider-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.qw-slider-val{font-family:var(--font-d);font-size:1.9rem;color:var(--accent);letter-spacing:-1px}
+.qw-slider-val .unit{font-family:var(--font-b);font-size:.82rem;color:var(--tm);font-weight:500;margin-left:6px;letter-spacing:.3px}
+.qw-slider-pills{display:flex;gap:4px}
+.qw-spill{padding:5px 10px;border:1px solid var(--bdr2);border-radius:100px;font-size:.65rem;color:var(--tm);cursor:pointer;font-weight:500;transition:all .15s}
+.qw-spill:hover{border-color:var(--bdr3);color:var(--text)}
+.qw-spill.on{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+.qw-slider{width:100%;height:6px;background:var(--bdr2);border-radius:100px;-webkit-appearance:none;appearance:none;outline:none;margin:6px 0 4px}
+.qw-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--bg2);box-shadow:0 2px 10px rgba(251,191,36,.4);transition:transform .15s}
+.qw-slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.qw-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--bg2);box-shadow:0 2px 10px rgba(251,191,36,.4)}
+.qw-slider-minmax{display:flex;justify-content:space-between;font-family:var(--font-m);font-size:.6rem;color:var(--td);letter-spacing:.3px}
+
+/* Height chips */
+.qw-chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.qw-chip{padding:14px 8px;border:1.5px solid var(--bdr2);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.qw-chip:hover{border-color:var(--bdr3)}
+.qw-chip.on{border-color:var(--accent);background:rgba(251,191,36,.08)}
+.qw-chip-big{font-family:var(--font-d);font-size:1.4rem;color:var(--text);letter-spacing:-.5px;line-height:1}
+.qw-chip.on .qw-chip-big{color:var(--accent)}
+.qw-chip-sm{font-size:.62rem;color:var(--td);text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+
+/* Extras */
+.qw-extras{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.qw-ext{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1.5px solid var(--bdr2);border-radius:10px;cursor:pointer;transition:all .15s;background:var(--surface)}
+.qw-ext:hover{border-color:var(--bdr3)}
+.qw-ext.on{border-color:var(--accent);background:rgba(251,191,36,.06)}
+.qw-ext-info{display:flex;flex-direction:column;min-width:0}
+.qw-ext-name{font-size:.74rem;font-weight:600;color:var(--text)}
+.qw-ext-price{font-size:.62rem;color:var(--td);font-family:var(--font-m)}
+.qw-ext.on .qw-ext-price{color:var(--accent)}
+.qw-ext-box{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--bdr3);flex-shrink:0;position:relative;transition:all .15s}
+.qw-ext.on .qw-ext-box{background:var(--accent);border-color:var(--accent)}
+.qw-ext.on .qw-ext-box::after{content:'';position:absolute;top:2px;left:5px;width:4px;height:8px;border-right:2px solid #000;border-bottom:2px solid #000;transform:rotate(45deg)}
+.qw-qty{display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:.72rem}
+.qw-qty-btn{width:22px;height:22px;border:1px solid var(--bdr2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--tm);transition:all .15s;font-weight:700;font-size:.82rem}
+.qw-qty-btn:hover{border-color:var(--accent);color:var(--accent)}
+.qw-qty-n{min-width:16px;text-align:center;color:var(--text);font-weight:600}
+
+/* Result */
+.qw-result{position:relative;z-index:1}
+.qw-price-box{background:rgba(251,191,36,.06);border:1.5px solid rgba(251,191,36,.22);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.qw-price-box::before{content:'';position:absolute;top:0;left:30%;right:30%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.qw-price-label{font-family:var(--font-m);font-size:.62rem;color:var(--accent3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.qw-price{font-family:var(--font-d);font-size:2.8rem;color:var(--accent);letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.qw-price-note{font-size:.68rem;color:var(--tm)}
+.qw-finance{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(251,191,36,.2);font-size:.72rem;color:var(--text);letter-spacing:.2px}
+.qw-finance strong{font-family:var(--font-d);color:var(--accent3);font-weight:normal;font-size:.95rem;letter-spacing:0}
+.qw-finance-sub{font-size:.6rem;color:var(--td);font-family:var(--font-m);letter-spacing:.4px;margin-top:2px;display:block}
+.qw-breakdown{font-size:.7rem;color:var(--tm);padding:12px 14px;background:var(--surface);border:1px solid var(--bdr);border-radius:10px;margin-bottom:16px;line-height:1.9;font-family:var(--font-m)}
+.qw-breakdown-row{display:flex;justify-content:space-between;align-items:center}
+.qw-breakdown-row span:last-child{color:var(--text);font-weight:500}
+.qw-breakdown hr{border:none;border-top:1px dashed var(--bdr2);margin:6px 0}
+.qw-lock-form{background:var(--surface);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px}
+.qw-input{width:100%;padding:11px 13px;background:rgba(0,0,0,.4);border:1px solid var(--bdr2);border-radius:8px;color:var(--text);font-size:.82rem;font-family:inherit;margin-bottom:8px;transition:border-color .15s}
+.qw-input:focus{outline:none;border-color:var(--accent)}
+.qw-input::placeholder{color:var(--tdd)}
+
+/* Nav buttons */
+.qw-nav{display:flex;gap:8px;margin-top:18px;position:relative;z-index:1}
+.qw-back{flex:0 0 auto;padding:13px 18px;border:1.5px solid var(--bdr2);border-radius:100px;color:var(--tm);font-size:.78rem;font-weight:600;transition:all .2s;letter-spacing:.3px}
+.qw-back:hover{border-color:var(--bdr3);color:var(--text)}
+.qw-back:disabled{opacity:.35;cursor:not-allowed}
+.qw-next{flex:1;padding:13px 22px;background:var(--accent);color:#000;border-radius:100px;font-size:.82rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;box-shadow:0 4px 16px rgba(251,191,36,.3);transition:all .2s}
+.qw-next:hover:not(:disabled){background:var(--accent3);transform:translateY(-1px);box-shadow:0 6px 24px rgba(251,191,36,.45)}
+.qw-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.qw-next svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.8;fill:none;stroke-linecap:round;stroke-linejoin:round;margin-left:4px;vertical-align:-1px}
+
+/* Trust line under widget */
+.qw-trust{display:flex;justify-content:center;gap:14px;margin-top:12px;font-size:.64rem;color:var(--td);font-family:var(--font-m);letter-spacing:.3px}
+.qw-trust span{display:flex;align-items:center;gap:4px}
+.qw-trust svg{width:10px;height:10px;stroke:var(--success);stroke-width:2.5;fill:none}
+
+/* ═══ MATERIALS SECTION ═══ */
+.mats{background:var(--bg2)}
+.mats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.mat-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:18px;padding:24px 22px;transition:all .35s var(--ease);position:relative;overflow:hidden;cursor:pointer}
+.mat-card:hover{transform:translateY(-4px);border-color:var(--bdr2);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.mat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.mat-card:hover::before{transform:scaleX(1)}
+.mat-card-sw{width:100%;height:120px;border-radius:12px;margin-bottom:18px;border:1px solid var(--bdr2);position:relative;overflow:hidden}
+.mat-card-sw::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.3))}
+.mat-card h3{font-family:var(--font-d);font-size:1.1rem;text-transform:uppercase;letter-spacing:.2px;margin-bottom:6px}
+.mat-card-tag{display:inline-block;padding:3px 8px;border-radius:4px;background:rgba(251,191,36,.1);color:var(--accent3);font-size:.58rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;font-family:var(--font-m)}
+.mat-card-desc{font-size:.78rem;color:var(--tm);line-height:1.65;margin-bottom:18px}
+.mat-card-specs{padding-top:14px;border-top:1px dashed var(--bdr2);display:flex;flex-direction:column;gap:6px}
+.mat-spec{display:flex;justify-content:space-between;font-size:.7rem}
+.mat-spec-l{color:var(--td);text-transform:uppercase;letter-spacing:.8px;font-family:var(--font-m)}
+.mat-spec-v{color:var(--text);font-weight:600}
+.mat-spec-v .hl{color:var(--accent)}
+
+/* ═══ PROCESS ═══ */
+.proc{position:relative}
+.proc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative}
+.proc-line{position:absolute;top:34px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3;z-index:0}
+.proc-step{position:relative;z-index:1;text-align:center;padding:0 12px}
+.proc-num{width:64px;height:64px;border-radius:50%;background:var(--bg2);border:2px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:1.3rem;color:var(--accent);margin:0 auto 22px;position:relative;transition:all .3s var(--ease)}
+.proc-step:hover .proc-num{border-color:var(--accent);box-shadow:0 0 0 6px rgba(251,191,36,.08),0 12px 32px rgba(251,191,36,.2);transform:scale(1.05)}
+.proc-num::before{content:'';position:absolute;inset:-2px;border:2px dashed var(--accent);border-radius:50%;opacity:0;animation:spinDash 12s linear infinite;transition:opacity .3s}
+.proc-step:hover .proc-num::before{opacity:.3}
+@keyframes spinDash{to{transform:rotate(360deg)}}
+.proc-step h3{font-family:var(--font-d);font-size:1.1rem;text-transform:uppercase;letter-spacing:0;margin-bottom:8px}
+.proc-step p{font-size:.84rem;color:var(--tm);line-height:1.7;max-width:300px;margin:0 auto}
+.proc-step-time{display:inline-block;margin-top:14px;padding:4px 10px;border-radius:100px;background:rgba(16,185,129,.1);color:var(--success);font-size:.6rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;font-family:var(--font-m);border:1px solid rgba(16,185,129,.2)}
+
+/* ═══ PORTFOLIO ═══ */
+.port{background:var(--bg2)}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.port-item{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;border:1px solid var(--bdr);cursor:pointer;transition:all .3s var(--ease)}
+.port-item:hover{transform:translateY(-4px);border-color:var(--bdr2);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.port-item.span-2{grid-column:span 2}
+.port-bg{position:absolute;inset:0;transition:transform .6s var(--ease)}
+.port-item:hover .port-bg{transform:scale(1.05)}
+.port-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.85) 100%);z-index:2}
+.port-info{position:absolute;left:18px;right:18px;bottom:16px;z-index:3}
+.port-tag{display:inline-block;padding:3px 8px;border-radius:4px;background:rgba(251,191,36,.22);color:var(--accent3);font-size:.58rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;font-family:var(--font-m);border:1px solid rgba(251,191,36,.3)}
+.port-title{font-family:var(--font-d);font-size:1rem;text-transform:uppercase;letter-spacing:.2px;margin-bottom:3px}
+.port-meta{font-size:.7rem;color:var(--tm);font-family:var(--font-m)}
+
+/* Portfolio backgrounds — verified real installed-fence photography */
+.pbg-1{background:#3d2817 url('https://images.pexels.com/photos/6750192/pexels-photo-6750192.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover}
+.pbg-2{background:#1a202c url('https://images.unsplash.com/photo-1619322704995-5215d5f47a75?w=1400&auto=format&fit=crop') center/cover}
+.pbg-3{background:#2d3a20 url('https://images.pexels.com/photos/11693890/pexels-photo-11693890.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover}
+.pbg-4{background:#1a1a1a url('https://images.pexels.com/photos/5860835/pexels-photo-5860835.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover}
+/* slot 5 stays illustrated — no photo of shadowbox + automated driveway gate passed review */
+.pbg-5{background:linear-gradient(135deg,#2a1f12,#5d3a1f 50%,#3d2817);position:relative}
+.pbg-5::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='120' viewBox='0 0 60 120'%3E%3Cg fill='none' stroke='rgba(251,191,36,0.22)' stroke-width='1.2'%3E%3Crect x='6' y='6' width='7' height='108'/%3E%3Crect x='18' y='6' width='7' height='108'/%3E%3Crect x='30' y='6' width='7' height='108' opacity='.5'/%3E%3Crect x='42' y='6' width='7' height='108'/%3E%3Cline x1='0' y1='30' x2='60' y2='30'/%3E%3Cline x1='0' y1='90' x2='60' y2='90'/%3E%3C/g%3E%3C/svg%3E")}
+.pbg-6{background:#1f3a5f url('https://images.unsplash.com/photo-1715886741261-cbb80f21522f?w=1400&auto=format&fit=crop') center/cover}
+
+/* ═══ TRUST ═══ */
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.trust-card{padding:28px 22px;background:var(--bg2);border:1px solid var(--bdr);border-radius:16px;text-align:left;transition:all .3s var(--ease);position:relative;overflow:hidden}
+.trust-card:hover{transform:translateY(-3px);border-color:var(--bdr2)}
+.trust-icon{width:46px;height:46px;border-radius:12px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--accent);transition:all .3s var(--ease)}
+.trust-card:hover .trust-icon{background:rgba(251,191,36,.15);transform:rotate(-5deg) scale(1.05)}
+.trust-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.trust-card h4{font-family:var(--font-d);font-size:.92rem;text-transform:uppercase;letter-spacing:.2px;margin-bottom:8px}
+.trust-card p{font-size:.78rem;color:var(--tm);line-height:1.65}
+.trust-tag{display:inline-block;margin-top:12px;padding:3px 8px;border-radius:4px;background:rgba(16,185,129,.1);color:var(--success);font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:var(--font-m);border:1px solid rgba(16,185,129,.2)}
+
+/* Trust trio (Pet/Pool/HOA deep cards) */
+.trust-trio{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.trio-card{padding:28px 26px;background:linear-gradient(165deg,var(--bg2),var(--bg3));border:1px solid var(--bdr);border-radius:18px;position:relative;overflow:hidden;transition:all .35s var(--ease)}
+.trio-card:hover{transform:translateY(-4px);border-color:var(--bdr2);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.trio-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.trio-card:hover::before{transform:scaleX(1)}
+.trio-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--bdr)}
+.trio-icon{width:52px;height:52px;border-radius:14px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0;transition:all .3s var(--ease)}
+.trio-card:hover .trio-icon{background:rgba(251,191,36,.15);transform:rotate(-4deg)}
+.trio-icon svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.trio-title{font-family:var(--font-d);font-size:1rem;text-transform:uppercase;letter-spacing:.3px;line-height:1.1}
+.trio-kicker{font-family:var(--font-m);font-size:.58rem;color:var(--accent3);text-transform:uppercase;letter-spacing:1.2px;margin-top:3px}
+.trio-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.trio-list li{font-size:.8rem;color:var(--tm);line-height:1.55;padding-left:22px;position:relative}
+.trio-list li::before{content:'';position:absolute;left:0;top:7px;width:12px;height:2px;background:var(--accent);border-radius:2px}
+.trio-list li strong{color:var(--text);font-weight:600}
+
+/* Warranty matrix */
+.warranty{margin-top:56px;background:var(--bg2);border:1px solid var(--bdr);border-radius:20px;padding:32px;position:relative;overflow:hidden}
+.warranty-title{font-family:var(--font-d);font-size:1.1rem;text-transform:uppercase;letter-spacing:0;margin-bottom:6px}
+.warranty-sub{font-size:.78rem;color:var(--tm);margin-bottom:22px}
+.warranty-rows{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--bdr);border-radius:10px;overflow:hidden}
+.wr-cell{background:var(--bg3);padding:18px 16px;text-align:center}
+.wr-cell-label{font-family:var(--font-m);font-size:.62rem;color:var(--td);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.wr-cell-val{font-family:var(--font-d);font-size:1.6rem;color:var(--accent);letter-spacing:-.5px;line-height:1}
+.wr-cell-unit{font-size:.7rem;color:var(--tm);margin-top:4px}
+
+/* ═══ REVIEWS ═══ */
+.revs{background:var(--bg2);position:relative}
+.revs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rev{background:var(--bg3);border:1px solid var(--bdr);border-radius:16px;padding:26px 22px;position:relative;transition:all .3s var(--ease)}
+.rev:hover{transform:translateY(-3px);border-color:var(--bdr2)}
+.rev::before{content:'"';position:absolute;top:14px;right:22px;font-family:var(--font-d);font-size:3.2rem;color:var(--accent);opacity:.18;line-height:1}
+.rev-stars{display:flex;gap:2px;margin-bottom:14px}
+.rev-stars svg{width:14px;height:14px;fill:var(--accent);stroke:none}
+.rev-text{font-size:.88rem;line-height:1.7;color:var(--text);margin-bottom:18px;font-weight:400}
+.rev-author{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--bdr)}
+.rev-av{width:38px;height:38px;border-radius:50%;background:var(--bg);border:1px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);color:var(--accent);font-size:.82rem;flex-shrink:0}
+.rev-name{font-size:.82rem;font-weight:600;color:var(--text)}
+.rev-meta{font-size:.66rem;color:var(--td);font-family:var(--font-m);margin-top:1px;display:flex;align-items:center;gap:6px}
+.rev-verified{display:inline-flex;align-items:center;gap:3px;color:var(--success)}
+.rev-verified svg{width:10px;height:10px;stroke:currentColor;stroke-width:3;fill:none}
+
+/* ═══ FAQ ═══ */
+.faq{max-width:820px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--bdr)}
+.faq-item:first-child{border-top:1px solid var(--bdr)}
+.faq-q{width:100%;text-align:left;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--font-d);font-size:.95rem;text-transform:uppercase;letter-spacing:.2px;color:var(--text);transition:color .2s}
+.faq-q:hover{color:var(--accent)}
+.faq-toggle{width:30px;height:30px;border:1.5px solid var(--bdr2);border-radius:50%;flex-shrink:0;position:relative;transition:all .3s var(--ease)}
+.faq-toggle::before,.faq-toggle::after{content:'';position:absolute;left:50%;top:50%;background:currentColor;transition:all .3s var(--ease)}
+.faq-toggle::before{width:12px;height:1.5px;transform:translate(-50%,-50%)}
+.faq-toggle::after{width:1.5px;height:12px;transform:translate(-50%,-50%)}
+.faq-item.open .faq-toggle{border-color:var(--accent);color:var(--accent);transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease),padding .4s var(--ease)}
+.faq-item.open .faq-a{max-height:260px;padding-bottom:22px}
+.faq-a p{font-size:.88rem;color:var(--tm);line-height:1.8}
+
+/* ═══ AREA ═══ */
+.area{background:var(--bg2)}
+.area-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.area-cities{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.area-city{padding:10px 14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--text);transition:all .2s var(--ease)}
+.area-city:hover{border-color:var(--accent);background:rgba(251,191,36,.04);transform:translateX(3px)}
+.area-city-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.area-map{aspect-ratio:1/1;background:var(--bg3);border:1px solid var(--bdr);border-radius:20px;position:relative;overflow:hidden;padding:20px}
+.area-map::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);background-size:32px 32px;opacity:.5}
+.area-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 8px rgba(251,191,36,.2),0 0 0 24px rgba(251,191,36,.08);animation:centerPulse 2s ease infinite;z-index:3}
+@keyframes centerPulse{0%,100%{box-shadow:0 0 0 8px rgba(251,191,36,.2),0 0 0 24px rgba(251,191,36,.08)}50%{box-shadow:0 0 0 12px rgba(251,191,36,.3),0 0 0 36px rgba(251,191,36,.12)}}
+.area-pin{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent3);box-shadow:0 0 10px var(--accent)}
+.area-pin-label{position:absolute;font-family:var(--font-m);font-size:.6rem;color:var(--tm);background:var(--bg2);padding:2px 6px;border-radius:4px;border:1px solid var(--bdr);white-space:nowrap;transform:translateX(12px) translateY(-50%);top:50%}
+
+/* ═══ CTA BANNER ═══ */
+.cta-banner{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);text-align:center;padding:72px 0;position:relative;overflow:hidden}
+.cta-banner h2{font-family:var(--font-d);font-size:clamp(1.9rem,4.5vw,3rem);line-height:1;letter-spacing:-.8px;text-transform:uppercase;margin-bottom:14px;position:relative;z-index:2}
+.cta-banner h2 .hl{color:var(--accent)}
+.cta-banner p{font-size:1rem;color:var(--tm);margin-bottom:28px;position:relative;z-index:2}
+.cta-banner .btn-primary{font-size:.92rem;padding:18px 36px}
+
+/* ═══ FOOTER ═══ */
+.ftr{background:#050505;padding:56px 0 24px;border-top:1px solid var(--bdr)}
+.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px}
+.ftr-about p{font-size:.8rem;color:var(--tm);line-height:1.7;max-width:320px;margin:14px 0}
+.ftr-contact{display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:.78rem;color:var(--tm)}
+.ftr-contact a:hover{color:var(--accent)}
+.ftr h5{font-family:var(--font-d);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;color:var(--text)}
+.ftr-links{display:flex;flex-direction:column;gap:10px}
+.ftr-links a{font-size:.8rem;color:var(--tm);transition:color .2s}
+.ftr-links a:hover{color:var(--accent)}
+.ftr-bottom{padding-top:24px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--td);font-family:var(--font-m)}
+.ftr-shopify{display:flex;align-items:center;gap:6px;color:var(--td)}
+.ftr-shopify a{color:var(--tm)}
+
+/* ═══ MOBILE ═══ */
+@media (max-width:960px){
+  .nav-links{display:none}
+  .nav-phone{display:none}
+  .menu-btn{display:flex}
+  .hero{padding-top:100px;padding-bottom:48px;min-height:auto}
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  section{padding:72px 0}
+  .section-head{margin-bottom:42px}
+  .mats-grid{grid-template-columns:1fr 1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .trust-trio{grid-template-columns:1fr;gap:12px}
+  .revs-grid{grid-template-columns:1fr}
+  .port-grid{grid-template-columns:1fr 1fr}
+  .port-item.span-2{grid-column:span 1}
+  .proc-grid{grid-template-columns:1fr;gap:40px}
+  .proc-line{display:none}
+  .area-grid{grid-template-columns:1fr;gap:32px}
+  .ftr-grid{grid-template-columns:1fr 1fr;gap:28px}
+  .warranty-rows{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .hero{padding-top:84px}
+  /* FORM-FIRST: hide hero chrome on mobile so the quote widget is first */
+  .hero-badge,.hero-stats,.hero-ctas{display:none}
+  .hero-h1{font-size:2.1rem;margin-bottom:14px}
+  .hero-sub{font-size:.92rem;margin-bottom:22px}
+  section{padding:56px 0}
+  .section-title{font-size:1.7rem}
+  .mats-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr}
+  .port-grid{grid-template-columns:1fr}
+  .ftr-grid{grid-template-columns:1fr}
+  .ftr-bottom{flex-direction:column;gap:10px;text-align:center}
+  .qw{padding:22px 18px}
+  .qw-choices{grid-template-columns:1fr 1fr 1fr}
+  .qw-materials{grid-template-columns:1fr}
+  .qw-extras{grid-template-columns:1fr}
+  .qw-price{font-size:2.2rem}
+  .warranty-rows{grid-template-columns:1fr;gap:1px}
+  .qw-feet-tab{font-size:.65rem;padding:8px 6px}
+  .qw-tab-badge{display:none}
+  .qw-map-wrap{height:220px}
+  .trio-card{padding:22px 20px}
+  .hero-h1 .hl::after{bottom:3px;height:2px}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   V7 UPGRADES — editorial + personal-feel (added 2026-04-21)
+   Benchmark: demos/v7-painting-demo-LOCKED.html
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Hero team strip (3 compact installer thumbnails under stats) ── */
+.hero-team{display:flex;align-items:center;gap:14px;margin-top:28px;padding-top:22px;border-top:1px solid var(--bdr);flex-wrap:wrap}
+.hero-team-row{display:flex}
+.hero-team-thumb{width:44px;height:44px;border-radius:50%;overflow:hidden;border:2px solid var(--bg);margin-left:-10px;box-shadow:0 4px 12px rgba(0,0,0,.5);position:relative}
+.hero-team-thumb:first-child{margin-left:0}
+.hero-team-thumb img{width:100%;height:100%;object-fit:cover}
+.hero-team-text{flex:1;min-width:0}
+.hero-team-label{font-family:var(--font-m);font-size:.58rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:3px}
+.hero-team-name{font-size:.82rem;color:var(--text);font-weight:500;line-height:1.35}
+.hero-team-name b{font-weight:700}
+.hero-team-dot{position:absolute;right:0;bottom:0;width:11px;height:11px;border-radius:50%;background:var(--success);border:2px solid var(--bg);box-shadow:0 0 8px rgba(16,185,129,.6)}
+@media(max-width:520px){.hero-team{display:none}}
+
+/* ── Mobile-only owner trust card (above wizard on phones) ── */
+.m-owner{display:none}
+@media(max-width:760px){
+  .m-owner{display:flex!important;flex-direction:column;gap:11px;padding:14px;margin:0 0 14px;background:linear-gradient(180deg,rgba(20,20,20,.85),rgba(12,12,12,.7));border:1px solid rgba(251,191,36,.26);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 1px rgba(251,191,36,.06)}
+  .m-owner-top{display:flex;align-items:center;gap:12px}
+  .m-owner-photo{position:relative;width:50px;height:50px;border-radius:50%;overflow:hidden;border:2px solid rgba(251,191,36,.45);flex-shrink:0;box-shadow:0 6px 16px rgba(0,0,0,.5)}
+  .m-owner-photo img{width:100%;height:100%;object-fit:cover}
+  .m-owner-dot{position:absolute;right:-1px;bottom:-1px;width:13px;height:13px;border-radius:50%;background:var(--success);border:2px solid #0a0a0a;box-shadow:0 0 8px rgba(16,185,129,.7)}
+  .m-owner-text{flex:1;min-width:0}
+  .m-owner-hi{font-family:var(--font-b);font-size:.86rem;color:#fff;font-weight:600;line-height:1.2}
+  .m-owner-hi b{color:var(--accent);font-weight:800}
+  .m-owner-role{font-family:var(--font-m);font-size:.58rem;color:rgba(255,255,255,.55);letter-spacing:1.4px;text-transform:uppercase;font-weight:600;margin-top:3px}
+  .m-owner-trust{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);flex-wrap:wrap}
+  .m-owner-stars{color:#fbbf24;font-size:.72rem;letter-spacing:1.5px}
+  .m-owner-num{font-family:var(--font-d);font-size:.95rem;color:#fff;letter-spacing:-.3px}
+  .m-owner-dv{color:rgba(255,255,255,.25);font-size:.55rem}
+  .m-owner-rvs,.m-owner-bond{font-family:var(--font-m);font-size:.6rem;color:rgba(255,255,255,.7);letter-spacing:.3px;font-weight:600}
+}
+
+/* ── MEET YOUR INSTALLER (V7 trust-story) ── */
+.meet{position:relative;padding:110px 0 100px;background:linear-gradient(180deg,var(--bg) 0%,#060606 100%);overflow:hidden}
+.meet::before{content:'';position:absolute;top:-15%;left:50%;transform:translateX(-50%);width:780px;height:780px;background:radial-gradient(circle,rgba(251,191,36,.05),transparent 60%);pointer-events:none}
+.meet-grid{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:72px;align-items:center;position:relative;z-index:2}
+.meet-photo{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 32px 80px rgba(0,0,0,.65);border:1px solid var(--bdr2)}
+.meet-photo img{width:100%;height:100%;object-fit:cover;filter:contrast(108%) saturate(105%)}
+.meet-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.88) 100%);pointer-events:none}
+.meet-tag{position:absolute;left:20px;bottom:20px;right:20px;display:flex;align-items:center;gap:10px;background:rgba(10,10,10,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(251,191,36,.28);border-radius:14px;padding:12px 14px;z-index:2;box-shadow:0 12px 36px rgba(0,0,0,.5)}
+.meet-tag-dot{width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 12px rgba(16,185,129,.8);animation:pulse-g 2s ease infinite}
+@keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.4}}
+.meet-tag-txt{font-family:var(--font-b);font-size:.72rem;color:#fff;font-weight:500;line-height:1.35}
+.meet-tag-txt b{color:var(--accent);font-weight:700}
+.meet h2{font-family:var(--font-d);font-size:clamp(2.2rem,4.6vw,3.4rem);line-height:1.02;letter-spacing:-1.2px;text-transform:uppercase;color:var(--text);margin-bottom:18px}
+.meet h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;text-transform:none;color:var(--accent);letter-spacing:-.02em;font-variation-settings:"opsz" 144,"SOFT" 50}
+.meet-sig{font-family:var(--font-m);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--td);font-weight:700;margin-bottom:22px}
+.meet-bio{font-size:1.02rem;line-height:1.75;color:var(--tm);margin-bottom:28px;max-width:540px}
+.meet-bio strong{color:var(--text);font-weight:600}
+.meet-stats{display:flex;gap:36px;margin-bottom:32px;flex-wrap:wrap;padding:22px 0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.meet-stat .v{font-family:var(--font-d);font-size:1.8rem;color:var(--accent);letter-spacing:-.5px;line-height:1}
+.meet-stat .k{font-family:var(--font-m);font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--td);font-weight:600;margin-top:6px}
+.meet-cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px}
+.meet-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:100px;font-family:var(--font-b);font-size:.76rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;transition:all .25s var(--ease)}
+.meet-btn-primary{background:var(--accent);color:#000;box-shadow:0 10px 28px rgba(251,191,36,.3)}
+.meet-btn-primary:hover{background:var(--accent3);transform:translateY(-2px);box-shadow:0 14px 36px rgba(251,191,36,.45);color:#000}
+.meet-btn-ghost{background:transparent;border:1px solid var(--bdr2);color:var(--text)}
+.meet-btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.meet-promise{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22);border-left:3px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:.88rem;line-height:1.65;color:var(--tm)}
+.meet-promise b{color:var(--text);font-weight:700}
+@media(max-width:900px){
+  .meet{padding:68px 0 62px}
+  .meet-grid{grid-template-columns:1fr;gap:36px}
+  .meet-photo{max-width:320px;margin:0 auto;aspect-ratio:1/1}
+  .meet-stats{gap:24px;padding:18px 0}
+  .meet-stat .v{font-size:1.5rem}
+}
+
+/* ── BRAND PARTNER STRIP (V7 credibility) ── */
+.brands{padding:48px 0;background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden}
+.brands-inner{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:38px;flex-wrap:wrap;justify-content:center}
+.brands-label{font-family:var(--font-m);font-size:.62rem;letter-spacing:2.4px;text-transform:uppercase;color:var(--td);font-weight:600;flex-shrink:0}
+.brand-item{font-family:var(--font-d);font-size:1rem;color:var(--tm);letter-spacing:.8px;text-transform:uppercase;opacity:.55;transition:all .25s ease;display:inline-flex;align-items:center;gap:6px;line-height:1}
+.brand-item:hover{opacity:1;color:var(--accent)}
+.brand-item-sub{font-family:var(--font-m);font-size:.55rem;letter-spacing:1.4px;font-weight:500;opacity:.6}
+@media(max-width:640px){
+  .brands{padding:34px 0}
+  .brands-inner{gap:22px}
+  .brand-item{font-size:.86rem}
+}
+
+/* ── PULL-QUOTE (V7 editorial moment) ── */
+.pullq{position:relative;padding:110px 0;background:var(--bg);overflow:hidden}
+.pullq::before{content:'"';position:absolute;top:-40px;left:50%;transform:translateX(-50%);font-family:var(--font-s);font-style:italic;font-size:clamp(12rem,26vw,22rem);color:var(--accent);opacity:.06;line-height:1;pointer-events:none;font-variation-settings:"opsz" 144,"SOFT" 60;z-index:1}
+.pullq-inner{max-width:900px;margin:0 auto;padding:0 32px;position:relative;z-index:2;text-align:center}
+.pullq-text{font-family:var(--font-s);font-style:italic;font-weight:400;font-size:clamp(1.5rem,3.6vw,2.6rem);line-height:1.35;letter-spacing:-.015em;color:var(--text);margin-bottom:30px;font-variation-settings:"opsz" 144,"SOFT" 40}
+.pullq-text b{color:var(--accent);font-weight:500}
+.pullq-attrib{display:inline-flex;align-items:center;gap:14px;padding-top:24px;border-top:1px solid var(--bdr)}
+.pullq-photo{width:44px;height:44px;border-radius:50%;overflow:hidden;border:1.5px solid var(--bdr2)}
+.pullq-photo img{width:100%;height:100%;object-fit:cover}
+.pullq-name{font-family:var(--font-d);font-size:.82rem;text-transform:uppercase;letter-spacing:.6px;color:var(--text)}
+.pullq-loc{font-family:var(--font-m);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);font-weight:600;margin-top:3px}
+@media(max-width:640px){.pullq{padding:70px 0}}
+
+/* ── PROMO BAND ($250 off first fence) ── */
+.promo{position:relative;padding:0;background:linear-gradient(135deg,#1a1308 0%,#0a0a0a 55%,#1a1308 100%);border-top:1px solid rgba(251,191,36,.18);border-bottom:1px solid rgba(251,191,36,.18);overflow:hidden}
+.promo::before{content:'';position:absolute;top:-30%;right:-10%;width:640px;height:640px;background:radial-gradient(circle,rgba(251,191,36,.08),transparent 60%);pointer-events:none}
+.promo::after{content:'';position:absolute;bottom:-30%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(251,191,36,.05),transparent 60%);pointer-events:none}
+.promo-row{max-width:var(--max);margin:0 auto;padding:56px 24px;display:flex;align-items:center;gap:44px;position:relative;z-index:2}
+.promo-stamp{position:relative;flex-shrink:0;width:164px;height:164px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fcd34d,#f59e0b 70%,#d97706);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#1a0f00;font-family:var(--font-d);font-weight:800;box-shadow:0 16px 40px rgba(217,119,6,.35),inset 0 2px 0 rgba(255,255,255,.3);transform:rotate(-6deg);animation:stampFloat 4s ease-in-out infinite}
+.promo-stamp::before{content:'';position:absolute;inset:8px;border:2px dashed rgba(26,15,0,.4);border-radius:50%;pointer-events:none}
+@keyframes stampFloat{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-4deg) translateY(-4px)}}
+.promo-stamp-val{font-size:2.2rem;line-height:1;letter-spacing:-1.5px}
+.promo-stamp-lbl{font-size:.52rem;line-height:1.3;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;font-weight:700;padding:0 10px}
+.promo-body{flex:1 1 auto;min-width:0}
+.promo-eyebrow{font-family:var(--font-m);font-size:.6rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.promo-title{font-family:var(--font-d);font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.02;letter-spacing:-.8px;color:#fff;text-transform:uppercase;margin-bottom:12px}
+.promo-title em{font-family:var(--font-s);font-style:italic;font-weight:400;text-transform:none;color:var(--accent);letter-spacing:-.02em;font-variation-settings:"opsz" 144,"SOFT" 50}
+.promo-desc{font-size:.95rem;color:var(--tm);line-height:1.7;max-width:540px}
+.promo-cta{flex-shrink:0;background:var(--accent);color:#000;padding:16px 28px;border-radius:100px;font-family:var(--font-b);font-size:.78rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap;box-shadow:0 12px 32px rgba(251,191,36,.28)}
+.promo-cta:hover{background:var(--accent3);transform:translateY(-2px);box-shadow:0 16px 40px rgba(251,191,36,.45);color:#000}
+.promo-cta span{font-family:var(--font-d);font-size:.95rem;letter-spacing:0}
+.promo-cta.claimed{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);box-shadow:none;cursor:default;border:1px solid rgba(255,255,255,.2)}
+.promo-cta.claimed:hover{background:rgba(255,255,255,.1);transform:none;box-shadow:none}
+.promo-foot{position:relative;z-index:1;background:rgba(0,0,0,.4);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.06)}
+.promo-foot-row{max-width:var(--max);margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.promo-foot-q{font-family:var(--font-m);font-size:.68rem;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:600}
+.promo-foot-phone{font-family:var(--font-d);font-size:1.05rem;color:var(--accent);letter-spacing:.4px;text-decoration:none}
+.promo-foot-phone:hover{color:var(--accent3)}
+@media(max-width:860px){
+  .promo-row{flex-direction:column;text-align:center;gap:24px;padding:44px 20px}
+  .promo-cta{width:100%;max-width:320px;justify-content:center}
+}
+@media(max-width:480px){
+  .promo-stamp{width:128px;height:128px}
+  .promo-stamp-val{font-size:1.7rem}
+  .promo-stamp-lbl{font-size:.48rem;letter-spacing:1.2px}
+  .promo-foot-row{padding:14px 18px;gap:10px}
+  .promo-foot-q{font-size:.6rem;letter-spacing:1.4px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-mark">IF</span>
+      <span>Ironline<span style="color:var(--accent)">.</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#quote">Quote</a>
+      <a href="#materials">Materials</a>
+      <a href="#portfolio">Work</a>
+      <a href="#process">Process</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-cta">
+      <a href="tel:+18049571003" class="nav-phone">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        (804) 957-1003
+      </a>
+      <a href="#quote" class="nav-btn">Get Quote</a>
+      <button class="menu-btn" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="hero-photo"></div>
+  <div class="fence-bg"></div>
+  <div class="grid-bg"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-content rv-l">
+        <div class="hero-badge">
+          <span class="hero-badge-dot">KC</span>
+          <span>Serving Kansas City since 2014 · 284 reviews · 4.9★</span>
+        </div>
+        <h1 class="hero-h1">
+          Quote it.<br>
+          Book it.<br>
+          <em>Done.</em>
+        </h1>
+        <p class="hero-sub">The first Kansas City fencing company that skips the three-day callback. Price your fence in under three minutes — then lock your install week, right now.</p>
+        <div class="hero-ctas">
+          <a href="#quote" class="btn-primary">
+            Start Quote
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="tel:+18049571003" class="btn-ghost">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            Call Now
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hstat-n">3 min</div><div class="hstat-l">To Your Price</div></div>
+          <div><div class="hstat-n">20 yr</div><div class="hstat-l">Max Warranty</div></div>
+          <div><div class="hstat-n">1,200+</div><div class="hstat-l">Fences Built</div></div>
+        </div>
+
+        <!-- Hero team strip (v7 personal-feel) -->
+        <div class="hero-team rv">
+          <div class="hero-team-row">
+            <div class="hero-team-thumb">
+              <img src="https://images.pexels.com/photos/5691471/pexels-photo-5691471.jpeg?auto=compress&cs=tinysrgb&w=120" alt="Ryan, owner of Ironline Fencing KC" loading="lazy">
+              <span class="hero-team-dot"></span>
+            </div>
+            <div class="hero-team-thumb">
+              <img src="https://images.pexels.com/photos/5591500/pexels-photo-5591500.jpeg?auto=compress&cs=tinysrgb&w=120" alt="Ironline Fencing KC crew member" loading="lazy">
+            </div>
+            <div class="hero-team-thumb">
+              <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=120" alt="Ironline Fencing KC crew member" loading="lazy">
+            </div>
+          </div>
+          <div class="hero-team-text">
+            <div class="hero-team-label">Your install crew</div>
+            <div class="hero-team-name"><b>Ryan &amp; crew</b> &middot; on a job in Overland Park right now</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUOTE WIDGET — the star -->
+      <div class="hero-visual rv-r" id="quote">
+        <!-- MOBILE-ONLY OWNER TRUST CARD (v7 personal-feel) -->
+        <div class="m-owner">
+          <div class="m-owner-top">
+            <div class="m-owner-photo">
+              <img src="https://images.pexels.com/photos/5691471/pexels-photo-5691471.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Ryan, owner of Ironline Fencing KC" loading="eager">
+              <span class="m-owner-dot"></span>
+            </div>
+            <div class="m-owner-text">
+              <div class="m-owner-hi">Hi, I'm <b>Ryan</b> &mdash;</div>
+              <div class="m-owner-role">Owner &middot; Ironline Fencing KC</div>
+            </div>
+          </div>
+          <div class="m-owner-trust">
+            <span class="m-owner-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span class="m-owner-num">4.9</span>
+            <span class="m-owner-dv">&bull;</span>
+            <span class="m-owner-rvs">284 reviews</span>
+            <span class="m-owner-dv">&bull;</span>
+            <span class="m-owner-bond">$2M insured</span>
+          </div>
+        </div>
+        <form class="qw" id="quoteForm" action="/contact" method="POST" autocomplete="off">
+          <div class="qw-glow"></div>
+          <input type="hidden" name="source" value="instant-quote">
+          <input type="hidden" name="estimated_total" id="fEstimatedTotal" value="">
+          <input type="hidden" name="property_type" id="fPropertyType" value="">
+          <input type="hidden" name="material" id="fMaterial" value="">
+          <input type="hidden" name="linear_feet" id="fLinearFeet" value="">
+          <input type="hidden" name="height" id="fHeight" value="">
+          <input type="hidden" name="extras" id="fExtras" value="">
+
+          <div class="qw-head">
+            <div class="qw-title">Build Your Fence</div>
+            <div class="qw-step-label">Step <span id="qwStepNum">1</span> of 6</div>
+          </div>
+          <div class="qw-progress" id="qwProgress">
+            <div class="qw-progress-seg active"></div>
+            <div class="qw-progress-seg"></div>
+            <div class="qw-progress-seg"></div>
+            <div class="qw-progress-seg"></div>
+            <div class="qw-progress-seg"></div>
+            <div class="qw-progress-seg"></div>
+          </div>
+
+          <!-- Step 1: Property Type -->
+          <div class="qw-step active" data-step="1">
+            <h4>What are we fencing?</h4>
+            <p class="qw-hint">Sets material defaults and code requirements.</p>
+            <div class="qw-choices">
+              <div class="qw-choice" data-val="residential">
+                <div class="qw-choice-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+                <div class="qw-choice-label">Residential</div>
+                <div class="qw-choice-sub">Home</div>
+              </div>
+              <div class="qw-choice" data-val="commercial">
+                <div class="qw-choice-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/></svg></div>
+                <div class="qw-choice-label">Commercial</div>
+                <div class="qw-choice-sub">Business</div>
+              </div>
+              <div class="qw-choice" data-val="farm">
+                <div class="qw-choice-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V8l4-3 4 3v12M12 20V11l4-3 4 3v9"/></svg></div>
+                <div class="qw-choice-label">Farm</div>
+                <div class="qw-choice-sub">Acreage</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Material -->
+          <div class="qw-step" data-step="2">
+            <h4>Pick your material.</h4>
+            <p class="qw-hint">Tap a card — we'll adjust warranty and price.</p>
+            <div class="qw-materials">
+              <div class="qw-mat" data-val="wood">
+                <div class="qw-mat-swatch sw-wood"></div>
+                <div class="qw-mat-info">
+                  <div class="qw-mat-name">Cedar Wood</div>
+                  <div class="qw-mat-meta"><strong>$35/ft</strong> · 10yr</div>
+                </div>
+              </div>
+              <div class="qw-mat" data-val="vinyl">
+                <div class="qw-mat-swatch sw-vinyl"></div>
+                <div class="qw-mat-info">
+                  <div class="qw-mat-name">Vinyl</div>
+                  <div class="qw-mat-meta"><strong>$45/ft</strong> · 25yr</div>
+                </div>
+              </div>
+              <div class="qw-mat" data-val="aluminum">
+                <div class="qw-mat-swatch sw-alum"></div>
+                <div class="qw-mat-info">
+                  <div class="qw-mat-name">Aluminum</div>
+                  <div class="qw-mat-meta"><strong>$55/ft</strong> · 20yr</div>
+                </div>
+              </div>
+              <div class="qw-mat" data-val="chain-link">
+                <div class="qw-mat-swatch sw-chain"></div>
+                <div class="qw-mat-info">
+                  <div class="qw-mat-name">Chain-Link</div>
+                  <div class="qw-mat-meta"><strong>$20/ft</strong> · 5yr</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Fence Style -->
+          <div class="qw-step" data-step="3">
+            <h4>Pick a style.</h4>
+            <p class="qw-hint">Affects both price and how it looks from the street.</p>
+            <div class="qw-styles">
+              <div class="qw-style" data-val="dog-ear">
+                <div class="qw-style-pic"><svg viewBox="0 0 40 46" fill="currentColor"><path d="M3 46 L3 14 Q3 8 8 8 L12 8 Q17 8 17 14 L17 46 Z"/><path d="M21 46 L21 14 Q21 8 26 8 L30 8 Q35 8 35 14 L35 46 Z"/><rect x="0" y="22" width="40" height="2.5" opacity=".35"/></svg></div>
+                <div class="qw-style-name">Dog-Ear</div>
+                <div class="qw-style-tag">KC Classic</div>
+              </div>
+              <div class="qw-style" data-val="shadowbox">
+                <div class="qw-style-pic"><svg viewBox="0 0 40 46" fill="currentColor"><rect x="4" y="10" width="6" height="36" opacity=".45"/><rect x="20" y="10" width="6" height="36" opacity=".45"/><rect x="12" y="6" width="6" height="40"/><rect x="28" y="6" width="6" height="40"/><rect x="0" y="22" width="40" height="2.5" opacity=".35"/></svg></div>
+                <div class="qw-style-name">Shadowbox</div>
+                <div class="qw-style-tag">Both Sides</div>
+              </div>
+              <div class="qw-style" data-val="board-on-board">
+                <div class="qw-style-pic"><svg viewBox="0 0 40 46" fill="currentColor"><rect x="2" y="8" width="9" height="38" opacity=".5"/><rect x="18" y="8" width="9" height="38" opacity=".5"/><rect x="10" y="4" width="9" height="42"/><rect x="26" y="4" width="9" height="42"/><rect x="0" y="22" width="40" height="2.5" opacity=".35"/></svg></div>
+                <div class="qw-style-name">Board-on-Board</div>
+                <div class="qw-style-tag">Max Privacy</div>
+              </div>
+              <div class="qw-style" data-val="horizontal">
+                <div class="qw-style-pic"><svg viewBox="0 0 40 46" fill="currentColor"><rect x="2" y="6" width="36" height="5" rx="1"/><rect x="2" y="14" width="36" height="5" rx="1"/><rect x="2" y="22" width="36" height="5" rx="1"/><rect x="2" y="30" width="36" height="5" rx="1"/><rect x="2" y="38" width="36" height="5" rx="1"/></svg></div>
+                <div class="qw-style-name">Horizontal</div>
+                <div class="qw-style-tag">Modern</div>
+              </div>
+              <div class="qw-style" data-val="gothic-picket">
+                <div class="qw-style-pic"><svg viewBox="0 0 40 46" fill="currentColor"><path d="M6 46 V14 L10 6 L14 14 V46 Z"/><path d="M18 46 V14 L22 6 L26 14 V46 Z"/><path d="M30 46 V14 L34 6 L38 14 V46 Z" opacity=".75"/><rect x="0" y="26" width="40" height="2" opacity=".35"/></svg></div>
+                <div class="qw-style-name">Gothic Picket</div>
+                <div class="qw-style-tag">Front Yard</div>
+              </div>
+              <div class="qw-style" data-val="spaced-picket">
+                <div class="qw-style-pic"><svg viewBox="0 0 40 46" fill="currentColor"><rect x="4" y="10" width="4" height="36"/><rect x="14" y="10" width="4" height="36"/><rect x="24" y="10" width="4" height="36"/><rect x="34" y="10" width="4" height="36" opacity=".75"/><rect x="0" y="24" width="40" height="2.5" opacity=".35"/></svg></div>
+                <div class="qw-style-name">Spaced Picket</div>
+                <div class="qw-style-tag">Cottage</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Linear Feet (Draw on satellite OR slider) -->
+          <div class="qw-step" data-step="4">
+            <h4>How much fence?</h4>
+            <p class="qw-hint">Trace your fence line on satellite — or slide if you know the footage.</p>
+
+            <div class="qw-feet-tabs">
+              <button type="button" class="qw-feet-tab on" data-tab="draw">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Draw on Satellite <span class="qw-tab-badge">New</span>
+              </button>
+              <button type="button" class="qw-feet-tab" data-tab="slider">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h6M10 12h4M16 12h6"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></svg>
+                I Know My Footage
+              </button>
+            </div>
+
+            <!-- Draw tab -->
+            <div class="qw-feet-pane" data-tab-pane="draw">
+              <div class="qw-draw-addr">
+                <svg class="qw-draw-addr-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <input type="text" class="qw-draw-input" id="qwDrawAddr" placeholder="Your address (e.g. 1100 Main St, KC)">
+                <button type="button" class="qw-draw-go" id="qwDrawGo">Go</button>
+              </div>
+              <div class="qw-map-wrap">
+                <div id="qwMap"></div>
+                <div class="qw-map-placeholder" id="qwMapPlaceholder">
+                  <div class="qw-map-ph-icon">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6l16 6 10-4v30l-10 4-16-6-10 4V10z"/><path d="M16 6v30M32 12v30"/></svg>
+                  </div>
+                  <div class="qw-map-ph-title">Enter an address to start</div>
+                  <div class="qw-map-ph-sub">Then tap along your fence line — we'll measure it for you.</div>
+                </div>
+                <div class="qw-map-readout" id="qwMapReadout">
+                  <div class="qw-map-readout-val"><span id="qwMapFeet">0</span><span class="unit">ft</span></div>
+                  <button type="button" class="qw-map-clear" id="qwMapClear">Clear</button>
+                </div>
+                <div class="qw-map-hint" id="qwMapHint">Tap each corner of your fence line →</div>
+              </div>
+            </div>
+
+            <!-- Slider tab -->
+            <div class="qw-feet-pane" data-tab-pane="slider" hidden>
+              <div class="qw-slider-wrap">
+                <div class="qw-slider-row">
+                  <div class="qw-slider-val"><span id="qwFeetVal">150</span><span class="unit">linear ft</span></div>
+                  <div class="qw-slider-pills">
+                    <button type="button" class="qw-spill" data-feet="100">Small</button>
+                    <button type="button" class="qw-spill on" data-feet="150">Avg</button>
+                    <button type="button" class="qw-spill" data-feet="250">Large</button>
+                  </div>
+                </div>
+                <input type="range" class="qw-slider" id="qwSlider" min="20" max="600" step="10" value="150">
+                <div class="qw-slider-minmax"><span>20 ft</span><span>600 ft</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Height -->
+          <div class="qw-step" data-step="5">
+            <h4>How tall?</h4>
+            <p class="qw-hint">Most residential jobs are 6ft. Commercial often goes 8ft.</p>
+            <div class="qw-chips">
+              <div class="qw-chip" data-val="4"><div class="qw-chip-big">4<span style="font-size:.7rem;opacity:.6">ft</span></div><div class="qw-chip-sm">Decorative</div></div>
+              <div class="qw-chip on" data-val="6"><div class="qw-chip-big">6<span style="font-size:.7rem;opacity:.6">ft</span></div><div class="qw-chip-sm">Privacy</div></div>
+              <div class="qw-chip" data-val="8"><div class="qw-chip-big">8<span style="font-size:.7rem;opacity:.6">ft</span></div><div class="qw-chip-sm">Security</div></div>
+            </div>
+          </div>
+
+          <!-- Step 6: Extras + result -->
+          <div class="qw-step" data-step="6">
+            <h4>Add-ons & final price.</h4>
+            <p class="qw-hint">Bundle at install — adding later costs ~40% more.</p>
+            <div class="qw-extras">
+              <div class="qw-ext" data-ext="singleGate" data-type="qty">
+                <div class="qw-ext-info">
+                  <div class="qw-ext-name">Single Gate</div>
+                  <div class="qw-ext-price">+$450 ea</div>
+                </div>
+                <div class="qw-qty">
+                  <button type="button" class="qw-qty-btn" data-delta="-1">–</button>
+                  <span class="qw-qty-n" data-qty-for="singleGate">0</span>
+                  <button type="button" class="qw-qty-btn" data-delta="1">+</button>
+                </div>
+              </div>
+              <div class="qw-ext" data-ext="doubleGate" data-type="qty">
+                <div class="qw-ext-info">
+                  <div class="qw-ext-name">Double Gate</div>
+                  <div class="qw-ext-price">+$900 ea</div>
+                </div>
+                <div class="qw-qty">
+                  <button type="button" class="qw-qty-btn" data-delta="-1">–</button>
+                  <span class="qw-qty-n" data-qty-for="doubleGate">0</span>
+                  <button type="button" class="qw-qty-btn" data-delta="1">+</button>
+                </div>
+              </div>
+              <div class="qw-ext" data-ext="automation" data-type="bool">
+                <div class="qw-ext-info">
+                  <div class="qw-ext-name">Gate Automation</div>
+                  <div class="qw-ext-price">+$1,200</div>
+                </div>
+                <div class="qw-ext-box"></div>
+              </div>
+              <div class="qw-ext" data-ext="stainSeal" data-type="bool">
+                <div class="qw-ext-info">
+                  <div class="qw-ext-name">Stain + Seal</div>
+                  <div class="qw-ext-price">+$4/ft</div>
+                </div>
+                <div class="qw-ext-box"></div>
+              </div>
+              <div class="qw-ext" data-ext="postCaps" data-type="bool">
+                <div class="qw-ext-info">
+                  <div class="qw-ext-name">Copper Post Caps</div>
+                  <div class="qw-ext-price">+$2.50/ft</div>
+                </div>
+                <div class="qw-ext-box"></div>
+              </div>
+              <div class="qw-ext" data-ext="removal" data-type="bool">
+                <div class="qw-ext-info">
+                  <div class="qw-ext-name">Old Fence Removal</div>
+                  <div class="qw-ext-price">+$6/ft</div>
+                </div>
+                <div class="qw-ext-box"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Final result -->
+          <div class="qw-step" data-step="7">
+            <div class="qw-result">
+              <div class="qw-price-box">
+                <div class="qw-price-label">Your Ballpark</div>
+                <div class="qw-price">$<span id="qwPrice">0</span></div>
+                <div class="qw-price-note">Locked in writing after free on-site measure</div>
+                <div class="qw-finance">or <strong>$<span id="qwMonthly">0</span>/mo</strong> with 0% APR for 18 mo<span class="qw-finance-sub">Financing via GreenSky · subject to credit approval</span></div>
+              </div>
+              <div class="qw-breakdown" id="qwBreakdown"></div>
+              <div class="qw-lock-form">
+                <input type="text" class="qw-input" name="name" placeholder="Your name" required>
+                <input type="tel" class="qw-input" name="phone" placeholder="Phone number" required>
+                <input type="email" class="qw-input" name="email" placeholder="Email (for your written quote)">
+                <input type="text" class="qw-input" name="address" placeholder="Install address or ZIP" required>
+              </div>
+              <button type="submit" class="qw-next" style="width:100%;padding:15px">
+                Lock My Install Week
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="qw-nav" id="qwNav">
+            <button type="button" class="qw-back" id="qwBack" disabled>Back</button>
+            <button type="button" class="qw-next" id="qwNext" disabled>
+              Next
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="qw-trust">
+            <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>No deposit to lock</span>
+            <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Free measure</span>
+            <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Price guaranteed</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROMO BAND — $250 off first fence ═══════════════════ -->
+<section class="promo" aria-label="New client special">
+  <div class="promo-row">
+    <div class="promo-stamp rv-l" aria-hidden="true">
+      <div class="promo-stamp-val">$250</div>
+      <div class="promo-stamp-lbl">Off First<br>Fence Install</div>
+    </div>
+    <div class="promo-body rv">
+      <div class="promo-eyebrow">New Client Special</div>
+      <h2 class="promo-title">Your first fence, <em>$250 off.</em></h2>
+      <p class="promo-desc">Price your fence this week and we'll knock $250 off any install over 100 ft. 20-year warranty, lifetime workmanship, same crew start to finish. One per household.</p>
+    </div>
+    <a href="#quote" class="promo-cta rv-r" id="promoClaimBtn" onclick="return claimFencePromo(event)">Claim Discount <span>&rarr;</span></a>
+  </div>
+  <div class="promo-foot">
+    <div class="promo-foot-row">
+      <span class="promo-foot-q">Prefer a quick call &middot;</span>
+      <a href="tel:+18049571003" class="promo-foot-phone">(804) 957-1003</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MEET YOUR INSTALLER (V7 trust-story) ═══════════════════ -->
+<section class="meet" id="meet">
+  <div class="wrap">
+    <div class="meet-grid">
+      <div class="meet-photo rv-l">
+        <img src="https://images.pexels.com/photos/5691471/pexels-photo-5691471.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Ryan, owner of Ironline Fencing KC">
+        <div class="meet-tag">
+          <span class="meet-tag-dot"></span>
+          <span class="meet-tag-txt">Owner-led &middot; <b>I walk every job personally</b></span>
+        </div>
+      </div>
+      <div class="meet-content rv-r">
+        <div class="eyebrow"><span class="eyebrow-num">01</span>Meet your installer</div>
+        <h2>I'm <em>Ryan.</em> I'll measure your line myself.</h2>
+        <div class="meet-sig">Owner &middot; Lead Installer &middot; KC Native &middot; 10 yrs</div>
+        <p class="meet-bio">
+          No call center. No pushy salesman on commission. <strong>I walk every property personally</strong>, pull your plat records, call 811, and hand you a written quote before I leave &mdash; so the number you see is the number you pay. Born and raised in Raytown. Built 1,200+ fences across KC since 2014.
+        </p>
+        <div class="meet-stats">
+          <div class="meet-stat"><div class="v">10 yr</div><div class="k">Fencing KC</div></div>
+          <div class="meet-stat"><div class="v">1,200+</div><div class="k">Fences built</div></div>
+          <div class="meet-stat"><div class="v">$2M</div><div class="k">Liability covered</div></div>
+          <div class="meet-stat"><div class="v">5 min</div><div class="k">Callback time</div></div>
+        </div>
+        <div class="meet-cta-row">
+          <a href="#quote" class="meet-btn meet-btn-primary">Start my quote &rarr;</a>
+          <a href="tel:+18049571003" class="meet-btn meet-btn-ghost">Text Ryan directly</a>
+        </div>
+        <div class="meet-promise">
+          <b>My personal promise:</b> If my walkthrough isn't the best estimate you get, I'll Venmo you $25 for your time. That's how sure I am in the number.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ BRAND PARTNER STRIP (V7 credibility) ═══════════════════ -->
+<section class="brands" aria-label="Material partners">
+  <div class="brands-inner">
+    <div class="brands-label">Materials we install &middot;</div>
+    <span class="brand-item">Trex<span class="brand-item-sub">FENCING</span></span>
+    <span class="brand-item">TimberTech<span class="brand-item-sub">AZEK</span></span>
+    <span class="brand-item">MasterHalco<span class="brand-item-sub">CHAIN-LINK</span></span>
+    <span class="brand-item">CedarRoc<span class="brand-item-sub">CEDAR</span></span>
+    <span class="brand-item">Bufftech<span class="brand-item-sub">VINYL</span></span>
+    <span class="brand-item">Ameristar<span class="brand-item-sub">ALUMINUM</span></span>
+  </div>
+</section>
+
+<!-- ═══════════════════ MATERIALS ═══════════════════ -->
+<section class="mats" id="materials">
+  <div class="wrap">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">02</span>Our materials</div>
+      <h2 class="section-title">Four materials. <em>One standard.</em></h2>
+      <p class="section-sub">Every fence ships with lifetime workmanship and the manufacturer's warranty on materials. Here's how each one wears.</p>
+    </div>
+    <div class="mats-grid">
+      <div class="mat-card rv">
+        <div class="mat-card-sw sw-wood"></div>
+        <span class="mat-card-tag">Most Popular</span>
+        <h3>Cedar Wood</h3>
+        <p class="mat-card-desc">Warm, natural, and the #1 request in KC. Stain every 3–4 years to hit a 20-year life.</p>
+        <div class="mat-card-specs">
+          <div class="mat-spec"><span class="mat-spec-l">Price</span><span class="mat-spec-v"><span class="hl">$35</span>/ft</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Warranty</span><span class="mat-spec-v">10 yrs</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Maintenance</span><span class="mat-spec-v">Stain 3–4 yr</span></div>
+        </div>
+      </div>
+      <div class="mat-card rv">
+        <div class="mat-card-sw sw-vinyl"></div>
+        <span class="mat-card-tag">Zero Maintenance</span>
+        <h3>Vinyl</h3>
+        <p class="mat-card-desc">Won't rot, warp, or need paint. Hose it off once a year. Handles wind loads up to 115 mph.</p>
+        <div class="mat-card-specs">
+          <div class="mat-spec"><span class="mat-spec-l">Price</span><span class="mat-spec-v"><span class="hl">$45</span>/ft</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Warranty</span><span class="mat-spec-v">25 yrs</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Maintenance</span><span class="mat-spec-v">None</span></div>
+        </div>
+      </div>
+      <div class="mat-card rv">
+        <div class="mat-card-sw sw-alum"></div>
+        <span class="mat-card-tag">Premium</span>
+        <h3>Aluminum</h3>
+        <p class="mat-card-desc">Powder-coated, rust-proof, pool-code compliant. The clean ornamental look without the wrought-iron price.</p>
+        <div class="mat-card-specs">
+          <div class="mat-spec"><span class="mat-spec-l">Price</span><span class="mat-spec-v"><span class="hl">$55</span>/ft</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Warranty</span><span class="mat-spec-v">20 yrs</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Maintenance</span><span class="mat-spec-v">Wipe 1 yr</span></div>
+        </div>
+      </div>
+      <div class="mat-card rv">
+        <div class="mat-card-sw sw-chain"></div>
+        <span class="mat-card-tag">Budget Pick</span>
+        <h3>Chain-Link</h3>
+        <p class="mat-card-desc">Galvanized or black vinyl-coated. Best for dog runs, large lots, and commercial perimeter.</p>
+        <div class="mat-card-specs">
+          <div class="mat-spec"><span class="mat-spec-l">Price</span><span class="mat-spec-v"><span class="hl">$20</span>/ft</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Warranty</span><span class="mat-spec-v">5 yrs</span></div>
+          <div class="mat-spec"><span class="mat-spec-l">Maintenance</span><span class="mat-spec-v">None</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROCESS ═══════════════════ -->
+<section class="proc" id="process">
+  <div class="wrap">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">03</span>How we work</div>
+      <h2 class="section-title">Three steps. <em>No surprises.</em></h2>
+      <p class="section-sub">From first click to fence-in-the-ground, here's exactly what happens — and when.</p>
+    </div>
+    <div class="proc-grid">
+      <div class="proc-line"></div>
+      <div class="proc-step rv">
+        <div class="proc-num">01</div>
+        <h3>Quote Online</h3>
+        <p>Build your fence in the widget above. Your ballpark comes instantly. No phone tag, no forms-to-nowhere.</p>
+        <span class="proc-step-time">3 Minutes</span>
+      </div>
+      <div class="proc-step rv">
+        <div class="proc-num">02</div>
+        <h3>Free Measure</h3>
+        <p>We show up, walk the property line, call 811 for utility locates, and hand you the written quote — locked.</p>
+        <span class="proc-step-time">Within 48 Hours</span>
+      </div>
+      <div class="proc-step rv">
+        <div class="proc-num">03</div>
+        <h3>Install</h3>
+        <p>Permits pulled, materials staged, crew on site. Most residential fences go in over a single long weekend.</p>
+        <span class="proc-step-time">1–3 Days</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PORTFOLIO ═══════════════════ -->
+<section class="port" id="portfolio">
+  <div class="wrap">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">04</span>Recent installs</div>
+      <h2 class="section-title">1,200 fences. <em>Counting.</em></h2>
+      <p class="section-sub">A sample of this year's installs across the metro. Every project includes its material, length, and build week.</p>
+    </div>
+    <div class="port-grid">
+      <div class="port-item span-2 rv">
+        <div class="port-bg pbg-1"></div>
+        <div class="port-overlay"></div>
+        <div class="port-info">
+          <span class="port-tag">Cedar Privacy</span>
+          <div class="port-title">Brookside Estate</div>
+          <div class="port-meta">320 ft · 6ft · 2 gates · Mar 2026</div>
+        </div>
+      </div>
+      <div class="port-item rv">
+        <div class="port-bg pbg-2"></div>
+        <div class="port-overlay"></div>
+        <div class="port-info">
+          <span class="port-tag">Steel Picket</span>
+          <div class="port-title">Leawood Estate</div>
+          <div class="port-meta">180 ft · 5ft · Custom rail</div>
+        </div>
+      </div>
+      <div class="port-item rv">
+        <div class="port-bg pbg-3"></div>
+        <div class="port-overlay"></div>
+        <div class="port-info">
+          <span class="port-tag">Scalloped Vinyl</span>
+          <div class="port-title">Overland Park</div>
+          <div class="port-meta">180 ft · 4ft · Feb 2026</div>
+        </div>
+      </div>
+      <div class="port-item rv">
+        <div class="port-bg pbg-4"></div>
+        <div class="port-overlay"></div>
+        <div class="port-info">
+          <span class="port-tag">Chain-Link</span>
+          <div class="port-title">Hyde Park Dog Run</div>
+          <div class="port-meta">180 ft · 4ft · Black-coat</div>
+        </div>
+      </div>
+      <div class="port-item rv">
+        <div class="port-bg pbg-5"></div>
+        <div class="port-overlay"></div>
+        <div class="port-info">
+          <span class="port-tag">Cedar Shadow</span>
+          <div class="port-title">Lee's Summit</div>
+          <div class="port-meta">200 ft · 6ft · Automated gate</div>
+        </div>
+      </div>
+      <div class="port-item span-2 rv">
+        <div class="port-bg pbg-6"></div>
+        <div class="port-overlay"></div>
+        <div class="port-info">
+          <span class="port-tag">Farm</span>
+          <div class="port-title">Liberty Acreage</div>
+          <div class="port-meta">1,640 ft · 5-rail · Jan 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TRUST ═══════════════════ -->
+<section class="trust" id="trust">
+  <div class="wrap">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">05</span>Why KC picks us</div>
+      <h2 class="section-title">Licensed. Insured. <em>Accountable.</em></h2>
+      <p class="section-sub">Most fencing complaints come down to missed permits and vague warranties. Here's how we close those gaps.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card rv">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+        <h4>Permits Pulled</h4>
+        <p>City, county, or HOA — we file every permit before install. Your name never appears on a violation notice.</p>
+        <span class="trust-tag">Included</span>
+      </div>
+      <div class="trust-card rv">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h4>Fully Insured</h4>
+        <p>$2M general liability + workers' comp on every crew member. If a ladder dents your siding, our insurance pays — not you.</p>
+        <span class="trust-tag">$2M Policy</span>
+      </div>
+      <div class="trust-card rv">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h4>811 Locating</h4>
+        <p>We call 811 for underground utilities before a single post hole. Zero chance of hitting a gas or fiber line.</p>
+        <span class="trust-tag">Every Job</span>
+      </div>
+      <div class="trust-card rv">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+        <h4>Lifetime Workmanship</h4>
+        <p>If a post heaves, a rail sags, or a gate binds — ever — we fix it. No proration, no fine print, no invoice.</p>
+        <span class="trust-tag">Forever</span>
+      </div>
+    </div>
+
+    <div class="trust-trio">
+      <div class="trio-card rv">
+        <div class="trio-head">
+          <div class="trio-icon"><svg viewBox="0 0 24 24"><path d="M4.5 9.5L12 4l7.5 5.5V20a1 1 0 01-1 1H15v-6h-6v6H5.5a1 1 0 01-1-1z"/><circle cx="7.5" cy="13" r="1.3"/><path d="M16.5 12.5c0-1.5-1-3-2.5-3s-2.5 1.5-2.5 3 2.5 4 2.5 4 2.5-2.5 2.5-4z"/></svg></div>
+          <div>
+            <div class="trio-kicker">Families &amp; Pets</div>
+            <div class="trio-title">Pet &amp; Child Safe</div>
+          </div>
+        </div>
+        <ul class="trio-list">
+          <li><strong>Self-closing gates</strong> on every install — a toddler can't prop it open by accident</li>
+          <li><strong>No climbable rails</strong> on the exterior side, no gaps over 3½"</li>
+          <li><strong>Rounded tops, no splinters</strong> — wood is sanded before stain, posts capped</li>
+          <li><strong>D&amp;D Technologies latches</strong> — the same hardware rated for public pool gates</li>
+        </ul>
+      </div>
+      <div class="trio-card rv">
+        <div class="trio-head">
+          <div class="trio-icon"><svg viewBox="0 0 24 24"><path d="M3 16s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/><path d="M3 20s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/><path d="M12 2v3m0 3v3"/></svg></div>
+          <div>
+            <div class="trio-kicker">Pools &amp; Spas</div>
+            <div class="trio-title">Pool-Code Compliant</div>
+          </div>
+        </div>
+        <ul class="trio-list">
+          <li><strong>Meets Missouri &amp; Kansas barrier code</strong> — 48" minimum height, no footholds</li>
+          <li><strong>Self-latching hardware above 54"</strong>, outside the child-reach zone</li>
+          <li><strong>Aluminum ornamental</strong> is our default for pool sides — rust-proof and inspected-pass ready</li>
+          <li><strong>Insurance docs included</strong> for homeowner's-policy pool-fence compliance letters</li>
+        </ul>
+      </div>
+      <div class="trio-card rv">
+        <div class="trio-head">
+          <div class="trio-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-5h6v5"/><path d="M12 8v2"/></svg></div>
+          <div>
+            <div class="trio-kicker">HOA Submittal</div>
+            <div class="trio-title">HOA-Friendly</div>
+          </div>
+        </div>
+        <ul class="trio-list">
+          <li><strong>140+ KC HOAs</strong> already have our specs on file — zero prep for most boards</li>
+          <li><strong>Finished-side-out</strong> as our default — the neighbor-friendly convention KC expects</li>
+          <li><strong>Pre-approved stain + color palette</strong> — the 12 shades most boards green-light</li>
+          <li><strong>Most submittals approved in 7–10 days</strong> — we file, we follow up, we loop you in</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warranty rv">
+      <div class="warranty-title">Warranty At A Glance</div>
+      <div class="warranty-sub">Material warranty by type. Workmanship is lifetime on every install.</div>
+      <div class="warranty-rows">
+        <div class="wr-cell">
+          <div class="wr-cell-label">Cedar Wood</div>
+          <div class="wr-cell-val">10</div>
+          <div class="wr-cell-unit">years</div>
+        </div>
+        <div class="wr-cell">
+          <div class="wr-cell-label">Vinyl</div>
+          <div class="wr-cell-val">25</div>
+          <div class="wr-cell-unit">years</div>
+        </div>
+        <div class="wr-cell">
+          <div class="wr-cell-label">Aluminum</div>
+          <div class="wr-cell-val">20</div>
+          <div class="wr-cell-unit">years</div>
+        </div>
+        <div class="wr-cell">
+          <div class="wr-cell-label">Chain-Link</div>
+          <div class="wr-cell-val">5</div>
+          <div class="wr-cell-unit">years</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PULL-QUOTE (V7 editorial moment) ═══════════════════ -->
+<section class="pullq" aria-label="Featured review">
+  <div class="pullq-inner rv">
+    <p class="pullq-text">
+      Other guys ghosted me for weeks. Ryan quoted my whole backyard in <b>three minutes</b>, showed up the next morning with a written number, and my fence was in the ground in a week.
+    </p>
+    <div class="pullq-attrib">
+      <div class="pullq-photo">
+        <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Danielle M." loading="lazy">
+      </div>
+      <div>
+        <div class="pullq-name">Danielle M.</div>
+        <div class="pullq-loc">Leawood &middot; Board-on-Board Cedar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ REVIEWS ═══════════════════ -->
+<section class="revs">
+  <div class="wrap">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">06</span>What KC is saying</div>
+      <h2 class="section-title">4.9 across <em>284 reviews.</em></h2>
+      <p class="section-sub">Pulled from Google and Yelp. Every reviewer is a confirmed customer with a project address on file.</p>
+    </div>
+    <div class="revs-grid">
+      <div class="rev rv">
+        <div class="rev-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <p class="rev-text">Quoted Tuesday, measured Thursday, installed the following week. The online quote was within $80 of the final number.</p>
+        <div class="rev-author">
+          <div class="rev-av">MR</div>
+          <div>
+            <div class="rev-name">Marcus R.</div>
+            <div class="rev-meta">Brookside, KC · <span class="rev-verified"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Verified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="rev rv">
+        <div class="rev-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <p class="rev-text">Had three other quotes — two wouldn't return calls, one was double. Ironline showed up on time, pulled the HOA permit themselves, done in two days.</p>
+        <div class="rev-author">
+          <div class="rev-av">JT</div>
+          <div>
+            <div class="rev-name">Jen T.</div>
+            <div class="rev-meta">Overland Park · <span class="rev-verified"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Verified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="rev rv">
+        <div class="rev-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <p class="rev-text">Picked aluminum for the pool side. Three years in — zero rust, still looks like install day. Worth every dollar.</p>
+        <div class="rev-author">
+          <div class="rev-av">DP</div>
+          <div>
+            <div class="rev-name">Derek P.</div>
+            <div class="rev-meta">Leawood · <span class="rev-verified"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Verified</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FAQ ═══════════════════ -->
+<section class="faq-section" id="faq">
+  <div class="wrap">
+    <div class="section-head rv">
+      <div class="eyebrow"><span class="eyebrow-num">07</span>Before you book</div>
+      <h2 class="section-title">Answers <em>before you ask.</em></h2>
+      <p class="section-sub">The six questions we get most. If yours isn't here, text us and we'll add it.</p>
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q">How fast can I get a quote?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Instant. The online builder above gives you a ballpark in under three minutes. After a free on-site measure (usually within 48 hours), we hand you the final written quote — locked.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you pull permits?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Yes. City, county, and HOA submittals are all handled in-house. You never file a form, and you never take the blame for a missed step.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How long does an install take?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Most residential fences go in over a single long weekend — 1 to 3 days. Commercial and farm jobs are scoped to the foot. Your written quote includes a concrete install window, not a vague "week of."</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's your warranty?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Material: 10 years on cedar, 25 on vinyl, 20 on aluminum, 5 on chain-link. Workmanship: lifetime. If a post heaves, a rail sags, or a gate binds — ever — we fix it, no proration, no invoice.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need to call 811?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>We call 811 for you. Underground utility locating is mandatory in Missouri and Kansas and it's included in every install at no charge. You'll see the orange-flag markings on site before a post hole is drilled.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I add gates or automation later?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Technically yes — but adding a gate or automation after the fence is built costs roughly 40% more than bundling at install. If it's on your mind at all, add it now. If you decide against it, we credit you at the measure.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Whose side does the finished side face?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>KC convention — and most HOA rules in Overland Park, Leawood, and Lee's Summit — require the finished (smooth) side to face your neighbor. The rail/post side faces your yard. If you want both sides finished, ask about shadowbox or board-on-board — they look identical from either side.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you do partial replacements, or only full fences?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Both. Storm damage, rot at the fenceline, a single heaved post — we'll match existing materials and repair only what's broken. If more than ~40% of your fence needs work, a full replacement is usually cheaper long-term than piecemeal repairs.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if my fence crosses the property line?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>We pull county plat records and set posts 6 inches inside your line — standard practice to avoid encroachment. If the existing fence is on the line or disputed, we pause and recommend a formal survey before digging. We've never been sued; we'd like to keep it that way.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do Overland Park and KC suburbs require permits for replacement?<span class="faq-toggle"></span></button>
+        <div class="faq-a"><p>Kansas City MO usually doesn't require a permit for in-kind replacement. Overland Park, Leawood, and most Johnson County cities do — even for replacements. We file every permit for you as part of the quoted price, regardless of jurisdiction.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SERVICE AREA ═══════════════════ -->
+<section class="area">
+  <div class="wrap">
+    <div class="area-grid">
+      <div class="rv-l">
+        <div class="eyebrow"><span class="eyebrow-num">08</span>Service area</div>
+        <h2 class="section-title">Kansas City <em>metro-wide.</em></h2>
+        <p class="section-sub" style="margin-bottom:28px">Covering Jackson, Clay, Platte, and Johnson counties. If you're inside the I-435 loop or within 25 miles of it, we build there.</p>
+        <div class="area-cities">
+          <div class="area-city"><span class="area-city-dot"></span>Kansas City, MO</div>
+          <div class="area-city"><span class="area-city-dot"></span>Overland Park, KS</div>
+          <div class="area-city"><span class="area-city-dot"></span>Lee's Summit</div>
+          <div class="area-city"><span class="area-city-dot"></span>Olathe</div>
+          <div class="area-city"><span class="area-city-dot"></span>Blue Springs</div>
+          <div class="area-city"><span class="area-city-dot"></span>Shawnee</div>
+          <div class="area-city"><span class="area-city-dot"></span>Independence</div>
+          <div class="area-city"><span class="area-city-dot"></span>Liberty</div>
+          <div class="area-city"><span class="area-city-dot"></span>Leawood</div>
+          <div class="area-city"><span class="area-city-dot"></span>Raytown</div>
+        </div>
+      </div>
+      <div class="area-map rv-r">
+        <div class="area-center"></div>
+        <div class="area-pin" style="top:32%;left:28%"><span class="area-pin-label">Liberty</span></div>
+        <div class="area-pin" style="top:48%;left:18%"><span class="area-pin-label">Shawnee</span></div>
+        <div class="area-pin" style="top:68%;left:26%"><span class="area-pin-label">Olathe</span></div>
+        <div class="area-pin" style="top:72%;left:52%"><span class="area-pin-label">Lee's Summit</span></div>
+        <div class="area-pin" style="top:42%;left:72%"><span class="area-pin-label">Independence</span></div>
+        <div class="area-pin" style="top:22%;left:56%"><span class="area-pin-label">Gladstone</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FINAL CTA ═══════════════════ -->
+<section class="cta-banner">
+  <div class="fence-bg"></div>
+  <div class="wrap">
+    <h2 class="rv">Price it now. <span class="hl">Book it today.</span></h2>
+    <p class="rv">Under three minutes. No deposit. No callback limbo.</p>
+    <a href="#quote" class="btn-primary rv">
+      Start Your Quote
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div class="ftr-about">
+        <a href="#" class="logo">
+          <span class="logo-mark">IF</span>
+          <span>Ironline<span style="color:var(--accent)">.</span></span>
+        </a>
+        <p>Kansas City's instant-quote fencing contractor. Licensed, insured, and built around a single promise — your install week, locked the day we measure.</p>
+        <div class="ftr-contact">
+          <a href="tel:+18049571003">(804) 957-1003</a>
+          <a href="mailto:hello@ironlinefencing.kc">hello@ironlinefencing.kc</a>
+          <span>Mon–Sat · 7am to 7pm</span>
+        </div>
+      </div>
+      <div>
+        <h5>Materials</h5>
+        <div class="ftr-links">
+          <a href="#materials">Cedar Wood</a>
+          <a href="#materials">Vinyl</a>
+          <a href="#materials">Aluminum</a>
+          <a href="#materials">Chain-Link</a>
+        </div>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <div class="ftr-links">
+          <a href="#portfolio">Recent Work</a>
+          <a href="#process">Our Process</a>
+          <a href="#trust">Warranty</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <h5>Service Area</h5>
+        <div class="ftr-links">
+          <a href="#">Kansas City, MO</a>
+          <a href="#">Overland Park, KS</a>
+          <a href="#">Lee's Summit</a>
+          <a href="#">Olathe</a>
+        </div>
+      </div>
+    </div>
+    <div class="ftr-bottom">
+      <span>© 2026 Ironline Fencing KC · Licensed #MO-84201 · KS-2209</span>
+      <span class="ftr-shopify">Built with Shopify — <a href="https://partners.shopify.com" target="_blank" rel="noopener">start your store</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // ═══ Scroll reveal ═══
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('vis');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rv, .rv-l, .rv-r').forEach(el => io.observe(el));
+
+  // ═══ Nav scroll state ═══
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ═══ FAQ accordion ═══
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // ═══ Quote widget state machine ═══
+  const state = {
+    step: 1,
+    propertyType: null,
+    material: null,
+    style: null,
+    feet: 150,
+    height: 6,
+    extras: { singleGate: 0, doubleGate: 0, automation: false, stainSeal: false, postCaps: false, removal: false }
+  };
+
+  const PRICES = {
+    wood:       { perFt: 35, label: 'Cedar Wood',   warranty: 10 },
+    vinyl:      { perFt: 45, label: 'Vinyl',        warranty: 25 },
+    aluminum:   { perFt: 55, label: 'Aluminum',     warranty: 20 },
+    'chain-link': { perFt: 20, label: 'Chain-Link', warranty: 5 }
+  };
+  const HEIGHT_MULT = { 4: 0.85, 6: 1.0, 8: 1.25 };
+  const PROP_MULT = { residential: 1.0, commercial: 1.15, farm: 0.9 };
+  const STYLE_MULT = {
+    'dog-ear': 1.0, 'shadowbox': 1.15, 'board-on-board': 1.2,
+    'horizontal': 1.25, 'gothic-picket': 0.9, 'spaced-picket': 0.8
+  };
+  const STYLE_LABELS = {
+    'dog-ear': 'Dog-Ear', 'shadowbox': 'Shadowbox', 'board-on-board': 'Board-on-Board',
+    'horizontal': 'Horizontal', 'gothic-picket': 'Gothic Picket', 'spaced-picket': 'Spaced Picket'
+  };
+  const EXTRAS_FLAT = { singleGate: 450, doubleGate: 900, automation: 1200 };
+  const EXTRAS_PER_FT = { stainSeal: 4, postCaps: 2.5, removal: 6 };
+
+  const TOTAL_STEPS = 6;
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+  const stepEls = $$('.qw-step');
+  const progress = $$('.qw-progress-seg');
+  const nextBtn = $('#qwNext');
+  const backBtn = $('#qwBack');
+  const navWrap = $('#qwNav');
+  const stepNumEl = $('#qwStepNum');
+
+  function render() {
+    stepEls.forEach(el => el.classList.toggle('active', +el.dataset.step === state.step));
+    progress.forEach((seg, i) => {
+      seg.classList.remove('active', 'done');
+      if (i + 1 < state.step) seg.classList.add('done');
+      else if (i + 1 === state.step) seg.classList.add('active');
+    });
+    stepNumEl.textContent = Math.min(state.step, TOTAL_STEPS);
+
+    // Result step — hide nav buttons
+    if (state.step === 7) {
+      navWrap.style.display = 'none';
+      renderResult();
+    } else {
+      navWrap.style.display = 'flex';
+    }
+
+    backBtn.disabled = state.step === 1;
+    nextBtn.disabled = !canAdvance();
+
+    if (state.step === 6) {
+      nextBtn.innerHTML = 'See My Price <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    } else {
+      nextBtn.innerHTML = 'Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    }
+  }
+
+  function canAdvance() {
+    if (state.step === 1) return !!state.propertyType;
+    if (state.step === 2) return !!state.material;
+    if (state.step === 3) return !!state.style;
+    if (state.step === 4) return state.feet >= 20;
+    if (state.step === 5) return !!state.height;
+    if (state.step === 6) return true;
+    return true;
+  }
+
+  function calculate() {
+    if (!state.material || !state.style) return 0;
+    const base = state.feet * PRICES[state.material].perFt * HEIGHT_MULT[state.height] * PROP_MULT[state.propertyType] * STYLE_MULT[state.style];
+    let extras = 0;
+    extras += state.extras.singleGate * EXTRAS_FLAT.singleGate;
+    extras += state.extras.doubleGate * EXTRAS_FLAT.doubleGate;
+    if (state.extras.automation) extras += EXTRAS_FLAT.automation;
+    if (state.extras.stainSeal) extras += EXTRAS_PER_FT.stainSeal * state.feet;
+    if (state.extras.postCaps) extras += EXTRAS_PER_FT.postCaps * state.feet;
+    if (state.extras.removal) extras += EXTRAS_PER_FT.removal * state.feet;
+    return Math.round((base + extras) / 25) * 25; // nearest $25
+  }
+
+  function fmt(n) { return n.toLocaleString('en-US'); }
+
+  function renderResult() {
+    const total = calculate();
+    $('#qwPrice').textContent = fmt(total);
+    $('#qwMonthly').textContent = fmt(Math.ceil(total / 18));
+
+    // Breakdown
+    const matLabel = PRICES[state.material].label;
+    const styleLabel = STYLE_LABELS[state.style];
+    const baseLine = state.feet * PRICES[state.material].perFt * HEIGHT_MULT[state.height] * PROP_MULT[state.propertyType] * STYLE_MULT[state.style];
+    let html = '';
+    html += `<div class="qw-breakdown-row"><span>${styleLabel} ${matLabel} · ${state.feet}ft · ${state.height}ft tall</span><span>$${fmt(Math.round(baseLine))}</span></div>`;
+    if (state.extras.singleGate) html += `<div class="qw-breakdown-row"><span>Single gate × ${state.extras.singleGate}</span><span>+$${fmt(state.extras.singleGate * 450)}</span></div>`;
+    if (state.extras.doubleGate) html += `<div class="qw-breakdown-row"><span>Double gate × ${state.extras.doubleGate}</span><span>+$${fmt(state.extras.doubleGate * 900)}</span></div>`;
+    if (state.extras.automation) html += `<div class="qw-breakdown-row"><span>Gate automation</span><span>+$1,200</span></div>`;
+    if (state.extras.stainSeal) html += `<div class="qw-breakdown-row"><span>Stain + seal (${state.feet}ft)</span><span>+$${fmt(state.feet * 4)}</span></div>`;
+    if (state.extras.postCaps) html += `<div class="qw-breakdown-row"><span>Copper caps (${state.feet}ft)</span><span>+$${fmt(Math.round(state.feet * 2.5))}</span></div>`;
+    if (state.extras.removal) html += `<div class="qw-breakdown-row"><span>Old fence removal (${state.feet}ft)</span><span>+$${fmt(state.feet * 6)}</span></div>`;
+    html += `<hr><div class="qw-breakdown-row"><span>Warranty</span><span>${PRICES[state.material].warranty}yr material / lifetime labor</span></div>`;
+    $('#qwBreakdown').innerHTML = html;
+
+    // Sync hidden form fields
+    $('#fEstimatedTotal').value = '$' + fmt(total);
+    $('#fPropertyType').value = state.propertyType;
+    $('#fMaterial').value = `${styleLabel} ${matLabel}`;
+    $('#fLinearFeet').value = state.feet;
+    $('#fHeight').value = state.height + 'ft';
+    $('#fExtras').value = Object.entries(state.extras).filter(([,v]) => v).map(([k,v]) => typeof v === 'number' ? `${k}×${v}` : k).join(', ');
+  }
+
+  // Step 1: property type
+  $$('.qw-step[data-step="1"] .qw-choice').forEach(c => {
+    c.addEventListener('click', () => {
+      $$('.qw-step[data-step="1"] .qw-choice').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+      state.propertyType = c.dataset.val;
+      render();
+    });
+  });
+
+  // Step 2: material
+  $$('.qw-mat').forEach(m => {
+    m.addEventListener('click', () => {
+      $$('.qw-mat').forEach(x => x.classList.remove('on'));
+      m.classList.add('on');
+      state.material = m.dataset.val;
+      render();
+    });
+  });
+
+  // Step 3: style
+  $$('.qw-style').forEach(s => {
+    s.addEventListener('click', () => {
+      $$('.qw-style').forEach(x => x.classList.remove('on'));
+      s.classList.add('on');
+      state.style = s.dataset.val;
+      render();
+    });
+  });
+
+  // Step 4: slider + presets
+  const slider = $('#qwSlider');
+  const feetVal = $('#qwFeetVal');
+  function syncSliderFromState() {
+    slider.value = Math.min(600, Math.max(20, state.feet));
+    feetVal.textContent = state.feet;
+    $$('.qw-spill').forEach(p => p.classList.toggle('on', +p.dataset.feet === state.feet));
+  }
+  slider.addEventListener('input', () => {
+    state.feet = +slider.value;
+    feetVal.textContent = state.feet;
+    $$('.qw-spill').forEach(p => p.classList.toggle('on', +p.dataset.feet === state.feet));
+    render();
+  });
+  $$('.qw-spill').forEach(p => {
+    p.addEventListener('click', () => {
+      state.feet = +p.dataset.feet;
+      syncSliderFromState();
+      render();
+    });
+  });
+
+  // Step 4: tabs (Draw vs Slider)
+  $$('.qw-feet-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      $$('.qw-feet-tab').forEach(x => x.classList.remove('on'));
+      t.classList.add('on');
+      const tab = t.dataset.tab;
+      $$('[data-tab-pane]').forEach(p => { p.hidden = p.dataset.tabPane !== tab; });
+      if (tab === 'draw' && mapInstance) setTimeout(() => mapInstance.resize(), 60);
+      if (tab === 'slider') syncSliderFromState();
+    });
+  });
+
+  // Step 4: Mapbox satellite draw
+  const MAPBOX_TOKEN = window.MAPBOX_TOKEN;
+  let mapInstance = null;
+  let drawPoints = [];
+  let drawMarkers = [];
+  let drawLineAdded = false;
+
+  function haversine(a, b) {
+    const R = 6371000, toRad = x => x * Math.PI / 180;
+    const lat1 = toRad(a[1]), lat2 = toRad(b[1]);
+    const dLat = lat2 - lat1, dLng = toRad(b[0] - a[0]);
+    const h = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLng/2)**2;
+    return R * 2 * Math.asin(Math.sqrt(h));
+  }
+
+  function updateDrawLine() {
+    if (!mapInstance) return;
+    if (drawLineAdded) {
+      if (mapInstance.getLayer('qwLine')) mapInstance.removeLayer('qwLine');
+      if (mapInstance.getSource('qwLine')) mapInstance.removeSource('qwLine');
+      drawLineAdded = false;
+    }
+    if (drawPoints.length < 2) return;
+    mapInstance.addSource('qwLine', {
+      type: 'geojson',
+      data: { type: 'Feature', geometry: { type: 'LineString', coordinates: drawPoints } }
+    });
+    mapInstance.addLayer({
+      id: 'qwLine', type: 'line', source: 'qwLine',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#fbbf24', 'line-width': 4, 'line-opacity': .9 }
+    });
+    drawLineAdded = true;
+  }
+
+  function updateDrawFeet() {
+    let meters = 0;
+    for (let i = 1; i < drawPoints.length; i++) meters += haversine(drawPoints[i-1], drawPoints[i]);
+    const feet = Math.max(0, Math.round(meters * 3.28084 / 5) * 5);
+    $('#qwMapFeet').textContent = feet;
+    if (feet >= 20) {
+      state.feet = feet;
+      syncSliderFromState();
+      render();
+    }
+  }
+
+  function addMarker(point) {
+    const el = document.createElement('div');
+    el.className = 'qw-map-marker';
+    el.textContent = drawPoints.length;
+    const m = new mapboxgl.Marker({ element: el, anchor: 'center' }).setLngLat(point).addTo(mapInstance);
+    drawMarkers.push(m);
+  }
+
+  function onMapClick(e) {
+    const point = [e.lngLat.lng, e.lngLat.lat];
+    drawPoints.push(point);
+    addMarker(point);
+    updateDrawLine();
+    updateDrawFeet();
+    if (drawPoints.length >= 1) {
+      $('#qwMapReadout').classList.add('on');
+      $('#qwMapHint').classList.add('on');
+    }
+  }
+
+  function clearDraw() {
+    drawPoints = [];
+    drawMarkers.forEach(m => m.remove());
+    drawMarkers = [];
+    if (mapInstance && drawLineAdded) {
+      if (mapInstance.getLayer('qwLine')) mapInstance.removeLayer('qwLine');
+      if (mapInstance.getSource('qwLine')) mapInstance.removeSource('qwLine');
+      drawLineAdded = false;
+    }
+    $('#qwMapFeet').textContent = 0;
+    $('#qwMapReadout').classList.remove('on');
+    $('#qwMapHint').classList.remove('on');
+  }
+
+  function initMap(center) {
+    $('#qwMapPlaceholder').classList.add('hidden');
+    if (mapInstance) {
+      mapInstance.flyTo({ center, zoom: 19, duration: 1200 });
+      return;
+    }
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    mapInstance = new mapboxgl.Map({
+      container: 'qwMap',
+      style: 'mapbox://styles/mapbox/satellite-v9',
+      center, zoom: 19, attributionControl: false, logoPosition: 'bottom-right'
+    });
+    mapInstance.on('load', () => {
+      mapInstance.resize();
+      $('#qwMapHint').classList.add('on');
+    });
+    mapInstance.on('click', onMapClick);
+  }
+
+  async function geocodeAddress(addr) {
+    try {
+      const url = `https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(addr)}&limit=1&country=us&proximity=-94.5786,39.0997&access_token=${MAPBOX_TOKEN}`;
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data.features && data.features[0]) return data.features[0].geometry.coordinates;
+    } catch (e) {}
+    return [-94.5786, 39.0997];
+  }
+
+  $('#qwDrawGo').addEventListener('click', async () => {
+    const addr = $('#qwDrawAddr').value.trim();
+    if (!addr) { $('#qwDrawAddr').focus(); return; }
+    const btn = $('#qwDrawGo');
+    const orig = btn.textContent;
+    btn.textContent = '...';
+    btn.disabled = true;
+    const coords = await geocodeAddress(addr);
+    btn.textContent = orig;
+    btn.disabled = false;
+    clearDraw();
+    initMap(coords);
+  });
+  $('#qwDrawAddr').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); $('#qwDrawGo').click(); }
+  });
+  $('#qwMapClear').addEventListener('click', clearDraw);
+
+  // Step 5: height
+  $$('.qw-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      $$('.qw-chip').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+      state.height = +c.dataset.val;
+      render();
+    });
+  });
+
+  // Step 6: extras
+  $$('.qw-ext').forEach(ext => {
+    const key = ext.dataset.ext;
+    const type = ext.dataset.type;
+    if (type === 'bool') {
+      ext.addEventListener('click', (e) => {
+        if (e.target.closest('.qw-qty-btn')) return;
+        state.extras[key] = !state.extras[key];
+        ext.classList.toggle('on', state.extras[key]);
+      });
+    } else if (type === 'qty') {
+      const qtyEl = ext.querySelector(`[data-qty-for="${key}"]`);
+      ext.querySelectorAll('.qw-qty-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const delta = +btn.dataset.delta;
+          state.extras[key] = Math.max(0, Math.min(6, state.extras[key] + delta));
+          qtyEl.textContent = state.extras[key];
+          ext.classList.toggle('on', state.extras[key] > 0);
+        });
+      });
+    }
+  });
+
+  // Navigation
+  nextBtn.addEventListener('click', () => {
+    if (!canAdvance()) return;
+    state.step = Math.min(state.step + 1, 7);
+    render();
+    // Scroll widget into view on mobile step change
+    if (window.innerWidth <= 640) {
+      document.getElementById('quote').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+  backBtn.addEventListener('click', () => {
+    if (state.step === 1) return;
+    state.step -= 1;
+    render();
+  });
+
+  // Form submit
+  $('#quoteForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.innerHTML = '✓ Quote Locked — We\'ll Be In Touch';
+    btn.style.background = 'var(--success)';
+    btn.disabled = true;
+    // In production: swap for real POST to your CRM / Formspree endpoint
+  });
+
+  render();
+
+  // ═══ PROMO CLAIM ($250 off first fence — localStorage one-per-household) ═══
+  const PROMO_KEY = 'ironline-promo-claimed';
+  const promoBtn = document.getElementById('promoClaimBtn');
+
+  function lockPromoBtn() {
+    if (!promoBtn) return;
+    promoBtn.classList.add('claimed');
+    promoBtn.innerHTML = 'Discount Applied &#10003;';
+    promoBtn.removeAttribute('href');
+    promoBtn.onclick = (e) => { e.preventDefault(); return false; };
+  }
+
+  window.claimFencePromo = function(ev) {
+    try { localStorage.setItem(PROMO_KEY, Date.now().toString()); } catch (e) {}
+    lockPromoBtn();
+    // let the default anchor scroll to #quote
+    return true;
+  };
+
+  try {
+    if (localStorage.getItem(PROMO_KEY)) lockPromoBtn();
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
