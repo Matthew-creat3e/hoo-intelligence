@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Fuego KC | Street Smoke — Kansas City Food Truck</title>
+<meta name="description" content="Fuego KC — Kansas City's favorite BBQ food truck. Low & slow smoked brisket, pulled pork, tacos, and more. Find us today, book the truck, or order catering.">
+<meta property="og:title" content="Fuego KC — Street Smoke Done Right">
+<meta property="og:description" content="Low & slow BBQ from a truck window. Find us today or book us for your next event.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Barlow+Condensed:wght@400;500;600;700;800&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FoodEstablishment","name":"Fuego KC","telephone":"(816) 555-0193","servesCuisine":"BBQ, Smoked Meats, Tacos","address":{"@type":"PostalAddress","addressLocality":"Kansas City","addressRegion":"MO"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"280"},"priceRange":"$$"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Where is Fuego KC today?","acceptedAnswer":{"@type":"Answer","text":"Fuego KC rotates across 6 Kansas City spots Tuesday through Sunday. Today we're at Crossroads, 20th & Main, 11 AM to 3 PM. Check the live tracker on our site or text us at (816) 555-0193 for a real-time ETA."}},
+{"@type":"Question","name":"Can I book Fuego KC for catering?","acceptedAnswer":{"@type":"Answer","text":"Yes. We cater corporate lunches, private parties, and festivals. Packages start at $15/head for backyard events and $22/head for full corporate with truck on-site. Festival pricing is custom."}},
+{"@type":"Question","name":"What's on the menu at Fuego KC?","acceptedAnswer":{"@type":"Answer","text":"Smoked brisket, pulled pork, brisket tacos, pulled pork tacos, smoked wings, Fuego fries, mac & cheese, and fresh lemonade. Burnt ends are a limited pitmaster's-cut special."}},
+{"@type":"Question","name":"Does Fuego KC take credit cards?","acceptedAnswer":{"@type":"Answer","text":"Yes — cash, credit, debit, Apple Pay, and Google Pay all accepted at the truck window."}},
+{"@type":"Question","name":"How early does Fuego KC start cooking?","acceptedAnswer":{"@type":"Answer","text":"Fires are lit at 4 AM sharp. Brisket goes on the smoker around 5 AM, gets wrapped by 9, and is ready to slice by 11:45. Everything smoked that morning is sold that day — no freezer meat, no reheats."}},
+{"@type":"Question","name":"Does Fuego KC sell out?","acceptedAnswer":{"@type":"Answer","text":"Yes, regularly. Brisket and burnt ends typically run out between 1 and 2 PM on busy days. The truck closes early rather than serving next-day food."}}
+]}
+</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#171310;--board:#1E1B17;--card:#222019;--card2:#2E2A26;
+  --paper:#E8D5B7;--paper2:#D4C0A0;--paper-dark:#C4AD8E;
+  --chalk:#EDE8DF;--cd:rgba(237,232,223,.45);--cf:rgba(237,232,223,.1);
+  --fire:#F97316;--fg:rgba(249,115,22,.1);--fh:#FB923C;--fd:#E8620A;
+  --yellow:#FACC15;--red:#EF4444;--green:#4ADE80;
+  --smoke:rgba(200,190,175,.04);
+  --mk:'Permanent Marker',cursive;--bd:'Barlow Condensed',sans-serif;--hd:'Caveat',cursive;
+  --eo:cubic-bezier(.16,1,.3,1);--mx:1080px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--chalk);font-family:var(--bd);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+::selection{background:var(--fire);color:#fff}
+
+/* Grain — heavier for grit */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Butcher paper sections */
+.butcher{background:var(--paper);color:#2A2016;position:relative}
+.butcher::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* Grease stains */
+.butcher .grease{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(180,150,100,.08),transparent 70%);pointer-events:none;z-index:0}
+
+/* Taped photos */
+.taped{position:relative;transform:rotate(var(--rot,0deg));box-shadow:2px 4px 20px rgba(0,0,0,.25)}
+.taped::before,.taped::after{content:'';position:absolute;width:60px;height:22px;background:rgba(255,255,255,.35);z-index:5;filter:brightness(1.05)}
+.taped::before{top:-8px;left:20%;transform:rotate(var(--tape1,-2deg))}
+.taped::after{top:-8px;right:20%;transform:rotate(var(--tape2,3deg))}
+
+/* Rubber stamp */
+.stamp{display:inline-block;font-family:var(--mk);text-transform:uppercase;border:3px solid;padding:6px 16px;transform:rotate(var(--srot,-4deg));letter-spacing:2px;position:relative}
+.stamp::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px);pointer-events:none}
+.stamp-red{color:var(--red);border-color:var(--red);opacity:.8}
+.stamp-fire{color:var(--fire);border-color:var(--fire);opacity:.85}
+
+/* Chalky text */
+.chalky{text-shadow:0 0 3px rgba(237,232,223,.2),0 0 8px rgba(237,232,223,.05)}
+
+/* Reveals */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s var(--eo),transform .7s var(--eo)}.rv.vis{opacity:1;transform:none}
+.rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}.rv-d3{transition-delay:.3s}.rv-d4{transition-delay:.4s}.rv-d5{transition-delay:.5s}.rv-d6{transition-delay:.6s}
+
+/* Scroll bar */
+.scroll-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:600}
+.scroll-fill{height:100%;width:0;background:linear-gradient(90deg,var(--fire),var(--yellow));transition:width .1s linear}
+
+/* ═══ MARQUEE ═══ */
+.marquee{background:var(--fire);padding:10px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:10}
+.marquee-track{display:flex;animation:mq 36s linear infinite;width:max-content}
+@media(max-width:768px){.marquee-track{animation-duration:28s}.marquee-track span{padding:0 22px;font-size:.7rem}}
+.marquee-track span{font-family:var(--mk);font-size:.75rem;letter-spacing:2px;color:#fff;padding:0 32px}
+.marquee-track span::after{content:'  \1F525';margin-left:20px}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:500;background:rgba(23,19,16,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--cf);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav.scrolled{box-shadow:0 4px 32px rgba(0,0,0,.3)}
+.nav-logo{font-family:var(--mk);font-size:1.6rem;transform:rotate(-2deg);display:inline-block}
+.nav-logo em{color:var(--fire);font-style:normal}
+.nav-r{display:flex;align-items:center;gap:20px}
+.nav-a{font-size:.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cd);transition:color .3s}.nav-a:hover{color:var(--chalk)}
+.nav-cta{font-family:var(--mk);font-size:.85rem;background:var(--fire);color:#fff;padding:10px 24px;transition:all .3s;transform:rotate(-1deg);border:none;cursor:pointer}
+.nav-cta:hover{background:var(--fh);transform:rotate(0) scale(1.04)}
+.ham{display:none;background:none;border:none;cursor:pointer;padding:8px}.ham span{display:block;width:22px;height:2px;background:var(--chalk);margin:5px 0;border-radius:2px}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.4}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(23,19,16,.9) 0%,rgba(23,19,16,.5) 40%,rgba(23,19,16,.7) 100%)}
+/* Smoke particles */
+.hero-smoke{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.smoke-p{position:absolute;bottom:-20px;width:3px;background:linear-gradient(0deg,rgba(237,232,223,.12),transparent);border-radius:50%;animation:smoke-rise linear infinite;opacity:0}
+@keyframes smoke-rise{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}10%{opacity:1}50%{transform:translateY(-50vh) translateX(30px) scale(2);opacity:.4}100%{transform:translateY(-110vh) translateX(-20px) scale(3);opacity:0}}
+.hero-glow{position:absolute;bottom:0;left:30%;width:500px;height:300px;background:radial-gradient(ellipse,rgba(249,115,22,.06),transparent 65%);filter:blur(60px);z-index:1}
+
+.hero-content{position:relative;z-index:3;max-width:var(--mx);margin:0 auto;padding:120px 32px 80px;width:100%;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
+.hero-left{max-width:600px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px}
+.hero-dot{width:10px;height:10px;background:var(--green);border-radius:50%;animation:blink 1.5s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-badge span{font-family:var(--hd);font-size:1.2rem;color:var(--yellow)}
+.hero h1{font-family:var(--mk);font-size:clamp(3.5rem,10vw,7rem);line-height:.85;transform:rotate(-1.5deg)}
+.hero h1 em{color:var(--fire);font-style:normal;display:inline-block;transform:rotate(2deg)}
+.hero-sub{font-family:var(--hd);font-size:clamp(1.3rem,3vw,1.8rem);color:var(--cd);line-height:1.4;margin-top:16px;max-width:440px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.hero-btn{padding:16px 32px;font-family:var(--mk);font-size:1rem;transition:all .3s;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:8px}
+.hero-btn.primary{background:var(--fire);color:#fff;transform:rotate(-1deg)}
+.hero-btn.primary:hover{background:var(--fh);transform:rotate(0) scale(1.05)}
+.hero-btn.chalk{background:transparent;color:var(--chalk);border:2px dashed var(--cf);transform:rotate(1deg)}
+.hero-btn.chalk:hover{border-color:var(--chalk);transform:rotate(0)}
+
+.hero-right{text-align:right;flex-shrink:0}
+.hero-stat{margin-bottom:16px}
+.hero-stat-num{font-family:var(--mk);font-size:clamp(3rem,7vw,4.5rem);color:#fff;line-height:1}
+.hero-stat-label{font-size:.55rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cd)}
+
+/* ═══ TRUST STRIP ═══ */
+.trust-strip{background:var(--paper);padding:28px 24px;position:relative;color:#2A2016;overflow:hidden}
+.trust-strip::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.trust-strip-in{max-width:var(--mx);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;position:relative;z-index:1}
+.trust-col{padding:4px 12px;position:relative}
+.trust-col:not(:last-child)::after{content:'';position:absolute;top:15%;right:-12px;bottom:15%;width:1px;background:rgba(42,32,22,.2)}
+.trust-top{font-family:var(--mk);font-size:clamp(1.5rem,4vw,2.1rem);color:var(--fire);line-height:1;margin-bottom:6px;letter-spacing:.5px}
+.trust-bot{font-family:var(--hd);font-size:1.02rem;color:#5A4530;line-height:1.3}
+.trust-bot b{color:#2A2016;font-weight:700}
+@media(max-width:680px){.trust-strip-in{grid-template-columns:1fr;gap:18px}.trust-col:not(:last-child)::after{display:none}}
+
+/* ═══ LIVE TRACKER ═══ */
+.tracker{padding:80px 32px;max-width:var(--mx);margin:0 auto}
+.tracker-header{margin-bottom:32px}
+.tracker-header h2{font-family:var(--mk);font-size:clamp(1.8rem,5vw,2.8rem);transform:rotate(-1deg)}
+.tracker-live{display:inline-flex;align-items:center;gap:8px;font-family:var(--mk);font-size:.75rem;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.tracker-live-dot{width:10px;height:10px;background:var(--green);border-radius:50%;position:relative}
+.tracker-live-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--green);animation:tracker-ping 1.5s ease-out infinite;opacity:0}
+@keyframes tracker-ping{0%{transform:scale(1);opacity:.6}100%{transform:scale(2);opacity:0}}
+
+.tracker-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:24px;align-items:start}
+
+/* Left — info panel */
+.tracker-info{display:flex;flex-direction:column;gap:16px}
+.tracker-now{background:var(--card);border:2px dashed var(--fire);padding:28px;position:relative;overflow:hidden}
+.tracker-now::before{content:'NOW';position:absolute;top:12px;right:-18px;font-family:var(--mk);font-size:.55rem;background:var(--fire);color:#fff;padding:3px 30px;transform:rotate(35deg)}
+.tracker-now-loc{font-family:var(--mk);font-size:clamp(1.2rem,3vw,1.6rem);margin-bottom:4px}
+.tracker-now-addr{font-family:var(--hd);font-size:1rem;color:var(--cd)}
+.tracker-now-time{font-size:.8rem;color:var(--cd);margin-top:8px;font-weight:500;display:flex;align-items:center;gap:8px}
+.tracker-countdown{font-family:var(--mk);font-size:.9rem;color:var(--fire);background:var(--fg);padding:4px 12px;display:inline-block}
+.tracker-now-btns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.tracker-btn{font-family:var(--mk);font-size:.8rem;padding:12px 22px;transition:all .3s;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:none}
+.tracker-btn-dir{background:var(--fire);color:#fff;transform:rotate(-1deg)}
+.tracker-btn-dir:hover{background:var(--fh);transform:rotate(0) scale(1.04)}
+.tracker-btn-txt{background:transparent;color:var(--chalk);border:1px dashed var(--cf)}
+.tracker-btn-txt:hover{border-color:var(--chalk)}
+
+/* SMS signup */
+.tracker-sms{background:var(--card);padding:20px;border:1px solid var(--cf)}
+.tracker-sms-label{font-family:var(--hd);font-size:1.05rem;color:var(--cd);margin-bottom:10px}
+.tracker-sms-row{display:flex;gap:0}
+.tracker-sms-input{flex:1;padding:12px 16px;background:var(--bg);border:1px solid var(--cf);color:var(--chalk);font-family:var(--bd);font-size:.85rem;border-right:none;outline:none}
+.tracker-sms-input::placeholder{color:var(--cd)}
+.tracker-sms-input:focus{border-color:var(--fire)}
+.tracker-sms-btn{font-family:var(--mk);font-size:.75rem;background:var(--fire);color:#fff;padding:12px 20px;border:none;cursor:pointer;transition:all .3s;white-space:nowrap}
+.tracker-sms-btn:hover{background:var(--fh)}
+.tracker-sms-fine{font-size:.6rem;color:var(--cd);margin-top:6px;opacity:.6}
+
+/* Right — map */
+.tracker-map{position:relative;border-radius:4px;overflow:hidden;border:2px solid var(--card);aspect-ratio:4/3}
+.tracker-map iframe{width:100%;height:100%;border:0;filter:brightness(.85) contrast(1.1) saturate(.8)}
+.tracker-map-pin{position:absolute;top:45%;left:50%;transform:translate(-50%,-100%);z-index:5;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.tracker-map-pin-head{width:36px;height:36px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:0 4px 20px rgba(249,115,22,.4);position:relative}
+.tracker-map-pin-head::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--fire);animation:tracker-ping 2s ease-out infinite;opacity:0}
+.tracker-map-pin-stem{width:3px;height:12px;background:var(--fire);border-radius:0 0 3px 3px}
+.tracker-map-label{font-family:var(--mk);font-size:.6rem;background:var(--bg);color:var(--fire);padding:4px 10px;margin-top:4px;white-space:nowrap;letter-spacing:1px;text-transform:uppercase}
+
+/* Schedule */
+.sched{padding:24px 32px 80px;max-width:var(--mx);margin:0 auto}
+.sched-title{font-family:var(--hd);font-size:1.4rem;color:var(--cd);margin-bottom:16px}
+.sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sched-card{background:var(--card);padding:20px;border:1px solid var(--cf);transition:all .35s var(--eo)}
+.sched-card:nth-child(odd){transform:rotate(-.5deg)}
+.sched-card:nth-child(even){transform:rotate(.5deg)}
+.sched-card:hover{border-color:var(--fire);transform:rotate(0)!important}
+.sched-card.today{border:2px dashed var(--fire);background:var(--fg)}
+.sched-day{font-family:var(--mk);font-size:.8rem;color:var(--fire)}
+.sched-spot{font-size:.9rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+.sched-time{font-size:.75rem;color:var(--cd);margin-top:2px}
+
+@media(max-width:768px){.tracker-grid{grid-template-columns:1fr}.tracker-map{aspect-ratio:16/10}}
+
+/* ═══ CHALK DIVIDER ═══ */
+.divider{text-align:center;padding:64px 0;position:relative}
+.divider::before{content:'';position:absolute;left:10%;right:10%;top:50%;height:1px;background:var(--cf)}
+.divider span{font-family:var(--hd);font-size:1.8rem;color:var(--fire);position:relative;background:var(--bg);padding:0 24px}
+
+/* ═══ MENU ═══ */
+.menu{padding:0 32px 80px;max-width:var(--mx);margin:0 auto}
+.menu-header{margin-bottom:48px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:flex-end}
+.menu-header-text h2{font-family:var(--mk);font-size:clamp(2.4rem,6vw,4rem);transform:rotate(-1deg);margin-bottom:4px;line-height:.95}
+.menu-header-text p{font-family:var(--hd);font-size:1.3rem;color:var(--fire)}
+.menu-header-art{width:200px;flex-shrink:0;transform:rotate(-3deg) translateY(4px);position:relative;transition:transform .4s var(--eo)}
+.menu-header-art::before{content:'';position:absolute;inset:-20px -12px -8px;background:radial-gradient(ellipse at 50% 55%,rgba(249,115,22,.42),rgba(249,115,22,.08) 50%,transparent 72%);filter:blur(18px);z-index:-1;pointer-events:none}
+.menu-header-art img{width:100%;display:block;filter:drop-shadow(3px 6px 14px rgba(0,0,0,.4))}
+.menu-header-art:hover{transform:rotate(-1deg) translateY(0) scale(1.04)}
+@media(max-width:680px){.menu-header{grid-template-columns:1fr;gap:12px}.menu-header-art{width:140px;justify-self:flex-start;margin-top:-8px;order:-1}}
+
+/* Menu category tabs */
+.menu-tabs{display:flex;gap:8px;margin-bottom:36px;flex-wrap:wrap}
+.menu-tab{font-family:var(--mk);font-size:.85rem;padding:10px 22px;background:var(--card);color:var(--cd);border:1px solid var(--cf);cursor:pointer;transition:all .3s;transform:rotate(-1deg)}
+.menu-tab:hover{border-color:var(--fire);color:var(--chalk)}
+.menu-tab.active{background:var(--fire);color:#fff;border-color:var(--fire);transform:rotate(0)}
+
+/* Menu cards with photos — raw, taped, tilted */
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.menu-card{background:var(--card);display:grid;grid-template-columns:140px 1fr;overflow:hidden;transition:all .4s var(--eo);border:none;position:relative}
+.menu-card:nth-child(odd){transform:rotate(-.5deg)}
+.menu-card:nth-child(even){transform:rotate(.5deg)}
+.menu-card:hover{transform:rotate(0)!important;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.menu-card-img{overflow:hidden;position:relative}
+.menu-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--eo);filter:saturate(1.1) contrast(1.05)}
+.menu-card:hover .menu-card-img img{transform:scale(1.08)}
+.menu-card-tag{position:absolute;top:8px;left:8px;font-family:var(--mk);font-size:.5rem;background:var(--fire);color:#fff;padding:4px 10px;transform:rotate(-3deg);box-shadow:1px 2px 6px rgba(0,0,0,.3)}
+.menu-card-body{padding:20px;display:flex;flex-direction:column;justify-content:center}
+.menu-card-name{font-family:var(--bd);font-size:1rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.menu-card-desc{font-family:var(--hd);font-size:.95rem;color:var(--cd);line-height:1.4;margin-bottom:10px}
+.menu-card-bottom{display:flex;justify-content:space-between;align-items:center}
+.menu-card-price{font-family:var(--mk);font-size:1.15rem;color:var(--fire)}
+.menu-card-heat{display:flex;gap:2px}
+.menu-card-heat span{font-size:.7rem;opacity:.3}
+.menu-card-heat span.on{opacity:1}
+.menu-card.soldout{opacity:1;position:relative}
+.menu-card.soldout .menu-card-img img{filter:grayscale(.6) brightness(.7)}
+.menu-card.soldout .menu-card-body{opacity:.4}
+.menu-card.soldout::after{content:'SOLD OUT';position:absolute;top:50%;left:55%;transform:translate(-50%,-50%) rotate(-12deg);font-family:var(--mk);font-size:1.6rem;color:var(--red);border:3px solid var(--red);padding:6px 18px;z-index:2;letter-spacing:3px;background:rgba(23,19,16,.5);backdrop-filter:blur(2px)}
+
+/* ═══ PHOTO STRIP — polaroid / taped feel ═══ */
+.photo-strip{display:flex;gap:16px;padding:48px 32px;max-width:var(--mx);margin:0 auto;justify-content:center;flex-wrap:wrap}
+.photo-strip-cell{width:180px;background:var(--card);padding:8px 8px 32px;position:relative;transition:all .4s var(--eo);box-shadow:2px 4px 16px rgba(0,0,0,.3)}
+.photo-strip-cell:nth-child(1){transform:rotate(-3deg)}
+.photo-strip-cell:nth-child(2){transform:rotate(2deg);margin-top:20px}
+.photo-strip-cell:nth-child(3){transform:rotate(-1deg)}
+.photo-strip-cell:nth-child(4){transform:rotate(3deg);margin-top:10px}
+.photo-strip-cell:nth-child(5){transform:rotate(-2deg);margin-top:24px}
+.photo-strip-cell:hover{transform:rotate(0)!important;margin-top:0!important;z-index:2;box-shadow:4px 8px 32px rgba(0,0,0,.4)}
+.photo-strip-cell img{width:100%;aspect-ratio:1;object-fit:cover}
+.photo-strip-cell .cap{font-family:var(--hd);font-size:.95rem;color:var(--cd);text-align:center;margin-top:8px;position:static}
+
+/* ═══ CATERING — butcher paper ═══ */
+.catering{padding:100px 32px;max-width:var(--mx);margin:0 auto}
+.catering-header{margin-bottom:56px}
+.catering-header h2{font-family:var(--mk);font-size:clamp(2.2rem,6vw,3.5rem);transform:rotate(-1deg);margin-bottom:4px}
+.catering-header p{font-family:var(--hd);font-size:1.3rem;color:var(--cd);max-width:500px}
+.catering-note{font-family:var(--hd);font-size:1rem;color:var(--cd);margin-top:24px;padding:16px 20px;border-left:3px solid var(--fire);background:var(--fg);transform:rotate(-.5deg)}
+.catering-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.catering-tier{background:var(--card);border:1px solid var(--cf);overflow:hidden;transition:all .4s var(--eo)}
+.catering-tier:hover{border-color:var(--fire);transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.catering-tier.featured{border:2px solid var(--fire);position:relative}
+.catering-tier.featured::before{content:'MOST BOOKED';position:absolute;top:14px;right:-18px;font-family:var(--mk);font-size:.5rem;background:var(--fire);color:#fff;padding:3px 32px;transform:rotate(35deg);z-index:2}
+.catering-tier-img{aspect-ratio:16/10;overflow:hidden;position:relative}
+.catering-tier-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--eo)}
+.catering-tier:hover .catering-tier-img img{transform:scale(1.06)}
+.catering-tier-body{padding:28px}
+.catering-tier-name{font-family:var(--mk);font-size:1.3rem;margin-bottom:4px}
+.catering-tier-price{font-family:var(--hd);font-size:1.2rem;color:var(--fire);margin-bottom:14px}
+.catering-tier-list{list-style:none;margin-bottom:20px}
+.catering-tier-list li{font-size:.82rem;color:var(--cd);padding:6px 0;border-bottom:1px dotted var(--cf);display:flex;align-items:center;gap:8px}
+.catering-tier-list li::before{content:'\2713';color:var(--fire);font-weight:700;font-size:.7rem}
+.catering-tier-btn{display:block;text-align:center;font-family:var(--mk);font-size:.85rem;padding:14px;background:var(--fg);color:var(--fire);border:1px solid var(--fire);transition:all .3s}
+.catering-tier:hover .catering-tier-btn{background:var(--fire);color:#fff}
+
+/* ═══ REVIEWS ═══ */
+.reviews{padding:80px 32px;max-width:var(--mx);margin:0 auto}
+.reviews-top{display:flex;align-items:center;gap:16px;margin-bottom:36px}
+.reviews-score{font-family:var(--mk);font-size:3.5rem;line-height:1}
+.reviews-stars{color:var(--yellow);font-size:1.2rem}
+.reviews-count{font-size:.7rem;color:var(--cd);letter-spacing:1px;font-weight:600;text-transform:uppercase}
+.reviews-flow{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.review-card{background:var(--card);padding:24px;border:1px solid var(--cf);transition:all .35s var(--eo)}
+.review-card:hover{border-color:var(--fire)}
+.review-card-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.review-avi{width:36px;height:36px;background:var(--fg);display:flex;align-items:center;justify-content:center;font-family:var(--mk);font-size:.8rem;color:var(--fire);flex-shrink:0}
+.review-card-name{font-size:.8rem;font-weight:700}
+.review-card-date{font-size:.55rem;color:var(--cd)}
+.review-card-stars{margin-left:auto;color:var(--yellow);font-size:.7rem}
+.review-card-body{font-family:var(--hd);font-size:1.05rem;color:var(--cd);line-height:1.5}
+.review-card-body strong{color:var(--fire);font-weight:700}
+
+/* ═══ FAQ ═══ */
+.faq{padding:80px 32px 40px;max-width:var(--mx);margin:0 auto}
+.faq-header{margin-bottom:36px}
+.faq-header h2{font-family:var(--mk);font-size:clamp(2rem,5vw,3rem);transform:rotate(-1deg);margin-bottom:4px}
+.faq-header h2 em{color:var(--fire);font-style:normal}
+.faq-header p{font-family:var(--hd);font-size:1.2rem;color:var(--cd)}
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--card);border:1px solid var(--cf);transition:all .35s var(--eo);overflow:hidden}
+.faq-item:hover{border-color:rgba(249,115,22,.3)}
+.faq-item.open{border-color:var(--fire);background:var(--card2)}
+.faq-q{width:100%;padding:20px 22px;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;text-align:left;color:var(--chalk);font-family:var(--bd);font-size:.92rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;transition:color .3s}
+.faq-q-mark{font-family:var(--mk);font-size:1.6rem;color:var(--fire);line-height:1;flex-shrink:0;transition:transform .4s var(--eo)}
+.faq-item.open .faq-q-mark{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--eo);padding:0 22px}
+.faq-item.open .faq-a{max-height:360px}
+.faq-a p{font-family:var(--hd);font-size:1.1rem;color:var(--cd);line-height:1.5;padding-bottom:20px}
+.faq-a p b{color:var(--fire);font-weight:700}
+.faq-a p a{color:var(--fire);border-bottom:1px dashed var(--fire)}
+@media(max-width:480px){.faq-q{font-size:.82rem;padding:18px 18px}.faq-a{padding:0 18px}.faq-item.open .faq-a{max-height:460px}}
+
+/* ═══ ABOUT ═══ */
+.about{padding:80px 32px;max-width:var(--mx);margin:0 auto}
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center}
+.about-img{overflow:hidden;border:3px solid var(--card);position:relative}
+.about-img img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.about-img-cap{position:absolute;bottom:16px;left:16px;font-family:var(--hd);font-size:1.1rem;background:rgba(23,19,16,.7);padding:4px 14px;transform:rotate(-2deg)}
+.about-text h3{font-family:var(--mk);font-size:clamp(1.8rem,4vw,2.5rem);margin-bottom:16px;transform:rotate(-1deg)}
+.about-text h3 em{color:var(--fire);font-style:normal}
+.about-text p{font-size:.88rem;color:var(--cd);line-height:1.85;margin-bottom:14px;font-weight:500}
+.about-sig{font-family:var(--hd);font-size:1.6rem;color:var(--fire);transform:rotate(-3deg);display:inline-block;margin-top:8px}
+
+/* ═══ CTA ═══ */
+.cta{background:var(--fire);padding:100px 32px;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.15),transparent 50%,rgba(255,255,255,.05))}
+.cta-in{max-width:600px;margin:0 auto;position:relative;z-index:1}
+.cta h2{font-family:var(--mk);font-size:clamp(3rem,9vw,5.5rem);color:#fff;transform:rotate(-1deg);margin-bottom:4px}
+.cta p{font-family:var(--hd);font-size:1.4rem;color:rgba(255,255,255,.7);margin-bottom:32px}
+.cta-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.cta-btn-dark{padding:18px 36px;font-family:var(--mk);font-size:1rem;background:var(--bg);color:var(--chalk);border:none;cursor:pointer;transition:all .3s}
+.cta-btn-dark:hover{transform:scale(1.05)}
+.cta-btn-o{padding:18px 36px;font-family:var(--mk);font-size:1rem;background:transparent;color:#fff;border:2px dashed rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
+.cta-btn-o:hover{border-color:#fff}
+
+/* ═══ HOO ═══ */
+.hoo{background:var(--bg);padding:48px 24px;text-align:center;border-top:1px solid var(--cf)}
+.hoo-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(200,149,46,.04);border:1px solid rgba(200,149,46,.08);padding:12px 24px;margin-bottom:12px}
+.hoo-logo{width:32px;height:32px;background:linear-gradient(135deg,#C8952E,#E8B84B);display:flex;align-items:center;justify-content:center;font-family:var(--mk);font-size:.6rem;color:#1A1816}
+.hoo-name{font-size:.7rem;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.hoo p{font-size:.65rem;color:rgba(255,255,255,.15);max-width:300px;margin:0 auto}
+.hoo a{display:inline-block;margin-top:8px;color:#C8952E;font-size:.68rem;font-weight:600}
+
+/* ═══ FOOTER ═══ */
+.footer{background:#0E0C0A;padding:48px 24px 20px;color:rgba(255,255,255,.35)}
+.footer-in{max-width:var(--mx);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.footer h4{font-family:var(--mk);font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:10px}
+.footer p,.footer a{font-size:.72rem;line-height:1.9;color:rgba(255,255,255,.25)}
+.footer a:hover{color:var(--fire)}
+.footer-brand{font-family:var(--mk);font-size:1.1rem;color:var(--chalk);margin-bottom:6px;transform:rotate(-1deg);display:inline-block}
+.footer-brand em{color:var(--fire);font-style:normal}
+.footer-bot{max-width:var(--mx);margin:16px auto 0;padding-top:14px;border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;font-size:.6rem;color:rgba(255,255,255,.12);flex-wrap:wrap;gap:8px}
+
+/* ═══ STICKY MOBILE ═══ */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(23,19,16,.96);backdrop-filter:blur(16px);border-top:1px solid var(--cf);padding:12px 16px;display:flex;gap:10px;transform:translateY(100%);transition:transform .4s var(--eo)}
+.sticky-cta.show{transform:translateY(0)}
+.sticky-cta a{flex:1;text-align:center;padding:14px;font-family:var(--mk);font-size:.85rem;display:block}
+.sticky-cta .sc-find{background:var(--card);color:var(--chalk)}
+.sticky-cta .sc-order{background:var(--fire);color:#fff}
+
+/* ═══ SMOKER TRACKER ═══ */
+.smoker{padding:72px 32px 24px;max-width:var(--mx);margin:0 auto}
+.smoker-header{margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.smoker-header-l h2{font-family:var(--mk);font-size:clamp(1.8rem,5vw,2.8rem);transform:rotate(-1deg);line-height:.95}
+.smoker-header-l h2 em{color:var(--fire);font-style:normal}
+.smoker-live{display:inline-flex;align-items:center;gap:8px;font-family:var(--mk);font-size:.72rem;color:var(--fire);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.smoker-live-dot{width:10px;height:10px;background:var(--fire);border-radius:50%;animation:smoker-pulse 1.2s ease infinite;box-shadow:0 0 12px var(--fire)}
+@keyframes smoker-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.smoker-header-time{font-family:var(--hd);font-size:1.1rem;color:var(--cd);text-align:right}
+.smoker-header-time b{color:var(--fire);font-weight:700}
+.smoker-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.smoker-card{background:var(--card);padding:22px 18px 20px;border:1px solid var(--cf);position:relative;transition:all .4s var(--eo);overflow:hidden}
+.smoker-card:nth-child(odd){transform:rotate(-.4deg)}
+.smoker-card:nth-child(even){transform:rotate(.4deg)}
+.smoker-card:hover{border-color:var(--fire);transform:rotate(0)!important}
+.smoker-card.ready{border:2px solid var(--green);background:rgba(74,222,128,.04)}
+.smoker-card.sold{opacity:.55}
+.smoker-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:14px;min-height:34px}
+.smoker-card-name{font-family:var(--mk);font-size:.92rem;letter-spacing:.5px;line-height:1.05}
+.smoker-stamp{font-family:var(--mk);font-size:.5rem;padding:3px 9px;border:2px solid;letter-spacing:1.5px;transform:rotate(-3deg);display:inline-block;line-height:1.2;white-space:nowrap;flex-shrink:0}
+.smoker-stamp-wrap{color:var(--yellow);border-color:var(--yellow)}
+.smoker-stamp-rest{color:#94B5FF;border-color:#94B5FF}
+.smoker-stamp-ready{color:var(--green);border-color:var(--green)}
+.smoker-stamp-sold{color:var(--red);border-color:var(--red)}
+.smoker-dial{position:relative;width:112px;height:112px;margin:0 auto 12px}
+.smoker-dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+.smoker-dial-bg{fill:none;stroke:var(--cf);stroke-width:7}
+.smoker-dial-fill{fill:none;stroke:var(--fire);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1.4s var(--eo)}
+.smoker-dial.rest .smoker-dial-fill{stroke:#94B5FF}
+.smoker-dial.ready-r .smoker-dial-fill{stroke:var(--green)}
+.smoker-dial-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.smoker-dial-temp{font-family:var(--mk);font-size:1.15rem;color:var(--chalk);line-height:1}
+.smoker-dial-unit{font-family:var(--bd);font-size:.55rem;color:var(--cd);letter-spacing:1.5px;font-weight:600;margin-top:2px;text-transform:uppercase}
+.smoker-card-foot{text-align:center;font-family:var(--hd);font-size:1rem;color:var(--cd);line-height:1.35}
+.smoker-card-foot b{color:var(--fire);font-weight:700}
+.smoker-card.sold .smoker-card-foot b{color:var(--red)}
+.smoker-rule{font-family:var(--hd);font-size:1.05rem;color:var(--cd);text-align:center;margin-top:24px;padding:14px 16px;border-top:1px dashed var(--cf);border-bottom:1px dashed var(--cf);letter-spacing:.3px}
+.smoker-rule b{color:var(--fire);font-weight:700;font-family:var(--mk);letter-spacing:1px}
+@media(max-width:768px){.smoker{padding:56px 20px 16px}.smoker-grid{grid-template-columns:repeat(2,1fr);gap:10px}.smoker-header-time{text-align:left;font-size:1rem}.smoker-card{padding:18px 14px 16px}}
+@media(max-width:480px){.smoker-dial{width:92px;height:92px}.smoker-card-name{font-size:.78rem;letter-spacing:.3px}.smoker-stamp{font-size:.45rem;padding:2px 6px}.smoker-card-foot{font-size:.9rem}}
+
+/* ═══ STICKY SMOKEY ═══ */
+.smokey-widget{position:fixed;bottom:22px;left:22px;z-index:800;width:116px;cursor:pointer;text-decoration:none;display:block;transform:translateY(140%) scale(.9);opacity:0;transition:transform .7s var(--eo),opacity .5s ease}
+.smokey-widget.show{transform:translateY(0) scale(1);opacity:1;animation:smokey-bob 3.8s ease-in-out infinite 1.5s}
+@keyframes smokey-bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1)}}
+.smokey-widget:hover{animation:none;transform:translateY(-4px) scale(1.05)}
+.smokey-glow{position:absolute;inset:-18px -20px -6px;background:radial-gradient(ellipse at 50% 65%,rgba(249,115,22,.55),rgba(249,115,22,.12) 50%,transparent 72%);filter:blur(16px);z-index:-1;animation:smokey-glow-pulse 2.6s ease-in-out infinite;pointer-events:none}
+@keyframes smokey-glow-pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+.smokey-img{width:100%;display:block;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.45))}
+.smokey-badge{position:absolute;top:-2px;right:-4px;width:40px;height:40px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.4),inset 0 -2px 4px rgba(0,0,0,.18);animation:smokey-phone-bounce 1.8s ease infinite;border:3px solid var(--bg)}
+@keyframes smokey-phone-bounce{0%,100%{transform:translateY(0) rotate(-8deg)}25%{transform:translateY(-5px) rotate(8deg)}50%{transform:translateY(0) rotate(-6deg)}75%{transform:translateY(-3px) rotate(6deg)}}
+.smokey-badge::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--yellow);animation:smokey-ring 2s ease-out infinite;opacity:0}
+@keyframes smokey-ring{0%{transform:scale(.8);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+.smokey-quote{position:absolute;bottom:94%;left:62%;background:var(--paper);color:#2A2016;padding:10px 14px;font-family:var(--hd);font-size:1rem;line-height:1.2;width:200px;box-shadow:2px 4px 16px rgba(0,0,0,.35);transform:rotate(-2deg);opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s var(--eo)}
+.smokey-quote.show{opacity:1;transform:rotate(-1deg)}
+.smokey-quote::after{content:'';position:absolute;bottom:-8px;left:18px;width:0;height:0;border-left:10px solid transparent;border-right:4px solid transparent;border-top:12px solid var(--paper)}
+@media(max-width:768px){
+  .smokey-widget{width:84px;bottom:88px;left:14px}
+  .smokey-badge{width:34px;height:34px;font-size:.9rem}
+  .smokey-quote{display:none}
+}
+body.nosmokey .smokey-widget{display:none}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  .hero-content{flex-direction:column;padding:100px 24px 60px;align-items:flex-start}
+  .hero-right{text-align:left;display:flex;gap:24px}
+  .menu-grid{grid-template-columns:1fr}
+  .menu-card{grid-template-columns:120px 1fr}
+  .sched-grid{grid-template-columns:repeat(2,1fr)}
+  .catering-tiers{grid-template-columns:1fr}
+  .reviews-flow{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
+  .photo-strip{grid-template-columns:repeat(3,1fr)}
+  .find-card{flex-direction:column;text-align:center;padding:28px}
+  .find-btn{width:100%}.find-btn a{display:block;text-align:center}
+  .footer-in{grid-template-columns:1fr 1fr}
+  .footer-bot{flex-direction:column;text-align:center}
+  .nav{padding:0 20px}.nav-a{display:none}.ham{display:block}
+  body{padding-bottom:74px}
+}
+@media(max-width:480px){.hero h1{font-size:clamp(2.8rem,12vw,4rem)}.sched-grid{grid-template-columns:1fr 1fr}.photo-strip{grid-template-columns:repeat(2,1fr)}.menu-card{grid-template-columns:100px 1fr}}
+@media(min-width:769px){.sticky-cta{display:none}}
+</style>
+</head>
+<body>
+
+<!-- SCROLL -->
+<div class="scroll-bar"><div class="scroll-fill" id="scrollFill"></div></div>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Smoked Fresh Daily</span><span>4.8&#9733; 280+ Google Reviews</span><span>Fires Lit 4 AM Sharp</span><span>Small Batch &middot; Brisket Runs Out</span><span>Fed 60+ KC Events</span><span>Cash &middot; Card &middot; Apple Pay</span><span>Catering from $15/head</span><span>@FuegoKC on IG</span><span>Smoked Fresh Daily</span><span>4.8&#9733; 280+ Google Reviews</span><span>Fires Lit 4 AM Sharp</span><span>Small Batch &middot; Brisket Runs Out</span><span>Fed 60+ KC Events</span><span>Cash &middot; Card &middot; Apple Pay</span><span>Catering from $15/head</span><span>@FuegoKC on IG</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">Fuego <em>KC</em></div>
+  <div class="nav-r" id="navLinks">
+    <a href="#menu" class="nav-a">Menu</a>
+    <a href="#find" class="nav-a">Find Us</a>
+    <a href="#catering" class="nav-a">Catering</a>
+    <a href="tel:8165550193" class="nav-cta">Order Now</a>
+  </div>
+  <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.pexels.com/photos/1264937/pexels-photo-1264937.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Food truck lit up at night" loading="eager">
+  </div>
+  <div class="hero-smoke" id="heroSmoke"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-badge rv"><div class="hero-dot"></div><span>Open now — Crossroads, 11am</span></div>
+      <h1 class="rv rv-d1 chalky">Street smoke<br><em>done right.</em></h1>
+      <p class="hero-sub rv rv-d2">Low & slow from a truck window. We fire up at 4am so you eat the best lunch of your life by noon. We run out? We run out.</p>
+      <div class="hero-btns rv rv-d3">
+        <a href="#find" class="hero-btn primary">Find Us Today</a>
+        <a href="#menu" class="hero-btn chalk">See the Menu</a>
+      </div>
+    </div>
+    <div class="hero-right rv rv-d3">
+      <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="280">0</span>+</div><div class="hero-stat-label">5-Star Reviews</div></div>
+      <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="4" data-suffix="am">0</span></div><div class="hero-stat-label">We Start Smoking</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-strip-in">
+    <div class="trust-col rv">
+      <div class="trust-top">4.8&#9733; &middot; 280+</div>
+      <div class="trust-bot">Google reviews. All from <b>real KC mouths</b>.</div>
+    </div>
+    <div class="trust-col rv rv-d1">
+      <div class="trust-top">4 AM</div>
+      <div class="trust-bot">Fires lit before sunrise. <b>14 hours of smoke</b> by lunch.</div>
+    </div>
+    <div class="trust-col rv rv-d2">
+      <div class="trust-top">Out = OUT</div>
+      <div class="trust-bot">We run out. <b>No freezer meat.</b> No reheats.</div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE TRACKER -->
+<div id="find">
+  <section class="tracker">
+    <div class="tracker-header rv">
+      <div class="tracker-live"><div class="tracker-live-dot"></div> Live — Serving Now</div>
+      <h2 class="chalky">Find the Truck</h2>
+    </div>
+    <div class="tracker-grid">
+      <div class="tracker-info">
+        <div class="tracker-now rv rv-d1">
+          <div class="tracker-now-loc">&#128293; Crossroads — 20th &amp; Main</div>
+          <div class="tracker-now-addr">20th St &amp; Main St, Kansas City, MO 64108</div>
+          <div class="tracker-now-time">
+            11:00 AM – 3:00 PM &bull; <span class="tracker-countdown" id="countdown">closing in 2h 14m</span>
+          </div>
+          <div class="tracker-now-btns">
+            <a href="https://maps.google.com/maps?q=20th+and+Main+Kansas+City+MO" target="_blank" class="tracker-btn tracker-btn-dir">&#128205; Get Directions</a>
+            <a href="sms:8165550193" class="tracker-btn tracker-btn-txt">&#128172; Text for ETA</a>
+          </div>
+        </div>
+        <div class="tracker-sms rv rv-d2">
+          <div class="tracker-sms-label">&#128242; Get location texts. Never miss us.</div>
+          <div class="tracker-sms-row">
+            <input class="tracker-sms-input" type="tel" placeholder="(555) 555-5555" aria-label="Phone number">
+            <button class="tracker-sms-btn">Sign Up</button>
+          </div>
+          <div class="tracker-sms-fine">We text once per day, mornings only. No spam. Unsubscribe anytime.</div>
+        </div>
+      </div>
+      <div class="tracker-map rv rv-d2">
+        <iframe src="https://maps.google.com/maps?q=20th+and+Main+St+Kansas+City+MO&z=15&output=embed" allowfullscreen loading="lazy" title="Fuego KC current location"></iframe>
+        <div class="tracker-map-pin">
+          <div class="tracker-map-pin-head">&#128293;</div>
+          <div class="tracker-map-pin-stem"></div>
+          <div class="tracker-map-label">Fuego KC</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="sched">
+    <div class="sched-title rv">&#128197; This week's rotation</div>
+    <div class="sched-grid">
+      <div class="sched-card rv"><div class="sched-day">Tuesday</div><div class="sched-spot">City Market</div><div class="sched-time">11am – 2pm</div></div>
+      <div class="sched-card today rv rv-d1"><div class="sched-day">Wednesday &larr; today</div><div class="sched-spot">Crossroads</div><div class="sched-time">11am – 3pm</div></div>
+      <div class="sched-card rv rv-d2"><div class="sched-day">Thursday</div><div class="sched-spot">Berkley Riverfront</div><div class="sched-time">11am – 2pm</div></div>
+      <div class="sched-card rv rv-d3"><div class="sched-day">Friday</div><div class="sched-spot">Power &amp; Light</div><div class="sched-time">11am – Late</div></div>
+      <div class="sched-card rv rv-d4"><div class="sched-day">Saturday</div><div class="sched-spot">OP Farmers Market</div><div class="sched-time">8am – 1pm</div></div>
+      <div class="sched-card rv rv-d5"><div class="sched-day">Sunday</div><div class="sched-spot">Brookside</div><div class="sched-time">12pm – 5pm</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SMOKER TRACKER -->
+<section class="smoker">
+  <div class="smoker-header rv">
+    <div class="smoker-header-l">
+      <div class="smoker-live"><div class="smoker-live-dot"></div> On the smoker right now</div>
+      <h2 class="chalky">What's <em>cookin'</em>.</h2>
+    </div>
+    <div class="smoker-header-time">fires lit at <b>4:17 AM</b> &middot; last check <b>2 min ago</b></div>
+  </div>
+  <div class="smoker-grid">
+    <div class="smoker-card rv rv-d1">
+      <div class="smoker-card-top">
+        <div class="smoker-card-name">&#128293; Brisket</div>
+        <div class="smoker-stamp smoker-stamp-wrap">WRAPPED</div>
+      </div>
+      <div class="smoker-dial">
+        <svg viewBox="0 0 120 120"><circle class="smoker-dial-bg" cx="60" cy="60" r="50"/><circle class="smoker-dial-fill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="47"/></svg>
+        <div class="smoker-dial-center"><div class="smoker-dial-temp">198<span style="font-size:.7em">&deg;F</span></div><div class="smoker-dial-unit">internal</div></div>
+      </div>
+      <div class="smoker-card-foot">14-hr smoke &middot;<br>ready at <b>11:45 AM</b></div>
+    </div>
+    <div class="smoker-card rv rv-d2">
+      <div class="smoker-card-top">
+        <div class="smoker-card-name">&#128054; Pork Shoulder</div>
+        <div class="smoker-stamp smoker-stamp-rest">RESTING</div>
+      </div>
+      <div class="smoker-dial rest">
+        <svg viewBox="0 0 120 120"><circle class="smoker-dial-bg" cx="60" cy="60" r="50"/><circle class="smoker-dial-fill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/></svg>
+        <div class="smoker-dial-center"><div class="smoker-dial-temp">203<span style="font-size:.7em">&deg;F</span></div><div class="smoker-dial-unit">pulling now</div></div>
+      </div>
+      <div class="smoker-card-foot">12-hr shoulder &middot;<br>slicing <b>now</b></div>
+    </div>
+    <div class="smoker-card ready rv rv-d3">
+      <div class="smoker-card-top">
+        <div class="smoker-card-name">&#127831; Smoked Wings</div>
+        <div class="smoker-stamp smoker-stamp-ready">READY</div>
+      </div>
+      <div class="smoker-dial ready-r">
+        <svg viewBox="0 0 120 120"><circle class="smoker-dial-bg" cx="60" cy="60" r="50"/><circle class="smoker-dial-fill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/></svg>
+        <div class="smoker-dial-center"><div class="smoker-dial-temp">375<span style="font-size:.7em">&deg;F</span></div><div class="smoker-dial-unit">batch fresh</div></div>
+      </div>
+      <div class="smoker-card-foot">dry-rubbed &middot;<br>fresh <b>every 45 min</b></div>
+    </div>
+    <div class="smoker-card sold rv rv-d4">
+      <div class="smoker-card-top">
+        <div class="smoker-card-name">&#129363; Burnt Ends</div>
+        <div class="smoker-stamp smoker-stamp-sold">SOLD OUT</div>
+      </div>
+      <div class="smoker-dial">
+        <svg viewBox="0 0 120 120"><circle class="smoker-dial-bg" cx="60" cy="60" r="50"/><circle class="smoker-dial-fill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314"/></svg>
+        <div class="smoker-dial-center"><div class="smoker-dial-temp" style="color:var(--red);opacity:.7">&mdash;</div><div class="smoker-dial-unit">gone 12:40</div></div>
+      </div>
+      <div class="smoker-card-foot">pitmaster's cut &middot;<br>back <b>tomorrow</b></div>
+    </div>
+  </div>
+  <div class="smoker-rule rv"><b>run out? we run out.</b> &nbsp;no freezer meat. no shortcuts. smoked this morning, gone by dinner.</div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider"><span>the menu</span></div>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <div class="menu-header rv">
+    <div class="menu-header-text">
+      <h2 class="chalky">Today's Board</h2>
+      <p>~ smoked fresh this morning ~</p>
+    </div>
+    <div class="menu-header-art">
+      <img src="assets/fuego-kc/mascot-plate.png" alt="Smokey handing over a tray of smoked brisket, pulled pork sandwich, and pickles" loading="lazy">
+    </div>
+  </div>
+
+  <div class="menu-tabs rv rv-d1">
+    <button class="menu-tab active" data-cat="all">All</button>
+    <button class="menu-tab" data-cat="smoked">&#128293; Smoked</button>
+    <button class="menu-tab" data-cat="tacos">&#127790; Tacos</button>
+    <button class="menu-tab" data-cat="sides">&#127839; Sides &amp; Drinks</button>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+    <div class="menu-card rv" data-cat="smoked">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/13068565/pexels-photo-13068565.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Smoked brisket on cutting board" loading="lazy"><div class="menu-card-tag">fan fav</div></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">The Fuego Stack</div>
+        <div class="menu-card-desc">brisket + pulled pork. slaw. pickled jalapeños. house BBQ. brioche.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$16</div><div class="menu-card-heat"><span class="on">&#128293;</span><span class="on">&#128293;</span><span>&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card rv rv-d1" data-cat="smoked">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/36869213/pexels-photo-36869213.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Sliced brisket" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Brisket Plate</div>
+        <div class="menu-card-desc">half pound sliced. two sides. texas toast. pickles.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$18</div><div class="menu-card-heat"><span class="on">&#128293;</span><span>&#128293;</span><span>&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card rv rv-d2" data-cat="smoked">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/5981144/pexels-photo-5981144.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Pulled pork sandwich" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Pulled Pork Sandwich</div>
+        <div class="menu-card-desc">12-hr shoulder. vinegar slaw. pickles. done.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$13</div><div class="menu-card-heat"><span class="on">&#128293;</span><span>&#128293;</span><span>&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card rv rv-d3" data-cat="smoked">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/1275692/pexels-photo-1275692.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Smoked wings on grill" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Smoked Wings (8pc)</div>
+        <div class="menu-card-desc">dry-rubbed. alabama white or KC hot honey. your call.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$14</div><div class="menu-card-heat"><span class="on">&#128293;</span><span class="on">&#128293;</span><span class="on">&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card soldout rv rv-d4" data-cat="smoked">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/8250685/pexels-photo-8250685.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Smoker with meat" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Burnt Ends</div>
+        <div class="menu-card-desc">the pitmaster's cut. limited. if you know, you know.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$17</div></div>
+      </div>
+    </div>
+    <div class="menu-card rv" data-cat="tacos">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/2272825/pexels-photo-2272825.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Street tacos" loading="lazy"><div class="menu-card-tag">best seller</div></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Brisket Tacos (3)</div>
+        <div class="menu-card-desc">chopped brisket. cilantro-lime slaw. pickled onion. chipotle crema.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$14</div><div class="menu-card-heat"><span class="on">&#128293;</span><span class="on">&#128293;</span><span>&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card rv rv-d1" data-cat="tacos">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/2272825/pexels-photo-2272825.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Pork tacos" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Pulled Pork Tacos (3)</div>
+        <div class="menu-card-desc">smoked pork. mango salsa. queso fresco. jalapeño.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$13</div><div class="menu-card-heat"><span class="on">&#128293;</span><span>&#128293;</span><span>&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card rv" data-cat="sides">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/30500757/pexels-photo-30500757.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Loaded fries" loading="lazy"><div class="menu-card-tag">loaded</div></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Fuego Fries</div>
+        <div class="menu-card-desc">pulled pork. cheese sauce. jalapeños. sour cream. stupid good.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$9</div><div class="menu-card-heat"><span class="on">&#128293;</span><span class="on">&#128293;</span><span>&#128293;</span></div></div>
+      </div>
+    </div>
+    <div class="menu-card rv rv-d1" data-cat="sides">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/10993148/pexels-photo-10993148.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Mac and cheese" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Mac &amp; Cheese</div>
+        <div class="menu-card-desc">three-cheese. smoked gouda crust. don't think about it, just order it.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$6</div></div>
+      </div>
+    </div>
+    <div class="menu-card rv rv-d2" data-cat="sides">
+      <div class="menu-card-img"><img src="https://images.pexels.com/photos/8679076/pexels-photo-8679076.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Fresh lemonade" loading="lazy"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Fresh Lemonade</div>
+        <div class="menu-card-desc">house-squeezed. regular, strawberry, or lavender. ice cold.</div>
+        <div class="menu-card-bottom"><div class="menu-card-price">$4</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP -->
+<div class="photo-strip">
+  <div class="photo-strip-cell"><img src="https://images.pexels.com/photos/36543113/pexels-photo-36543113.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Chef grilling with flames" loading="lazy"><div class="cap">fire on the flat top</div></div>
+  <div class="photo-strip-cell"><img src="https://images.pexels.com/photos/13068565/pexels-photo-13068565.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Brisket in hands" loading="lazy"><div class="cap">14-hour brisket</div></div>
+  <div class="photo-strip-cell"><img src="https://images.pexels.com/photos/5779735/pexels-photo-5779735.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Couple eating at truck" loading="lazy"><div class="cap">the lunch crowd</div></div>
+  <div class="photo-strip-cell"><img src="https://images.pexels.com/photos/2272825/pexels-photo-2272825.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Street tacos" loading="lazy"><div class="cap">brisket tacos</div></div>
+  <div class="photo-strip-cell"><img src="https://images.pexels.com/photos/8250685/pexels-photo-8250685.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Smoker with smoke" loading="lazy"><div class="cap">4am smoke</div></div>
+</div>
+
+<!-- DIVIDER -->
+<div class="divider"><span>book the truck</span></div>
+
+<!-- CATERING -->
+<section class="catering" id="catering">
+  <div class="catering-header rv">
+    <h2>Book the Truck</h2>
+    <p>Corporate lunches, private parties, festivals. We pull up, set up, and feed your people something they'll actually remember.</p>
+  </div>
+  <div class="catering-tiers">
+    <div class="catering-tier rv">
+      <div class="catering-tier-img"><img src="https://images.pexels.com/photos/5779735/pexels-photo-5779735.jpeg?auto=compress&cs=tinysrgb&w=600" alt="People eating outdoors" loading="lazy"></div>
+      <div class="catering-tier-body">
+        <div class="catering-tier-name">Backyard</div>
+        <div class="catering-tier-price">from $15/head &bull; 25 min</div>
+        <ul class="catering-tier-list">
+          <li>Choose 2 smoked meats</li>
+          <li>2 sides + texas toast</li>
+          <li>House BBQ sauce &amp; pickles</li>
+          <li>Disposable plates &amp; utensils</li>
+          <li>Setup &amp; cleanup included</li>
+        </ul>
+        <a href="tel:8165550193" class="catering-tier-btn">Get a Quote &rarr;</a>
+      </div>
+    </div>
+    <div class="catering-tier featured rv rv-d2">
+      <div class="catering-tier-img"><img src="https://images.pexels.com/photos/24863057/pexels-photo-24863057.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Catering buffet spread" loading="lazy"></div>
+      <div class="catering-tier-body">
+        <div class="catering-tier-name">Corporate</div>
+        <div class="catering-tier-price">from $22/head &bull; 40 min</div>
+        <ul class="catering-tier-list">
+          <li>Choose 3 smoked meats</li>
+          <li>3 sides + bread + drinks</li>
+          <li>Full truck on-site with crew</li>
+          <li>Custom menu available</li>
+          <li>Branded setup &amp; signage</li>
+          <li>Recurring discount available</li>
+        </ul>
+        <a href="tel:8165550193" class="catering-tier-btn">Get a Quote &rarr;</a>
+      </div>
+    </div>
+    <div class="catering-tier rv rv-d4">
+      <div class="catering-tier-img"><img src="https://images.pexels.com/photos/9864907/pexels-photo-9864907.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Festival crowd with food stalls" loading="lazy"></div>
+      <div class="catering-tier-body">
+        <div class="catering-tier-name">Festival</div>
+        <div class="catering-tier-price">custom quote</div>
+        <ul class="catering-tier-list">
+          <li>Full menu or custom build</li>
+          <li>High-volume service</li>
+          <li>Generator + full setup</li>
+          <li>Staff &amp; equipment included</li>
+          <li>Multi-day available</li>
+        </ul>
+        <a href="tel:8165550193" class="catering-tier-btn">Get a Quote &rarr;</a>
+      </div>
+    </div>
+    <div class="catering-note rv">"We've done backyards with 30 people and festivals with 3,000. Same energy, same food, same crew. Just tell us when and how many." — Fuego Crew</div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="reviews-top rv">
+    <div class="reviews-score">4.8</div>
+    <div><div class="reviews-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="reviews-count">280+ reviews on Google</div></div>
+  </div>
+  <div class="reviews-flow">
+    <div class="review-card rv">
+      <div class="review-card-top"><div class="review-avi">T</div><div><div class="review-card-name">Travis L.</div><div class="review-card-date">1 week ago</div></div><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+      <div class="review-card-body">"The burnt ends are unreal. I've had BBQ all over KC and these guys are <strong>up there with the legends.</strong> The brisket taco is something else."</div>
+    </div>
+    <div class="review-card rv rv-d1">
+      <div class="review-card-top"><div class="review-avi">A</div><div><div class="review-card-name">Ashley M.</div><div class="review-card-date">2 weeks ago</div></div><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+      <div class="review-card-body">"Hired them for our company picnic — 60 people and they <strong>crushed it.</strong> Everyone going back for seconds. Already rebooked for summer."</div>
+    </div>
+    <div class="review-card rv rv-d2">
+      <div class="review-card-top"><div class="review-avi">D</div><div><div class="review-card-name">DeShawn R.</div><div class="review-card-date">3 weeks ago</div></div><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+      <div class="review-card-body">"Pulled up to their Thursday spot. Got the Fuego Stack and loaded fries. <strong>I'm a regular now.</strong> Every Thursday like clockwork."</div>
+    </div>
+    <div class="review-card rv rv-d3">
+      <div class="review-card-top"><div class="review-avi">M</div><div><div class="review-card-name">Maria S.</div><div class="review-card-date">1 month ago</div></div><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+      <div class="review-card-body">"Best food truck in KC, period. <strong>The mac and cheese alone is worth the trip.</strong> My kids are obsessed with the lemonade."</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-header rv">
+    <h2 class="chalky">Questions we <em>get a lot</em>.</h2>
+    <p>The stuff people text us at 10:47 AM.</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item rv">
+      <button class="faq-q">Where is Fuego KC today?<span class="faq-q-mark">+</span></button>
+      <div class="faq-a"><p>Fuego KC rotates across <b>6 Kansas City spots</b> Tuesday through Sunday. Today we're at Crossroads, 20th &amp; Main, 11 AM &ndash; 3 PM. Check the <a href="#find">live tracker</a> above or text us for a real-time ETA.</p></div>
+    </div>
+    <div class="faq-item rv rv-d1">
+      <button class="faq-q">Can I book Fuego KC for catering?<span class="faq-q-mark">+</span></button>
+      <div class="faq-a"><p>Yes. We cater corporate lunches, private parties, and festivals. Packages start at <b>$15/head</b> for backyard events, <b>$22/head</b> for full corporate with the truck on-site. Festivals are custom quotes. Call (816) 555-0193.</p></div>
+    </div>
+    <div class="faq-item rv rv-d2">
+      <button class="faq-q">What's on the menu today?<span class="faq-q-mark">+</span></button>
+      <div class="faq-a"><p>Smoked brisket, pulled pork, brisket tacos, pulled pork tacos, smoked wings, Fuego fries, mac &amp; cheese, and fresh lemonade. <b>Burnt ends</b> are a pitmaster's-cut special &mdash; limited, usually gone by 1 PM.</p></div>
+    </div>
+    <div class="faq-item rv rv-d3">
+      <button class="faq-q">Do you take credit cards?<span class="faq-q-mark">+</span></button>
+      <div class="faq-a"><p><b>Yes</b> &mdash; cash, credit, debit, Apple Pay, and Google Pay. Tips through the truck window go straight to the crew.</p></div>
+    </div>
+    <div class="faq-item rv rv-d4">
+      <button class="faq-q">How early do you start cooking?<span class="faq-q-mark">+</span></button>
+      <div class="faq-a"><p>Fires lit at <b>4 AM sharp</b>. Brisket goes on around 5, wrapped by 9, ready to slice by 11:45. Everything smoked that morning gets sold that day. No freezer meat. No reheats.</p></div>
+    </div>
+    <div class="faq-item rv rv-d5">
+      <button class="faq-q">Do you sell out of brisket?<span class="faq-q-mark">+</span></button>
+      <div class="faq-a"><p><b>Yes, regularly.</b> Brisket and burnt ends typically run out between 1 and 2 PM on busy days. If we're out, we're out &mdash; we'd rather close early than serve next-day food.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-grid">
+    <div class="about-img rv">
+      <img src="https://images.pexels.com/photos/36101017/pexels-photo-36101017.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Flames on the grill" loading="lazy">
+      <div class="about-img-cap">the guy behind the smoke</div>
+    </div>
+    <div class="about-text rv rv-d2">
+      <h3 class="chalky">Started with a grill<br>and a <em>block party.</em></h3>
+      <p>Three years ago we were just the house that smoked ribs for the neighborhood. Somebody said "you should sell this." So we did. Out of a truck.</p>
+      <p>No culinary school. No investors. No business plan. Just fire, smoke, and feeding people. Every plate that leaves this window — same energy as family dinner. That's the whole thing.</p>
+      <div class="about-sig">— The Fuego Crew</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-in">
+    <h2 class="rv">Hungry yet?</h2>
+    <p class="rv rv-d1">call. text. DM us. show up. we don't care how — just come eat.</p>
+    <div class="cta-btns rv rv-d2">
+      <a href="tel:8165550193" class="cta-btn-dark">Call (816) 555-0193</a>
+      <a href="sms:8165550193" class="cta-btn-o">Text Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOO -->
+<div class="hoo">
+  <div class="hoo-badge"><div class="hoo-logo">HOO</div><div class="hoo-name">Built by HOO</div></div>
+  <p>High-performance websites for local businesses.</p>
+  <a href="https://herrmanonlineoutlook.com" target="_blank">herrmanonlineoutlook.com &rarr;</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-in">
+    <div><div class="footer-brand">Fuego <em>KC</em></div><p>Kansas City's favorite BBQ food truck. Smoked fresh daily.</p><p style="margin-top:8px"><strong style="color:rgba(255,255,255,.5)">(816) 555-0193</strong><br>hello@fuegokc.com<br>@FuegoKC on Instagram</p></div>
+    <div><h4>Menu</h4><a href="#menu">Smoked Meats</a><br><a href="#menu">Tacos</a><br><a href="#menu">Sides &amp; Drinks</a></div>
+    <div><h4>Info</h4><a href="#find">Find Us</a><br><a href="#catering">Catering</a><br><a href="#">Reviews</a></div>
+    <div><h4>Hours</h4><p>Tue-Fri: 11am-3pm<br>Saturday: 8am-1pm<br>Sunday: 12pm-5pm<br>Monday: Closed</p></div>
+  </div>
+  <div class="footer-bot"><span>&copy; 2026 Fuego KC. All rights reserved.</span><span>Smoked in KC &bull; Fed with love</span></div>
+</footer>
+
+<!-- STICKY SMOKEY -->
+<a href="tel:8165550193" class="smokey-widget" id="smokeyWidget" aria-label="Call Fuego KC — Smokey the pitmaster">
+  <div class="smokey-glow"></div>
+  <img src="assets/fuego-kc/mascot-standing.png" alt="Smokey — Fuego KC pitmaster" class="smokey-img">
+  <span class="smokey-badge">&#128222;</span>
+  <div class="smokey-quote" id="smokeyQuote">I fired up at 4 AM.</div>
+</a>
+
+<!-- STICKY MOBILE -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="#find" class="sc-find">&#128205; Find Us</a>
+  <a href="tel:8165550193" class="sc-order">&#128293; Order Now</a>
+</div>
+
+<script>
+(function(){
+  // Scroll progress
+  var sf=document.getElementById('scrollFill');
+  function updateScroll(){sf.style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%'}
+
+  // Nav + sticky
+  var nav=document.getElementById('nav'),sc=document.getElementById('stickyCta'),smokey=document.getElementById('smokeyWidget'),shown=false;
+  window.addEventListener('scroll',function(){
+    nav.classList.toggle('scrolled',window.scrollY>80);
+    if(!shown&&window.scrollY>window.innerHeight*.6){sc.classList.add('show');smokey.classList.add('show');shown=true}
+    updateScroll();
+  },{passive:true});
+
+  // Smokey rotating quotes
+  var sq=document.getElementById('smokeyQuote');
+  var smokeyQuotes=['I fired up at 4 AM.','Brisket runs out by 1.','Small batch. Smoked fresh.','Run out? We run out.','14-hr smoke. No shortcuts.','We pull up. We feed your people.','Text us for today\'s ETA.','Burnt ends — if you know.'];
+  var sqi=0;
+  function rotateSmokey(){if(!sq)return;sq.classList.remove('show');setTimeout(function(){sqi=(sqi+1)%smokeyQuotes.length;sq.textContent=smokeyQuotes[sqi];sq.classList.add('show')},520)}
+  setTimeout(function(){if(sq&&smokey.classList.contains('show'))sq.classList.add('show')},1600);
+  setInterval(rotateSmokey,5400);
+  // Hide Smokey on mobile when any input is focused
+  document.querySelectorAll('input,textarea').forEach(function(inp){
+    inp.addEventListener('focus',function(){document.body.classList.add('nosmokey')});
+    inp.addEventListener('blur',function(){document.body.classList.remove('nosmokey')});
+  });
+
+  // Reveals (with safety fallback — every .rv auto-shows after 2.5s so nothing stays invisible)
+  var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target)}})},{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){obs.observe(el)});
+  setTimeout(function(){document.querySelectorAll('.rv:not(.vis)').forEach(function(el){el.classList.add('vis')})},2500);
+
+  // Smoke particles
+  var smoke=document.getElementById('heroSmoke');
+  for(var i=0;i<25;i++){
+    var p=document.createElement('div');
+    p.className='smoke-p';
+    p.style.left=Math.random()*100+'%';
+    p.style.height=(Math.random()*40+15)+'px';
+    p.style.width=(Math.random()*3+1)+'px';
+    p.style.animationDuration=(Math.random()*4+3)+'s';
+    p.style.animationDelay=(Math.random()*5)+'s';
+    smoke.appendChild(p);
+  }
+
+  // Counters
+  document.querySelectorAll('.counter').forEach(function(el){
+    var cObs=new IntersectionObserver(function(e){e.forEach(function(en){
+      if(!en.isIntersecting)return;
+      var t=parseFloat(el.dataset.target),suf=el.dataset.suffix||'',dur=1400,s=performance.now();
+      function tick(n){var p=Math.min((n-s)/dur,1),e2=1-Math.pow(1-p,3),v=Math.floor(e2*t);el.textContent=v+suf;if(p<1)requestAnimationFrame(tick)}
+      requestAnimationFrame(tick);cObs.unobserve(el);
+    })},{threshold:.5});
+    cObs.observe(el);
+  });
+
+  // Menu filter tabs
+  var tabs=document.querySelectorAll('.menu-tab'),cards=document.querySelectorAll('.menu-card');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click',function(){
+      tabs.forEach(function(t){t.classList.remove('active')});
+      tab.classList.add('active');
+      var cat=tab.dataset.cat;
+      cards.forEach(function(c){
+        if(cat==='all'||c.dataset.cat===cat){
+          c.style.display='';
+          c.style.opacity='0';c.style.transform='translateY(16px)';
+          setTimeout(function(){c.style.opacity='1';c.style.transform='none'},50);
+        } else {
+          c.style.display='none';
+        }
+      });
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click',function(){q.parentElement.classList.toggle('open')});
+  });
+
+  // Countdown timer — simulates closing at 3pm
+  var cdEl=document.getElementById('countdown');
+  function updateCountdown(){
+    var now=new Date();
+    var close=new Date();close.setHours(15,0,0,0); // 3pm
+    var diff=close-now;
+    if(diff<=0){cdEl.textContent='closed — see you tomorrow';return}
+    var h=Math.floor(diff/3600000);
+    var m=Math.floor((diff%3600000)/60000);
+    cdEl.textContent='closing in '+h+'h '+m+'m';
+  }
+  updateCountdown();setInterval(updateCountdown,60000);
+
+  // Hamburger
+  var ham=document.getElementById('ham'),nl=document.getElementById('navLinks');
+  if(ham)ham.addEventListener('click',function(){nl.classList.toggle('mob-show')});
+  var ss=document.createElement('style');
+  ss.textContent='.mob-show{display:flex!important;position:fixed;inset:0;background:rgba(23,19,16,.98);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:28px;z-index:200}.mob-show a{font-size:1.1rem!important;color:var(--chalk)!important}';
+  document.head.appendChild(ss);
+  if(nl)nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('mob-show')})});
+})();
+</script>
+</body>
+</html>

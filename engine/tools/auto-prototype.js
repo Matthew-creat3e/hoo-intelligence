@@ -32,24 +32,24 @@ const IS_LIVE     = process.argv.includes('--live');
 // Each industry maps to its V4 template file and placeholder business info.
 // The engine reads the template, swaps placeholders with real lead data.
 const V4_TEMPLATES = {
-  'auto detailing':    { file: 'v4-auto-detailing-demo.html',    placeholder: 'DRIP Detail KC',           shortName: 'DRIP Detail',     brandWord: 'Drip',     phone: '(816) 555-0147' },
+  'auto detailing':    { file: 'v7-auto-detailing-demo-LOCKED.html', placeholder: 'Mirror Finish KC',     shortName: 'Mirror Finish',   brandWord: 'Mirror',   phone: '(816) 555-0347' },
   'auto repair':       { file: 'v4-auto-repair-demo.html',       placeholder: 'Precision Auto KC',        shortName: 'Precision Auto',  brandWord: 'Precision', phone: '(816) 955-1234' },
   barber:              { file: 'v4-barber-demo.html',             placeholder: 'Iron & Blade Barbershop',  shortName: 'Iron & Blade',    brandWord: null,       phone: '(816) 955-1234' },
   cleaning:            { file: 'v7-cleaning-demo-LOCKED.html',    placeholder: 'Pristine Clean KC',        shortName: 'Pristine Clean',  brandWord: 'Pristine', phone: '(816) 555-0147' },
   fencing:             { file: 'v7-fencing-demo-LOCKED.html',     placeholder: 'Ironline Fencing KC',      shortName: 'Ironline',        brandWord: 'Ironline', phone: '(804) 957-1003' },
-  'food truck':        { file: 'v4-food-truck-demo.html',         placeholder: 'Fuego KC',                 shortName: 'Fuego',           brandWord: 'Fuego',    phone: '(816) 555-0193' },
+  'food truck':        { file: 'v7-food-truck-demo-LOCKED.html',  placeholder: 'Fuego KC',                 shortName: 'Fuego',           brandWord: 'Fuego',    phone: '(816) 555-0193' },
   handyman:            { file: 'v4-handyman-demo.html',           placeholder: 'FixIt Pro KC',             shortName: 'FixIt Pro',       brandWord: 'FixIt',    phone: '(816) 955-1234' },
   'junk removal':      { file: 'v4-junk-removal-demo.html',       placeholder: 'KC Junk Pros',             shortName: 'KC Junk',         brandWord: null,       phone: '(816) 955-1234' },
   landscaping:         { file: 'v4-landscaping-demo.html',        placeholder: 'Stonegate Landscapes',     shortName: 'Stonegate',       brandWord: 'Stonegate', phone: '(816) 555-0247' },
-  'lawn care':         { file: 'v4-lawn-care-demo.html',          placeholder: 'GreenLine Lawn Co.',       shortName: 'GreenLine',       brandWord: 'GreenLine', phone: '(816) 955-1234' },
-  moving:              { file: 'v4-moving-demo.html',             placeholder: 'MoveRight KC',             shortName: 'MoveRight',       brandWord: 'MoveRight', phone: '(816) 555-0318' },
+  'lawn care':         { file: 'v7-lawn-care-demo-LOCKED.html',   placeholder: 'Greenfield Lawn',          shortName: 'Greenfield',      brandWord: 'Greenfield', phone: '(816) 555-0147' },
+  moving:              { file: 'v7-moving-demo-LOCKED.html',      placeholder: 'North Star Moving',        shortName: 'North Star',      brandWord: 'North Star', phone: '(816) 555-0123' },
   painting:            { file: 'v7-painting-demo-LOCKED.html',    placeholder: 'True Coat Painting KC',    shortName: 'True Coat',       brandWord: 'True Coat', phone: '(913) 555-0147' },
   'personal training': { file: 'v7-personal-training-demo-LOCKED.html', placeholder: 'IRONCLAD FITNESS',  shortName: 'IRONCLAD',        brandWord: 'Ironclad', phone: '(816) 555-4766' },
   clothing:            { file: 'v7-risen-clothing-demo-LOCKED.html', placeholder: 'RISEN',                shortName: 'RISEN',           brandWord: 'RISEN',    phone: '(000) 000-0000' },
-  'pet grooming':      { file: 'v4-pet-grooming-demo.html',       placeholder: 'Paws & Co.',              shortName: 'Paws',            brandWord: 'Paws',     phone: '(816) 555-0192' },
-  photography:         { file: 'v4-photography-demo.html',        placeholder: 'Lens & Light KC',          shortName: 'Lens & Light',    brandWord: null,       phone: '(816) 555-0217' },
-  'pressure washing':  { file: 'pressure-washing-demo-LOCKED.html', placeholder: 'BlastClean KC',          shortName: 'BlastClean',      brandWord: 'BlastClean', phone: '(816) 555-0284' },
-  roofing:             { file: 'v6-roofing-final-demo.html',      placeholder: 'Summit Roofing',           shortName: 'Summit Roofing',  brandWord: 'Summit',   phone: '(816) 955-0100' },
+  'pet grooming':      { file: 'v7-pet-grooming-demo-LOCKED.html', placeholder: 'Paws & Suds',            shortName: 'Paws & Suds',     brandWord: 'Paws',     phone: '(816) 555-7297' },
+  photography:         { file: 'v7-photography-demo-LOCKED.html', placeholder: 'Long Light Studio',        shortName: 'Long Light',      brandWord: 'Long Light', phone: '(816) 555-0182' },
+  'pressure washing':  { file: 'v7-pressure-washing-demo-LOCKED.html', placeholder: 'BlastClean KC',       shortName: 'BlastClean',      brandWord: 'BlastClean', phone: '(816) 555-0284' },
+  roofing:             { file: 'v7-roofing-demo-LOCKED.html',     placeholder: 'Summit Roofing',           shortName: 'Summit Roofing',  brandWord: 'Summit',   phone: '(816) 955-0100' },
   tattoo:              { file: 'v4-tattoo-demo.html',             placeholder: 'Iron & Ink Tattoo',        shortName: 'Iron & Ink',      brandWord: null,       phone: '(816) 955-1234' },
 };
 

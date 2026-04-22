@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Long Light Studio — Editorial Wedding Photography in Kansas City</title>
+<meta name="description" content="Long Light Studio — editorial wedding photography in Kansas City and the Midwest. Founded by Rowan Hale. For couples who plan with heart.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  /* palette — warm paper, ink, rust */
+  --cream:#F6F1E7;     /* paper ground */
+  --cream-2:#EFE8DA;   /* slightly deeper */
+  --ink:#1C1915;       /* warm charcoal */
+  --ink-70:rgba(28,25,21,.70);
+  --ink-45:rgba(28,25,21,.45);
+  --ink-15:rgba(28,25,21,.15);
+  --rust:#A8523C;      /* restrained accent — NOT red */
+  --rust-soft:rgba(168,82,60,.12);
+
+  /* type */
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter','Helvetica Neue',system-ui,sans-serif;
+
+  /* motion */
+  --ease:cubic-bezier(.16,1,.3,1);
+  --slow:1.4s;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:400;
+  line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:'ss01','cv01';
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* paper-grain texture (very subtle, no kitsch) */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:1;
+  opacity:.035;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ============ NAV ============ */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(246,241,231,.92);
+  backdrop-filter:saturate(130%) blur(12px);
+  -webkit-backdrop-filter:saturate(130%) blur(12px);
+  border-bottom:1px solid var(--ink-15);
+}
+.nav-in{
+  max-width:1440px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 40px;
+}
+.nav-brand{
+  font-family:var(--serif);
+  font-weight:400;
+  font-style:italic;
+  font-size:1.15rem;
+  letter-spacing:.2px;
+  color:var(--ink);
+}
+.nav-brand span{font-style:normal;letter-spacing:2px;font-size:.58rem;text-transform:uppercase;color:var(--ink-45);margin-left:10px;font-family:var(--sans);font-weight:500}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a{
+  font-family:var(--sans);
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink-70);
+  transition:color .4s var(--ease);
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.inquire{
+  color:var(--ink);
+  border:1px solid var(--ink);
+  padding:10px 18px;
+  border-radius:999px;
+  transition:all .5s var(--ease);
+}
+.nav-links a.inquire:hover{background:var(--ink);color:var(--cream)}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;
+  min-height:calc(100vh - 68px);
+  display:grid;
+  grid-template-columns:1fr 1.1fr;
+  gap:0;
+  align-items:stretch;
+  overflow:hidden;
+}
+
+/* left — editorial text column */
+.hero-text{
+  padding:clamp(40px,7vh,96px) clamp(32px,5vw,80px);
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;
+  z-index:2;
+}
+
+.hero-eyebrow{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:flex;align-items:center;gap:14px;
+  opacity:0;transform:translateY(14px);
+  animation:rise 1.2s var(--ease) .2s forwards;
+}
+.hero-eyebrow::before{
+  content:'';width:38px;height:1px;background:var(--ink-45);
+}
+
+.hero-headline{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(3.4rem,8.4vw,7.4rem);
+  line-height:.97;
+  letter-spacing:-.024em;
+  color:var(--ink);
+  margin-top:18px;
+  font-variation-settings:'opsz' 144;
+  opacity:0;transform:translateY(24px);
+  animation:rise 1.6s var(--ease) .35s forwards;
+}
+.hero-headline em{
+  font-style:italic;
+  font-weight:400;
+  color:var(--rust);
+  font-variation-settings:'opsz' 144;
+}
+
+.hero-sub{
+  max-width:420px;
+  font-size:1rem;
+  line-height:1.65;
+  color:var(--ink-70);
+  margin-top:28px;
+  opacity:0;transform:translateY(14px);
+  animation:rise 1.2s var(--ease) .7s forwards;
+}
+
+.hero-ctas{
+  display:flex;align-items:center;gap:24px;
+  margin-top:36px;
+  opacity:0;transform:translateY(14px);
+  animation:rise 1.2s var(--ease) .9s forwards;
+}
+.btn-inquire{
+  font-family:var(--sans);
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--cream);
+  background:var(--ink);
+  padding:16px 28px;
+  border-radius:999px;
+  border:1px solid var(--ink);
+  display:inline-flex;align-items:center;gap:10px;
+  transition:all .5s var(--ease);
+}
+.btn-inquire::after{
+  content:'→';font-size:.9rem;transition:transform .5s var(--ease);
+}
+.btn-inquire:hover{background:var(--rust);border-color:var(--rust);transform:translateY(-1px)}
+.btn-inquire:hover::after{transform:translateX(4px)}
+
+.btn-ghost{
+  font-family:var(--sans);
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink);
+  position:relative;
+  padding:4px 0;
+}
+.btn-ghost::after{
+  content:'';
+  position:absolute;left:0;bottom:0;
+  width:100%;height:1px;background:var(--ink);
+  transform:scaleX(1);transform-origin:left;
+  transition:transform .5s var(--ease);
+}
+.btn-ghost:hover::after{transform:scaleX(0);transform-origin:right}
+
+/* footer of left column */
+.hero-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:28px;
+  border-top:1px solid var(--ink-15);
+  opacity:0;
+  animation:fade 1.4s var(--ease) 1.3s forwards;
+}
+.hero-foot-author{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:.9rem;
+  color:var(--ink);
+}
+.hero-foot-author span{
+  font-family:var(--sans);
+  font-style:normal;
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:2.2px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  margin-left:14px;
+}
+.hero-foot-meta{
+  font-family:var(--sans);
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+}
+
+/* right — image column */
+.hero-frame{
+  position:relative;
+  overflow:hidden;
+  background:var(--cream-2);
+}
+.hero-frame img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:saturate(.92) contrast(1.02);
+  transform:scale(1.06);
+  opacity:0;
+  animation:imgIn 2.2s var(--ease) .3s forwards;
+}
+/* warm wash on image */
+.hero-frame::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(246,241,231,0) 60%,rgba(28,25,21,.18) 100%);
+  pointer-events:none;
+}
+
+/* editorial caption under image */
+.hero-caption{
+  position:absolute;
+  left:32px;bottom:28px;
+  z-index:3;
+  color:var(--cream);
+  opacity:0;
+  animation:fade 1.4s var(--ease) 1.6s forwards;
+}
+.hero-caption-no{
+  font-family:var(--sans);
+  font-size:.55rem;
+  font-weight:500;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:rgba(246,241,231,.72);
+  margin-bottom:6px;
+}
+.hero-caption-title{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.05rem;
+  color:rgba(246,241,231,.95);
+}
+.hero-caption-venue{
+  font-family:var(--sans);
+  font-size:.58rem;
+  font-weight:500;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:rgba(246,241,231,.7);
+  margin-top:4px;
+}
+
+/* side rule — thin vertical between text + image */
+.hero::before{
+  content:'';
+  position:absolute;
+  top:0;bottom:0;
+  left:calc((100% / 2.1) * 1); /* aligns roughly with the column gap */
+  width:1px;background:transparent;
+  display:none; /* design choice: let image edge itself be the rule */
+}
+
+/* keyframes */
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@keyframes imgIn{to{opacity:1;transform:scale(1)}}
+
+/* ============ PORTFOLIO ============ */
+
+/* scroll-reveal base */
+.rv{opacity:0;transform:translateY(32px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
+.rv.vis{opacity:1;transform:none}
+.rv-img{opacity:0;transform:scale(1.04);transition:opacity 1.8s var(--ease),transform 1.8s var(--ease)}
+.rv-img.vis{opacity:1;transform:none}
+
+/* portfolio section header */
+.port{
+  position:relative;
+  padding:clamp(120px,15vh,200px) 0 clamp(80px,10vh,140px);
+  background:var(--cream);
+}
+.port-head{
+  max-width:980px;
+  margin:0 auto;
+  padding:0 clamp(28px,5vw,64px);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:end;
+}
+.port-head-eyebrow{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:22px;
+}
+.port-head-eyebrow::before{
+  content:'';width:38px;height:1px;background:var(--ink-45);
+}
+.port-head-title{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(2.8rem,6.8vw,5.8rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.port-head-title em{font-style:italic;font-weight:400;color:var(--rust)}
+.port-head-r p{
+  font-size:1rem;
+  line-height:1.7;
+  color:var(--ink-70);
+  max-width:380px;
+}
+.port-head-r p + p{margin-top:14px}
+
+/* individual feature (case study) */
+.feat{
+  max-width:1280px;
+  margin:clamp(80px,12vh,160px) auto 0;
+  padding:0 clamp(28px,5vw,64px);
+}
+.feat-meta{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:30px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--ink-15);
+  margin-bottom:clamp(40px,5vh,64px);
+  flex-wrap:wrap;
+}
+.feat-meta-l{
+  display:flex;align-items:baseline;gap:36px;flex-wrap:wrap;
+}
+.feat-no{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+}
+.feat-title{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(1.6rem,3.2vw,2.4rem);
+  letter-spacing:-.01em;
+  color:var(--ink);
+  line-height:1;
+}
+.feat-venue{
+  font-family:var(--sans);
+  font-size:.66rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink-70);
+}
+
+/* layout — asymmetric grid (varies per feature) */
+.feat-grid{
+  display:grid;
+  gap:clamp(16px,2vw,28px);
+}
+/* feature 01 layout: hero wide → pair → quote → closer */
+.feat-01 .feat-grid{grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(100px,auto)}
+.feat-01 .img-lead{grid-column:1/13;aspect-ratio:16/9}
+.feat-01 .img-a{grid-column:1/7;aspect-ratio:4/5}
+.feat-01 .img-b{grid-column:7/13;aspect-ratio:4/5}
+.feat-01 .quote-block{grid-column:3/11;padding:clamp(40px,6vh,80px) 0}
+.feat-01 .img-close{grid-column:1/13;aspect-ratio:21/9}
+
+/* feature 02 layout: offset portrait + tight pair + cinematic closer */
+.feat-02 .feat-grid{grid-template-columns:repeat(12,1fr)}
+.feat-02 .img-lead{grid-column:1/8;aspect-ratio:4/5}
+.feat-02 .quote-block{grid-column:8/13;align-self:center;padding:0 0 0 clamp(20px,3vw,44px)}
+.feat-02 .img-a{grid-column:1/6;aspect-ratio:1/1}
+.feat-02 .img-b{grid-column:6/13;aspect-ratio:4/3}
+.feat-02 .img-close{grid-column:1/13;aspect-ratio:21/9}
+
+/* feature 03 layout: cinematic lead → 3-up → closer */
+.feat-03 .feat-grid{grid-template-columns:repeat(12,1fr)}
+.feat-03 .img-lead{grid-column:1/13;aspect-ratio:21/9}
+.feat-03 .img-a{grid-column:1/5;aspect-ratio:4/5}
+.feat-03 .img-b{grid-column:5/9;aspect-ratio:4/5}
+.feat-03 .img-c{grid-column:9/13;aspect-ratio:4/5}
+.feat-03 .quote-block{grid-column:3/11;padding:clamp(30px,5vh,60px) 0 0}
+
+.feat-img{
+  overflow:hidden;
+  background:var(--cream-2);
+  position:relative;
+}
+.feat-img img{
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:saturate(.92) contrast(1.02);
+  transition:filter .8s var(--ease),transform 6s var(--ease);
+}
+.feat-img:hover img{filter:saturate(1) contrast(1.04);transform:scale(1.02)}
+
+/* pull quote block */
+.quote-block{
+  display:flex;flex-direction:column;justify-content:center;
+}
+.quote-mark{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:4rem;
+  line-height:.6;
+  color:var(--rust);
+  margin-bottom:16px;
+}
+.quote-text{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.4rem,2.6vw,2rem);
+  line-height:1.35;
+  letter-spacing:-.005em;
+  color:var(--ink);
+  max-width:48ch;
+}
+.quote-text em{font-style:normal;color:var(--rust)}
+.quote-cite{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  margin-top:24px;
+  display:flex;align-items:center;gap:14px;
+}
+.quote-cite::before{content:'';width:24px;height:1px;background:var(--ink-45)}
+
+/* archive link at bottom */
+.port-foot{
+  max-width:1280px;
+  margin:clamp(80px,10vh,140px) auto 0;
+  padding:40px clamp(28px,5vw,64px) 0;
+  border-top:1px solid var(--ink-15);
+  display:flex;align-items:baseline;justify-content:space-between;gap:30px;flex-wrap:wrap;
+}
+.port-foot-l{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--ink);
+}
+.port-foot-l span{
+  font-family:var(--sans);
+  font-style:normal;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  margin-left:14px;
+}
+.port-foot-link{
+  font-family:var(--sans);
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink);
+  display:inline-flex;align-items:center;gap:10px;
+  position:relative;
+  padding-bottom:6px;
+}
+.port-foot-link::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;
+  height:1px;background:var(--ink);
+  transform:scaleX(1);transform-origin:left;
+  transition:transform .5s var(--ease);
+}
+.port-foot-link:hover::after{transform:scaleX(0);transform-origin:right}
+.port-foot-link span{font-size:.95rem;transition:transform .5s var(--ease)}
+.port-foot-link:hover span{transform:translateX(6px)}
+
+/* ============ ABOUT — A letter from Rowan ============ */
+.about{
+  position:relative;
+  padding:clamp(120px,15vh,200px) 0;
+  background:var(--cream-2);
+  overflow:hidden;
+}
+
+/* subtle deckled-paper separator */
+.about::before{
+  content:'';
+  position:absolute;
+  left:0;right:0;top:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--ink-15) 20%,var(--ink-15) 80%,transparent 100%);
+}
+
+.about-wrap{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 clamp(28px,5vw,64px);
+}
+
+.about-head{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:end;
+  margin-bottom:clamp(60px,8vh,100px);
+}
+.about-head-eyebrow{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:22px;
+}
+.about-head-eyebrow::before{
+  content:'';width:38px;height:1px;background:var(--ink-45);
+}
+.about-head-title{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(2.8rem,6.8vw,5.8rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.about-head-title em{font-style:italic;font-weight:400;color:var(--rust)}
+.about-head-meta{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--ink-70);
+  line-height:1.6;
+  max-width:380px;
+}
+
+/* main grid — portrait left, letter right */
+.about-grid{
+  display:grid;
+  grid-template-columns:5fr 7fr;
+  gap:clamp(30px,5vw,80px);
+  align-items:start;
+}
+
+/* portrait column */
+.about-portrait{
+  position:relative;
+}
+.about-portrait-frame{
+  aspect-ratio:4/5;
+  overflow:hidden;
+  background:var(--cream);
+}
+.about-portrait-frame img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.9) contrast(1.02);
+  transition:filter 1s var(--ease),transform 6s var(--ease);
+}
+.about-portrait-frame:hover img{filter:saturate(1) contrast(1.04);transform:scale(1.02)}
+.about-portrait-cap{
+  margin-top:16px;
+  font-family:var(--sans);
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:flex;align-items:center;gap:14px;
+}
+.about-portrait-cap::before{content:'';width:24px;height:1px;background:var(--ink-45)}
+.about-portrait-cap em{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:.85rem;
+  font-weight:400;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--ink);
+}
+
+/* letter column */
+.about-letter{
+  padding-top:clamp(20px,4vh,40px);
+}
+.about-lead{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.6rem,2.8vw,2.2rem);
+  line-height:1.35;
+  letter-spacing:-.005em;
+  color:var(--ink);
+  max-width:48ch;
+  margin-bottom:clamp(24px,4vh,36px);
+}
+.about-lead em{color:var(--rust);font-style:normal}
+.about-body{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:1.05rem;
+  line-height:1.75;
+  color:var(--ink);
+  max-width:58ch;
+}
+.about-body p + p{margin-top:1.1em}
+.about-body em{font-style:italic;color:var(--rust)}
+
+/* values — 3 numbered italics */
+.about-values{
+  margin-top:clamp(36px,6vh,52px);
+  padding-top:28px;
+  border-top:1px solid var(--ink-15);
+  display:flex;flex-direction:column;gap:18px;
+}
+.about-val{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:18px;
+  align-items:baseline;
+}
+.about-val-no{
+  font-family:var(--sans);
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  color:var(--ink-45);
+}
+.about-val-text{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(1.05rem,1.6vw,1.25rem);
+  line-height:1.5;
+  color:var(--ink);
+}
+.about-val-text em{font-style:normal;color:var(--rust)}
+
+/* signature */
+.about-sign{
+  margin-top:clamp(36px,5vh,52px);
+  display:flex;align-items:baseline;gap:14px;
+}
+.about-sign-mark{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:2.2rem;
+  color:var(--ink);
+  line-height:1;
+}
+.about-sign-cap{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+}
+
+/* stats + press strip */
+.about-foot{
+  margin-top:clamp(80px,10vh,120px);
+  padding-top:40px;
+  border-top:1px solid var(--ink-15);
+}
+.about-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:40px;
+  margin-bottom:clamp(48px,6vh,72px);
+}
+.about-stat{
+  display:flex;flex-direction:column;gap:6px;
+}
+.about-stat-no{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(2.4rem,4.5vw,3.6rem);
+  line-height:.95;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.about-stat-no em{font-style:italic;color:var(--rust)}
+.about-stat-label{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  max-width:22ch;
+}
+
+/* press / featured-in */
+.about-press{
+  display:flex;align-items:center;gap:clamp(24px,4vw,52px);
+  flex-wrap:wrap;
+  padding-top:36px;
+  border-top:1px solid var(--ink-15);
+}
+.about-press-label{
+  font-family:var(--sans);
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:flex;align-items:center;gap:14px;
+  flex-shrink:0;
+}
+.about-press-label::before{content:'';width:24px;height:1px;background:var(--ink-45)}
+.about-press-list{
+  display:flex;align-items:center;gap:clamp(24px,4vw,52px);
+  flex-wrap:wrap;
+}
+.about-press-name{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:1.3rem;
+  color:var(--ink);
+  line-height:1;
+  letter-spacing:-.005em;
+  transition:color .4s var(--ease);
+}
+.about-press-name:hover{color:var(--rust)}
+
+/* ============ INVESTMENT — prix-fixe menu ============ */
+.inv{
+  position:relative;
+  padding:clamp(120px,15vh,200px) 0;
+  background:var(--cream);
+  overflow:hidden;
+}
+
+.inv-wrap{
+  max-width:980px;
+  margin:0 auto;
+  padding:0 clamp(28px,5vw,64px);
+}
+
+.inv-head{
+  text-align:center;
+  margin-bottom:clamp(60px,8vh,100px);
+}
+.inv-head-eyebrow{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:inline-flex;align-items:center;gap:14px;
+  margin-bottom:22px;
+}
+.inv-head-eyebrow::before,.inv-head-eyebrow::after{
+  content:'';width:38px;height:1px;background:var(--ink-45);
+}
+.inv-head-title{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(2.8rem,6.8vw,5.8rem);
+  line-height:.95;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.inv-head-title em{font-style:italic;font-weight:400;color:var(--rust)}
+.inv-intro{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.15rem,1.8vw,1.4rem);
+  line-height:1.55;
+  color:var(--ink-70);
+  max-width:52ch;
+  margin:28px auto 0;
+}
+.inv-intro em{font-style:normal;color:var(--ink)}
+
+/* menu rows */
+.inv-menu{
+  margin-top:clamp(40px,6vh,80px);
+  border-top:1px solid var(--ink-15);
+}
+.inv-row{
+  position:relative;
+  padding:clamp(36px,5vh,60px) 0;
+  border-bottom:1px solid var(--ink-15);
+  cursor:pointer;
+  transition:background .5s var(--ease);
+}
+.inv-row:hover{background:rgba(28,25,21,.015)}
+.inv-row-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:40px;
+  align-items:baseline;
+}
+.inv-row-l{
+  position:relative;
+  padding-right:24px;
+}
+.inv-row-no{
+  font-family:var(--sans);
+  font-size:.58rem;
+  font-weight:500;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  margin-bottom:10px;
+}
+.inv-row-no em{color:var(--rust);font-style:normal;font-weight:500;margin-left:10px}
+.inv-row-name{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(2rem,4vw,3.2rem);
+  line-height:1.05;
+  letter-spacing:-.015em;
+  color:var(--ink);
+}
+.inv-row-name em{font-style:normal;font-weight:400}
+.inv-row-desc{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:1.02rem;
+  line-height:1.55;
+  color:var(--ink-70);
+  margin-top:14px;
+  max-width:44ch;
+}
+
+.inv-row-r{
+  text-align:right;
+  flex-shrink:0;
+}
+.inv-row-price-eyebrow{
+  font-family:var(--sans);
+  font-size:.58rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  margin-bottom:8px;
+}
+.inv-row-price{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(1.8rem,3.2vw,2.6rem);
+  line-height:1;
+  letter-spacing:-.015em;
+  color:var(--ink);
+}
+.inv-row-price em{font-style:italic;font-weight:400;color:var(--rust)}
+.inv-row-price sup{
+  font-family:var(--sans);
+  font-size:.52rem;
+  font-weight:500;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  vertical-align:1.6em;
+  margin-left:4px;
+}
+
+/* inclusion list — expands on hover */
+.inv-incl{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .7s var(--ease),opacity .5s var(--ease),margin-top .5s var(--ease);
+  opacity:0;
+  margin-top:0;
+}
+.inv-row.open .inv-incl,
+.inv-row:hover .inv-incl{
+  max-height:480px;
+  opacity:1;
+  margin-top:28px;
+}
+.inv-incl-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px 40px;
+  padding-top:24px;
+  border-top:1px solid var(--ink-15);
+}
+.inv-incl-item{
+  display:flex;align-items:baseline;gap:14px;
+  font-family:var(--serif);
+  font-size:1rem;
+  line-height:1.45;
+  color:var(--ink);
+}
+.inv-incl-item::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--rust);flex-shrink:0;transform:translateY(-3px);
+}
+.inv-incl-item em{font-style:italic;color:var(--ink-70)}
+
+/* "most chosen" pill on row 2 */
+.inv-tag{
+  display:inline-block;
+  font-family:var(--sans);
+  font-size:.54rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--rust);
+  padding:5px 10px;
+  border:1px solid var(--rust);
+  border-radius:999px;
+  margin-left:14px;
+  vertical-align:.25em;
+}
+
+/* included-in-all */
+.inv-all{
+  margin-top:clamp(48px,6vh,72px);
+  padding:clamp(36px,4vh,52px) clamp(32px,5vw,52px);
+  background:var(--cream-2);
+  border:1px solid var(--ink-15);
+  text-align:center;
+}
+.inv-all-eyebrow{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  margin-bottom:20px;
+  display:inline-flex;align-items:center;gap:14px;
+}
+.inv-all-eyebrow::before,.inv-all-eyebrow::after{content:'';width:24px;height:1px;background:var(--ink-45)}
+.inv-all-title{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.4rem,2.4vw,1.8rem);
+  line-height:1.4;
+  color:var(--ink);
+  max-width:36ch;
+  margin:0 auto;
+}
+.inv-all-list{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(20px,3vw,36px);
+  flex-wrap:wrap;
+  margin-top:24px;
+  padding-top:24px;
+  border-top:1px solid var(--ink-15);
+}
+.inv-all-item{
+  font-family:var(--sans);
+  font-size:.64rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:var(--ink-70);
+}
+
+/* closing note + cta */
+.inv-foot{
+  margin-top:clamp(60px,8vh,96px);
+  text-align:center;
+}
+.inv-foot-note{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.05rem,1.6vw,1.25rem);
+  line-height:1.55;
+  color:var(--ink);
+  max-width:48ch;
+  margin:0 auto 28px;
+}
+.inv-foot-note em{font-style:normal;color:var(--rust)}
+.inv-foot-cta{
+  font-family:var(--sans);
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink);
+  display:inline-flex;align-items:center;gap:10px;
+  position:relative;
+  padding:14px 0 6px;
+}
+.inv-foot-cta::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;
+  height:1px;background:var(--ink);
+  transform:scaleX(1);transform-origin:left;
+  transition:transform .5s var(--ease);
+}
+.inv-foot-cta:hover::after{transform:scaleX(0);transform-origin:right}
+.inv-foot-cta span{font-size:.95rem;transition:transform .5s var(--ease)}
+.inv-foot-cta:hover span{transform:translateX(6px)}
+
+/* ============ INQUIRE — A letter to Rowan ============ */
+.inq{
+  position:relative;
+  padding:clamp(120px,15vh,200px) 0;
+  background:var(--cream-2);
+  overflow:hidden;
+}
+.inq-wrap{
+  max-width:820px;
+  margin:0 auto;
+  padding:0 clamp(28px,5vw,64px);
+}
+.inq-head{
+  text-align:center;
+  margin-bottom:clamp(50px,7vh,80px);
+}
+.inq-head-eyebrow{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ink-45);
+  display:inline-flex;align-items:center;gap:14px;
+  margin-bottom:22px;
+}
+.inq-head-eyebrow::before,.inq-head-eyebrow::after{
+  content:'';width:38px;height:1px;background:var(--ink-45);
+}
+.inq-head-title{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(2.8rem,6.8vw,5.8rem);
+  line-height:.95;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.inq-head-title em{font-style:italic;font-weight:400;color:var(--rust)}
+.inq-head-sub{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.1rem,1.8vw,1.35rem);
+  line-height:1.55;
+  color:var(--ink-70);
+  max-width:52ch;
+  margin:24px auto 0;
+}
+
+/* paper card */
+.inq-letter{
+  position:relative;
+  background:var(--cream);
+  padding:clamp(40px,6vh,72px) clamp(32px,5vw,72px);
+  border:1px solid var(--ink-15);
+  box-shadow:
+    0 1px 0 rgba(28,25,21,.04),
+    0 30px 60px -20px rgba(28,25,21,.10),
+    0 12px 24px -8px rgba(28,25,21,.06);
+}
+.inq-letter::before{
+  content:'';
+  position:absolute;
+  inset:8px;
+  border:1px solid var(--ink-15);
+  pointer-events:none;
+  opacity:.5;
+}
+
+.inq-salute{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(1.35rem,2.2vw,1.7rem);
+  color:var(--ink);
+  margin-bottom:28px;
+}
+
+/* letter body — paragraphs with inline inputs */
+.inq-body{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(1.05rem,1.5vw,1.22rem);
+  line-height:2;
+  color:var(--ink);
+}
+.inq-body p{margin-bottom:14px}
+
+/* inline filled-blank inputs */
+.inq-input{
+  font-family:var(--serif);
+  font-size:inherit;
+  font-weight:400;
+  font-style:italic;
+  color:var(--rust);
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--ink-15);
+  padding:2px 4px;
+  min-width:120px;
+  width:auto;
+  transition:border-color .4s var(--ease);
+  outline:none;
+}
+.inq-input::placeholder{color:var(--ink-45);font-style:italic;opacity:1}
+.inq-input:focus{border-bottom-color:var(--rust)}
+.inq-input.w-sm{width:140px}
+.inq-input.w-md{width:220px}
+.inq-input.w-lg{width:300px}
+.inq-input.w-date{width:180px}
+
+/* textarea */
+.inq-textarea-wrap{
+  margin:22px 0;
+  padding:20px 0;
+  border-top:1px dashed var(--ink-15);
+  border-bottom:1px dashed var(--ink-15);
+}
+.inq-textarea-label{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--ink);
+  display:block;
+  margin-bottom:10px;
+}
+.inq-textarea{
+  font-family:var(--serif);
+  font-weight:400;
+  font-style:italic;
+  font-size:1.05rem;
+  line-height:1.7;
+  color:var(--rust);
+  background:transparent;
+  border:none;
+  width:100%;
+  min-height:110px;
+  resize:vertical;
+  outline:none;
+  padding:4px 0;
+  background-image:linear-gradient(to bottom,transparent 27px,var(--ink-15) 28px);
+  background-size:100% 28px;
+}
+.inq-textarea::placeholder{color:var(--ink-45);font-style:italic;opacity:1}
+
+/* select — styled as italic serif */
+.inq-select{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:inherit;
+  color:var(--rust);
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--ink-15);
+  padding:2px 24px 2px 4px;
+  cursor:pointer;
+  outline:none;
+  transition:border-color .4s var(--ease);
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A8523C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 4px center;
+}
+.inq-select:focus{border-bottom-color:var(--rust)}
+
+/* signature area */
+.inq-sign{
+  margin-top:36px;
+  padding-top:28px;
+  border-top:1px solid var(--ink-15);
+  display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;
+}
+.inq-sign-lbl{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--ink);
+}
+.inq-sign-input{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:1.6rem;
+  color:var(--ink);
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--ink-15);
+  padding:2px 4px;
+  min-width:220px;
+  flex:1;
+  outline:none;
+}
+.inq-sign-input::placeholder{color:var(--ink-45);opacity:1}
+.inq-sign-input:focus{border-bottom-color:var(--rust)}
+
+/* send row */
+.inq-send{
+  margin-top:clamp(32px,5vh,48px);
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  justify-content:space-between;
+}
+.inq-send-btn{
+  font-family:var(--sans);
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--cream);
+  background:var(--ink);
+  padding:18px 32px;
+  border-radius:999px;
+  border:1px solid var(--ink);
+  display:inline-flex;align-items:center;gap:10px;
+  cursor:pointer;
+  transition:all .5s var(--ease);
+}
+.inq-send-btn::after{content:'→';font-size:.95rem;transition:transform .5s var(--ease)}
+.inq-send-btn:hover{background:var(--rust);border-color:var(--rust);transform:translateY(-1px)}
+.inq-send-btn:hover::after{transform:translateX(4px)}
+.inq-send-note{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--ink-70);
+  max-width:28ch;
+}
+
+/* closing meta */
+.inq-foot{
+  margin-top:clamp(48px,6vh,72px);
+  text-align:center;
+  display:flex;justify-content:center;align-items:center;gap:clamp(24px,4vw,48px);
+  flex-wrap:wrap;
+}
+.inq-foot-item{
+  font-family:var(--sans);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink-70);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.inq-foot-item em{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:.95rem;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--ink);
+}
+
+/* success modal */
+.inq-success{
+  position:fixed;inset:0;
+  background:rgba(28,25,21,.72);
+  backdrop-filter:blur(6px);
+  z-index:2000;
+  display:none;
+  align-items:center;justify-content:center;
+  opacity:0;
+  transition:opacity .5s var(--ease);
+  padding:24px;
+}
+.inq-success.on{display:flex;opacity:1}
+.inq-success-card{
+  max-width:500px;
+  background:var(--cream);
+  padding:48px 40px;
+  text-align:center;
+  border:1px solid var(--ink-15);
+  position:relative;
+}
+.inq-success-card::before{content:'';position:absolute;inset:8px;border:1px solid var(--ink-15);pointer-events:none;opacity:.5}
+.inq-success-mark{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--rust);
+  color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.6rem;
+}
+.inq-success-title{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:2rem;
+  color:var(--ink);
+  line-height:1.1;
+  margin-bottom:14px;
+}
+.inq-success-body{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:1.05rem;
+  line-height:1.6;
+  color:var(--ink-70);
+  margin-bottom:28px;
+}
+.inq-success-close{
+  font-family:var(--sans);
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--ink);
+  background:transparent;
+  border:1px solid var(--ink);
+  padding:14px 24px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all .4s var(--ease);
+}
+.inq-success-close:hover{background:var(--ink);color:var(--cream)}
+
+/* ============ FOOTER — Colophon ============ */
+.ft{
+  position:relative;
+  padding:clamp(100px,14vh,180px) 0 clamp(32px,4vh,52px);
+  background:var(--ink);
+  color:var(--cream);
+  overflow:hidden;
+}
+.ft::before{
+  content:'';
+  position:absolute;inset:0;
+  pointer-events:none;
+  opacity:.04;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:screen;
+}
+.ft-wrap{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 clamp(28px,5vw,64px);
+  position:relative;
+  z-index:2;
+}
+
+/* oversized brand close */
+.ft-brand{
+  text-align:center;
+  margin-bottom:clamp(60px,8vh,100px);
+}
+.ft-brand-label{
+  font-family:var(--sans);
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:rgba(246,241,231,.45);
+  display:inline-flex;align-items:center;gap:14px;
+  margin-bottom:32px;
+}
+.ft-brand-label::before,.ft-brand-label::after{
+  content:'';width:38px;height:1px;background:rgba(246,241,231,.35);
+}
+.ft-brand-mark{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(4.5rem,14vw,11rem);
+  line-height:.9;
+  letter-spacing:-.025em;
+  color:var(--cream);
+}
+.ft-brand-mark em{font-style:italic;font-weight:400;color:var(--rust)}
+.ft-brand-tag{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.05rem,1.8vw,1.35rem);
+  color:rgba(246,241,231,.7);
+  margin-top:20px;
+}
+
+/* 3-col utility grid */
+.ft-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(32px,4vw,56px);
+  padding:clamp(40px,5vh,60px) 0;
+  border-top:1px solid rgba(246,241,231,.15);
+  border-bottom:1px solid rgba(246,241,231,.15);
+}
+.ft-col-head{
+  font-family:var(--sans);
+  font-size:.58rem;
+  font-weight:500;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:rgba(246,241,231,.45);
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+.ft-col-head::before{content:'';width:20px;height:1px;background:rgba(246,241,231,.35)}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ft-col a, .ft-col span{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:1.05rem;
+  line-height:1.5;
+  color:var(--cream);
+  transition:color .4s var(--ease);
+  display:inline-block;
+}
+.ft-col a:hover{color:var(--rust)}
+.ft-col-detail{
+  font-family:var(--sans);
+  font-style:normal;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:rgba(246,241,231,.45);
+  display:block;margin-top:2px;
+}
+
+/* colophon */
+.ft-colophon{
+  padding:clamp(32px,4vh,48px) 0;
+  text-align:center;
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:.95rem;
+  line-height:1.8;
+  color:rgba(246,241,231,.55);
+  max-width:64ch;
+  margin:0 auto;
+  border-bottom:1px solid rgba(246,241,231,.08);
+}
+.ft-colophon em{color:var(--cream);font-style:normal}
+
+/* bottom bar */
+.ft-btm{
+  margin-top:28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-family:var(--sans);
+  font-size:.58rem;
+  font-weight:500;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  color:rgba(246,241,231,.45);
+}
+.ft-btm-hoo{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:.85rem;
+  letter-spacing:0;
+  text-transform:none;
+  color:rgba(246,241,231,.7);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:color .4s var(--ease);
+}
+.ft-btm-hoo:hover{color:var(--rust)}
+.ft-btm-hoo::before{
+  content:'✻';
+  font-style:normal;
+  color:var(--rust);
+  font-size:.9rem;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:980px){
+  .hero{
+    grid-template-columns:1fr;
+    min-height:auto;
+  }
+  .hero-frame{
+    order:-1;
+    min-height:58vh;
+  }
+  .hero-text{
+    padding:48px 28px 64px;
+  }
+  .hero-foot{margin-top:40px}
+  .nav-links a:not(.inquire){display:none}
+  .nav-in{padding:16px 20px}
+  .ft-grid{grid-template-columns:1fr;gap:32px}
+  .ft-btm{flex-direction:column;align-items:flex-start;gap:10px}
+}
+
+@media (max-width:980px){
+  .port-head{grid-template-columns:1fr;gap:32px}
+  .feat-01 .feat-grid,
+  .feat-02 .feat-grid,
+  .feat-03 .feat-grid{grid-template-columns:1fr;gap:16px}
+  .feat-01 .img-lead,
+  .feat-01 .img-a,
+  .feat-01 .img-b,
+  .feat-01 .quote-block,
+  .feat-01 .img-close,
+  .feat-02 .img-lead,
+  .feat-02 .quote-block,
+  .feat-02 .img-a,
+  .feat-02 .img-b,
+  .feat-02 .img-close,
+  .feat-03 .img-lead,
+  .feat-03 .img-a,
+  .feat-03 .img-b,
+  .feat-03 .img-c,
+  .feat-03 .quote-block{grid-column:1/-1;padding:0}
+  .feat-02 .quote-block{padding:clamp(20px,4vh,40px) 0}
+  .feat-meta{flex-direction:column;align-items:flex-start;gap:16px}
+  .feat-meta-l{gap:18px;flex-direction:column;align-items:flex-start}
+  .about-head{grid-template-columns:1fr;gap:24px}
+  .about-grid{grid-template-columns:1fr;gap:40px}
+  .about-stats{grid-template-columns:1fr;gap:24px}
+  .inv-row-head{grid-template-columns:1fr;gap:16px}
+  .inv-row-r{text-align:left}
+  .inv-incl-grid{grid-template-columns:1fr;gap:10px}
+  .inv-all-list{gap:14px}
+  .inv-tag{margin-left:0;margin-top:12px;display:inline-block}
+  .inq-body{font-size:1rem;line-height:1.9}
+  .inq-input.w-sm,.inq-input.w-md,.inq-input.w-lg,.inq-input.w-date{width:100%;display:block;margin-top:6px}
+  .inq-send{flex-direction:column;align-items:flex-start}
+  .inq-send-btn{width:100%;justify-content:center}
+}
+
+@media (max-width:520px){
+  /* nav */
+  .nav-in{padding:14px 18px}
+  .nav-brand{font-size:1rem}
+  .nav-brand span{display:none}
+  .nav-links a.inquire{padding:8px 14px;font-size:.6rem;letter-spacing:1.8px}
+
+  /* hero */
+  .hero-text{padding:36px 22px 48px}
+  .hero-eyebrow{font-size:.56rem;letter-spacing:2px}
+  .hero-eyebrow::before{width:24px}
+  .hero-headline{font-size:2.6rem;line-height:1;margin-top:14px}
+  .hero-sub{font-size:.95rem;margin-top:22px;line-height:1.6}
+  .hero-ctas{flex-direction:column;align-items:stretch;gap:14px;margin-top:28px}
+  .btn-inquire{width:100%;justify-content:center;padding:14px 22px}
+  .btn-ghost{text-align:center}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:10px;padding-top:22px;margin-top:32px}
+  .hero-frame{min-height:52vh}
+  .hero-caption{left:20px;bottom:18px}
+  .hero-caption-title{font-size:.95rem}
+
+  /* portfolio */
+  .port{padding:80px 0 48px}
+  .port-head{padding:0 22px;gap:24px}
+  .port-head-title{font-size:2.4rem}
+  .port-head-r p{font-size:.95rem}
+  .feat{padding:0 22px;margin-top:72px}
+  .feat-meta{padding-bottom:18px;margin-bottom:28px}
+  .feat-title{font-size:1.4rem}
+  .feat-venue{font-size:.6rem;letter-spacing:1.8px}
+  .feat-no{font-size:.56rem;letter-spacing:2.4px}
+  .quote-text{font-size:1.15rem;line-height:1.4}
+  .quote-mark{font-size:3rem}
+  .quote-cite{font-size:.56rem;letter-spacing:2px}
+  .quote-cite::before{width:16px}
+  .port-foot{flex-direction:column;align-items:flex-start;gap:18px;padding:28px 22px 0;margin-top:80px}
+  .port-foot-l{font-size:1rem}
+  .port-foot-l span{display:block;margin-left:0;margin-top:4px}
+
+  /* about */
+  .about{padding:80px 0}
+  .about-wrap{padding:0 22px}
+  .about-head-title{font-size:2.6rem}
+  .about-head-meta{font-size:.95rem}
+  .about-grid{gap:28px}
+  .about-lead{font-size:1.35rem;line-height:1.4}
+  .about-body{font-size:1rem;line-height:1.7}
+  .about-val-text{font-size:1rem}
+  .about-val{grid-template-columns:36px 1fr;gap:12px}
+  .about-stat-no{font-size:2.4rem}
+  .about-stat-label{font-size:.58rem;letter-spacing:1.8px}
+  .about-press{padding-top:24px;gap:18px}
+  .about-press-label{font-size:.56rem;letter-spacing:2.4px}
+  .about-press-name{font-size:1.05rem}
+  .about-foot{margin-top:60px;padding-top:28px}
+
+  /* investment */
+  .inv{padding:80px 0}
+  .inv-wrap{padding:0 22px}
+  .inv-head-title{font-size:2.6rem}
+  .inv-intro{font-size:1.05rem;line-height:1.5}
+  .inv-row{padding:28px 0}
+  .inv-row-name{font-size:1.6rem}
+  .inv-row-desc{font-size:.95rem;line-height:1.5}
+  .inv-row-price{font-size:1.6rem}
+  .inv-all{padding:28px 22px}
+  .inv-all-title{font-size:1.2rem}
+  .inv-all-list{gap:12px}
+  .inv-all-item{font-size:.58rem;letter-spacing:1.8px}
+  .inv-foot-note{font-size:1rem}
+
+  /* inquire */
+  .inq{padding:80px 0}
+  .inq-wrap{padding:0 22px}
+  .inq-head-title{font-size:2.4rem}
+  .inq-head-sub{font-size:1rem}
+  .inq-letter{padding:32px 22px}
+  .inq-salute{font-size:1.2rem;margin-bottom:18px}
+  .inq-body{font-size:.98rem;line-height:1.85}
+  .inq-sign-input{font-size:1.3rem;min-width:100%}
+  .inq-sign{flex-direction:column;align-items:flex-start;gap:8px}
+  .inq-send-btn{padding:16px 24px;font-size:.66rem;letter-spacing:2px}
+  .inq-foot{flex-direction:column;gap:14px;margin-top:40px}
+  .inq-foot-item{font-size:.58rem;letter-spacing:2px}
+  .inq-success-card{padding:36px 28px}
+  .inq-success-title{font-size:1.6rem}
+  .inq-success-body{font-size:.95rem}
+
+  /* footer */
+  .ft{padding:80px 0 28px}
+  .ft-wrap{padding:0 22px}
+  .ft-brand{margin-bottom:48px}
+  .ft-brand-mark{font-size:4rem}
+  .ft-brand-tag{font-size:.95rem;margin-top:14px}
+  .ft-col a,.ft-col span{font-size:.98rem}
+  .ft-col-head{font-size:.54rem;letter-spacing:2.4px}
+  .ft-colophon{font-size:.88rem;line-height:1.7}
+  .ft-btm{font-size:.54rem;letter-spacing:1.8px}
+
+  /* iOS zoom fix — all inputs min 16px on mobile */
+  .inq-input,.inq-textarea,.inq-select,.inq-sign-input{font-size:16px !important;line-height:1.6}
+  .inq-textarea{background-image:linear-gradient(to bottom,transparent 29px,var(--ink-15) 30px);background-size:100% 30px}
+
+  /* touch target bump for nav inquire pill */
+  .nav-links a.inquire{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-in">
+    <a href="#" class="nav-brand">Long Light<span>Studio</span></a>
+    <div class="nav-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#about">About</a>
+      <a href="#journal">Journal</a>
+      <a href="#investment">Investment</a>
+      <a href="#inquire" class="inquire">Inquire</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+
+  <!-- left: editorial text -->
+  <div class="hero-text">
+    <div>
+      <div class="hero-eyebrow">Est. 2026 — Kansas City &amp; beyond</div>
+      <h1 class="hero-headline">Weddings<br>held in <em>good light.</em></h1>
+      <p class="hero-sub">Editorial wedding photography for couples who plan with heart. Kansas City, the Midwest, and wherever you say <em>yes</em> to more.</p>
+      <div class="hero-ctas">
+        <a href="#inquire" class="btn-inquire">Inquire for 2026&ndash;27</a>
+        <a href="#portfolio" class="btn-ghost">View the portfolio</a>
+      </div>
+    </div>
+
+    <div class="hero-foot">
+      <div class="hero-foot-author">Rowan Hale<span>Founder &amp; photographer</span></div>
+      <div class="hero-foot-meta">Vol. 01</div>
+    </div>
+  </div>
+
+  <!-- right: editorial cover image -->
+  <div class="hero-frame">
+    <img src="https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Couple walking together at golden hour — editorial wedding portrait">
+    <div class="hero-caption">
+      <div class="hero-caption-no">Cover · Vol. 01</div>
+      <div class="hero-caption-title">Sadie &amp; Wes</div>
+      <div class="hero-caption-venue">The Hawthorn · Lee's Summit · Oct '25</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============ PORTFOLIO — NAMED CASE STUDIES ============ -->
+<section class="port" id="portfolio">
+
+  <header class="port-head">
+    <div class="port-head-l rv">
+      <div class="port-head-eyebrow">The Portfolio — Featured stories</div>
+      <h2 class="port-head-title">Stories<br>we've <em>held.</em></h2>
+    </div>
+    <div class="port-head-r rv">
+      <p>Every wedding we take on is shot as its own feature &mdash; not a thumbnail in a grid. Below: three stories from the last year, laid out the way we deliver them.</p>
+      <p style="font-family:var(--serif);font-style:italic;color:var(--ink)">Scroll slowly.</p>
+    </div>
+  </header>
+
+  <!-- ─── FEATURE 01 — Sadie &amp; Wes ─── -->
+  <article class="feat feat-01">
+    <div class="feat-meta rv">
+      <div class="feat-meta-l">
+        <div class="feat-no">Feature No. 01 &nbsp;·&nbsp; Autumn 2025</div>
+        <h3 class="feat-title">Sadie &amp; Wes</h3>
+      </div>
+      <div class="feat-venue">The Hawthorn &nbsp;·&nbsp; Lee's Summit</div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-img img-lead rv-img">
+        <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Sadie and Wes — first look on the lake at sunset" loading="lazy">
+      </div>
+      <div class="feat-img img-a rv-img">
+        <img src="https://images.pexels.com/photos/2253867/pexels-photo-2253867.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Sadie's dress detail in autumn light" loading="lazy">
+      </div>
+      <div class="feat-img img-b rv-img">
+        <img src="https://images.pexels.com/photos/2253842/pexels-photo-2253842.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Wes adjusting his cuff before the ceremony" loading="lazy">
+      </div>
+      <blockquote class="quote-block rv">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="quote-text">We didn&rsquo;t want pictures that looked like <em>ours.</em><br>We wanted pictures that <em>felt</em> like us.</p>
+        <div class="quote-cite">Sadie, the bride</div>
+      </blockquote>
+      <div class="feat-img img-close rv-img">
+        <img src="https://images.pexels.com/photos/1684187/pexels-photo-1684187.jpeg?auto=compress&cs=tinysrgb&w=1800" alt="Sadie and Wes during first dance — warm reception light" loading="lazy">
+      </div>
+    </div>
+  </article>
+
+  <!-- ─── FEATURE 02 — Amelia &amp; Jones ─── -->
+  <article class="feat feat-02">
+    <div class="feat-meta rv">
+      <div class="feat-meta-l">
+        <div class="feat-no">Feature No. 02 &nbsp;·&nbsp; Spring 2025</div>
+        <h3 class="feat-title">Amelia &amp; Jones</h3>
+      </div>
+      <div class="feat-venue">Union Station &nbsp;·&nbsp; Kansas City</div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-img img-lead rv-img">
+        <img src="https://images.pexels.com/photos/1589818/pexels-photo-1589818.jpeg?auto=compress&cs=tinysrgb&w=1100" alt="Amelia in bridal portrait under the Union Station arches" loading="lazy">
+      </div>
+      <blockquote class="quote-block rv">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="quote-text">Rowan didn&rsquo;t direct the day. She <em>noticed</em> it.<br>Every frame is a moment we would&rsquo;ve missed.</p>
+        <div class="quote-cite">Amelia &amp; Jones</div>
+      </blockquote>
+      <div class="feat-img img-a rv-img">
+        <img src="https://images.pexels.com/photos/931796/pexels-photo-931796.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Ceremony details — ribbon and paper program" loading="lazy">
+      </div>
+      <div class="feat-img img-b rv-img">
+        <img src="https://images.pexels.com/photos/1395964/pexels-photo-1395964.jpeg?auto=compress&cs=tinysrgb&w=1100" alt="Amelia and Jones walking the grand hall" loading="lazy">
+      </div>
+      <div class="feat-img img-close rv-img">
+        <img src="https://images.pexels.com/photos/1729797/pexels-photo-1729797.jpeg?auto=compress&cs=tinysrgb&w=1800" alt="Amelia and Jones during their first dance — golden chandelier light" loading="lazy">
+      </div>
+    </div>
+  </article>
+
+  <!-- ─── FEATURE 03 — Fern &amp; Coleman ─── -->
+  <article class="feat feat-03">
+    <div class="feat-meta rv">
+      <div class="feat-meta-l">
+        <div class="feat-no">Feature No. 03 &nbsp;·&nbsp; Winter 2026</div>
+        <h3 class="feat-title">Fern &amp; Coleman</h3>
+      </div>
+      <div class="feat-venue">Private residence &nbsp;·&nbsp; Aspen, CO</div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-img img-lead rv-img">
+        <img src="https://images.pexels.com/photos/265722/pexels-photo-265722.jpeg?auto=compress&cs=tinysrgb&w=1800" alt="Aspen mountain light at first look" loading="lazy">
+      </div>
+      <div class="feat-img img-a rv-img">
+        <img src="https://images.pexels.com/photos/1128318/pexels-photo-1128318.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Fern in white at a mountain window" loading="lazy">
+      </div>
+      <div class="feat-img img-b rv-img">
+        <img src="https://images.pexels.com/photos/1616113/pexels-photo-1616113.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Coleman looking out over the valley" loading="lazy">
+      </div>
+      <div class="feat-img img-c rv-img">
+        <img src="https://images.pexels.com/photos/265856/pexels-photo-265856.jpeg?auto=compress&cs=tinysrgb&w=900" alt="The couple walking through aspen trees" loading="lazy">
+      </div>
+      <blockquote class="quote-block rv">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="quote-text">We flew our photographer <em>thirteen hundred miles</em>. We&rsquo;d do it again for the same fifteen minutes of light.</p>
+        <div class="quote-cite">Fern &amp; Coleman</div>
+      </blockquote>
+    </div>
+  </article>
+
+  <!-- archive link -->
+  <div class="port-foot rv">
+    <div class="port-foot-l">Twelve more weddings held this year.<span>Vol. 01 · Archive</span></div>
+    <a href="#archive" class="port-foot-link">View the full archive <span>→</span></a>
+  </div>
+
+</section>
+
+<!-- ============ ABOUT — A letter from Rowan ============ -->
+<section class="about" id="about">
+  <div class="about-wrap">
+
+    <header class="about-head">
+      <div class="rv">
+        <div class="about-head-eyebrow">About &mdash; A letter from the photographer</div>
+        <h2 class="about-head-title">Rowan<br><em>Hale.</em></h2>
+      </div>
+      <div class="rv">
+        <p class="about-head-meta">Founder and photographer. Based in Kansas City. Available for weddings in the Midwest &mdash; and anywhere couples will have her.</p>
+      </div>
+    </header>
+
+    <div class="about-grid">
+
+      <!-- portrait column -->
+      <figure class="about-portrait rv-img">
+        <div class="about-portrait-frame">
+          <img src="https://images.pexels.com/photos/2773977/pexels-photo-2773977.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Rowan Hale, photographer, with her film camera">
+        </div>
+        <figcaption class="about-portrait-cap"><em>Rowan Hale</em> &nbsp;·&nbsp; Crossroads KC &nbsp;·&nbsp; Hasselblad 501cm</figcaption>
+      </figure>
+
+      <!-- letter column -->
+      <div class="about-letter rv">
+        <p class="about-lead">I didn&rsquo;t set out to be a wedding photographer.<br>I set out to be an <em>honest one.</em></p>
+
+        <div class="about-body">
+          <p>I grew up in small-town Missouri, around weddings held in church basements and backyards. My grandmother kept every photograph in a cedar box. When I opened it, the pictures smelled like smoke and roses &mdash; and I could tell you who loved whom, forty years later, from a single frame.</p>
+
+          <p>That&rsquo;s what I&rsquo;m after now. Not the <em>perfect</em> shot &mdash; the <em>true</em> one. The breath before the vows. The way your dad looks at you at the end of the aisle. The hand you reach for without thinking.</p>
+
+          <p>I shoot film first, digital second. I work with one second-shooter I trust. I deliver in two weeks, not six months. And I only take twelve weddings a year, so I can hold each one all the way through.</p>
+        </div>
+
+        <!-- values -->
+        <div class="about-values">
+          <div class="about-val">
+            <div class="about-val-no">01</div>
+            <div class="about-val-text">The day is <em>yours.</em> I&rsquo;m a witness, not a director.</div>
+          </div>
+          <div class="about-val">
+            <div class="about-val-no">02</div>
+            <div class="about-val-text">Film carries what digital can&rsquo;t. I shoot <em>both.</em></div>
+          </div>
+          <div class="about-val">
+            <div class="about-val-no">03</div>
+            <div class="about-val-text">Twelve weddings a year. <em>Held, not churned.</em></div>
+          </div>
+        </div>
+
+        <!-- signature -->
+        <div class="about-sign">
+          <div class="about-sign-mark">R. Hale</div>
+          <div class="about-sign-cap">Founder &amp; photographer</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- stats + press -->
+    <footer class="about-foot rv">
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-no">168<em>+</em></div>
+          <div class="about-stat-label">Weddings held since 2018</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-no">12</div>
+          <div class="about-stat-label">Weddings taken per year, no more</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-no">14<em>d</em></div>
+          <div class="about-stat-label">Gallery delivery, every time</div>
+        </div>
+      </div>
+
+      <div class="about-press">
+        <div class="about-press-label">Featured in</div>
+        <div class="about-press-list">
+          <a href="#" class="about-press-name">Kinfolk</a>
+          <a href="#" class="about-press-name">Brides</a>
+          <a href="#" class="about-press-name">Martha Stewart Weddings</a>
+          <a href="#" class="about-press-name">Junebug</a>
+          <a href="#" class="about-press-name">The Knot</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</section>
+
+<!-- ============ INVESTMENT — prix-fixe menu ============ -->
+<section class="inv" id="investment">
+  <div class="inv-wrap">
+
+    <header class="inv-head rv">
+      <div class="inv-head-eyebrow">The Investment &mdash; Collections 2026</div>
+      <h2 class="inv-head-title">What it <em>costs.</em></h2>
+      <p class="inv-intro">Three collections, written plainly. <em>Every wedding is shaped around the one you're holding</em> &mdash; these are the starting shapes we build from.</p>
+    </header>
+
+    <!-- menu -->
+    <div class="inv-menu">
+
+      <!-- Row 01 — Essentials -->
+      <div class="inv-row rv" data-row="01">
+        <div class="inv-row-head">
+          <div class="inv-row-l">
+            <div class="inv-row-no">Collection No. 01</div>
+            <h3 class="inv-row-name">The <em>Essentials</em></h3>
+            <p class="inv-row-desc">Six hours. One photographer. A gallery that holds your ceremony, the vows, and the first hour of the party &mdash; no more, no less.</p>
+          </div>
+          <div class="inv-row-r">
+            <div class="inv-row-price-eyebrow">Starting at</div>
+            <div class="inv-row-price"><em>$</em>2,800<sup>USD</sup></div>
+          </div>
+        </div>
+        <div class="inv-incl">
+          <div class="inv-incl-grid">
+            <div class="inv-incl-item">6 hours of coverage <em>— single photographer</em></div>
+            <div class="inv-incl-item">350+ edited images <em>— delivered in 14 days</em></div>
+            <div class="inv-incl-item">Online gallery <em>— yours for 2 years</em></div>
+            <div class="inv-incl-item">Print release <em>— use everywhere</em></div>
+            <div class="inv-incl-item">One pre-wedding call <em>— timeline + locations</em></div>
+            <div class="inv-incl-item">Two in-person meetings <em>— planning + reveal</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 02 — Full Story (most chosen) -->
+      <div class="inv-row rv open" data-row="02">
+        <div class="inv-row-head">
+          <div class="inv-row-l">
+            <div class="inv-row-no">Collection No. 02<em>Most couples choose this</em></div>
+            <h3 class="inv-row-name">The <em>Full Story</em> <span class="inv-tag">Recommended</span></h3>
+            <p class="inv-row-desc">Ten hours. Two photographers. Three rolls of film for the moments that deserve it. The full arc &mdash; getting ready to last dance.</p>
+          </div>
+          <div class="inv-row-r">
+            <div class="inv-row-price-eyebrow">Starting at</div>
+            <div class="inv-row-price"><em>$</em>4,500<sup>USD</sup></div>
+          </div>
+        </div>
+        <div class="inv-incl">
+          <div class="inv-incl-grid">
+            <div class="inv-incl-item">10 hours of coverage <em>— two photographers</em></div>
+            <div class="inv-incl-item">600+ edited images <em>— delivered in 14 days</em></div>
+            <div class="inv-incl-item">3 rolls of 35mm or 120 film <em>— scanned + delivered</em></div>
+            <div class="inv-incl-item">Engagement session <em>— 90 minutes, anywhere in KC</em></div>
+            <div class="inv-incl-item">Online gallery <em>— yours for 3 years</em></div>
+            <div class="inv-incl-item">Sneak peek <em>— 30 images within 48 hours</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 03 — Keepsake -->
+      <div class="inv-row rv" data-row="03">
+        <div class="inv-row-head">
+          <div class="inv-row-l">
+            <div class="inv-row-no">Collection No. 03</div>
+            <h3 class="inv-row-name">The <em>Keepsake</em></h3>
+            <p class="inv-row-desc">The full day. Film + digital, with a 10&times;10 linen-bound heirloom album hand-designed and printed in Italy. For couples who want the pictures to outlive them.</p>
+          </div>
+          <div class="inv-row-r">
+            <div class="inv-row-price-eyebrow">Starting at</div>
+            <div class="inv-row-price"><em>$</em>7,200<sup>USD</sup></div>
+          </div>
+        </div>
+        <div class="inv-incl">
+          <div class="inv-incl-grid">
+            <div class="inv-incl-item">12+ hours of coverage <em>— two photographers</em></div>
+            <div class="inv-incl-item">800+ edited images <em>— delivered in 14 days</em></div>
+            <div class="inv-incl-item">6 rolls of film <em>— scanned + hand-delivered</em></div>
+            <div class="inv-incl-item">Heirloom album <em>— 10&times;10 linen, 30 spreads, printed in Italy</em></div>
+            <div class="inv-incl-item">Engagement + rehearsal-dinner sessions <em>— both included</em></div>
+            <div class="inv-incl-item">Lifetime gallery <em>— we keep it online, always</em></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- universal inclusions -->
+    <div class="inv-all rv">
+      <div class="inv-all-eyebrow">Every collection holds</div>
+      <p class="inv-all-title">The unhurried things. <em>Held at the same standard, whichever you choose.</em></p>
+      <div class="inv-all-list">
+        <div class="inv-all-item">14-day delivery</div>
+        <div class="inv-all-item">Full print release</div>
+        <div class="inv-all-item">Travel included in KC metro</div>
+        <div class="inv-all-item">A real person on the phone</div>
+      </div>
+    </div>
+
+    <!-- closing -->
+    <div class="inv-foot rv">
+      <p class="inv-foot-note">Only <em>twelve weddings</em> held per year &mdash; when a date is taken, it's taken. If yours matters, reach out early.</p>
+      <a href="#inquire" class="inv-foot-cta">Request the full price guide <span>→</span></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ INQUIRE — A letter to Rowan ============ -->
+<section class="inq" id="inquire">
+  <div class="inq-wrap">
+
+    <header class="inq-head rv">
+      <div class="inq-head-eyebrow">Inquire &mdash; A letter to the studio</div>
+      <h2 class="inq-head-title">Write us a <em>letter.</em></h2>
+      <p class="inq-head-sub">Don't fill out a form &mdash; tell us about your wedding the way you'd tell a friend. Rowan reads every word.</p>
+    </header>
+
+    <form class="inq-letter rv" id="inqForm" novalidate>
+
+      <div class="inq-salute">Dear Rowan,</div>
+
+      <div class="inq-body">
+        <p>My name is <input type="text" class="inq-input w-md" name="name" placeholder="(your name)" required> &mdash; and my partner is <input type="text" class="inq-input w-md" name="partner" placeholder="(their name)">.</p>
+
+        <p>We're planning a wedding for <input type="text" class="inq-input w-date" name="date" placeholder="(a date, season, or 'not sure yet')"> at <input type="text" class="inq-input w-lg" name="venue" placeholder="(a venue, a city, or a general region)">.</p>
+
+        <p>The collection that feels right is
+          <select class="inq-select" name="collection">
+            <option value="">(choose one &mdash; or don't)</option>
+            <option>The Essentials &mdash; starting $2,800</option>
+            <option>The Full Story &mdash; starting $4,500</option>
+            <option>The Keepsake &mdash; starting $7,200</option>
+            <option>Not sure yet &mdash; help me decide</option>
+          </select>.
+        </p>
+
+        <div class="inq-textarea-wrap">
+          <label class="inq-textarea-label">What matters most to us is&hellip;</label>
+          <textarea class="inq-textarea" name="matters" placeholder="The breath before the vows. The way he looks at me. The room when the band plays that one song."></textarea>
+        </div>
+
+        <p>You can reach me at <input type="email" class="inq-input w-md" name="email" placeholder="(email)" required> &mdash; or <input type="tel" class="inq-input w-sm" name="phone" placeholder="(phone, optional)">.</p>
+      </div>
+
+      <div class="inq-sign">
+        <div class="inq-sign-lbl">Warmly,</div>
+        <input type="text" class="inq-sign-input" name="signature" placeholder="Sign your name">
+      </div>
+
+      <div class="inq-send">
+        <button type="submit" class="inq-send-btn">Send this letter</button>
+        <p class="inq-send-note">Rowan writes back personally, usually within 48 hours.</p>
+      </div>
+
+    </form>
+
+    <!-- closing meta row -->
+    <div class="inq-foot rv">
+      <div class="inq-foot-item">Or email <em>hello@longlight.studio</em></div>
+      <div class="inq-foot-item">Call / text <em>(816) 555-0182</em></div>
+      <div class="inq-foot-item">Studio hours <em>Tue &ndash; Sat, 10&mdash;4</em></div>
+    </div>
+
+  </div>
+
+  <!-- success modal -->
+  <div class="inq-success" id="inqSuccess" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="inq-success-card">
+      <div class="inq-success-mark">&hearts;</div>
+      <h3 class="inq-success-title">Your letter is <em>on its way.</em></h3>
+      <p class="inq-success-body">Rowan will read it personally and write back within 48 hours &mdash; usually sooner. Thank you for considering us to hold this day for you.</p>
+      <button type="button" class="inq-success-close" id="inqSuccessClose">Close</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER — Colophon ============ -->
+<footer class="ft">
+  <div class="ft-wrap">
+
+    <div class="ft-brand rv">
+      <div class="ft-brand-label">Colophon</div>
+      <h2 class="ft-brand-mark">Long <em>Light.</em></h2>
+      <p class="ft-brand-tag">Weddings held in good light.</p>
+    </div>
+
+    <div class="ft-grid">
+
+      <div class="ft-col">
+        <div class="ft-col-head">Pages</div>
+        <ul>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#about">About Rowan</a></li>
+          <li><a href="#investment">Investment</a></li>
+          <li><a href="#journal">Journal</a></li>
+          <li><a href="#inquire">Inquire</a></li>
+        </ul>
+      </div>
+
+      <div class="ft-col">
+        <div class="ft-col-head">Studio</div>
+        <ul>
+          <li><a href="mailto:hello@longlight.studio">hello@longlight.studio</a></li>
+          <li><a href="tel:+18165550182">(816) 555-0182</a></li>
+          <li><span>Crossroads KC<span class="ft-col-detail">By appointment only</span></span></li>
+          <li><span>Hours<span class="ft-col-detail">Tue &ndash; Sat, 10 &ndash; 4</span></span></li>
+        </ul>
+      </div>
+
+      <div class="ft-col">
+        <div class="ft-col-head">Elsewhere</div>
+        <ul>
+          <li><a href="#" aria-label="Instagram">Instagram <span class="ft-col-detail">@longlight.studio</span></a></li>
+          <li><a href="#" aria-label="Pinterest">Pinterest <span class="ft-col-detail">/longlightstudio</span></a></li>
+          <li><a href="#">The Journal <span class="ft-col-detail">Letters, work, notes</span></a></li>
+          <li><a href="#">Newsletter <span class="ft-col-detail">Monthly. No spam.</span></a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="ft-colophon">
+      <em>Long Light Studio</em> is a two-person editorial wedding studio based in the Crossroads, Kansas City. Founded in 2018 by Rowan Hale. Shot on Hasselblad 501cm, Contax 645, and Leica M10. Typeset in <em>Fraunces</em> and <em>Inter</em>. We take twelve weddings a year &mdash; one at a time, held all the way through.
+    </p>
+
+    <div class="ft-btm">
+      <div>&copy; 2018&ndash;2026 Long Light Studio &nbsp;·&nbsp; Kansas City &amp; beyond</div>
+      <a href="https://herrmanonlineoutlook.com" class="ft-btm-hoo" rel="noopener">Site by HOO</a>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+/* inquiry form — dry-run, shows modal */
+(function(){
+  var form = document.getElementById('inqForm');
+  var modal = document.getElementById('inqSuccess');
+  var close = document.getElementById('inqSuccessClose');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = form.querySelector('input[name="name"]').value.trim();
+    var email = form.querySelector('input[name="email"]').value.trim();
+    if(!name || !email){
+      if(!name) form.querySelector('input[name="name"]').focus();
+      else form.querySelector('input[name="email"]').focus();
+      return;
+    }
+    modal.classList.add('on');
+    modal.setAttribute('aria-hidden','false');
+  });
+  function hide(){modal.classList.remove('on');modal.setAttribute('aria-hidden','true')}
+  close.addEventListener('click', hide);
+  modal.addEventListener('click', function(e){if(e.target===modal) hide()});
+  document.addEventListener('keydown', function(e){if(e.key==='Escape') hide()});
+})();
+</script>
+
+<script>
+/* scroll reveal — intersection observer with 1.4s ease-out */
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('vis');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.15,rootMargin:'0px 0px -80px 0px'});
+  document.querySelectorAll('.rv, .rv-img').forEach(function(el){io.observe(el)});
+  /* safety fallback — show everything after 3s if observer missed */
+  setTimeout(function(){
+    document.querySelectorAll('.rv, .rv-img').forEach(function(el){el.classList.add('vis')});
+  },3000);
+})();
+</script>
+
+</body>
+</html>
