@@ -85,6 +85,13 @@ Before adding: never >30% same industry, never >40% same city in batch.
 }
 ```
 
+**Step 6.5 — Sync to Obsidian Vault (MANDATORY)**
+After writing each `LEAD-NNN-*.json`, immediately sync it to the Obsidian vault:
+```bash
+cd engine/tools && node lead-to-obsidian.js sync LEAD-NNN-*.json
+```
+This creates `C:/Users/Matth/Documents/HOO-Vault/02-Leads/{Business-Name}.md` in canonical format (tags, business info, pipeline stage, outreach history, notes, back-links). **Every lead JSON must have a matching vault .md file — never skip this.** Use `sync-all` to backfill. Use `--force` only when deliberately overwriting.
+
 **Step 7 — Generate Call Sheet**
 Format top leads as a numbered call sheet with:
 - Business name, owner name, phone
