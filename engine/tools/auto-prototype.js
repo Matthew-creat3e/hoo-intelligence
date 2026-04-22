@@ -35,20 +35,21 @@ const V4_TEMPLATES = {
   'auto detailing':    { file: 'v4-auto-detailing-demo.html',    placeholder: 'DRIP Detail KC',           shortName: 'DRIP Detail',     brandWord: 'Drip',     phone: '(816) 555-0147' },
   'auto repair':       { file: 'v4-auto-repair-demo.html',       placeholder: 'Precision Auto KC',        shortName: 'Precision Auto',  brandWord: 'Precision', phone: '(816) 955-1234' },
   barber:              { file: 'v4-barber-demo.html',             placeholder: 'Iron & Blade Barbershop',  shortName: 'Iron & Blade',    brandWord: null,       phone: '(816) 955-1234' },
-  cleaning:            { file: 'v4-cleaning-demo.html',           placeholder: 'Pristine Clean KC',        shortName: 'Pristine Clean',  brandWord: 'Pristine', phone: '(816) 955-1234' },
-  fencing:             { file: 'v4-fencing-demo.html',            placeholder: 'KC Fence Pros',            shortName: 'KC Fence',        brandWord: null,       phone: '(816) 955-1234' },
+  cleaning:            { file: 'v7-cleaning-demo-LOCKED.html',    placeholder: 'Pristine Clean KC',        shortName: 'Pristine Clean',  brandWord: 'Pristine', phone: '(816) 555-0147' },
+  fencing:             { file: 'v7-fencing-demo-LOCKED.html',     placeholder: 'Ironline Fencing KC',      shortName: 'Ironline',        brandWord: 'Ironline', phone: '(804) 957-1003' },
   'food truck':        { file: 'v4-food-truck-demo.html',         placeholder: 'Fuego KC',                 shortName: 'Fuego',           brandWord: 'Fuego',    phone: '(816) 555-0193' },
   handyman:            { file: 'v4-handyman-demo.html',           placeholder: 'FixIt Pro KC',             shortName: 'FixIt Pro',       brandWord: 'FixIt',    phone: '(816) 955-1234' },
   'junk removal':      { file: 'v4-junk-removal-demo.html',       placeholder: 'KC Junk Pros',             shortName: 'KC Junk',         brandWord: null,       phone: '(816) 955-1234' },
   landscaping:         { file: 'v4-landscaping-demo.html',        placeholder: 'Stonegate Landscapes',     shortName: 'Stonegate',       brandWord: 'Stonegate', phone: '(816) 555-0247' },
   'lawn care':         { file: 'v4-lawn-care-demo.html',          placeholder: 'GreenLine Lawn Co.',       shortName: 'GreenLine',       brandWord: 'GreenLine', phone: '(816) 955-1234' },
   moving:              { file: 'v4-moving-demo.html',             placeholder: 'MoveRight KC',             shortName: 'MoveRight',       brandWord: 'MoveRight', phone: '(816) 555-0318' },
-  painting:            { file: 'v4-painting-demo.html',           placeholder: 'BrushCraft Painting Co.',  shortName: 'BrushCraft',      brandWord: 'BrushCraft', phone: '(816) 555-0192' },
-  'personal training': { file: 'v4-personal-training-demo.html',  placeholder: 'FORGE Athletics',          shortName: 'FORGE',           brandWord: 'FORGE',    phone: '(816) 555-0237' },
+  painting:            { file: 'v7-painting-demo-LOCKED.html',    placeholder: 'True Coat Painting KC',    shortName: 'True Coat',       brandWord: 'True Coat', phone: '(913) 555-0147' },
+  'personal training': { file: 'v7-personal-training-demo-LOCKED.html', placeholder: 'IRONCLAD FITNESS',  shortName: 'IRONCLAD',        brandWord: 'Ironclad', phone: '(816) 555-4766' },
+  clothing:            { file: 'v7-risen-clothing-demo-LOCKED.html', placeholder: 'RISEN',                shortName: 'RISEN',           brandWord: 'RISEN',    phone: '(000) 000-0000' },
   'pet grooming':      { file: 'v4-pet-grooming-demo.html',       placeholder: 'Paws & Co.',              shortName: 'Paws',            brandWord: 'Paws',     phone: '(816) 555-0192' },
   photography:         { file: 'v4-photography-demo.html',        placeholder: 'Lens & Light KC',          shortName: 'Lens & Light',    brandWord: null,       phone: '(816) 555-0217' },
-  'pressure washing':  { file: 'v4-pressure-washing-demo.html',   placeholder: 'BlastClean KC',            shortName: 'BlastClean',      brandWord: 'BlastClean', phone: '(816) 555-0284' },
-  roofing:             { file: 'v4-roofing-demo.html',            placeholder: 'Summit Roofing KC',        shortName: 'Summit Roofing',  brandWord: 'Summit',   phone: '(816) 555-ROOF' },
+  'pressure washing':  { file: 'pressure-washing-demo-LOCKED.html', placeholder: 'BlastClean KC',          shortName: 'BlastClean',      brandWord: 'BlastClean', phone: '(816) 555-0284' },
+  roofing:             { file: 'v6-roofing-final-demo.html',      placeholder: 'Summit Roofing',           shortName: 'Summit Roofing',  brandWord: 'Summit',   phone: '(816) 955-0100' },
   tattoo:              { file: 'v4-tattoo-demo.html',             placeholder: 'Iron & Ink Tattoo',        shortName: 'Iron & Ink',      brandWord: null,       phone: '(816) 955-1234' },
 };
 
@@ -820,7 +821,96 @@ function buildFromV4Template(lead, photos, compIntel) {
   // 8. COPYRIGHT YEAR
   html = html.replace(/© 20\d{2}/g, `© ${new Date().getFullYear()}`);
 
+  // 9. AEO SCHEMA INJECTION
+  html = injectAEOSchema(html, lead);
+
   console.log(`   ✅  V4 template build complete`);
+  return html;
+}
+
+// ── AEO SCHEMA INJECTION ─────────────────────────────────────────────────────
+// Injects JSON-LD structured data for AI search engines (Google AI Overviews,
+// ChatGPT, Perplexity). Adds LocalBusiness + FAQPage + HowTo schemas.
+function injectAEOSchema(html, lead) {
+  const biz = lead.business || lead.business_name || 'Business';
+  const phone = lead.phone || '';
+  const email = lead.email || '';
+  const city = lead.city || 'Kansas City';
+  const state = lead.state || 'MO';
+  const industry = (lead.industry || '').toLowerCase();
+
+  const schemas = [];
+
+  // 1. LocalBusiness schema (always)
+  const localBiz = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: biz,
+    telephone: phone,
+    email: email || undefined,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: city,
+      addressRegion: state,
+      addressCountry: 'US'
+    },
+    areaServed: { '@type': 'City', name: `${city}, ${state}` },
+    priceRange: '$$',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '5.0',
+      reviewCount: '50'
+    }
+  };
+  // Remove undefined fields
+  Object.keys(localBiz).forEach(k => localBiz[k] === undefined && delete localBiz[k]);
+  schemas.push(localBiz);
+
+  // 2. FAQPage schema (parse from HTML)
+  const faqRegex = /<div class="faq-q">(.*?)<\/div>.*?<div class="faq-a"><p>(.*?)<\/p>/gs;
+  const faqs = [];
+  let faqMatch;
+  while ((faqMatch = faqRegex.exec(html)) !== null) {
+    const q = faqMatch[1].replace(/<[^>]+>/g, '').trim();
+    const a = faqMatch[2].replace(/<[^>]+>/g, '').trim();
+    if (q && a) faqs.push({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } });
+  }
+  if (faqs.length > 0) {
+    schemas.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs });
+  }
+
+  // 3. HowTo schema (parse process steps)
+  const stepRegex = /<div class="process-step[^"]*"[^>]*>.*?<h4>(.*?)<\/h4>\s*<p>(.*?)<\/p>/gs;
+  const steps = [];
+  let stepMatch, stepNum = 1;
+  while ((stepMatch = stepRegex.exec(html)) !== null) {
+    const name = stepMatch[1].replace(/<[^>]+>/g, '').trim();
+    const text = stepMatch[2].replace(/<[^>]+>/g, '').trim();
+    if (name && text) steps.push({ '@type': 'HowToStep', position: stepNum++, name, text });
+  }
+  if (steps.length > 0) {
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: `How ${biz} Works`,
+      step: steps
+    });
+  }
+
+  // 4. Meta robots tag for AI crawlers
+  if (!html.includes('max-snippet')) {
+    html = html.replace('</head>', '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">\n</head>');
+  }
+
+  // Inject all schemas before </head>
+  if (schemas.length > 0) {
+    const scriptTags = schemas.map(s =>
+      `<script type="application/ld+json">\n${JSON.stringify(s, null, 2)}\n</script>`
+    ).join('\n');
+    html = html.replace('</head>', `${scriptTags}\n</head>`);
+    console.log(`   🔍  AEO: injected ${schemas.length} JSON-LD schemas (LocalBusiness${faqs.length ? ' + FAQPage' : ''}${steps.length ? ' + HowTo' : ''})`);
+  }
+
   return html;
 }
 
