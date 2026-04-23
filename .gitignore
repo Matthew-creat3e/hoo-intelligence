@@ -3,9 +3,15 @@
 
 # ── SENSITIVE — NEVER COMMIT ──────────────────────────────
 engine/leads/
+engine/approvals/
 engine/tools/.env
 engine/data/email-config.json
 engine/data/smtp-config.json
+
+# ── EPHEMERAL / DEBUG — STAYS LOCAL ───────────────────────
+.claude/worktrees/
+engine/logs/
+engine/mobile-crawl/
 
 # ── OUTPUTS — STAYS LOCAL ─────────────────────────────────
 outputs/*

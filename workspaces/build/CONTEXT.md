@@ -30,6 +30,22 @@ One section per response. One copyable block. Paste-and-go.
 - Code output in chat only — no file tools, no artifacts
 - All links = real Shopify URLs — never `#`
 - Hero always: gold particles + sticky nav + progress bar + line-reveal headline
+- **V6 PREMIUM STANDARD (all new demos — non-negotiable):**
+  - Reference file: `demos/v6-roofing-final-demo.html`
+  - Full spec: `memory/feedback-v6-demo-direction.md`
+  - Shopify sections: `outputs/shopify-sections/roofing-v6/`
+  - **Hero:** Dark bg, faded industry photo, radar animation, status badges, direct form (name/phone/email/address/service), stats row
+  - **Stats:** Dark section, animated counters on scroll, hover details, progress bars
+  - **Services:** Tabbed interface (NOT card grid), cert badges, faded bg image, each tab = image + features + CTA + mini stats
+  - **Quote Wizard:** Dark glassmorphism, 3-step tile picker (service → urgency → contact)
+  - **Portfolio:** Before/after drag slider + clickable project cards
+  - **Reviews:** Big score + cert badges + 3-col review cards
+  - **Service Area Map:** Working Google Maps embed + city lists
+  - **FAQ:** Accordion + dark CTA card with phone
+  - **Nav:** Dark glass command center, radar logo, services dropdown, phone number, CTA button
+  - **Images:** Real industry-specific Pexels photos (verified URLs), NOT generic stock
+  - **Fonts:** Oswald headlines, Inter body — accent color per client
+  - **Every demo → Shopify Custom Liquid sections** (self-contained .liquid files with schema)
 
 ---
 
@@ -114,7 +130,8 @@ Desktop 1025px+:  3-4 col, 40-60px padding, max-width centered
 
 | Section | Key Elements |
 |---|---|
-| HERO | Sticky nav, 3px gold progress bar, 60 gold particles slow drift, line-reveal H1, sub fade-in .5s, dual CTA, 3 stats, stagger animate |
+| HERO (V6) | Sticky nav w/ logo image + phone + CTA btn, two-column: LEFT = tag + H1 + sub + stats, RIGHT = quote form (name/phone/email/service). Form ABOVE FOLD. Trust bar below hero. |
+| HERO (V5/legacy) | Sticky nav, 3px gold progress bar, 60 gold particles slow drift, line-reveal H1, sub fade-in .5s, dual CTA, 3 stats, stagger animate |
 | HOW IT WORKS | 3-step grid, numbered gold circles, connecting line (hidden mobile), IO slide-up |
 | PRICING | 3-col Starter/Standard/Premium, middle featured gold border + MOST POPULAR, gold checks, CTA per card, stagger reveal |
 | PORTFOLIO | Before/after grid, hover overlay, IO card reveals |

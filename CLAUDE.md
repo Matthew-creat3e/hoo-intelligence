@@ -27,8 +27,10 @@ Take Matthew's family from poverty to stability through HOO. Every session moves
 | Intent | Load |
 |---|---|
 | build / section / hero / code / CSS / design | `workspaces/build/CONTEXT.md` |
+| build demo / prototype / new demo | `blueprints/BUILD-FLOW.md` → spawns section agents |
 | leads / hunt / outreach / pipeline / email / text | `workspaces/leads/CONTEXT.md` |
 | crawl4ai / scrape / n8n / twilio / engine / pipeline | `workspaces/leads/CONTEXT.md` → Engine v3 section |
+| logo / branding / icon / mark | `.claude/skills/logo/SKILL.md` → Canva MCP |
 | social / post / content / facebook / tiktok / instagram | `workspaces/social/CONTEXT.md` |
 | noreturn / TCB / HOO site / store / audit | `workspaces/stores/CONTEXT.md` |
 | learn / jake / sabrina / study / course / framework | `workspaces/learning/CONTEXT.md` |
@@ -47,6 +49,7 @@ Take Matthew's family from poverty to stability through HOO. Every session moves
 | `/store-audit` | "audit [url]" | 10-point scorecard + pitch |
 | `/auto-prototype` | "build a demo for [lead]" | Custom demo homepage |
 | `/social-post` | "post this build" / "create content" | Screenshot → caption → queue |
+| `/logo` | "make a logo" / "logo for [business]" | Canva MCP → generate → export PNG |
 
 ## Memory — Claude Writes Here
 `memory/MEMORY.md` — session index, active reminders (auto-updated every session)
