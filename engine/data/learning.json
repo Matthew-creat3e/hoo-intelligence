@@ -2,7 +2,56 @@
   "version": "3.0",
   "last_updated": "2026-03-24",
   "hunts": [],
-  "email_stats": {"sent": 0, "replied": 0, "bounced": 0},
-  "sms_stats": {"sent": 0, "replied": 0},
-  "by_industry": {}
+  "email_stats": {
+    "sent": 0,
+    "replied": 0,
+    "bounced": 0
+  },
+  "sms_stats": {
+    "sent": 0,
+    "replied": 0
+  },
+  "by_industry": {},
+  "calls": [
+    {
+      "date": "2026-04-03T00:20:01.988Z",
+      "industry": "pressure washing",
+      "city": "Independence",
+      "outcome": "no-answer",
+      "objection": "other",
+      "warmth": "cold",
+      "hour": 19,
+      "day": "Thursday"
+    },
+    {
+      "date": "2026-04-03T00:20:43.510Z",
+      "industry": "lawn care",
+      "city": "Raytown",
+      "outcome": "reached",
+      "objection": "dont-need",
+      "warmth": "cold",
+      "hour": 19,
+      "day": "Thursday"
+    },
+    {
+      "date": "2026-04-03T00:20:59.613Z",
+      "industry": "lawn care",
+      "city": "Raytown",
+      "outcome": "reached",
+      "objection": "dont-need",
+      "warmth": "cold",
+      "hour": 19,
+      "day": "Thursday"
+    },
+    {
+      "date": "2026-04-05T18:44:45.337Z",
+      "industry": "lawn care",
+      "city": "Raytown",
+      "outcome": "send-demo",
+      "objection": "none",
+      "warmth": "cold",
+      "hour": 13,
+      "day": "Sunday"
+    }
+  ]
 }
