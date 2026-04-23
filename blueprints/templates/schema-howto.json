@@ -1,0 +1,14 @@
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "{{HOWTO_NAME}}",
+  "description": "{{HOWTO_DESC}}",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": "{{STEP_NUM}}",
+      "name": "{{STEP_NAME}}",
+      "text": "{{STEP_TEXT}}"
+    }
+  ]
+}
