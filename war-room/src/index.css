@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+:root {
+  --bg-void: #050505;
+  --bg-panel: #0A0A0A;
+  --bg-elevated: #111111;
+  --border-dim: #1A1A1A;
+  --border-active: #C8952E;
+  --gold-primary: #C8952E;
+  --gold-bright: #E8B84B;
+  --gold-glow: rgba(200,149,46,0.15);
+  --red-alert: #FF2D2D;
+  --red-glow: rgba(255,45,45,0.2);
+  --green-online: #00FF88;
+  --blue-intel: #4DA6FF;
+  --purple-den: #B366FF;
+  --cyan-shadow: #00E5FF;
+  --text-primary: #E8E8E8;
+  --text-muted: #666666;
+}
+
+@keyframes redPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--red-alert); }
+  50% { opacity: 0.4; box-shadow: 0 0 12px var(--red-alert); }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes bootFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--gold-glow); }
+  50% { box-shadow: 0 0 20px var(--gold-glow), 0 0 40px rgba(200,149,46,0.08); }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'Syne', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-dim);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
