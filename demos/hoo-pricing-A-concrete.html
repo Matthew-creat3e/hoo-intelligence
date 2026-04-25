@@ -1,0 +1,370 @@
+<!--
+  HOO PRICING — PALETTE A — Concrete + Hi-Vis
+  Warm concrete gray bg + ink text + safety orange accent.
+  http://localhost:8765/hoo-pricing-A-concrete.html
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOO — Pricing — Palette A (Concrete + Hi-Vis)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* PALETTE A — Concrete + Hi-Vis */
+  --bg:#E8E5DF;        --bg-2:#DEDAD0;       --card:#F4F1EA;
+  --line:rgba(255,107,53,.22);                --line-2:rgba(26,26,26,.1);
+  --accent:#FF6B35;    --accent-hi:#FF8559;   /* safety orange */
+  --ink:#1A1A1A;       --mute:rgba(26,26,26,.62);  --mute-2:rgba(26,26,26,.38);
+  --live:#2E8540;
+  --serif:'Fraunces',Georgia,serif;--display:'Bebas Neue',sans-serif;
+  --sans:'Syne',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  --script:'Caveat',cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* concrete-texture noise overlay */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:radial-gradient(rgba(0,0,0,.04) 1px, transparent 1px);background-size:3px 3px;mix-blend-mode:multiply}
+
+/* ═══ PRICING SECTION ═════════════════════════════ */
+#hoo-pricing{position:relative;padding:140px 0 120px;overflow:hidden;
+  background:radial-gradient(1100px 700px at 80% 30%, rgba(255,107,53,.08), transparent 60%),
+  radial-gradient(900px 800px at 0% 80%, rgba(26,26,26,.04), transparent 70%),
+  linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 50%, var(--bg) 100%);
+  border-top:1px solid rgba(26,26,26,.08);border-bottom:1px solid rgba(26,26,26,.08);z-index:1}
+#hoo-pricing::before{content:"";position:absolute;top:0;left:50%;width:1px;height:60px;
+  background:linear-gradient(180deg, var(--accent), transparent);transform:translateX(-50%)}
+
+.pr-inner{max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,56px);position:relative;z-index:2}
+
+/* HEADER */
+.pr-hdr{text-align:center;margin-bottom:88px}
+.pr-eyebrow{font-family:var(--display);letter-spacing:.32em;font-size:13px;color:var(--accent);
+  display:inline-flex;align-items:center;gap:14px;margin-bottom:30px}
+.pr-eyebrow::before,.pr-eyebrow::after{content:"";width:48px;height:1px;background:var(--accent)}
+.pr-h{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7vw,108px);line-height:.94;
+  letter-spacing:-.025em;color:var(--ink);max-width:14ch;margin:0 auto}
+.pr-h em{font-style:italic;color:var(--accent);display:block;margin-top:4px}
+.pr-lead{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.45vw,21px);line-height:1.6;
+  color:var(--mute);max-width:62ch;margin:32px auto 0}
+.pr-lead strong{color:var(--ink);font-style:normal;font-weight:600}
+.pr-lead .accent{color:var(--accent);font-style:normal;font-weight:600}
+
+/* PRICING GRID */
+.pr-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;margin-bottom:80px}
+
+/* CARD COMMON */
+.pr-card{position:relative;display:flex;flex-direction:column;padding:48px 44px;
+  background:var(--card);border:1px solid rgba(26,26,26,.12);border-radius:6px;
+  box-shadow:0 22px 50px -28px rgba(26,26,26,.18);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .4s;overflow:hidden}
+.pr-card:hover{transform:translateY(-4px);border-color:rgba(255,107,53,.5);
+  box-shadow:0 30px 70px -28px rgba(26,26,26,.22)}
+.pr-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--accent);opacity:.55}
+
+/* CARD HEADER */
+.pr-card-hdr{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;
+  padding-bottom:32px;border-bottom:1px solid var(--line-2);margin-bottom:32px}
+.pr-tier-no{font-family:var(--serif);font-style:italic;font-weight:400;font-size:64px;line-height:.85;
+  color:var(--accent);letter-spacing:-.02em}
+.pr-tier-name{font-family:var(--display);font-size:32px;letter-spacing:.06em;color:var(--ink);line-height:1}
+.pr-tier-tag{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mute);margin-top:6px}
+
+/* PRICE */
+.pr-price{display:flex;align-items:flex-start;gap:6px;margin-bottom:14px;line-height:.9}
+.pr-currency{font-family:var(--display);font-size:32px;color:var(--mute);margin-top:14px}
+.pr-amt{font-family:var(--display);font-size:clamp(80px,9vw,128px);color:var(--ink);letter-spacing:.01em;line-height:.85}
+.pr-per{font-family:var(--display);font-size:18px;color:var(--mute);letter-spacing:.18em;margin-top:18px}
+
+.pr-upfront{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;color:var(--accent);text-transform:uppercase;padding:10px 14px;
+  border:1px dashed var(--accent);border-radius:99px;background:rgba(255,107,53,.06);
+  margin-bottom:36px;width:fit-content}
+.pr-upfront i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);
+  animation:pr-blink 1.6s infinite}
+@keyframes pr-blink{50%{opacity:.4;transform:scale(.85)}}
+
+/* FEATURE LIST */
+.pr-feat{list-style:none;margin:0 0 40px;flex:1}
+.pr-feat li{display:flex;align-items:flex-start;gap:14px;padding:13px 0;
+  border-bottom:1px solid var(--line-2);font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink)}
+.pr-feat li:last-child{border-bottom:0}
+.pr-feat li.is-cap{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--accent);font-weight:500;
+  border-bottom-color:rgba(255,107,53,.3)}
+.pr-chk{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:rgba(255,107,53,.15);
+  border:1px solid var(--accent);color:var(--accent);font-size:11px;display:grid;place-items:center;
+  font-weight:600;line-height:1;margin-top:1px}
+
+/* CTA */
+.pr-cta{display:flex;align-items:center;justify-content:center;gap:12px;padding:18px 28px;
+  font-family:var(--display);letter-spacing:.22em;font-size:14px;border-radius:2px;
+  border:1px solid var(--ink);background:transparent;color:var(--ink);transition:all .25s;
+  text-decoration:none;margin-top:auto}
+.pr-cta:hover{background:var(--ink);color:var(--bg)}
+.pr-cta .arr{transition:transform .25s}
+.pr-cta:hover .arr{transform:translateX(4px)}
+
+/* CARD: COMMAND (featured) */
+.pr-card-command{border-color:var(--accent);
+  background:linear-gradient(180deg, #FFF1E8, var(--card));
+  box-shadow:0 30px 70px -22px rgba(255,107,53,.32), 0 0 0 1px rgba(255,107,53,.18) inset}
+.pr-card-command::before{height:5px;opacity:1}
+.pr-card-command:hover{box-shadow:0 40px 90px -24px rgba(255,107,53,.4), 0 0 0 1px rgba(255,107,53,.28) inset}
+.pr-card-command .pr-tier-no{color:var(--accent)}
+.pr-card-command .pr-tier-name{color:var(--accent)}
+.pr-card-command .pr-amt{color:var(--accent)}
+.pr-card-command .pr-cta{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pr-card-command .pr-cta:hover{background:var(--accent-hi);border-color:var(--accent-hi);transform:translateY(-2px);
+  box-shadow:0 14px 32px -10px rgba(255,107,53,.55)}
+
+/* MOST CHOSEN ribbon */
+.pr-ribbon{position:absolute;top:24px;right:-44px;transform:rotate(34deg);
+  font-family:var(--display);letter-spacing:.18em;font-size:11px;color:#fff;background:var(--accent);
+  padding:6px 48px;box-shadow:0 6px 18px rgba(255,107,53,.4)}
+
+/* TRANSPARENCY STRIP (now a <details> dropdown) */
+.pr-trans{background:var(--card);border:1px solid rgba(26,26,26,.1);
+  border-radius:6px;margin-bottom:48px;position:relative;overflow:hidden;
+  box-shadow:0 12px 30px -16px rgba(26,26,26,.15)}
+.pr-trans::before{content:"";position:absolute;top:0;left:0;width:5px;height:100%;background:var(--accent);z-index:2}
+.pr-trans summary{display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center;
+  padding:36px clamp(28px,4vw,48px);cursor:pointer;list-style:none;outline:none;
+  transition:background .25s}
+.pr-trans summary::-webkit-details-marker{display:none}
+.pr-trans summary:hover{background:rgba(255,107,53,.04)}
+.pr-trans-icon{font-family:var(--display);font-size:36px;color:var(--accent);letter-spacing:.04em;
+  width:64px;height:64px;border-radius:50%;border:1px dashed var(--accent);display:grid;place-items:center;
+  flex-shrink:0;animation:pr-spin 22s linear infinite}
+@keyframes pr-spin{to{transform:rotate(360deg)}}
+.pr-trans-body{display:flex;flex-direction:column;gap:8px}
+.pr-trans-lbl{font-family:var(--display);letter-spacing:.28em;font-size:13px;color:var(--accent);
+  display:flex;align-items:center;gap:12px}
+.pr-trans-lbl .more{font-family:var(--mono);font-size:10px;color:var(--mute);letter-spacing:.16em;
+  text-transform:none;padding:3px 10px;border:1px solid var(--line);border-radius:99px}
+.pr-trans-text{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.6;color:var(--mute)}
+.pr-trans-text strong{color:var(--ink);font-style:normal;font-weight:600}
+.pr-trans-text .num{color:var(--accent);font-family:var(--display);font-style:normal;font-size:17px;letter-spacing:.04em}
+.pr-trans-caret{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--accent);font-size:14px;flex-shrink:0;
+  transition:transform .35s, background .25s}
+.pr-trans[open] .pr-trans-caret{transform:rotate(180deg);background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* expanded content */
+.pr-trans-detail{padding:0 clamp(28px,4vw,48px) 40px clamp(76px,10vw,128px);
+  border-top:1px solid var(--line-2);margin-top:0;animation:pr-slide .35s ease}
+@keyframes pr-slide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.pr-trans-detail h4{font-family:var(--display);letter-spacing:.22em;font-size:13px;color:var(--accent);
+  margin:32px 0 18px;line-height:1.4}
+.pr-trans-detail h4:first-child{margin-top:24px}
+.pr-trans-detail p{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.65;color:var(--mute);max-width:62ch}
+.pr-trans-detail p strong{color:var(--ink);font-style:normal;font-weight:600}
+.pr-trans-detail p .num{color:var(--accent);font-family:var(--display);font-style:normal;font-size:17px;letter-spacing:.04em}
+.pr-trans-detail .pr-close{margin-top:28px;padding-top:24px;border-top:1px solid var(--line-2);
+  font-family:var(--serif);font-style:italic;color:var(--ink);font-size:16px;line-height:1.55;max-width:62ch}
+.pr-trans-detail .pr-close em{color:var(--accent);font-style:italic}
+
+/* ALL-IN RECEIPT inside each card */
+.pr-allin{margin:8px 0 28px;padding:14px 16px;background:rgba(26,26,26,.04);border-radius:4px;
+  font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--mute)}
+.pr-allin-row{display:grid;grid-template-columns:64px 1fr;gap:12px}
+.pr-allin-row b{color:var(--ink);font-family:var(--display);font-size:14px;letter-spacing:.04em;font-weight:400}
+.pr-allin-total{display:grid;grid-template-columns:64px 1fr;gap:12px;padding-top:8px;margin-top:6px;
+  border-top:1px solid rgba(26,26,26,.15)}
+.pr-allin-total b{color:var(--accent);font-size:18px;font-family:var(--display)}
+.pr-allin-total span{color:var(--ink);font-weight:500}
+
+/* GUARANTEES BAND */
+.pr-guar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(26,26,26,.12);
+  border-bottom:1px solid rgba(26,26,26,.12)}
+.pr-g{padding:32px 24px;border-right:1px solid var(--line-2);text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:8px}
+.pr-g:last-child{border-right:0}
+.pr-g-icon{width:36px;height:36px;border-radius:50%;border:1px solid var(--accent);display:grid;place-items:center;
+  font-family:var(--display);font-size:14px;color:var(--accent);margin-bottom:6px;background:rgba(255,107,53,.06)}
+.pr-g-lbl{font-family:var(--display);letter-spacing:.22em;font-size:13px;color:var(--ink);line-height:1.2}
+.pr-g-sub{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+
+/* SIGNED PROMISE */
+.pr-promise{margin-top:64px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.pr-promise-q{font-family:var(--serif);font-style:italic;font-size:clamp(18px,1.6vw,22px);line-height:1.55;
+  color:var(--ink);max-width:50ch}
+.pr-promise-q em{color:var(--accent)}
+.pr-promise-sig{font-family:var(--script);font-weight:700;font-size:42px;color:var(--accent);line-height:.9}
+.pr-promise-meta{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--mute);text-transform:uppercase}
+
+.pr-pop{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.pr-pop.pr-vis{opacity:1;transform:none}
+
+/* palette label badge */
+.pal-tag{position:fixed;top:16px;left:16px;z-index:99;padding:8px 14px;background:var(--ink);color:var(--accent);
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;border-radius:99px;
+  box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+@media (max-width:900px){
+  #hoo-pricing{padding:80px 0 70px}
+  .pr-hdr{margin-bottom:48px}
+  .pr-grid{grid-template-columns:1fr;gap:18px;margin-bottom:48px}
+  .pr-card{padding:36px 28px}
+  .pr-card-hdr{padding-bottom:24px;margin-bottom:24px}
+  .pr-tier-no{font-size:48px}
+  .pr-tier-name{font-size:26px}
+  .pr-amt{font-size:80px}
+  .pr-trans{grid-template-columns:1fr;text-align:left;gap:18px;padding:28px 24px}
+  .pr-trans-icon{margin:0}
+  .pr-guar{grid-template-columns:repeat(2,1fr)}
+  .pr-g{padding:20px 12px;border-bottom:1px solid var(--line-2)}
+  .pr-g:nth-child(2){border-right:0}
+  .pr-g:nth-last-child(-n+2){border-bottom:0}
+  .pr-ribbon{right:-50px;font-size:10px;padding:5px 50px}
+}
+</style>
+</head>
+<body>
+
+<span class="pal-tag">Palette A · Concrete + Hi-Vis</span>
+
+<section id="hoo-pricing">
+  <div class="pr-inner">
+
+    <header class="pr-hdr pr-pop">
+      <p class="pr-eyebrow">↳ Vol. 06 // Pricing</p>
+      <h2 class="pr-h">Two tiers.<em>Zero contracts.</em></h2>
+      <p class="pr-lead">
+        Pay <span class="accent">$0 upfront</span>. Walk through the live preview on your phone first.
+        Want changes? <strong>We make them.</strong> Nothing owed until you say go.
+        Cancel any time — your site, your call.
+      </p>
+    </header>
+
+    <div class="pr-grid">
+
+      <article class="pr-card pr-card-basic pr-pop">
+        <div class="pr-card-hdr">
+          <div class="pr-tier-no">01</div>
+          <div>
+            <div class="pr-tier-name">HOO BASIC</div>
+            <div class="pr-tier-tag">The foundation</div>
+          </div>
+        </div>
+        <div class="pr-price">
+          <span class="pr-currency">$</span>
+          <span class="pr-amt">150</span>
+          <span class="pr-per">/MO</span>
+        </div>
+        <div class="pr-upfront"><i></i>$0 UPFRONT · PAY ONLY ON APPROVAL</div>
+        <div class="pr-allin">
+          <div class="pr-allin-row"><b>$150</b><span>HOO build + maintenance</span></div>
+          <div class="pr-allin-row"><b>+$39</b><span>Shopify hosting (paid direct)</span></div>
+          <div class="pr-allin-total"><b>=$189</b><span>/mo all-in · no surprises</span></div>
+        </div>
+        <ul class="pr-feat">
+          <li><span class="pr-chk">✓</span><span>Full custom Shopify build</span></li>
+          <li><span class="pr-chk">✓</span><span>Hand-coded hero, collections, product pages</span></li>
+          <li><span class="pr-chk">✓</span><span>Mobile-responsive top to bottom</span></li>
+          <li><span class="pr-chk">✓</span><span>Contact form with direct lead routing</span></li>
+          <li><span class="pr-chk">✓</span><span>Monthly section updates &amp; fixes</span></li>
+          <li><span class="pr-chk">✓</span><span>Email support, 48-hour response</span></li>
+        </ul>
+        <a href="#hoo-cta" class="pr-cta">START YOUR BUILD <span class="arr">→</span></a>
+      </article>
+
+      <article class="pr-card pr-card-command pr-pop">
+        <div class="pr-ribbon">★ MOST CHOSEN ★</div>
+        <div class="pr-card-hdr">
+          <div class="pr-tier-no">02</div>
+          <div>
+            <div class="pr-tier-name">HOO COMMAND</div>
+            <div class="pr-tier-tag">The full operation</div>
+          </div>
+        </div>
+        <div class="pr-price">
+          <span class="pr-currency">$</span>
+          <span class="pr-amt">299</span>
+          <span class="pr-per">/MO</span>
+        </div>
+        <div class="pr-upfront"><i></i>$0 UPFRONT · PAY ONLY ON APPROVAL</div>
+        <div class="pr-allin">
+          <div class="pr-allin-row"><b>$299</b><span>HOO full operation</span></div>
+          <div class="pr-allin-row"><b>+$39</b><span>Shopify hosting (paid direct)</span></div>
+          <div class="pr-allin-total"><b>=$338</b><span>/mo all-in · no surprises</span></div>
+        </div>
+        <ul class="pr-feat">
+          <li class="is-cap"><span class="pr-chk">✓</span><span>Everything in Basic — plus:</span></li>
+          <li><span class="pr-chk">✓</span><span>Unlimited section requests &amp; rebuilds</span></li>
+          <li><span class="pr-chk">✓</span><span>Monthly new content drop (blog, landing, campaign)</span></li>
+          <li><span class="pr-chk">✓</span><span>On-page SEO (titles, meta, schema)</span></li>
+          <li><span class="pr-chk">✓</span><span><strong>AEO</strong> — found by ChatGPT, Perplexity &amp; Google AI</span></li>
+          <li><span class="pr-chk">✓</span><span>Priority response, 12-hour turnaround</span></li>
+          <li><span class="pr-chk">✓</span><span>Quarterly performance review + roadmap</span></li>
+        </ul>
+        <a href="#hoo-cta" class="pr-cta">START YOUR BUILD <span class="arr">→</span></a>
+      </article>
+
+    </div>
+
+    <details class="pr-trans pr-pop">
+      <summary>
+        <div class="pr-trans-icon">⚡</div>
+        <div class="pr-trans-body">
+          <div class="pr-trans-lbl">↳ FULL TRANSPARENCY <span class="more">click for the full story ↓</span></div>
+          <p class="pr-trans-text">
+            You also pay <strong>Shopify <span class="num">$39/mo</span></strong> directly for their platform.
+            We don't mark it up. We don't bundle it. <strong>They host. We build what runs on top.</strong>
+          </p>
+        </div>
+        <div class="pr-trans-caret">▾</div>
+      </summary>
+
+      <div class="pr-trans-detail">
+        <h4>↳ Why Shopify (and why we won't put your business on anything else)</h4>
+
+        <h4>SECURITY · BANK-GRADE BY DEFAULT</h4>
+        <p>Shopify is <strong>PCI-compliant out of the box</strong>. Every credit card transaction, every customer login, every personal detail your store collects — secured to the same standard a bank uses, and <strong>none of it touches our servers</strong>. None of it is our liability. None of it is yours to patch.</p>
+
+        <h4>LONGEVITY · NOT GOING ANYWHERE</h4>
+        <p>Shopify is <strong>14 years old</strong>, public on the NYSE (<span class="num">$SHOP</span>), and runs <strong>roughly 10% of every online store on earth</strong>. The platform you build on today will still be there in 2036 — and your store with it.</p>
+
+        <h4>LESS VULNERABLE · BY A MILE</h4>
+        <p>Compared to WordPress — where <strong>94% of every CMS hack last year happened</strong> — Shopify is a closed platform. No plugin exploits. No outdated PHP. No brute-force admin logins. No 3am ransomware.</p>
+        <p>We could host your store on cheaper platforms. We don't, because <strong>your store's job is to make money 24/7</strong> — not give us a side hobby of patching security holes at midnight.</p>
+
+        <div class="pr-close">
+          <em>$39/mo isn't where we cut corners.</em>
+          It's what keeps your store standing while we build.
+        </div>
+      </div>
+    </details>
+
+    <div class="pr-guar pr-pop">
+      <div class="pr-g"><div class="pr-g-icon">$</div><div class="pr-g-lbl">$0 UPFRONT</div><div class="pr-g-sub">Always</div></div>
+      <div class="pr-g"><div class="pr-g-icon">∅</div><div class="pr-g-lbl">NO CONTRACTS</div><div class="pr-g-sub">Month-to-month</div></div>
+      <div class="pr-g"><div class="pr-g-icon">⌫</div><div class="pr-g-lbl">CANCEL ANYTIME</div><div class="pr-g-sub">Your site, your call</div></div>
+      <div class="pr-g"><div class="pr-g-icon">⌘</div><div class="pr-g-lbl">HAND-CODED LIQUID</div><div class="pr-g-sub">No page builders</div></div>
+    </div>
+
+    <div class="pr-promise pr-pop">
+      <p class="pr-promise-q">
+        <em>"If we don't deliver something you love, you don't pay. Period."</em>
+      </p>
+      <div class="pr-promise-sig">Matthew</div>
+      <div class="pr-promise-meta">Builder · Dad · Kansas City, MO</div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('pr-vis'); io.unobserve(e.target); } });
+}, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.pr-pop').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
