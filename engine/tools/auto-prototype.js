@@ -1525,6 +1525,10 @@ async function buildPrototype(leadPath) {
     html = buildHTML(lead, photos, theme, compIntel);
   }
 
+  // Mapbox token: __MAPBOX_TOKEN__ placeholder is preserved in source + committed output.
+  // Token gets injected at deploy time by .github/workflows/deploy-demos.yml using
+  // ${{ secrets.MAPBOX_TOKEN }}. Local file:// previews won't render maps (acceptable).
+
   if (!fs.existsSync(OUTPUTS_DIR)) fs.mkdirSync(OUTPUTS_DIR, { recursive: true });
   const cleanId  = leadId.replace(/^LEAD-/i, '');
   const filename = `LEAD-${cleanId}-${slugify(biz)}.html`;

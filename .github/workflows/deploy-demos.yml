@@ -54,6 +54,18 @@ jobs:
           done
           echo '</body></html>' >> _site/demos/index.html
 
+      - name: Inject Mapbox token
+        env:
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+        run: |
+          if [ -z "$MAPBOX_TOKEN" ]; then
+            echo "::warning::MAPBOX_TOKEN secret not set — map widgets will be inert. Add it at repo Settings → Secrets and variables → Actions."
+          else
+            count=$(grep -rl '__MAPBOX_TOKEN__' _site/demos/ 2>/dev/null | wc -l)
+            find _site/demos -name "*.html" -exec sed -i "s|__MAPBOX_TOKEN__|$MAPBOX_TOKEN|g" {} +
+            echo "✅ Mapbox token injected into $count demo files"
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
