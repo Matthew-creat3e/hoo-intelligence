@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belton Plaza Barber &amp; Beauty | Belton, MO — Barber</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#1A1510;--bg2:#221C15;--bg3:#2C2419;
+  --gold:#C8952E;--gold-hover:#DEAB42;--gold-glow:rgba(200,149,46,.15);
+  --text:#F0EBE3;--text-dim:rgba(240,235,227,.3);--text-mid:rgba(240,235,227,.55);
+  --font-h:'Bebas Neue',sans-serif;--font-b:'Syne',sans-serif;--font-s:'Cormorant Garamond',serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);--ease-out:cubic-bezier(.16,1,.3,1);--ease-smooth:cubic-bezier(.22,1,.36,1);
+  --max:1200px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.7;overflow-x:hidden;cursor:default}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* cursor */
+.bb-cursor{position:fixed;width:18px;height:18px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .3s var(--ease-out),height .3s var(--ease-out),background .3s}
+.bb-cursor.hover{width:52px;height:52px;background:rgba(200,149,46,.06)}
+.bb-dot{position:fixed;width:4px;height:4px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
+
+/* loader */
+.bb-loader{position:fixed;inset:0;background:#1A1510;z-index:100000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:opacity .8s,visibility .8s}
+.bb-loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.bb-loader-text{font-family:var(--font-h);font-size:clamp(1.4rem,4vw,2.2rem);letter-spacing:10px;color:var(--gold)}
+.bb-loader-text span{display:inline-block;transform:translateY(100%);animation:bb-lin .35s var(--ease-out) forwards}
+.bb-loader-text span:nth-child(1){animation-delay:.06s}.bb-loader-text span:nth-child(2){animation-delay:.1s}.bb-loader-text span:nth-child(3){animation-delay:.14s}.bb-loader-text span:nth-child(4){animation-delay:.18s}.bb-loader-text span:nth-child(5){animation-delay:.22s}.bb-loader-text span:nth-child(6){animation-delay:.26s}.bb-loader-text span:nth-child(7){animation-delay:.3s}.bb-loader-text span:nth-child(8){animation-delay:.34s}.bb-loader-text span:nth-child(9){animation-delay:.38s}.bb-loader-text span:nth-child(10){animation-delay:.42s}.bb-loader-text span:nth-child(11){animation-delay:.46s}.bb-loader-text span:nth-child(12){animation-delay:.5s}.bb-loader-text span:nth-child(13){animation-delay:.54s}
+.bb-loader-line{width:0;height:1px;background:var(--gold);animation:bb-lline 1s var(--ease) .4s forwards}
+@keyframes bb-lin{to{transform:translateY(0)}}
+@keyframes bb-lline{to{width:140px}}
+
+.bb-progress{position:fixed;top:0;left:0;height:1px;background:var(--gold);width:0;z-index:10001}
+a{color:var(--gold);text-decoration:none;transition:color .3s}a:hover{color:var(--gold-hover)}
+img{max-width:100%;display:block}
+.bb-pop{opacity:0;transform:translateY(40px);transition:all .9s var(--ease-smooth)}
+.bb-vis{opacity:1!important;transform:none!important}
+.bb-pop-l{opacity:0;transform:translateX(-50px);transition:all 1s var(--ease-smooth)}
+.bb-pop-r{opacity:0;transform:translateX(50px);transition:all 1s var(--ease-smooth)}
+@keyframes bb-glow{from{transform:scale(1)}to{transform:scale(1.15)}}
+.bb-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
+.bb-orb-gold{width:400px;height:400px;background:radial-gradient(circle,rgba(200,149,46,.06),transparent 65%);animation:bb-glow 6s ease-in-out infinite alternate}
+.bb-label{font-family:var(--font-s);font-weight:300;color:var(--gold);font-size:1rem;margin-bottom:8px;letter-spacing:2px;display:flex;align-items:center;gap:12px}
+.bb-label::before{content:'';width:32px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+
+/* === NAV === */
+.bb-nav{position:fixed;top:0;left:0;width:100%;z-index:999;padding:22px 0;background:transparent;transition:all .5s var(--ease-smooth)}
+.bb-nav.scrolled{background:rgba(26,21,16,.95);backdrop-filter:blur(20px);padding:14px 0}
+.bb-nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.bb-logo{font-family:var(--font-h);font-size:1.3rem;letter-spacing:6px;color:var(--text)}
+.bb-logo span{color:var(--gold)}
+.bb-nav-links{display:flex;gap:32px;align-items:center}
+.bb-nav-links a{font-size:.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:3px;font-weight:600}
+.bb-nav-links a:hover{color:var(--text)}
+.bb-nav-cta{background:var(--gold);color:var(--bg);padding:10px 28px;font-family:var(--font-h);font-size:.72rem;letter-spacing:4px;border:none;cursor:pointer;transition:all .4s}
+.bb-nav-cta:hover{background:var(--gold-hover);color:var(--bg);transform:translateY(-2px);box-shadow:0 8px 24px var(--gold-glow)}
+.bb-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002}
+.bb-ham span{width:20px;height:1.5px;background:var(--text)}
+
+/* === HERO — FULLBLEED === */
+.bb-hero{position:relative;height:100vh;display:flex;align-items:center;overflow:hidden}
+.bb-hero-bg{position:absolute;inset:-10%;width:120%;height:120%;background:url('https://images.pexels.com/photos/12074386/pexels-photo-12074386.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center/cover no-repeat;will-change:transform}
+.bb-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(26,21,16,.94) 0%,rgba(26,21,16,.6) 50%,rgba(26,21,16,.3) 100%)}
+.bb-hero-content{position:relative;z-index:2;padding:0 40px 0 clamp(40px,6vw,100px);max-width:700px}
+.bb-hero-eyebrow{font-family:var(--font-s);color:var(--gold);font-size:1rem;letter-spacing:3px;margin-bottom:16px;opacity:0;animation:bb-up .8s var(--ease-smooth) .6s forwards}
+.bb-hero h1{font-family:var(--font-h);font-size:clamp(5rem,14vw,10rem);line-height:.82;letter-spacing:6px;margin-bottom:28px}
+.bb-hero h1 .ln{display:block;overflow:hidden}
+.bb-hero h1 .ln span{display:block;transform:translateY(105%);animation:bb-rev 1s var(--ease-smooth) forwards}
+.bb-hero h1 .ln:nth-child(1) span{animation-delay:.7s}
+.bb-hero h1 .ln:nth-child(2) span{animation-delay:.9s;color:var(--gold)}
+@keyframes bb-rev{to{transform:translateY(0)}}
+@keyframes bb-up{to{opacity:1;transform:translateY(0)}}
+.bb-hero-sub{font-family:var(--font-s);font-weight:300;font-size:clamp(1rem,1.5vw,1.2rem);color:var(--text-mid);max-width:380px;line-height:1.9;margin-bottom:36px;opacity:0;animation:bb-up .8s var(--ease-smooth) 1.3s forwards}
+.bb-hero-ctas{display:flex;gap:14px;opacity:0;animation:bb-up .8s var(--ease-smooth) 1.6s forwards}
+.bb-btn{background:var(--gold);color:var(--bg);padding:16px 44px;font-family:var(--font-h);font-size:.9rem;letter-spacing:5px;border:none;cursor:pointer;transition:all .5s var(--ease-out);position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px}
+.bb-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .5s}
+.bb-btn:hover::before{left:100%}
+.bb-btn:hover{background:var(--gold-hover);transform:translateY(-3px);box-shadow:0 12px 36px var(--gold-glow);color:var(--bg)}
+.bb-btn-o{border:1px solid rgba(232,228,221,.1);color:var(--text-mid);padding:16px 44px;font-family:var(--font-h);font-size:.9rem;letter-spacing:5px;background:transparent;cursor:pointer;transition:all .5s var(--ease-out);display:inline-flex;align-items:center;gap:8px}
+.bb-btn-o:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px)}
+
+/* === PORTFOLIO GRID === */
+.bb-portfolio{padding:72px 40px;background:var(--bg)}
+.bb-portfolio-inner{max-width:var(--max);margin:0 auto}
+.bb-portfolio-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px}
+.bb-portfolio-header h2{font-family:var(--font-h);font-size:clamp(2rem,4vw,3rem);letter-spacing:3px}
+.bb-pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.bb-pitem{position:relative;overflow:hidden;aspect-ratio:1;cursor:pointer}
+.bb-pitem img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease-smooth),filter .5s;filter:brightness(.8) saturate(.9)}
+.bb-pitem:hover img{transform:scale(1.1);filter:brightness(1) saturate(1)}
+.bb-pitem.wide{grid-column:span 2}
+.bb-pitem.tall{grid-row:span 2}
+.bb-pitem-overlay{position:absolute;inset:0;background:linear-gradient(transparent 60%,rgba(26,21,16,.8));opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:20px}
+.bb-pitem:hover .bb-pitem-overlay{opacity:1}
+.bb-pitem-overlay span{font-family:var(--font-h);font-size:.65rem;letter-spacing:3px;color:var(--gold)}
+
+/* === SERVICES + PRICING === */
+.bb-services{padding:72px 40px;background:var(--bg2);position:relative}
+.bb-services-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.bb-svc-list{list-style:none}
+.bb-svc-item{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid rgba(232,228,221,.04);transition:all .3s}
+.bb-svc-item:hover{padding-left:8px;border-color:rgba(200,149,46,.1)}
+.bb-svc-name{font-family:var(--font-h);font-size:1rem;letter-spacing:3px}
+.bb-svc-detail{font-family:var(--font-s);font-weight:300;font-size:.82rem;color:var(--text-dim);margin-top:2px}
+.bb-svc-price{font-family:var(--font-h);font-size:1.1rem;color:var(--gold);letter-spacing:2px;flex-shrink:0}
+.bb-svc-img{border-radius:20px;overflow:hidden;position:relative}
+.bb-svc-img img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .7s var(--ease-smooth)}
+.bb-svc-img:hover img{transform:scale(1.04)}
+.bb-svc-img-badge{position:absolute;bottom:20px;left:20px;background:rgba(200,149,46,.9);backdrop-filter:blur(8px);color:var(--bg);font-family:var(--font-h);font-size:.6rem;letter-spacing:3px;padding:8px 20px;box-shadow:0 8px 24px rgba(200,149,46,.2)}
+
+/* === ABOUT SPLIT === */
+.bb-about{padding:72px 40px;background:var(--bg)}
+.bb-about-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.bb-about-img{overflow:hidden;border-radius:20px}
+.bb-about-img img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:brightness(.85)}
+.bb-about-text h2{font-family:var(--font-h);font-size:clamp(2rem,4vw,3rem);letter-spacing:3px;margin-bottom:20px;line-height:1}
+.bb-about-text p{font-family:var(--font-s);font-weight:300;color:var(--text-dim);font-size:1.05rem;line-height:2.1;margin-bottom:14px}
+.bb-about-sig{font-family:var(--font-s);font-style:italic;color:var(--gold);font-size:1.1rem;margin-top:20px;letter-spacing:1px}
+
+/* === REVIEWS === */
+.bb-reviews{padding:72px 40px;background:var(--bg2)}
+.bb-reviews-inner{max-width:var(--max);margin:0 auto}
+.bb-reviews-header{text-align:center;margin-bottom:32px}
+.bb-reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.bb-review{background:rgba(255,255,255,.03);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.04);padding:36px 28px;border-radius:20px;transition:all .5s var(--ease-out)}
+.bb-review:nth-child(2){transform:translateY(24px)}
+.bb-review:hover{border-color:rgba(200,149,46,.1);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.bb-review-stars{color:var(--gold);font-size:.8rem;letter-spacing:3px;margin-bottom:14px}
+.bb-review-quote{font-family:var(--font-s);font-weight:300;color:var(--text-mid);font-size:1rem;line-height:2;margin-bottom:16px;font-style:italic}
+.bb-review-name{font-family:var(--font-h);font-size:.68rem;letter-spacing:3px;color:var(--text-dim)}
+
+/* === CTA === */
+.bb-cta{padding:72px 40px;background:var(--bg);text-align:center;position:relative;overflow:hidden}
+.bb-cta::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;background:radial-gradient(circle,rgba(200,149,46,.06),transparent 60%);transform:translate(-50%,-50%);pointer-events:none;animation:bb-glow 5s ease-in-out infinite alternate}
+.bb-cta-inner{position:relative;z-index:1;max-width:500px;margin:0 auto}
+.bb-cta h2{font-family:var(--font-h);font-size:clamp(2.2rem,5vw,3.8rem);letter-spacing:4px;margin-bottom:14px;line-height:.95}
+.bb-cta h2 span{color:var(--gold)}
+.bb-cta-sub{font-family:var(--font-s);font-weight:300;color:var(--text-dim);font-size:1rem;margin-bottom:36px;line-height:1.8}
+.bb-cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.bb-cta-or{font-family:var(--font-h);font-size:.6rem;color:var(--text-dim);letter-spacing:4px;margin-bottom:8px}
+.bb-cta-phone a{font-family:var(--font-h);font-size:1.3rem;color:var(--text-dim);letter-spacing:4px;transition:color .3s}
+.bb-cta-phone a:hover{color:var(--gold)}
+
+/* hours */
+.bb-hours{padding:44px 40px;background:var(--bg2);border-top:1px solid rgba(255,255,255,.03)}
+.bb-hours-inner{max-width:600px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px 40px;text-align:center}
+.bb-hours-title{grid-column:1/-1;font-family:var(--font-h);font-size:1rem;letter-spacing:4px;color:var(--gold);margin-bottom:8px}
+.bb-hours-day{font-family:var(--font-h);font-size:.7rem;letter-spacing:2px;color:var(--text-dim);text-align:right}
+.bb-hours-time{font-family:var(--font-s);font-size:.88rem;color:var(--text-mid);text-align:left}
+
+/* footer */
+.bb-footer{padding:40px;background:var(--bg);border-top:1px solid rgba(255,255,255,.03)}
+.bb-footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.bb-footer p{font-family:var(--font-s);color:rgba(255,255,255,.2);font-size:.72rem}
+.bb-footer a{color:rgba(200,149,46,.4);font-size:.72rem}
+
+.bb-demo{position:fixed;bottom:0;left:0;width:100%;background:var(--gold);color:var(--bg);text-align:center;padding:9px 20px;font-family:var(--font-h);font-size:.72rem;letter-spacing:4px;z-index:9999}
+.bb-demo a{color:var(--bg);text-decoration:underline}
+
+@media(max-width:768px){
+  .bb-cursor,.bb-dot{display:none}
+  .bb-ham{display:flex}
+  .bb-nav-links{position:fixed;top:0;right:-100%;width:75vw;max-width:300px;height:100vh;background:rgba(26,21,16,.98);backdrop-filter:blur(20px);flex-direction:column;justify-content:center;padding:40px;gap:24px;transition:right .5s;z-index:1001}
+  .bb-nav-links.open{right:0}
+  .bb-nav-cta{display:none}
+  .bb-hero h1{font-size:clamp(3.5rem,16vw,6rem)}
+  .bb-hero-ctas{flex-direction:column}
+  .bb-btn,.bb-btn-o{width:100%;max-width:280px;justify-content:center}
+  .bb-exp div[style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr)!important;gap:24px!important}
+  .bb-pgrid{grid-template-columns:1fr 1fr}
+  .bb-pitem.wide{grid-column:auto}
+  .bb-pitem.tall{grid-row:auto}
+  .bb-services-inner{grid-template-columns:1fr}
+  .bb-about-inner{grid-template-columns:1fr}
+  .bb-reviews-grid{grid-template-columns:1fr}
+  .bb-review:nth-child(2){transform:none}
+  .bb-hours-inner{grid-template-columns:1fr 1fr}
+  .bb-footer-inner{flex-direction:column;gap:8px;text-align:center}
+}
+</style>
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Belton Plaza Barber & Beauty",
+  "telephone": "(816) 331-4642",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Belton",
+    "addressRegion": "MO",
+    "addressCountry": "US"
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": "Belton, MO"
+  },
+  "priceRange": "$",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "50"
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="bb-loader" id="loader">
+  <div class="bb-loader-text"><span>I</span><span>R</span><span>O</span><span>N</span><span>&nbsp;</span><span>&amp;</span><span>&nbsp;</span><span>B</span><span>L</span><span>A</span><span>D</span><span>E</span></div>
+  <div class="bb-loader-line"></div>
+</div>
+
+<div class="bb-cursor"></div>
+<div class="bb-dot"></div>
+<div class="bb-progress"></div>
+
+<nav class="bb-nav">
+  <div class="bb-nav-inner">
+    <div class="bb-logo">BELTON PLAZA BARBER & BEAUTY</div>
+    <div class="bb-nav-links">
+      <a href="#portfolio">Our Work</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <a href="#book" class="bb-nav-cta">BOOK NOW</a>
+      <div class="bb-ham" role="button" tabindex="0" aria-label="Menu"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="bb-hero">
+  <div class="bb-hero-bg"></div>
+  <div class="bb-hero-overlay"></div>
+  <div class="bb-hero-content">
+    <div class="bb-hero-eyebrow">Est. 2019 &mdash; Belton</div>
+    <h1>
+      <span class="ln"><span>YOUR CUT.</span></span>
+      <span class="ln"><span>YOUR BARBER.</span></span>
+    </h1>
+    <p class="bb-hero-sub">Walk-ins welcome. Appointments preferred. Classic cuts, sharp fades, and beard work by barbers who give a damn.</p>
+    <div class="bb-hero-ctas">
+      <a href="#book" class="bb-btn">BOOK APPOINTMENT</a>
+      <a href="#portfolio" class="bb-btn-o">SEE OUR WORK</a>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section class="bb-portfolio" id="portfolio">
+  <div class="bb-portfolio-inner">
+    <div class="bb-portfolio-header bb-pop">
+      <div>
+        <div class="bb-label">Our Work</div>
+        <h2>THE PORTFOLIO</h2>
+      </div>
+    </div>
+    <div class="bb-pgrid">
+      <div class="bb-pitem tall bb-pop">
+        <img src="https://images.pexels.com/photos/7697324/pexels-photo-7697324.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Barber cutting hair with straight razor" loading="lazy">
+        <div class="bb-pitem-overlay"><span>STRAIGHT RAZOR WORK</span></div>
+      </div>
+      <div class="bb-pitem bb-pop">
+        <img src="https://images.pexels.com/photos/18503633/pexels-photo-18503633.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Fresh fade haircut" loading="lazy">
+        <div class="bb-pitem-overlay"><span>SKIN FADE</span></div>
+      </div>
+      <div class="bb-pitem bb-pop">
+        <img src="https://images.pexels.com/photos/1319461/pexels-photo-1319461.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Beard grooming" loading="lazy">
+        <div class="bb-pitem-overlay"><span>BEARD SCULPT</span></div>
+      </div>
+      <div class="bb-pitem bb-pop">
+        <img src="https://images.pexels.com/photos/36150782/pexels-photo-36150782.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Clipper cut" loading="lazy">
+        <div class="bb-pitem-overlay"><span>CLIPPER CUT</span></div>
+      </div>
+      <div class="bb-pitem wide bb-pop">
+        <img src="https://images.pexels.com/photos/7697363/pexels-photo-7697363.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Barbershop interior" loading="lazy">
+        <div class="bb-pitem-overlay"><span>THE SHOP</span></div>
+      </div>
+      <div class="bb-pitem bb-pop">
+        <img src="https://images.pexels.com/photos/30668154/pexels-photo-30668154.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Barber tools razor" loading="lazy">
+        <div class="bb-pitem-overlay"><span>THE TOOLS</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience Strip -->
+<section class="bb-exp" style="padding:80px 24px;background:var(--bg3);border-top:1px solid rgba(200,149,46,.12);border-bottom:1px solid rgba(200,149,46,.12)">
+  <div style="max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center">
+    <div class="bb-pop" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div style="font-family:var(--font-h);font-size:3rem;color:var(--gold);line-height:1" data-count="12">12+</div>
+      <div style="font-family:var(--font-b);font-size:.7rem;letter-spacing:3px;color:var(--text-mid);text-transform:uppercase">Years Cutting</div>
+    </div>
+    <div class="bb-pop" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div style="font-family:var(--font-h);font-size:3rem;color:var(--gold);line-height:1" data-count="15000">15K+</div>
+      <div style="font-family:var(--font-b);font-size:.7rem;letter-spacing:3px;color:var(--text-mid);text-transform:uppercase">Haircuts Given</div>
+    </div>
+    <div class="bb-pop" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div style="font-family:var(--font-h);font-size:3rem;color:var(--gold);line-height:1">4.9</div>
+      <div style="font-family:var(--font-b);font-size:.7rem;letter-spacing:3px;color:var(--text-mid);text-transform:uppercase">Google Rating</div>
+    </div>
+    <div class="bb-pop" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div style="font-family:var(--font-h);font-size:3rem;color:var(--gold);line-height:1">3</div>
+      <div style="font-family:var(--font-b);font-size:.7rem;letter-spacing:3px;color:var(--text-mid);text-transform:uppercase">Master Barbers</div>
+    </div>
+  </div>
+  <div class="bb-pop" style="max-width:700px;margin:50px auto 0;text-align:center">
+    <p style="font-family:var(--font-s);font-size:1.5rem;font-style:italic;color:var(--text-mid);line-height:1.8">&ldquo;A good barber doesn&rsquo;t just cut hair &mdash; he builds confidence. Every man who leaves this chair should feel like the best version of himself.&rdquo;</p>
+    <div style="margin-top:16px;font-family:var(--font-h);font-size:.7rem;letter-spacing:4px;color:var(--gold)">&mdash; BELTON PLAZA CREED</div>
+  </div>
+</section>
+
+<!-- Services + Pricing -->
+<section class="bb-services" id="services">
+  <div class="bb-orb bb-orb-gold" style="top:-100px;right:-150px"></div>
+  <div class="bb-services-inner">
+    <div class="bb-pop-l">
+      <div class="bb-label">Services &amp; Pricing</div>
+      <h2 style="font-family:var(--font-h);font-size:clamp(2rem,4vw,3rem);letter-spacing:3px;margin-bottom:28px">THE MENU</h2>
+      <ul class="bb-svc-list">
+        <li class="bb-svc-item">
+          <div><div class="bb-svc-name">CLASSIC CUT</div><div class="bb-svc-detail">Shampoo, cut, style</div></div>
+          <div class="bb-svc-price">$35</div>
+        </li>
+        <li class="bb-svc-item">
+          <div><div class="bb-svc-name">SKIN FADE</div><div class="bb-svc-detail">Precision fade, lined up</div></div>
+          <div class="bb-svc-price">$40</div>
+        </li>
+        <li class="bb-svc-item">
+          <div><div class="bb-svc-name">BEARD TRIM</div><div class="bb-svc-detail">Shape, line, hot towel</div></div>
+          <div class="bb-svc-price">$20</div>
+        </li>
+        <li class="bb-svc-item">
+          <div><div class="bb-svc-name">CUT + BEARD</div><div class="bb-svc-detail">The full service</div></div>
+          <div class="bb-svc-price">$50</div>
+        </li>
+        <li class="bb-svc-item">
+          <div><div class="bb-svc-name">HOT TOWEL SHAVE</div><div class="bb-svc-detail">Straight razor, old school</div></div>
+          <div class="bb-svc-price">$30</div>
+        </li>
+        <li class="bb-svc-item">
+          <div><div class="bb-svc-name">KIDS CUT</div><div class="bb-svc-detail">12 and under</div></div>
+          <div class="bb-svc-price">$25</div>
+        </li>
+      </ul>
+    </div>
+    <div class="bb-svc-img bb-pop-r">
+      <img src="https://images.pexels.com/photos/7697642/pexels-photo-7697642.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Barber trimming beard" loading="lazy">
+      <div class="bb-svc-img-badge">WALK-INS WELCOME</div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="bb-about" id="about">
+  <div class="bb-about-inner">
+    <div class="bb-about-img bb-pop-l">
+      <img src="https://images.pexels.com/photos/9971240/pexels-photo-9971240.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Barber at work" loading="lazy">
+    </div>
+    <div class="bb-about-text bb-pop-r">
+      <div class="bb-label">The Story</div>
+      <h2>MORE THAN<br>A HAIRCUT</h2>
+      <p>Belton Plaza started in a one-chair garage in 2019. The idea was simple: give every man who sits in the chair the same attention, whether it's a $25 kids cut or a full shave.</p>
+      <p>We're not a chain. We're not a franchise. We're your neighborhood shop &mdash; where the coffee's always on and your barber knows your name.</p>
+      <div class="bb-about-sig">&mdash; The Belton Plaza Crew</div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="bb-reviews" id="reviews">
+  <div class="bb-reviews-inner">
+    <div class="bb-reviews-header bb-pop">
+      <div class="bb-label" style="justify-content:center">What They Say</div>
+      <h2 style="font-family:var(--font-h);font-size:clamp(2rem,4vw,3rem);letter-spacing:3px">REVIEWS</h2>
+    </div>
+    <div class="bb-reviews-grid">
+      <div class="bb-review bb-pop">
+        <div class="bb-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="bb-review-quote">&ldquo;Best fade I've ever gotten. Period. I drove 30 minutes and I'll keep driving 30 minutes.&rdquo;</p>
+        <div class="bb-review-name">&mdash; JAMES D.</div>
+      </div>
+      <div class="bb-review bb-pop">
+        <div class="bb-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="bb-review-quote">&ldquo;Took my son for his first real haircut. They made him feel like a king. He talks about it every week now.&rdquo;</p>
+        <div class="bb-review-name">&mdash; TONY R.</div>
+      </div>
+      <div class="bb-review bb-pop">
+        <div class="bb-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="bb-review-quote">&ldquo;The hot towel shave is unreal. Straight razor, hot lather, the whole deal. Felt like 1950 in the best way.&rdquo;</p>
+        <div class="bb-review-name">&mdash; CARLOS M.</div>
+      </div>
+    </div>
+    <div class="bb-pop" style="text-align:center;margin-top:28px;font-family:var(--font-s);font-size:.72rem;color:var(--text-dim);letter-spacing:2px">(Sample reviews &mdash; your real reviews appear here)</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="bb-cta" id="book">
+  <div class="bb-cta-inner bb-pop">
+    <h2>READY FOR<br><span>YOUR CUT?</span></h2>
+    <p class="bb-cta-sub">Book online or just walk in. Either way, you're leaving looking sharp.</p>
+    <div class="bb-cta-btns">
+      <a href="#" class="bb-btn">BOOK ONLINE</a>
+      <a href="#" class="bb-btn-o">WALK-IN INFO</a>
+    </div>
+    <div class="bb-cta-or">OR CALL</div>
+    <div class="bb-cta-phone"><a href="tel:8163314642">(816) 331-4642</a></div>
+  </div>
+</section>
+
+<!-- Hours -->
+<section class="bb-hours">
+  <div class="bb-hours-inner bb-pop">
+    <div class="bb-hours-title">SHOP HOURS</div>
+    <div class="bb-hours-day">MON &ndash; FRI</div><div class="bb-hours-time">9am &ndash; 7pm</div>
+    <div class="bb-hours-day">SATURDAY</div><div class="bb-hours-time">8am &ndash; 5pm</div>
+    <div class="bb-hours-day">SUNDAY</div><div class="bb-hours-time">Closed</div>
+  </div>
+</section>
+
+<footer class="bb-footer">
+  <div class="bb-footer-inner">
+    <p>&copy; 2026 Belton Plaza Barber &amp; Beauty. Belton, MO.</p>
+    <a href="https://herrmanonlineoutlook.com" target="_blank" rel="noopener">Built by HOO</a>
+  </div>
+</footer>
+
+<div class="bb-demo">V4 BARBER DEMO &mdash; <a href="https://herrmanonlineoutlook.com">HOO</a></div>
+
+<script>
+(function(){
+  setTimeout(function(){document.getElementById('loader').classList.add('done')},1300);
+  var c=document.querySelector('.bb-cursor'),d=document.querySelector('.bb-dot'),cx=0,cy=0,dx=0,dy=0;
+  if(c&&window.innerWidth>768){
+    document.addEventListener('mousemove',function(e){dx=e.clientX;dy=e.clientY;d.style.left=dx+'px';d.style.top=dy+'px'});
+    (function loop(){cx+=(dx-cx)*.12;cy+=(dy-cy)*.12;c.style.left=cx+'px';c.style.top=cy+'px';requestAnimationFrame(loop)})();
+    document.querySelectorAll('a,button,.bb-pitem,.bb-svc-item,.bb-ham').forEach(function(el){el.addEventListener('mouseenter',function(){c.classList.add('hover')});el.addEventListener('mouseleave',function(){c.classList.remove('hover')})});
+    document.body.style.cursor='none';document.querySelectorAll('a,button').forEach(function(e){e.style.cursor='none'});
+  }
+  var prog=document.querySelector('.bb-progress'),nav=document.querySelector('.bb-nav'),hbg=document.querySelector('.bb-hero-bg');
+  window.addEventListener('scroll',function(){var s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;prog.style.width=(s/h*100)+'%';nav.classList.toggle('scrolled',s>50);if(hbg&&s<window.innerHeight*1.3)hbg.style.transform='translateY('+s*.3+'px) scale('+(1+s*.0003)+')';},{passive:true});
+  var ham=document.querySelector('.bb-ham'),links=document.querySelector('.bb-nav-links');
+  ham.addEventListener('click',function(){links.classList.toggle('open')});
+  links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open')})});
+  var els=document.querySelectorAll('.bb-pop,.bb-pop-l,.bb-pop-r');
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('bb-vis');io.unobserve(e.target)}})},{threshold:.06,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el,i){el.style.transitionDelay=(i%4)*90+'ms';io.observe(el)})}else{els.forEach(function(p){p.classList.add('bb-vis')})}
+})();
+</script>
+
+<!-- HOO PROTECTION -->
+<div id="hoo-wm" style="position:fixed;bottom:12px;right:16px;z-index:99998;font-family:monospace;font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.15);pointer-events:none;user-select:none">DEMO &mdash; BUILT BY HOO</div>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12')e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c'))e.preventDefault();
+    if(e.ctrlKey&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))e.preventDefault();
+  });
+  document.body.style.userSelect='none';
+  document.body.style.webkitUserSelect='none';
+  document.addEventListener('dragstart',function(e){e.preventDefault()});
+  console.log('%c⚠ This demo is protected intellectual property of HOO (herrmanonlineoutlook.com). Unauthorized copying is prohibited.','color:red;font-size:14px;font-weight:bold');
+})();
+</script>
+</body>
+</html>

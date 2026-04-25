@@ -1,0 +1,956 @@
+<!--
+  HOO FRONT-PAGE HEADER — v1 prototype
+  Sticky top nav + cinematic hero anchored on "We build while they sleep."
+  Built to sit above the portfolio showcase (hoo-portfolio-showcase-v1.html).
+
+  RUN: open this file directly in Chrome.
+  PASTE: pure HTML/CSS/JS — drops into Shopify Custom Liquid as one section.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOO — We Build While They Sleep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505; --bg-2:#080808; --card:#0c0c0c; --line:rgba(200,149,46,.16);
+  --line-2:rgba(240,234,224,.08); --gold:#C8952E; --gold-hi:#E8B84B;
+  --cream:#F0EAE0; --mute:rgba(240,234,224,.55); --mute-2:rgba(240,234,224,.32);
+  --live:#5fb585; --serif:'Fraunces',Georgia,serif; --display:'Bebas Neue',sans-serif;
+  --sans:'Syne',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --logo-sub:'Cormorant Garamond',serif; --script:'Caveat',cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ─── STICKY TOP NAV ─────────────────────────────── */
+.hoo-nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(5,5,5,.72);border-bottom:1px solid var(--line-2);transition:background .35s, border-color .35s}
+.hoo-nav.is-scrolled{background:rgba(5,5,5,.92);border-bottom-color:var(--line)}
+.hoo-nav-inner{max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,56px);display:grid;
+  grid-template-columns:auto 1fr auto;gap:32px;align-items:center}
+.hoo-logo{display:flex;align-items:center;gap:14px}
+.hoo-logo-mark{display:flex;flex-direction:column;line-height:1}
+.hoo-logo-name{font-family:var(--display);font-size:28px;letter-spacing:.06em;color:var(--cream)}
+.hoo-logo-sub{font-family:var(--logo-sub);font-style:italic;font-size:11px;letter-spacing:.18em;
+  color:var(--mute);margin-top:3px;text-transform:uppercase}
+.hoo-pulse{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;color:var(--live);text-transform:uppercase;padding:4px 9px;border:1px solid rgba(95,181,133,.25);
+  border-radius:99px;background:rgba(95,181,133,.06)}
+.hoo-pulse i{width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 8px var(--live);
+  animation:hoo-blink 1.6s infinite}
+@keyframes hoo-blink{50%{opacity:.35;transform:scale(.85)}}
+
+.hoo-menu{display:flex;justify-content:center;gap:42px}
+.hoo-menu a{font-family:var(--display);letter-spacing:.22em;font-size:13px;color:var(--mute);
+  position:relative;padding:6px 0;transition:color .25s}
+.hoo-menu a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.hoo-menu a:hover{color:var(--cream)}
+.hoo-menu a:hover::after{transform:scaleX(1)}
+
+.hoo-cta-nav{display:flex;align-items:center;gap:14px}
+.hoo-cta-nav .hoo-after{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--mute);
+  text-transform:uppercase;text-align:right;line-height:1.5}
+.hoo-cta-nav .hoo-after b{color:var(--cream);font-weight:500}
+.hoo-btn-text{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;font-family:var(--display);
+  letter-spacing:.2em;font-size:13px;background:var(--gold);color:#000;border-radius:2px;
+  border:1px solid var(--gold);transition:all .25s}
+.hoo-btn-text:hover{background:var(--gold-hi);border-color:var(--gold-hi);transform:translateY(-1px)}
+
+/* ─── HERO SHELL ─────────────────────────────────── */
+#hoo-hero{position:relative;min-height:min(960px,100vh);padding:60px 0 80px;overflow:hidden;
+  background:radial-gradient(1100px 700px at 80% -10%, rgba(200,149,46,.06), transparent 60%),
+  radial-gradient(900px 800px at -10% 60%, rgba(200,149,46,.04), transparent 70%), var(--bg)}
+
+/* code-rain backdrop */
+.hoo-rain{position:absolute;inset:0;overflow:hidden;pointer-events:none;
+  -webkit-mask:radial-gradient(ellipse at 50% 50%, #000 30%, transparent 80%);
+  mask:radial-gradient(ellipse at 50% 50%, #000 30%, transparent 80%);opacity:.18}
+.hoo-rain-col{position:absolute;top:-100%;font-family:var(--mono);font-size:11px;
+  color:var(--gold);white-space:pre;line-height:1.7;animation:hoo-fall linear infinite}
+@keyframes hoo-fall{to{top:140%}}
+
+.hoo-hero-inner{position:relative;max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,56px);z-index:1}
+
+/* ─── STATUS STRIP ───────────────────────────────── */
+.hoo-strip{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;
+  padding:14px 22px;border:1px solid var(--line);border-radius:4px;background:rgba(10,10,10,.6);
+  margin-bottom:64px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--mute);
+  text-transform:uppercase}
+.hoo-strip-l{display:flex;align-items:center;gap:12px}
+.hoo-strip-l i{width:7px;height:7px;border-radius:50%;background:var(--live);box-shadow:0 0 10px var(--live);
+  animation:hoo-blink 1.6s infinite}
+.hoo-strip-l b{color:var(--cream);font-weight:500;letter-spacing:.16em}
+.hoo-strip-c{justify-self:center;display:flex;align-items:center;gap:18px}
+.hoo-strip-c span{display:inline-flex;align-items:center;gap:8px}
+.hoo-strip-c .sep{color:var(--gold);opacity:.5}
+.hoo-strip-c b{color:var(--cream);font-weight:500}
+.hoo-strip-r{justify-self:end;color:var(--gold);font-weight:500}
+
+/* ─── HERO GRID ──────────────────────────────────── */
+.hoo-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:80px;align-items:start}
+
+/* LEFT — copy column */
+.hoo-eyebrow{font-family:var(--display);letter-spacing:.32em;font-size:13px;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:36px}
+.hoo-eyebrow::before{content:"";width:48px;height:1px;background:var(--gold)}
+.hoo-eyebrow span{color:var(--mute);letter-spacing:.24em}
+
+.hoo-h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,8.6vw,138px);line-height:.92;
+  letter-spacing:-.025em;color:var(--cream)}
+.hoo-h1 .li{display:block;overflow:hidden}
+.hoo-h1 .li > span{display:block;transform:translateY(110%);transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.hoo-h1 em{font-style:italic;font-weight:400;color:var(--gold);position:relative}
+.hoo-h1 em::after{content:"";position:absolute;left:0;right:0;bottom:-.05em;height:.06em;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 1.4s cubic-bezier(.2,.8,.2,1) 1.1s}
+.hoo-vis .hoo-h1 .li > span{transform:translateY(0)}
+.hoo-vis .hoo-h1 em::after{transform:scaleX(1)}
+.hoo-h1 .li:nth-child(2) > span{transition-delay:.18s}
+.hoo-h1 .li:nth-child(3) > span{transition-delay:.36s}
+
+.hoo-lead{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(17px,1.5vw,21px);
+  line-height:1.6;color:var(--mute);max-width:58ch;margin-top:36px}
+.hoo-lead strong{color:var(--cream);font-style:normal;font-weight:600}
+.hoo-lead .gold{color:var(--gold);font-style:normal;font-weight:600}
+
+/* personal "I'm a real person" beat */
+.hoo-personal{font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.25vw,17px);
+  line-height:1.65;color:var(--mute);max-width:54ch;margin-top:28px;padding:18px 22px;
+  border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(200,149,46,.05),transparent 70%);
+  position:relative}
+.hoo-personal strong{color:var(--cream);font-style:normal;font-weight:600}
+.hoo-personal .tag{display:block;font-family:var(--script);font-style:normal;font-weight:700;
+  font-size:22px;color:var(--gold);margin-top:10px;line-height:1}
+
+.hoo-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
+.hoo-pill{font-family:var(--display);letter-spacing:.22em;font-size:12px;color:var(--cream);
+  padding:9px 14px;border:1px solid var(--line);border-radius:99px;background:rgba(10,10,10,.5);
+  transition:all .35s}
+.hoo-pill:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.hoo-pill .star{color:var(--gold);margin-right:8px}
+
+.hoo-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:48px}
+.hoo-btn{display:inline-flex;align-items:center;gap:12px;padding:18px 28px;font-family:var(--display);
+  letter-spacing:.22em;font-size:14px;border-radius:2px;transition:all .25s;border:1px solid;cursor:pointer;
+  position:relative;overflow:hidden}
+.hoo-btn-primary{background:var(--gold);color:#000;border-color:var(--gold)}
+.hoo-btn-primary:hover{background:var(--gold-hi);border-color:var(--gold-hi);transform:translateY(-2px);
+  box-shadow:0 18px 40px -16px rgba(200,149,46,.5)}
+.hoo-btn-ghost{background:transparent;color:var(--cream);border-color:var(--line)}
+.hoo-btn-ghost:hover{border-color:var(--cream);transform:translateY(-2px)}
+.hoo-btn .arr{transition:transform .25s}
+.hoo-btn:hover .arr{transform:translateX(4px)}
+
+.hoo-promise{margin-top:36px;display:flex;align-items:center;gap:14px;font-family:var(--serif);
+  font-style:italic;font-size:15px;color:var(--mute);max-width:60ch}
+.hoo-promise .seal{flex-shrink:0;width:64px;height:64px;border-radius:50%;border:1px dashed var(--gold);
+  display:grid;place-items:center;color:var(--gold);font-family:var(--display);font-size:9px;
+  letter-spacing:.14em;text-align:center;line-height:1.05;animation:hoo-spin 22s linear infinite;
+  padding:6px}
+@keyframes hoo-spin{to{transform:rotate(360deg)}}
+.hoo-promise b{color:var(--cream);font-style:normal;font-weight:600}
+
+/* RIGHT — terminal column */
+.hoo-side{display:flex;flex-direction:column;gap:18px;position:sticky;top:120px}
+
+.hoo-card{background:linear-gradient(180deg,#0a0a0a,#070707);border:1px solid var(--line);
+  border-radius:6px;overflow:hidden;position:relative}
+.hoo-card::before{content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+.hoo-card-bar{padding:12px 16px;background:#0a0a0a;border-bottom:1px solid var(--line-2);
+  display:flex;align-items:center;gap:10px}
+.hoo-card-bar i{width:9px;height:9px;border-radius:50%;display:block}
+.hoo-card-bar i:nth-child(1){background:#3a2424}
+.hoo-card-bar i:nth-child(2){background:#3a3324}
+.hoo-card-bar i:nth-child(3){background:#243a26}
+.hoo-card-bar span{margin-left:14px;font-family:var(--mono);font-size:11px;color:var(--mute-2);
+  letter-spacing:.06em;flex:1}
+.hoo-card-bar b{color:var(--gold);font-weight:500}
+
+.hoo-card-body{padding:24px}
+
+/* craftsman card */
+.hoo-craft{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;
+  padding-bottom:20px;border-bottom:1px solid var(--line-2);margin-bottom:20px}
+.hoo-craft-photo{width:64px;height:64px;border-radius:50%;background:
+  linear-gradient(135deg,#1a1a1a,#0a0a0a);border:1px solid var(--line);display:grid;place-items:center;
+  font-family:var(--display);font-size:22px;color:var(--gold);letter-spacing:.04em;position:relative;
+  overflow:hidden;flex-shrink:0}
+.hoo-craft-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  border-radius:50%;display:block}
+.hoo-craft-photo::after{content:"";position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;
+  border-radius:50%;background:var(--live);border:2px solid var(--bg);box-shadow:0 0 8px var(--live);z-index:2}
+.hoo-craft-info{display:flex;flex-direction:column;gap:5px}
+.hoo-craft-info .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mute);
+  text-transform:uppercase}
+.hoo-craft-info .name{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--cream);
+  line-height:1}
+.hoo-craft-info .loc{font-family:var(--sans);font-size:13px;color:var(--mute)}
+
+/* clock */
+.hoo-clock{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;
+  padding-bottom:20px;border-bottom:1px solid var(--line-2);margin-bottom:20px}
+.hoo-clock-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mute);
+  text-transform:uppercase}
+.hoo-clock-time{font-family:var(--display);font-size:32px;color:var(--cream);letter-spacing:.04em;
+  font-variant-numeric:tabular-nums;line-height:1}
+.hoo-clock-time .ms{color:var(--gold);font-size:18px;margin-left:6px}
+
+/* live build log */
+.hoo-log-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mute);
+  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.hoo-log-lbl::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.hoo-log{font-family:var(--mono);font-size:13px;line-height:1.85;color:var(--mute)}
+.hoo-log .row{display:flex;align-items:center;gap:10px}
+.hoo-log .ok{color:var(--live)}
+.hoo-log .bld{color:var(--gold)}
+.hoo-log .que{color:var(--mute-2)}
+.hoo-log .mark{display:inline-block;width:14px;text-align:center;font-weight:500}
+.hoo-log .nm{color:var(--cream)}
+.hoo-log .typed{color:var(--cream);border-right:2px solid var(--gold);padding-right:2px;
+  animation:hoo-cur 1.2s steps(1) infinite}
+@keyframes hoo-cur{50%{border-color:transparent}}
+.hoo-log .ind{color:var(--mute-2);margin-left:4px;font-size:11px}
+
+/* pinned personal note inside the terminal card */
+.hoo-note{margin-top:24px;padding-top:22px;border-top:1px solid var(--line-2)}
+.hoo-note-rule{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.hoo-note-rule::before{content:"";width:8px;height:8px;background:var(--gold);transform:rotate(45deg);
+  display:inline-block;flex-shrink:0}
+.hoo-note-rule::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.hoo-note-body{font-family:var(--serif);font-style:italic;font-size:14px;line-height:1.65;
+  color:var(--cream);opacity:.88}
+.hoo-note-body em{color:var(--gold);font-style:italic;font-weight:600;opacity:1}
+.hoo-note-sig{font-family:var(--script);font-weight:700;font-size:30px;color:var(--gold);
+  margin-top:14px;line-height:1}
+.hoo-note-sig small{font-family:var(--mono);font-size:10px;color:var(--mute);letter-spacing:.12em;
+  display:block;margin-top:6px;font-weight:400;text-transform:uppercase}
+
+/* divider strip / scroll cue */
+.hoo-tail{margin-top:80px;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
+.hoo-tail .ln{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.hoo-tail .ln.r{background:linear-gradient(90deg,var(--line),transparent)}
+.hoo-tail .ln.l{background:linear-gradient(90deg,transparent,var(--line))}
+.hoo-tail .cue{font-family:var(--display);letter-spacing:.24em;font-size:13px;color:var(--mute);
+  display:flex;align-items:center;gap:12px}
+.hoo-tail .cue b{color:var(--gold);font-weight:400}
+.hoo-tail .arrow{display:inline-block;animation:hoo-bounce 2.4s ease-in-out infinite;color:var(--gold)}
+@keyframes hoo-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* reveal */
+.hoo-pop{opacity:0;transform:translateY(28px);
+  transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
+.hoo-pop.hoo-vis{opacity:1;transform:none}
+.hoo-pop:nth-child(2){transition-delay:.08s}
+.hoo-pop:nth-child(3){transition-delay:.18s}
+.hoo-pop:nth-child(4){transition-delay:.28s}
+
+/* ═══ THE BUILDER — magazine-feature spread ═══════ */
+#hoo-builder{position:relative;padding:140px 0 130px;overflow:hidden;
+  background:radial-gradient(900px 600px at 12% 30%, rgba(200,149,46,.05), transparent 60%),
+  radial-gradient(800px 700px at 92% 80%, rgba(200,149,46,.04), transparent 70%),
+  linear-gradient(180deg, var(--bg) 0%, #070707 50%, var(--bg) 100%);
+  border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+#hoo-builder::before{content:"";position:absolute;top:0;left:50%;width:1px;height:60px;
+  background:linear-gradient(180deg, var(--gold), transparent);transform:translateX(-50%)}
+.bld-grain{position:absolute;inset:0;opacity:.07;pointer-events:none;mix-blend-mode:overlay;
+  background-image:radial-gradient(rgba(255,255,255,.4) 1px, transparent 1px);background-size:3px 3px}
+.bld-inner{max-width:1400px;margin:0 auto;padding:0 clamp(20px,4vw,56px);position:relative;z-index:1}
+
+/* HEADER */
+.bld-hdr{max-width:980px;margin-bottom:88px}
+.bld-eyebrow{font-family:var(--display);letter-spacing:.32em;font-size:13px;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.bld-eyebrow::before{content:"";width:60px;height:1px;background:var(--gold)}
+.bld-h{font-family:var(--serif);font-weight:400;font-size:clamp(44px,6.5vw,92px);line-height:.96;
+  letter-spacing:-.025em;color:var(--cream);max-width:18ch}
+.bld-h em{font-style:italic;color:var(--gold);font-weight:400}
+.bld-lead{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,21px);line-height:1.6;
+  color:var(--mute);max-width:62ch;margin-top:32px}
+.bld-lead strong{color:var(--cream);font-style:normal;font-weight:600}
+
+/* SPREAD: left hands hero + right collage */
+.bld-spread{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:start;
+  margin-bottom:96px;position:relative}
+
+/* LEFT: hands hero photo */
+.bld-hands{margin:0;position:relative;border-radius:6px;overflow:hidden;
+  border:1px solid var(--line);background:var(--card);
+  box-shadow:0 60px 120px -40px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.02) inset;
+  aspect-ratio:4/5;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.bld-hands:hover{transform:translateY(-4px)}
+.bld-hands img{width:100%;height:100%;object-fit:cover;display:block;
+  image-orientation:from-image;filter:saturate(.95) contrast(1.06)}
+.bld-hands-cap{position:absolute;left:0;right:0;bottom:0;padding:42px 38px 36px;
+  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.92) 100%);
+  display:flex;align-items:flex-end;gap:18px}
+.bld-hw{font-family:var(--script);font-weight:700;font-size:clamp(28px,3vw,42px);line-height:1.05;
+  color:var(--gold);text-shadow:0 2px 18px rgba(0,0,0,.7);letter-spacing:-.005em}
+
+/* gold tape strip */
+.bld-tape{position:absolute;width:96px;height:22px;background:rgba(200,149,46,.45);
+  border:1px solid rgba(200,149,46,.55);box-shadow:0 4px 12px rgba(0,0,0,.4);
+  top:-10px;left:24px;transform:rotate(-3deg);z-index:5;
+  background-image:repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.08) 6px 8px)}
+.bld-tape.t-tr{left:auto;right:24px;transform:rotate(3deg)}
+.bld-tape.t-tl{left:18px;transform:rotate(-4deg)}
+
+/* RIGHT: collage of polaroids */
+.bld-collage{position:relative;display:flex;flex-direction:column;gap:42px;padding:24px 0 80px}
+
+.bld-pol{margin:0;background:#f5f1e8;border:1px solid rgba(0,0,0,.4);padding:14px 14px 56px;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.85),0 0 0 1px rgba(0,0,0,.2);
+  position:relative;width:78%;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.bld-pol:hover{transform:translateY(-6px) rotate(0deg) !important;z-index:8}
+.bld-pol-img{aspect-ratio:3/4;overflow:hidden;background:#0a0a0a;position:relative}
+.bld-pol-img img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;
+  image-orientation:from-image;filter:saturate(.92) contrast(1.04)}
+.bld-pol-1 .bld-pol-img img{object-position:center 18%}
+.bld-pol-2 .bld-pol-img img{object-position:center 35%}
+.bld-pol-3 .bld-pol-img img{object-position:center 25%}
+.bld-pol figcaption{position:absolute;bottom:14px;left:14px;right:14px;display:flex;
+  justify-content:space-between;align-items:flex-end;gap:14px;color:#1a1a1a}
+.bld-hw-sm{font-family:var(--script);font-weight:700;font-size:22px;line-height:1;color:#3a2a14}
+.bld-pol-meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:#6b5a3a;
+  text-transform:uppercase;text-align:right;line-height:1.4}
+
+/* tilts + offsets — gentle scrapbook tilt, no occlusion */
+.bld-pol-1{transform:rotate(-2.5deg);align-self:flex-end;margin-right:0%;width:82%}
+.bld-pol-2{transform:rotate(2deg);align-self:flex-start;margin-left:-2%;width:90%}
+.bld-pol-3{transform:rotate(-1.5deg);align-self:flex-end;margin-right:4%;width:78%}
+
+/* PULL QUOTE */
+.bld-pq{max-width:880px;margin:0 auto 88px;text-align:center;padding:56px clamp(20px,4vw,40px) 0;
+  border-top:1px solid var(--line);position:relative}
+.bld-pq-mark{position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  font-family:var(--serif);font-style:italic;font-size:96px;color:var(--gold);line-height:.4;
+  background:var(--bg);padding:0 18px}
+.bld-pq p{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(22px,2.4vw,32px);
+  line-height:1.42;color:var(--cream);letter-spacing:-.01em;margin-top:14px}
+.bld-pq p em{color:var(--gold);font-style:italic}
+
+/* FOOT: stats + signature */
+.bld-foot{display:grid;grid-template-columns:1fr auto;gap:64px;align-items:center;
+  padding:36px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.bld-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.bld-st{padding:0 24px;border-right:1px solid var(--line-2)}
+.bld-st:first-child{padding-left:0}
+.bld-st:last-child{border-right:0}
+.bld-st b{display:block;font-family:var(--display);font-size:clamp(36px,3.5vw,52px);line-height:1;color:var(--gold);letter-spacing:.02em;font-weight:400}
+.bld-st span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  color:var(--mute);text-transform:uppercase;margin-top:8px}
+
+.bld-sig{display:flex;flex-direction:column;align-items:flex-end;text-align:right;min-width:260px}
+.bld-sig-nm{font-family:var(--script);font-weight:700;font-size:64px;color:var(--gold);line-height:.9;letter-spacing:-.005em}
+.bld-sig-ln{display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold));margin:14px 0 12px}
+.bld-sig-role{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mute);
+  line-height:1.7;text-transform:uppercase}
+
+/* ═══ BEHIND THE BENCH (legacy, hidden) ═══════════ */
+#hoo-bench{position:relative;padding:140px 0 120px;background:
+  linear-gradient(180deg, var(--bg) 0%, #070707 50%, var(--bg) 100%);
+  border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
+  overflow:hidden}
+#hoo-bench::before{content:"";position:absolute;top:0;left:50%;width:1px;height:60px;
+  background:linear-gradient(180deg, var(--gold), transparent)}
+
+.hb-inner{max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+
+.hb-hdr{text-align:center;margin-bottom:96px}
+.hb-eyebrow{font-family:var(--display);letter-spacing:.32em;font-size:13px;color:var(--gold);
+  display:inline-flex;align-items:center;gap:14px;margin-bottom:28px}
+.hb-eyebrow::before,.hb-eyebrow::after{content:"";width:48px;height:1px;background:var(--gold)}
+.hb-h{font-family:var(--serif);font-weight:400;font-size:clamp(44px,6.5vw,86px);line-height:.96;
+  letter-spacing:-.025em;color:var(--cream);max-width:14ch;margin:0 auto}
+.hb-h em{font-style:italic;color:var(--gold);display:block;margin-top:6px}
+.hb-sub{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--mute);
+  margin-top:28px;max-width:50ch;margin-left:auto;margin-right:auto;line-height:1.55}
+
+.hb-spread{display:grid;grid-template-columns:1fr auto 1.15fr;gap:48px;align-items:center;
+  margin-bottom:96px}
+
+.hb-fig{margin:0;display:flex;flex-direction:column}
+.hb-img{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:4px;
+  background:var(--card);border:1px solid var(--line);box-shadow:0 40px 100px -40px rgba(0,0,0,.85);
+  transition:transform .9s cubic-bezier(.2,.8,.2,1),border-color .6s}
+.hb-img img{width:100%;height:100%;object-fit:cover;display:block;
+  image-orientation:from-image;-webkit-image-orientation:from-image;
+  filter:saturate(.92) contrast(1.04)}
+.hb-fig:hover .hb-img{transform:translateY(-4px);border-color:var(--gold)}
+.hb-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.6));
+  pointer-events:none}
+.hb-stamp{position:absolute;top:18px;left:18px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.16em;color:var(--cream);background:rgba(0,0,0,.7);
+  border:1px solid var(--line);padding:6px 12px;border-radius:99px;text-transform:uppercase;z-index:2}
+.hb-stamp i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);
+  margin-right:8px;vertical-align:middle}
+
+.hb-then .hb-img{aspect-ratio:3/4}
+.hb-now .hb-img{aspect-ratio:3/4}
+
+.hb-cap{padding:24px 4px 0}
+.hb-cap-tag{font-family:var(--display);letter-spacing:.32em;font-size:12px;color:var(--gold);
+  display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.hb-cap-tag::after{content:"";flex:1;height:1px;background:var(--line)}
+.hb-cap p{font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.6;color:var(--cream);
+  opacity:.82;max-width:38ch}
+.hb-cap-meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);
+  text-transform:uppercase;margin-top:14px}
+
+/* the arrow column between then & now */
+.hb-arrow{display:flex;flex-direction:column;align-items:center;gap:18px;padding-bottom:80px}
+.hb-arrow .ln{width:1px;height:120px;background:linear-gradient(180deg,transparent,var(--gold),transparent)}
+.hb-arrow .ic{font-family:var(--display);font-size:32px;color:var(--gold);letter-spacing:.04em;
+  width:60px;height:60px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;
+  background:var(--bg);position:relative;animation:hb-pulse 3s ease-in-out infinite}
+@keyframes hb-pulse{50%{box-shadow:0 0 0 14px rgba(200,149,46,.06)}}
+.hb-arrow .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--mute);
+  text-transform:uppercase}
+
+/* bridge between Behind the Bench and These Hands */
+.hb-bridge{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;
+  margin-top:80px;padding:0 8px}
+.hb-bridge .ln{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.hb-bridge .ln:last-child{background:linear-gradient(90deg,var(--line),transparent)}
+.hb-bridge .ln:first-child{background:linear-gradient(90deg,transparent,var(--line))}
+.hb-bridge .cue{font-family:var(--display);letter-spacing:.28em;font-size:13px;color:var(--mute);
+  white-space:nowrap}
+.hb-bridge .cue b{color:var(--gold);font-weight:400;letter-spacing:.22em}
+
+/* (legacy) pull-quote — kept for safety */
+.hb-quote{max-width:920px;margin:0 auto;text-align:center;padding:56px clamp(24px,4vw,56px) 0;
+  border-top:1px solid var(--line)}
+.hb-quote-mark{font-family:var(--serif);font-style:italic;font-size:96px;color:var(--gold);
+  line-height:.4;height:38px;margin-bottom:18px}
+.hb-quote p{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(22px,2.4vw,32px);
+  line-height:1.4;color:var(--cream);letter-spacing:-.01em}
+.hb-quote p em{color:var(--gold);font-style:italic}
+.hb-quote cite{display:block;margin-top:32px;font-family:var(--script);font-style:normal;
+  font-weight:700;font-size:36px;color:var(--gold);line-height:1}
+.hb-quote cite small{display:block;font-family:var(--mono);font-weight:400;font-size:11px;
+  color:var(--mute);letter-spacing:.16em;margin-top:6px;text-transform:uppercase}
+
+/* ═══ THESE HANDS — full-bleed sandwich ═══════════ */
+#hoo-hands{position:relative;width:100%;min-height:min(820px,92vh);overflow:hidden;
+  display:grid;place-items:center;color:var(--cream);isolation:isolate}
+.hh-bg{position:absolute;inset:0;z-index:-2}
+.hh-bg img{width:100%;height:100%;object-fit:cover;object-position:center 35%;
+  image-orientation:from-image;filter:saturate(.92) contrast(1.05);
+  animation:hh-zoom 28s ease-in-out infinite alternate}
+@keyframes hh-zoom{from{transform:scale(1.02)}to{transform:scale(1.12)}}
+.hh-bg::after{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse at 30% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.92) 75%),
+  linear-gradient(180deg, rgba(5,5,5,.7) 0%, rgba(5,5,5,.4) 40%, rgba(5,5,5,.85) 100%)}
+
+.hh-grain{position:absolute;inset:0;z-index:-1;opacity:.18;mix-blend-mode:overlay;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:3px 3px;pointer-events:none}
+
+.hh-frame{max-width:1320px;width:100%;margin:0 auto;padding:120px clamp(20px,4vw,56px);
+  display:grid;grid-template-columns:1fr auto;gap:64px;align-items:end}
+
+.hh-content{max-width:680px}
+.hh-eyebrow{font-family:var(--display);letter-spacing:.32em;font-size:13px;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:36px}
+.hh-eyebrow::before{content:"";width:60px;height:1px;background:var(--gold)}
+.hh-eyebrow span{color:var(--mute);letter-spacing:.24em}
+
+.hh-h{font-family:var(--serif);font-weight:400;font-size:clamp(56px,8.5vw,128px);line-height:.92;
+  letter-spacing:-.025em;color:var(--cream);text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.hh-h em{font-style:italic;font-weight:400;color:var(--gold);display:block;margin-top:4px}
+
+.hh-sub{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.55vw,21px);line-height:1.6;
+  color:var(--cream);opacity:.86;margin-top:36px;max-width:54ch;text-shadow:0 1px 12px rgba(0,0,0,.7)}
+.hh-sub strong{color:var(--gold);font-style:normal;font-weight:600}
+
+.hh-stats{display:flex;gap:0;margin-top:48px;border-top:1px solid rgba(200,149,46,.3);
+  border-bottom:1px solid rgba(200,149,46,.3);max-width:640px}
+.hh-stat{padding:22px 28px;border-right:1px solid rgba(240,234,224,.1);flex:1;text-align:left}
+.hh-stat:last-child{border-right:0}
+.hh-stat-num{font-family:var(--display);font-size:clamp(34px,3.5vw,48px);line-height:1;color:var(--gold);letter-spacing:.02em}
+.hh-stat-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--cream);
+  opacity:.7;text-transform:uppercase;margin-top:8px}
+
+.hh-sig-block{display:flex;flex-direction:column;align-items:flex-end;text-align:right;
+  font-family:var(--script);font-weight:700;color:var(--gold);
+  text-shadow:0 1px 14px rgba(0,0,0,.85);min-width:240px;padding-bottom:8px}
+.hh-sig-block .nm{font-size:64px;line-height:.9;letter-spacing:-.01em}
+.hh-sig-block .ln{display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold));margin:14px 0 12px}
+.hh-sig-block .role{font-family:var(--mono);font-style:normal;font-weight:400;font-size:11px;
+  color:var(--cream);opacity:.78;letter-spacing:.18em;text-transform:uppercase;line-height:1.6}
+
+/* ─── MOBILE ─────────────────────────────────────── */
+@media (max-width:1100px){
+  .hoo-grid{grid-template-columns:1fr;gap:48px}
+  .hoo-side{position:static;top:auto}
+}
+@media (max-width:1100px){
+  .bld-spread{grid-template-columns:1fr;gap:48px}
+  .bld-collage{padding:0;gap:24px}
+  .bld-pol{width:90% !important;margin-left:auto !important;margin-right:auto !important;margin-top:0 !important;transform:rotate(-1deg)}
+  .bld-pol-2{transform:rotate(1deg)}
+  .bld-pol-3{transform:rotate(-1deg)}
+  .bld-foot{grid-template-columns:1fr;gap:36px}
+  .bld-sig{align-items:flex-start;text-align:left}
+  .bld-sig-ln{background:linear-gradient(90deg,var(--gold),transparent 70%)}
+  .hb-spread{grid-template-columns:1fr;gap:24px}
+  .hb-arrow{flex-direction:row;padding:24px 0;width:100%;justify-content:center}
+  .hb-arrow .ln{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .hb-arrow .ic{transform:rotate(90deg)}
+}
+@media (max-width:760px){
+  .hoo-nav-inner{grid-template-columns:auto auto;gap:16px}
+  #hoo-builder{padding:72px 0 80px}
+  .bld-hdr{margin-bottom:48px}
+  .bld-spread{margin-bottom:56px}
+  .bld-pq{margin-bottom:56px}
+  .bld-stats{grid-template-columns:repeat(2,1fr);gap:24px 0}
+  .bld-st{padding:18px 18px;border-bottom:1px solid var(--line-2)}
+  .bld-st:nth-child(2){border-right:0}
+  .bld-st:nth-last-child(-n+2){border-bottom:0}
+  .bld-sig-nm{font-size:54px}
+  #hoo-bench{padding:80px 0 70px}
+  .hb-hdr{margin-bottom:56px}
+  .hb-spread{margin-bottom:56px;gap:18px}
+  .hb-quote{padding-top:36px}
+  .hb-quote cite{font-size:30px}
+  #hoo-hands{min-height:auto}
+  .hh-frame{grid-template-columns:1fr;gap:48px;padding:80px clamp(20px,4vw,56px)}
+  .hh-sig-block{align-items:flex-start;text-align:left;min-width:0}
+  .hh-sig-block .ln{background:linear-gradient(90deg,var(--gold),transparent 70%)}
+  .hh-stats{flex-direction:column;max-width:none}
+  .hh-stat{border-right:0;border-bottom:1px solid rgba(240,234,224,.1);padding:18px 0}
+  .hh-stat:last-child{border-bottom:0}
+  .hoo-menu{display:none}
+  .hoo-cta-nav .hoo-after{display:none}
+  .hoo-logo-name{font-size:24px}
+  #hoo-hero{padding:36px 0 60px;min-height:auto}
+  .hoo-strip{grid-template-columns:1fr;gap:10px;text-align:left;margin-bottom:36px}
+  .hoo-strip-c{justify-self:start;flex-wrap:wrap;gap:10px}
+  .hoo-strip-r{justify-self:start}
+  .hoo-eyebrow{margin-bottom:22px}
+  .hoo-pills{margin-top:28px}
+  .hoo-cta{margin-top:32px;flex-direction:column;align-items:stretch}
+  .hoo-btn{justify-content:center}
+  .hoo-promise{flex-direction:column;align-items:flex-start;gap:18px}
+  .hoo-tail{grid-template-columns:1fr}
+  .hoo-tail .ln{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── STICKY TOP NAV ────────────────────────────── -->
+<header class="hoo-nav" id="hooNav">
+  <div class="hoo-nav-inner">
+    <a href="/" class="hoo-logo">
+      <div class="hoo-logo-mark">
+        <span class="hoo-logo-name">HOO</span>
+        <span class="hoo-logo-sub">Herrman Online Outlook</span>
+      </div>
+      <span class="hoo-pulse"><i></i> Online</span>
+    </a>
+    <nav class="hoo-menu">
+      <a href="#hoo-mission">Mission</a>
+      <a href="#hoo-pf">Work</a>
+      <a href="#hoo-process">Process</a>
+      <a href="#hoo-pricing">Pricing</a>
+      <a href="#hoo-cta">Contact</a>
+    </nav>
+    <div class="hoo-cta-nav">
+      <div class="hoo-after">After-hours line<br><b>Reply 24h</b></div>
+      <a href="sms:18049571003" class="hoo-btn-text">TEXT (804) 957-1003</a>
+    </div>
+  </div>
+</header>
+
+<!-- ─── HERO ──────────────────────────────────────── -->
+<section id="hoo-hero">
+
+  <div class="hoo-rain" aria-hidden="true" id="hooRain"></div>
+
+  <div class="hoo-hero-inner">
+
+    <!-- live status strip -->
+    <div class="hoo-strip hoo-pop">
+      <div class="hoo-strip-l"><i></i><b>ON THE BENCH</b> &nbsp;//&nbsp; Tonight, Kansas City</div>
+      <div class="hoo-strip-c">
+        <span><b>LOCAL TIME</b> <span id="hooTimeStrip">--:--</span></span>
+        <span class="sep">✦</span>
+        <span><b>BUILDS DELIVERED</b> 13</span>
+        <span class="sep">✦</span>
+        <span><b>QUEUE</b> 2 open</span>
+      </div>
+      <div class="hoo-strip-r">EST. 2025</div>
+    </div>
+
+    <div class="hoo-grid">
+
+      <!-- LEFT — copy column -->
+      <div class="hoo-pop hoo-anim">
+
+        <p class="hoo-eyebrow">↳ Vol. 01 <span>// The Mission</span></p>
+
+        <h1 class="hoo-h1">
+          <span class="li"><span>We build</span></span>
+          <span class="li"><span>while they</span></span>
+          <span class="li"><span><em>sleep.</em></span></span>
+        </h1>
+
+        <p class="hoo-lead">
+          Other agencies charge you <strong>thousands up front</strong>, disappear for six weeks,
+          and hand back a template with your logo slapped on it. We don't work like that.
+          Your Shopify store gets hand-coded between sundown and sunup —
+          and <span class="gold">you don't pay us a dime</span> until you walk through it on your own phone and say the word.
+        </p>
+
+        <div class="hoo-pills">
+          <span class="hoo-pill"><span class="star">✦</span>HAND-CODED LIQUID</span>
+          <span class="hoo-pill"><span class="star">✦</span>ZERO TEMPLATES</span>
+          <span class="hoo-pill"><span class="star">✦</span>$0 UPFRONT</span>
+          <span class="hoo-pill"><span class="star">✦</span>NO CONTRACTS</span>
+          <span class="hoo-pill"><span class="star">✦</span>ONE BUILDER. NO AGENCY.</span>
+          <span class="hoo-pill"><span class="star">✦</span>KANSAS CITY</span>
+        </div>
+
+        <div class="hoo-cta">
+          <a href="sms:18049571003" class="hoo-btn hoo-btn-primary">TEXT (804) 957-1003 <span class="arr">→</span></a>
+          <a href="#hoo-pf" class="hoo-btn hoo-btn-ghost">SEE THE WORK <span class="arr">↓</span></a>
+        </div>
+
+        <div class="hoo-promise">
+          <div class="seal">PAY ON<br>APPROVAL<br>★ ★ ★</div>
+          <div>
+            <b>Pay only on approval.</b> Walk through the live preview on your phone first.
+            Want changes? We make them. Nothing owed until you say go.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT — terminal column -->
+      <aside class="hoo-side hoo-pop">
+
+        <div class="hoo-card">
+          <div class="hoo-card-bar">
+            <i></i><i></i><i></i>
+            <span>hoo.bench / <b>tonight.log</b></span>
+          </div>
+          <div class="hoo-card-body">
+
+            <div class="hoo-craft">
+              <div class="hoo-craft-photo">
+                <img src="assets/hoo-builder/matthew.jpg" alt="Matthew Herrman, HOO builder" onerror="this.remove()">M
+              </div>
+              <div class="hoo-craft-info">
+                <div class="lbl">Tonight's Craftsman</div>
+                <div class="name">Matthew Herrman</div>
+                <div class="loc">Kansas City, MO &nbsp;//&nbsp; Builder &amp; dad</div>
+              </div>
+            </div>
+
+            <div class="hoo-clock">
+              <div class="hoo-clock-lbl">Bench<br>Time</div>
+              <div class="hoo-clock-time"><span id="hooClock">--:--:--</span><span class="ms" id="hooMs">CST</span></div>
+            </div>
+
+            <div class="hoo-log-lbl">Live build log</div>
+            <div class="hoo-log" id="hooLog">
+              <div class="row"><span class="mark ok">✓</span><span class="ok">SHIPPED</span> &nbsp;<span class="nm">True Coat Painting KC</span><span class="ind">painting</span></div>
+              <div class="row"><span class="mark ok">✓</span><span class="ok">SHIPPED</span> &nbsp;<span class="nm">Pristine Clean KC</span><span class="ind">cleaning</span></div>
+              <div class="row"><span class="mark ok">✓</span><span class="ok">SHIPPED</span> &nbsp;<span class="nm">Ironline Fencing</span><span class="ind">fencing</span></div>
+              <div class="row"><span class="mark bld">▌</span><span class="bld">BUILDING</span> &nbsp;<span class="typed" id="hooTyped"></span></div>
+              <div class="row"><span class="mark que">○</span><span class="que">IN QUEUE</span> &nbsp;<span class="que">Your business</span><span class="ind" style="color:var(--gold)">next</span></div>
+            </div>
+
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- tail / scroll cue -->
+    <div class="hoo-tail hoo-pop">
+      <div class="ln l"></div>
+      <div class="cue">↓ &nbsp; <b>Vol. 02</b> &nbsp;//&nbsp; meet the builder <span class="arrow">↓</span></div>
+      <div class="ln r"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ THE BUILDER — magazine-feature spread ═══════ -->
+<section id="hoo-builder">
+  <div class="bld-grain" aria-hidden="true"></div>
+  <div class="bld-inner">
+
+    <header class="bld-hdr hoo-pop">
+      <p class="bld-eyebrow">↳ Vol. 02 // The Builder</p>
+      <h2 class="bld-h">Most agencies <em>pitch</em> you.<br>This one shows up.</h2>
+      <p class="bld-lead">
+        I'm Matthew. Kansas City. <strong>Learned to code between rig shifts</strong> so my family eats —
+        and built every site on this page with the same hands that came home dirty from work this morning.
+      </p>
+    </header>
+
+    <div class="bld-spread">
+
+      <!-- LEFT: hero hand photo edge-to-edge -->
+      <figure class="bld-hands hoo-pop">
+        <img src="assets/hoo-builder/working-hands.jpg" alt="Matthew's hand caked in dirt and rust from a day's physical work" loading="lazy">
+        <figcaption class="bld-hands-cap">
+          <span class="bld-tape"></span>
+          <span class="bld-hw">these are the hands<br>typing your store tonight.</span>
+        </figcaption>
+      </figure>
+
+      <!-- RIGHT: photo collage / scrapbook -->
+      <div class="bld-collage">
+
+        <figure class="bld-pol bld-pol-1 hoo-pop">
+          <span class="bld-tape t-tl"></span>
+          <div class="bld-pol-img"><img src="assets/hoo-builder/hardhat-rig.jpg" alt="Matthew at a drilling rig in hardhat and hi-vis" loading="lazy"></div>
+          <figcaption><span class="bld-hw-sm">labor by day</span><span class="bld-pol-meta">Real work</span></figcaption>
+        </figure>
+
+        <figure class="bld-pol bld-pol-2 hoo-pop">
+          <span class="bld-tape t-tr"></span>
+          <div class="bld-pol-img"><img src="assets/hoo-builder/bench-baby-rig.jpg" alt="Matthew at his bench with the baby and the gaming rig glowing behind" loading="lazy"></div>
+          <figcaption><span class="bld-hw-sm">code by night</span><span class="bld-pol-meta">After hours</span></figcaption>
+        </figure>
+
+        <figure class="bld-pol bld-pol-3 hoo-pop">
+          <span class="bld-tape t-tl"></span>
+          <div class="bld-pol-img"><img src="assets/hoo-builder/family-store.jpg" alt="Matthew with his family at a store" loading="lazy"></div>
+          <figcaption><span class="bld-hw-sm">why i build</span><span class="bld-pol-meta">The reason</span></figcaption>
+        </figure>
+
+      </div>
+
+    </div>
+
+    <!-- pull quote bridge -->
+    <blockquote class="bld-pq hoo-pop">
+      <span class="bld-pq-mark">&ldquo;</span>
+      <p>Not a chatbot. Not an agency. <em>One builder</em>, one keyboard, one kid asleep on my chest — and your store getting built while the world sleeps. <em>That's what real work looks like.</em></p>
+    </blockquote>
+
+    <!-- inline stats + signature -->
+    <div class="bld-foot hoo-pop">
+      <div class="bld-stats">
+        <div class="bld-st"><b>13</b><span>builds shipped</span></div>
+        <div class="bld-st"><b>0</b><span>subcontractors</span></div>
+        <div class="bld-st"><b>1</b><span>set of hands</span></div>
+        <div class="bld-st"><b>$0</b><span>upfront, ever</span></div>
+      </div>
+      <div class="bld-sig">
+        <span class="bld-sig-nm">Matthew</span>
+        <span class="bld-sig-ln"></span>
+        <span class="bld-sig-role">Builder · Dad · Kansas City, MO<br>If you call, I answer.</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ (legacy) BEHIND THE BENCH — replaced by The Builder ═══ -->
+<section id="hoo-bench" hidden>
+  <div class="hb-inner">
+
+    <header class="hb-hdr hoo-pop">
+      <p class="hb-eyebrow">↳ Vol. 02 // Behind the bench</p>
+      <h2 class="hb-h">Same work ethic.<em>Different tool.</em></h2>
+      <p class="hb-sub">Most agencies will tell you their pedigree. I'll tell you my hands knew real work before they ever touched a keyboard.</p>
+    </header>
+
+    <div class="hb-spread">
+
+      <figure class="hb-fig hb-then hoo-pop">
+        <div class="hb-img">
+          <span class="hb-stamp"><i></i>THEN</span>
+          <img src="assets/hoo-builder/hardhat-rig.jpg" alt="Matthew at a drilling rig in hard hat and hi-vis" loading="lazy">
+        </div>
+        <figcaption class="hb-cap">
+          <div class="hb-cap-tag">Before HOO</div>
+          <p>Drilling rigs. Hard hat, steel-toes, hands-on work. The kind of job that teaches you to show up — even when you're tired, even when it's cold, even when nobody's watching.</p>
+          <div class="hb-cap-meta">Blue collar // Real work</div>
+        </figcaption>
+      </figure>
+
+      <div class="hb-arrow hoo-pop" aria-hidden="true">
+        <div class="ln"></div>
+        <div class="ic">→</div>
+        <div class="lbl">Same hands</div>
+        <div class="ln"></div>
+      </div>
+
+      <figure class="hb-fig hb-now hoo-pop">
+        <div class="hb-img">
+          <span class="hb-stamp"><i></i>NOW</span>
+          <img src="assets/hoo-builder/bench-baby-rig.jpg" alt="Matthew at his desk with the baby and the gaming rig glowing behind" loading="lazy">
+        </div>
+        <figcaption class="hb-cap">
+          <div class="hb-cap-tag">Tonight, every night</div>
+          <p>Same hands. Different tool. Hand-coding Shopify stores between 9pm and 3am with the little one asleep on me. Pays differently. The standard's the same.</p>
+          <div class="hb-cap-meta">Hand-coded // After hours // Kansas City</div>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <div class="hb-bridge hoo-pop">
+      <span class="ln"></span>
+      <span class="cue">↓ &nbsp; Vol. 03 &nbsp;//&nbsp; <b>the proof</b> &nbsp; ↓</span>
+      <span class="ln"></span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ (legacy) THESE HANDS — replaced by The Builder ═══ -->
+<section id="hoo-hands" hidden>
+  <div class="hh-bg">
+    <img src="assets/hoo-builder/working-hands.jpg" alt="Matthew's hand caked in dirt and grime from a day's real work">
+  </div>
+  <div class="hh-grain" aria-hidden="true"></div>
+
+  <div class="hh-frame">
+
+    <div class="hh-content hoo-pop">
+      <p class="hh-eyebrow">↳ Vol. 03 <span>// The Proof</span></p>
+
+      <h1 class="hh-h">
+        These hands<br>
+        <em>wrote every line.</em>
+      </h1>
+
+      <p class="hh-sub">
+        No subcontracted devs. No AI generators. No <em>"we'll have someone get back to you."</em>
+        One builder. One keyboard. One set of hands that <strong>knew real work before they knew code</strong> —
+        and still does, every day, before the screen lights up at sundown.
+      </p>
+
+      <div class="hh-stats">
+        <div class="hh-stat">
+          <div class="hh-stat-num">100%</div>
+          <div class="hh-stat-lbl">Hand-coded</div>
+        </div>
+        <div class="hh-stat">
+          <div class="hh-stat-num">0</div>
+          <div class="hh-stat-lbl">Subcontractors</div>
+        </div>
+        <div class="hh-stat">
+          <div class="hh-stat-num">1</div>
+          <div class="hh-stat-lbl">Set of hands</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hh-sig-block hoo-pop">
+      <span class="nm">Matthew</span>
+      <span class="ln"></span>
+      <span class="role">Builder · Dad<br>Kansas City, MO</span>
+    </div>
+
+  </div>
+</section>
+
+<script>
+/* ─── nav scroll state ───────────────────────────── */
+const nav = document.getElementById('hooNav');
+addEventListener('scroll', () => nav.classList.toggle('is-scrolled', scrollY > 12), { passive:true });
+
+/* ─── live clock (Central time) ──────────────────── */
+function tick(){
+  const now = new Date();
+  const opts = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'America/Chicago' };
+  const t = now.toLocaleTimeString('en-US', opts);
+  document.getElementById('hooClock').textContent = t;
+  document.getElementById('hooTimeStrip').textContent = now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'America/Chicago' }) + ' CST';
+}
+tick(); setInterval(tick, 1000);
+
+/* ─── headline reveal on load ────────────────────── */
+requestAnimationFrame(() => document.querySelector('.hoo-anim').classList.add('hoo-vis'));
+
+/* ─── typed "currently building" name ────────────── */
+const TYPED = [
+  ['Summit Roofing KC',     'roofing'],
+  ['BlastClean KC',         'pressure washing'],
+  ['Paws & Suds',           'pet grooming'],
+  ['IRONCLAD Fitness',      'personal training'],
+  ['Greenfield Lawn',       'lawn care'],
+  ['Mirror Finish',         'auto detailing'],
+  ['Long Light Moving',     'moving'],
+  ['Fuego Mobile',          'food truck'],
+  ['North Star Photo',      'photography'],
+  ['RISEN Clothing',        'streetwear'],
+];
+const typedEl = document.getElementById('hooTyped');
+let ti = 0;
+async function typeLoop(){
+  while (true){
+    const [name, ind] = TYPED[ti % TYPED.length];
+    /* type in */
+    for (let i = 1; i <= name.length; i++){
+      typedEl.textContent = name.slice(0, i);
+      await sleep(38 + Math.random()*40);
+    }
+    typedEl.innerHTML = name + ' <span class="ind">'+ind+'</span>';
+    await sleep(2400);
+    /* erase */
+    for (let i = name.length; i >= 0; i--){
+      typedEl.textContent = name.slice(0, i);
+      await sleep(22);
+    }
+    ti++;
+    await sleep(280);
+  }
+}
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+typeLoop();
+
+/* ─── code-rain backdrop ─────────────────────────── */
+const rain = document.getElementById('hooRain');
+const SNIPPETS = [
+  '{% section %}', '<section id="hero">', '.hoo-pop { opacity: 0 }',
+  'IntersectionObserver', 'fetch("/cart/add.js")', 'transform: translateY(0)',
+  'sundown → sunup', 'while (sleeping) { build(); }', '<a href="/products/">',
+  'requestAnimationFrame', 'cubic-bezier(.2,.8,.2,1)', '{{ collection.title }}',
+  'aspect-ratio: 16/10', 'addEventListener("scroll")', 'mobile-first',
+  'no contracts', '$0 upfront', 'Custom Liquid', 'hand-coded',
+  '@media (max-width:760px)', 'border-radius: 2px', 'will-change: transform',
+];
+const COLS = 18;
+for (let i = 0; i < COLS; i++){
+  const col = document.createElement('div');
+  col.className = 'hoo-rain-col';
+  col.style.left = (i / COLS * 100) + '%';
+  col.style.animationDuration = (16 + Math.random() * 22) + 's';
+  col.style.animationDelay = (-Math.random() * 30) + 's';
+  let lines = '';
+  for (let j = 0; j < 30; j++){
+    lines += SNIPPETS[Math.floor(Math.random() * SNIPPETS.length)] + '\n';
+  }
+  col.textContent = lines;
+  rain.appendChild(col);
+}
+
+/* ─── reveal on intersect ────────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('hoo-vis'); io.unobserve(e.target); } });
+}, { threshold: .1, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.hoo-pop:not(.hoo-anim)').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

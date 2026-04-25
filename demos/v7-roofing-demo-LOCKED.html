@@ -514,6 +514,30 @@ img{max-width:100%;display:block}
 .float-phone-close:hover{background:var(--off2);color:var(--text)}
 @keyframes bubbleIn{0%{opacity:0;transform:translateX(8px) scale(.95)}100%{opacity:1;transform:translateX(0) scale(1)}}
 @media(max-width:768px){.float-phone{right:16px;bottom:16px}.float-phone-btn{width:48px;height:48px}.float-phone-btn svg{width:20px;height:20px}.float-phone-bubble{padding:10px 12px}.float-phone-bubble-text{font-size:.72rem}}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HOO mobile breathing-room overrides — runs after section-local media
+   queries above so these win the cascade. Goal: more vertical air between
+   sections + visible separator + tighter inside hero so it doesn't feel
+   like a wall-of-content scroll.
+   ═══════════════════════════════════════════════════════════════════════ */
+@media(max-width:768px){
+  body{font-size:15px;line-height:1.65}
+  .hero,.results,.crew,.quiz,.services,.quote-wizard-section,.portfolio,.proof,.map-section,.faq-section,#contact{padding-top:56px!important;padding-bottom:64px!important}
+  .hero{padding-top:24px!important}
+  /* Soft horizontal rule between sections so the eye gets reset */
+  section + section{position:relative}
+  section + section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:48px;height:2px;background:rgba(232,121,43,.35);border-radius:2px;margin-top:-1px}
+  /* Hero internal: breathe between headline / form / stats */
+  .hero-content > * + *{margin-top:18px}
+  .hero-form-card{margin-top:22px}
+  .hero-stats{margin:18px 0 4px}
+  /* Crew cards a touch more vertical air on mobile */
+  .crew-card{padding:24px 20px 22px}
+  .crew-card + .crew-card{margin-top:6px}
+  /* Trust strip on hero — single column instead of cramped row */
+  .hero-trust-row{flex-direction:column;gap:10px;align-items:stretch}
+}
 </style>
 </head>
 <body>
@@ -637,19 +661,19 @@ img{max-width:100%;display:block}
 <div style="background:var(--white);padding:40px 24px;border-bottom:1px solid var(--border)">
   <div style="max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:center;gap:52px;flex-wrap:wrap">
     <div style="display:flex;align-items:center;gap:12px;opacity:.7;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">
-      <img src="assets/summit-roofing/gaf-master-elite.png" alt="GAF Master Elite" style="height:44px;width:auto;object-fit:contain" loading="lazy">
+      <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/gaf-master-elite.png?v=1777127471" alt="GAF Master Elite" style="height:44px;width:auto;object-fit:contain" loading="lazy">
       <span style="font-size:.75rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.3px;line-height:1.4">Top 2%<br><span style="font-weight:500;color:var(--text-dim)">Nationwide</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;opacity:.7;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">
-      <img src="assets/summit-roofing/owens-corning.png" alt="Owens Corning" style="height:40px;width:auto;object-fit:contain" loading="lazy">
+      <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/owens-corning.png?v=1777127471" alt="Owens Corning" style="height:40px;width:auto;object-fit:contain" loading="lazy">
       <span style="font-size:.75rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.3px;line-height:1.4">Preferred<br><span style="font-weight:500;color:var(--text-dim)">Contractor</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;opacity:.7;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">
-      <img src="assets/summit-roofing/bbb-a-plus.png" alt="BBB A+" style="height:44px;width:auto;object-fit:contain" loading="lazy">
+      <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/bbb-a-plus.png?v=1777127470" alt="BBB A+" style="height:44px;width:auto;object-fit:contain" loading="lazy">
       <span style="font-size:.75rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.3px;line-height:1.4">A+ Rated<br><span style="font-weight:500;color:var(--text-dim)">0 Complaints</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;opacity:.7;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">
-      <img src="assets/summit-roofing/angi.png" alt="Angi" style="height:36px;width:auto;object-fit:contain" loading="lazy">
+      <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/angi.png?v=1777127471" alt="Angi" style="height:36px;width:auto;object-fit:contain" loading="lazy">
       <span style="font-size:.75rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.3px;line-height:1.4">Top Rated<br><span style="font-weight:500;color:var(--text-dim)">2024 &amp; 2025</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;opacity:.7;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">
@@ -754,7 +778,7 @@ img{max-width:100%;display:block}
   <div class="crew-grid">
     <article class="crew-card rv" style="--role-color:#E8792B">
       <div class="crew-avatar">
-        <img src="assets/summit-roofing/mike.png" alt="Mike Reynolds, Owner and Master Installer" loading="lazy">
+        <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/mike.png?v=1777127471" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
       </div>
       <h3 class="crew-name">Mike Reynolds</h3>
       <div class="crew-role">Owner &amp; Master Installer</div>
@@ -767,7 +791,7 @@ img{max-width:100%;display:block}
     </article>
     <article class="crew-card rv" style="--role-color:#8B5CF6">
       <div class="crew-avatar">
-        <img src="assets/summit-roofing/tony.png" alt="Tony Delgado, Crew Lead" loading="lazy">
+        <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/tony.png?v=1777127472" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
       </div>
       <h3 class="crew-name">Tony Delgado</h3>
       <div class="crew-role">Crew Lead</div>
@@ -780,7 +804,7 @@ img{max-width:100%;display:block}
     </article>
     <article class="crew-card rv" style="--role-color:#F09044">
       <div class="crew-avatar">
-        <img src="assets/summit-roofing/dre.png" alt="Dre Washington, Project Manager" loading="lazy">
+        <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/dre.png?v=1777127472" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
       </div>
       <h3 class="crew-name">Dre Washington</h3>
       <div class="crew-role">Project Manager</div>
@@ -793,7 +817,7 @@ img{max-width:100%;display:block}
     </article>
     <article class="crew-card rv" style="--role-color:#1A1A1A">
       <div class="crew-avatar">
-        <img src="assets/summit-roofing/jess.png" alt="Jess Navarro, Estimator and Inspector" loading="lazy">
+        <img src="https://cdn.shopify.com/s/files/1/0658/1911/5587/files/jess.png?v=1777127471" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
       </div>
       <h3 class="crew-name">Jess Navarro</h3>
       <div class="crew-role">Estimator &amp; Inspector</div>
@@ -1564,8 +1588,16 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- ═══ FAQ ═══ -->
-<section id="contact" style="padding:80px 24px;background:var(--white)">
-  <div style="max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+<style>
+.faq-section{padding:80px 24px;background:var(--white)}
+.faq-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+@media(max-width:900px){
+  .faq-section{padding:60px 18px}
+  .faq-grid{grid-template-columns:1fr;gap:28px}
+}
+</style>
+<section id="contact" class="faq-section">
+  <div class="faq-grid">
     <div>
       <div class="section-tag rv">FAQ</div>
       <h2 class="section-title rv" style="margin-bottom:20px">Common Questions</h2>

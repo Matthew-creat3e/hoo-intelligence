@@ -1,0 +1,526 @@
+<!--
+  HOO PORTFOLIO SHOWCASE — v1 prototype
+  How HOO presents the 13 V7 demos to a prospective customer.
+
+  RUN: open this file directly in Chrome from the demos/ folder
+       (iframes resolve as siblings → all 13 demos load live)
+
+  SHOPIFY PASTE: replace each iframe src with a static screenshot URL on
+                 the HOO Shopify CDN, or keep the click-to-open lightbox
+                 and host the demo files on a /demos/ subdomain.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOO — The Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505; --bg-2:#0a0a0a; --card:#0d0d0d; --line:rgba(200,149,46,.16);
+  --line-2:rgba(240,234,224,.08); --gold:#C8952E; --gold-hi:#E8B84B;
+  --cream:#F0EAE0; --mute:rgba(240,234,224,.55); --mute-2:rgba(240,234,224,.35);
+  --serif:'Fraunces', Georgia, serif; --display:'Bebas Neue', sans-serif;
+  --sans:'Syne', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ─── SECTION SHELL ─────────────────────────────── */
+#hoo-pf{position:relative;padding:0 0 120px;overflow:hidden;background:
+  radial-gradient(1100px 600px at 80% -10%, rgba(200,149,46,.07), transparent 60%),
+  radial-gradient(900px 700px at -10% 30%, rgba(200,149,46,.04), transparent 70%),
+  var(--bg)}
+.pf-inner{max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+
+/* ─── TICKER ─────────────────────────────────────── */
+.pf-ticker{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:14px 0;overflow:hidden;background:#070707}
+.pf-track{display:flex;gap:42px;white-space:nowrap;animation:pf-tick 28s linear infinite;
+  font-family:var(--display);letter-spacing:.18em;font-size:14px;color:var(--gold)}
+.pf-track span{display:inline-flex;align-items:center;gap:42px}
+.pf-track .dot{color:var(--cream);opacity:.4}
+@keyframes pf-tick{to{transform:translateX(-50%)}}
+
+/* ─── EDITORIAL HEADER ───────────────────────────── */
+.pf-hdr{padding:120px 0 56px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
+.pf-eyebrow{font-family:var(--display);letter-spacing:.32em;font-size:13px;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:32px}
+.pf-eyebrow::before{content:"";width:48px;height:1px;background:var(--gold)}
+.pf-eyebrow span{color:var(--mute);letter-spacing:.24em}
+.pf-h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7.5vw,108px);line-height:.94;
+  letter-spacing:-.02em;color:var(--cream)}
+.pf-h1 em{font-style:italic;font-weight:400;color:var(--gold)}
+.pf-h1 .stk{display:inline-block;position:relative}
+.pf-h1 .stk::after{content:"";position:absolute;left:-2%;right:-2%;top:54%;height:6px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 1.4s cubic-bezier(.2,.8,.2,1) .4s}
+.pf-vis .stk::after{transform:scaleX(1)}
+.pf-lead{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(18px,1.6vw,22px);
+  line-height:1.55;color:var(--mute);max-width:480px;padding-bottom:14px}
+.pf-lead strong{color:var(--cream);font-style:normal;font-weight:600}
+
+/* ─── METRICS RIBBON ─────────────────────────────── */
+.pf-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);margin:56px 0 80px}
+.pf-metric{padding:32px 24px;border-right:1px solid var(--line-2);text-align:left}
+.pf-metric:last-child{border-right:0}
+.pf-metric-num{font-family:var(--display);font-size:clamp(48px,5vw,72px);line-height:1;color:var(--gold);letter-spacing:.01em}
+.pf-metric-lbl{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--mute);margin-top:10px}
+
+/* ─── LIVING WALL (3D carousel) ──────────────────── */
+.pf-wall{position:relative;padding:40px 0 80px;perspective:2200px}
+.pf-stage{position:relative;height:min(560px,68vh);display:flex;align-items:center;justify-content:center;
+  transform-style:preserve-3d}
+.pf-frame{position:absolute;width:min(72%,760px);aspect-ratio:16/10;border-radius:10px;overflow:hidden;
+  background:var(--card);border:1px solid var(--line);box-shadow:0 50px 120px -40px rgba(0,0,0,.85),
+  0 0 0 1px rgba(255,255,255,.02) inset;transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .7s,filter .9s;
+  cursor:pointer;will-change:transform}
+.pf-frame .pf-bar{height:32px;background:#0a0a0a;border-bottom:1px solid var(--line-2);display:flex;
+  align-items:center;padding:0 14px;gap:7px}
+.pf-frame .pf-bar i{width:9px;height:9px;border-radius:50%;background:#1a1a1a;display:block}
+.pf-frame .pf-bar i:nth-child(1){background:#3a2424}
+.pf-frame .pf-bar i:nth-child(2){background:#3a3324}
+.pf-frame .pf-bar i:nth-child(3){background:#243a26}
+.pf-frame .pf-bar .pf-url{margin-left:14px;font-family:var(--sans);font-size:11px;color:var(--mute-2);
+  letter-spacing:.04em}
+.pf-frame iframe{width:100%;height:calc(100% - 32px);border:0;background:#0a0a0a;
+  pointer-events:none;transform-origin:top left}
+.pf-frame .pf-meta{position:absolute;left:0;right:0;bottom:0;padding:18px 22px;
+  background:linear-gradient(180deg, transparent, rgba(0,0,0,.92) 60%);display:flex;justify-content:space-between;
+  align-items:flex-end;gap:20px;color:var(--cream);opacity:0;transition:opacity .4s}
+.pf-frame.is-front .pf-meta{opacity:1}
+.pf-meta .pf-chip{font-family:var(--display);font-size:12px;letter-spacing:.22em;color:var(--gold);
+  border:1px solid var(--gold);padding:5px 10px;border-radius:99px;background:rgba(0,0,0,.5)}
+.pf-meta .pf-name{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--cream);margin-top:6px}
+.pf-meta .pf-hook{font-size:13px;color:var(--mute);margin-top:4px;max-width:60ch}
+.pf-meta .pf-open{font-family:var(--display);letter-spacing:.18em;font-size:13px;color:var(--cream);
+  border:1px solid var(--cream);padding:11px 16px;border-radius:2px;flex-shrink:0;
+  transition:all .25s;background:transparent}
+.pf-frame.is-front:hover .pf-open{background:var(--gold);border-color:var(--gold);color:#000}
+
+/* slot positions */
+.pf-frame[data-slot="back-l"]{transform:translateX(-46%) translateZ(-280px) rotateY(28deg) scale(.78);opacity:.32;filter:blur(2px) saturate(.6)}
+.pf-frame[data-slot="back-r"]{transform:translateX(46%)  translateZ(-280px) rotateY(-28deg) scale(.78);opacity:.32;filter:blur(2px) saturate(.6)}
+.pf-frame[data-slot="left"]  {transform:translateX(-30%) translateZ(-120px) rotateY(18deg) scale(.88);opacity:.65;filter:saturate(.85)}
+.pf-frame[data-slot="right"] {transform:translateX(30%)  translateZ(-120px) rotateY(-18deg) scale(.88);opacity:.65;filter:saturate(.85)}
+.pf-frame[data-slot="front"] {transform:translateX(0) translateZ(0) rotateY(0) scale(1);opacity:1;z-index:5}
+.pf-frame[data-slot="hidden"]{transform:translateZ(-600px) scale(.4);opacity:0;pointer-events:none}
+
+.pf-frame[data-slot="front"]:hover{transform:translateZ(20px) scale(1.01)}
+
+/* ─── WALL CONTROLS ──────────────────────────────── */
+.pf-controls{display:flex;align-items:center;justify-content:space-between;padding:28px 0 0;gap:28px}
+.pf-counter{font-family:var(--display);font-size:14px;letter-spacing:.22em;color:var(--mute)}
+.pf-counter b{color:var(--gold);font-weight:400}
+.pf-arrows{display:flex;gap:10px}
+.pf-arr{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:transparent;
+  color:var(--cream);font-size:18px;cursor:pointer;transition:all .25s;display:grid;place-items:center}
+.pf-arr:hover{background:var(--gold);border-color:var(--gold);color:#000}
+.pf-dots{display:flex;gap:8px;flex-wrap:wrap;max-width:50%;justify-content:center}
+.pf-dot{width:24px;height:3px;background:var(--line-2);border:0;cursor:pointer;transition:all .35s;padding:0}
+.pf-dot.is-active{background:var(--gold);width:42px}
+.pf-pause{font-family:var(--sans);font-size:11px;letter-spacing:.2em;color:var(--mute);
+  text-transform:uppercase;background:none;border:0;cursor:pointer;display:flex;align-items:center;gap:8px}
+.pf-pause::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);
+  animation:pf-pulse 1.5s infinite}
+.pf-pause.is-paused::before{background:var(--mute-2);animation:none}
+@keyframes pf-pulse{50%{opacity:.4;transform:scale(.85)}}
+
+/* ─── INDUSTRY SPREAD ────────────────────────────── */
+.pf-spread{padding:120px 0 40px}
+.pf-spread-hdr{display:grid;grid-template-columns:1fr auto;align-items:end;gap:40px;
+  padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:64px}
+.pf-spread-hdr h3{font-family:var(--serif);font-weight:400;font-size:clamp(36px,5vw,64px);
+  line-height:.95;letter-spacing:-.02em;color:var(--cream)}
+.pf-spread-hdr h3 em{font-style:italic;color:var(--gold)}
+.pf-spread-hdr p{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mute);
+  max-width:38ch;text-align:right;line-height:1.5}
+
+.pf-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;padding:48px 0;
+  border-bottom:1px solid var(--line-2);align-items:center;cursor:pointer;
+  transition:background .35s, padding .35s}
+.pf-row:hover{background:rgba(200,149,46,.025);padding-left:18px;padding-right:18px}
+.pf-row .pf-num{font-family:var(--serif);font-style:italic;font-weight:400;font-size:64px;
+  color:var(--gold);line-height:1;align-self:start;padding-top:6px;letter-spacing:-.02em}
+.pf-row .pf-row-info{display:flex;flex-direction:column;gap:14px}
+.pf-row .pf-ind{font-family:var(--display);letter-spacing:.24em;font-size:12px;color:var(--mute)}
+.pf-row .pf-title{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3vw,42px);
+  line-height:1.05;letter-spacing:-.01em;color:var(--cream)}
+.pf-row .pf-title em{font-style:italic}
+.pf-row:hover .pf-title{color:var(--gold)}
+.pf-row .pf-row-hook{font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.55;
+  color:var(--mute)}
+.pf-row .pf-row-meta{display:flex;align-items:center;gap:24px;margin-top:6px}
+.pf-row .pf-pal{display:flex;gap:6px}
+.pf-row .pf-pal i{width:18px;height:18px;border-radius:50%;display:block;border:1px solid rgba(255,255,255,.06)}
+.pf-row .pf-kpi{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);border-left:1px solid var(--line);padding-left:18px}
+.pf-row .pf-thumb{width:100%;aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:var(--card);
+  border:1px solid var(--line);position:relative}
+.pf-row .pf-thumb iframe{position:absolute;top:0;left:0;width:333%;height:333%;border:0;
+  transform:scale(.3);transform-origin:top left;pointer-events:none;background:#0a0a0a}
+.pf-row .pf-thumb::after{content:"VIEW LIVE →";position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--display);letter-spacing:.22em;font-size:13px;color:var(--cream);
+  background:rgba(0,0,0,.6);opacity:0;transition:opacity .3s}
+.pf-row:hover .pf-thumb::after{opacity:1}
+
+/* ─── CLOSING CTA ────────────────────────────────── */
+.pf-close{margin-top:96px;padding:80px clamp(24px,5vw,72px);border:1px solid var(--line);
+  border-radius:6px;background:linear-gradient(180deg, #080808, #0a0a0a 60%, #050505);
+  position:relative;overflow:hidden}
+.pf-close::before{content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:1px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent)}
+.pf-close-inner{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center}
+.pf-close h4{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5vw,64px);line-height:.98;
+  letter-spacing:-.02em;color:var(--cream)}
+.pf-close h4 em{font-style:italic;color:var(--gold)}
+.pf-close p{font-family:var(--serif);font-style:italic;color:var(--mute);font-size:17px;
+  margin-top:18px;max-width:50ch;line-height:1.55}
+.pf-close-cta{display:flex;flex-direction:column;gap:14px;min-width:260px}
+.pf-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:18px 26px;
+  font-family:var(--display);letter-spacing:.22em;font-size:14px;text-decoration:none;
+  border-radius:2px;transition:all .25s;border:1px solid;cursor:pointer}
+.pf-btn-primary{background:var(--gold);color:#000;border-color:var(--gold)}
+.pf-btn-primary:hover{background:var(--gold-hi);border-color:var(--gold-hi);transform:translateY(-2px)}
+.pf-btn-ghost{background:transparent;color:var(--cream);border-color:var(--line)}
+.pf-btn-ghost:hover{background:var(--cream);color:#000;border-color:var(--cream)}
+
+.pf-close-marquee{margin-top:48px;padding-top:32px;border-top:1px solid var(--line-2);overflow:hidden;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.pf-close-track{display:flex;gap:48px;white-space:nowrap;animation:pf-tick 32s linear infinite;
+  font-family:var(--serif);font-style:italic;font-size:18px;color:var(--mute-2)}
+.pf-close-track span{display:inline-flex;gap:48px}
+.pf-close-track .dot{color:var(--gold)}
+
+/* ─── LIGHTBOX ───────────────────────────────────── */
+.pf-lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:none;
+  align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(6px)}
+.pf-lb.is-open{display:flex;animation:pf-fade .35s}
+@keyframes pf-fade{from{opacity:0}}
+.pf-lb-frame{width:100%;max-width:1280px;height:100%;max-height:80vh;background:#0a0a0a;
+  border-radius:8px;border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 60px 140px -40px rgba(0,0,0,.9)}
+.pf-lb-bar{height:50px;background:#0a0a0a;border-bottom:1px solid var(--line-2);display:flex;
+  align-items:center;padding:0 18px;gap:14px}
+.pf-lb-bar i{width:11px;height:11px;border-radius:50%;display:block;background:#222}
+.pf-lb-bar i:nth-child(1){background:#5a3030}
+.pf-lb-bar i:nth-child(2){background:#5a4d30}
+.pf-lb-bar i:nth-child(3){background:#305a35}
+.pf-lb-url{margin-left:18px;font-size:13px;color:var(--mute);font-family:var(--sans);flex:1}
+.pf-lb-url b{color:var(--gold);font-weight:400}
+.pf-lb-close{background:none;border:0;color:var(--cream);font-family:var(--display);font-size:16px;
+  letter-spacing:.2em;cursor:pointer;padding:8px 14px;border:1px solid var(--line);border-radius:2px;
+  transition:all .25s}
+.pf-lb-close:hover{background:var(--cream);color:#000;border-color:var(--cream)}
+.pf-lb iframe{flex:1;width:100%;border:0;background:#000}
+
+/* ─── REVEAL ─────────────────────────────────────── */
+.pf-pop{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.pf-pop.pf-vis{opacity:1;transform:none}
+.pf-pop:nth-child(2){transition-delay:.08s}
+.pf-pop:nth-child(3){transition-delay:.16s}
+.pf-pop:nth-child(4){transition-delay:.24s}
+
+/* ─── MOBILE ─────────────────────────────────────── */
+@media (max-width: 900px){
+  .pf-hdr{grid-template-columns:1fr;gap:32px;padding:80px 0 40px}
+  .pf-lead{padding-bottom:0}
+  .pf-metrics{grid-template-columns:repeat(2,1fr)}
+  .pf-metric{padding:24px 18px;border-bottom:1px solid var(--line-2)}
+  .pf-metric:nth-child(2){border-right:0}
+  .pf-stage{height:min(380px,52vh)}
+  .pf-frame{width:88%}
+  .pf-frame[data-slot="back-l"],.pf-frame[data-slot="back-r"]{opacity:0;pointer-events:none}
+  .pf-frame[data-slot="left"]  {transform:translateX(-22%) translateZ(-90px) rotateY(14deg) scale(.86);opacity:.45}
+  .pf-frame[data-slot="right"] {transform:translateX(22%)  translateZ(-90px) rotateY(-14deg) scale(.86);opacity:.45}
+  .pf-frame .pf-meta{padding:14px 14px;flex-direction:column;align-items:flex-start}
+  .pf-meta .pf-name{font-size:18px}
+  .pf-controls{flex-direction:column;gap:18px}
+  .pf-spread{padding:80px 0 24px}
+  .pf-spread-hdr{grid-template-columns:1fr;gap:18px}
+  .pf-spread-hdr p{text-align:left}
+  .pf-row{grid-template-columns:1fr;gap:18px;padding:36px 0}
+  .pf-row:hover{padding:36px 0;background:transparent}
+  .pf-row .pf-num{font-size:48px}
+  .pf-row .pf-thumb{order:-1}
+  .pf-close-inner{grid-template-columns:1fr}
+  .pf-close-cta{min-width:0}
+}
+</style>
+</head>
+<body>
+
+<section id="hoo-pf">
+
+  <!-- TICKER -->
+  <div class="pf-ticker">
+    <div class="pf-track">
+      <span>THE WORK<i class="dot">✦</i>13 INDUSTRIES<i class="dot">✦</i>ZERO TEMPLATES<i class="dot">✦</i>100% CUSTOM<i class="dot">✦</i>BUILT IN KANSAS CITY<i class="dot">✦</i>THE WORK<i class="dot">✦</i>13 INDUSTRIES<i class="dot">✦</i>ZERO TEMPLATES<i class="dot">✦</i>100% CUSTOM<i class="dot">✦</i>BUILT IN KANSAS CITY<i class="dot">✦</i></span>
+    </div>
+  </div>
+
+  <div class="pf-inner">
+
+    <!-- EDITORIAL HEADER -->
+    <header class="pf-hdr">
+      <div class="pf-pop">
+        <p class="pf-eyebrow">↳ The Portfolio <span>// Vol. 01</span></p>
+        <h1 class="pf-h1">
+          We don't<br>
+          make <em>websites.</em><br>
+          We build <span class="stk">empires.</span>
+        </h1>
+      </div>
+      <p class="pf-lead pf-pop">
+        Thirteen industries. Thirteen identities. <strong>Zero templates.</strong>
+        Every demo below was built from a blank page — for one specific operator,
+        in one specific city, with one specific job to do: turn strangers into customers.
+      </p>
+    </header>
+
+    <!-- METRICS -->
+    <div class="pf-metrics pf-pop">
+      <div class="pf-metric"><div class="pf-metric-num">13</div><div class="pf-metric-lbl">V7 Demos Built</div></div>
+      <div class="pf-metric"><div class="pf-metric-num">8</div><div class="pf-metric-lbl">Industries Live</div></div>
+      <div class="pf-metric"><div class="pf-metric-num">100%</div><div class="pf-metric-lbl">Custom Liquid</div></div>
+      <div class="pf-metric"><div class="pf-metric-num">$0</div><div class="pf-metric-lbl">Upfront, Always</div></div>
+    </div>
+
+    <!-- LIVING WALL -->
+    <div class="pf-wall pf-pop">
+      <div class="pf-stage" id="pfStage" aria-label="Portfolio carousel"></div>
+      <div class="pf-controls">
+        <div class="pf-counter"><b id="pfNum">01</b> &nbsp;/&nbsp; <span id="pfTotal">13</span> &nbsp;&nbsp;<span id="pfLabel" style="color:var(--cream);letter-spacing:.18em"></span></div>
+        <div class="pf-dots" id="pfDots"></div>
+        <div class="pf-arrows">
+          <button class="pf-pause" id="pfPause" aria-label="Pause autoplay"><span id="pfPauseLbl">Auto</span></button>
+          <button class="pf-arr" id="pfPrev" aria-label="Previous">←</button>
+          <button class="pf-arr" id="pfNext" aria-label="Next">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INDUSTRY SPREAD -->
+    <div class="pf-spread">
+      <div class="pf-spread-hdr">
+        <h3>Every build, <em>head to toe.</em></h3>
+        <p>Click any row to open the full demo in a new browser frame. They're not screenshots — they're the real thing.</p>
+      </div>
+      <div id="pfSpread"></div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="pf-close">
+      <div class="pf-close-inner">
+        <div>
+          <h4>Your industry, <em>built next.</em></h4>
+          <p>You've seen what we do. Now imagine your business with the same treatment — the only thing in the way is a 10-minute conversation.</p>
+        </div>
+        <div class="pf-close-cta">
+          <a href="tel:18049571003" class="pf-btn pf-btn-primary">TEXT (804) 957-1003</a>
+          <a href="#hoo-cta" class="pf-btn pf-btn-ghost">Start a Build →</a>
+        </div>
+      </div>
+      <div class="pf-close-marquee">
+        <div class="pf-close-track">
+          <span>Painting<i class="dot">✦</i>Cleaning<i class="dot">✦</i>Roofing<i class="dot">✦</i>Fencing<i class="dot">✦</i>Pressure Washing<i class="dot">✦</i>Pet Grooming<i class="dot">✦</i>Personal Training<i class="dot">✦</i>Lawn Care<i class="dot">✦</i>Auto Detailing<i class="dot">✦</i>Moving<i class="dot">✦</i>Food Truck<i class="dot">✦</i>Photography<i class="dot">✦</i>Streetwear<i class="dot">✦</i>Painting<i class="dot">✦</i>Cleaning<i class="dot">✦</i>Roofing<i class="dot">✦</i>Fencing<i class="dot">✦</i>Pressure Washing<i class="dot">✦</i></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="pf-lb" id="pfLb" role="dialog" aria-modal="true">
+  <div class="pf-lb-frame">
+    <div class="pf-lb-bar">
+      <i></i><i></i><i></i>
+      <div class="pf-lb-url">hoo.com/work/<b id="pfLbHandle"></b></div>
+      <button class="pf-lb-close" id="pfLbClose">CLOSE ✕</button>
+    </div>
+    <iframe id="pfLbIframe" src="" title="Demo preview"></iframe>
+  </div>
+</div>
+
+<script>
+const DEMOS = [
+  {file:'v7-painting-demo-LOCKED.html',          industry:'Painting',          name:'True Coat KC',         hook:'Editorial brand for a one-truck operator. Turned commodity painting into $1,500 jobs.',           kpi:'V7 BENCHMARK',           palette:['#1f2a23','#d4b483','#f0eae0']},
+  {file:'v7-cleaning-demo-LOCKED.html',          industry:'Cleaning',          name:'Pristine Clean KC',    hook:'6-step booking flow with live price quoting in the hero. Books while they scroll.',                kpi:'2,441 LINES OF CRAFT',   palette:['#0a3a2c','#fdb515','#f5f3ee']},
+  {file:'v7-roofing-demo-LOCKED.html',           industry:'Roofing',           name:'Summit Roofing KC',    hook:'Storm-damage funnel with free inspection capture. Trust-first for high-ticket repairs.',           kpi:'LEAD → QUOTE IN 60s',    palette:['#0d1b2a','#c8a96a','#f0eae0']},
+  {file:'v7-fencing-demo-LOCKED.html',           industry:'Fencing',           name:'Ironline Fencing',     hook:'Mapbox draw-your-fence with instant ballpark quote. Pet/pool/HOA trust card for the buyers who care.', kpi:'$250 PROMO BUILT-IN',    palette:['#1c2421','#7a9e3a','#f0eae0']},
+  {file:'v7-pressure-washing-demo-LOCKED.html',  industry:'Pressure Washing',  name:'BlastClean KC',        hook:'4-step ballpark quote on a satellite backdrop. Quote without ever picking up the phone.',         kpi:'NO CALL NEEDED',         palette:['#072a36','#3ec1d3','#f0eae0']},
+  {file:'v7-pet-grooming-demo-LOCKED.html',      industry:'Pet Grooming',      name:'Paws & Suds',          hook:'Before/after slider hero plus sticky mascot CTA — click-to-call from any scroll depth.',          kpi:'6-STEP BOOKING',         palette:['#0a4f55','#ff7a5c','#f0eae0']},
+  {file:'v7-personal-training-demo-LOCKED.html', industry:'Personal Training', name:'IRONCLAD Fitness',     hook:'Hope-themed PT brand with a full conversion path. Marcus Cole, $2k/mo program — sells trust, not reps.', kpi:'GREEN/PURPLE EDITORIAL', palette:['#0c1f17','#a4c3a2','#7c3aed']},
+  {file:'v7-lawn-care-demo-LOCKED.html',         industry:'Lawn Care',         name:'Greenfield Lawn',      hook:'Property-size selector matches the right package instantly. Recurring-revenue funnel by design.',  kpi:'PACKAGE MATCHER',        palette:['#1a2e1a','#a3d977','#f0eae0']},
+  {file:'v7-auto-detailing-demo-LOCKED.html',    industry:'Auto Detailing',    name:'Mirror Finish',        hook:'Premium gallery and package comparison grid. Engineered to upsell ceramic at checkout.',          kpi:'PREMIUM TIER UPSELL',    palette:['#0a0a0a','#c0c0c0','#d4af37']},
+  {file:'v7-moving-demo-LOCKED.html',            industry:'Moving',            name:'Long Light Moving',    hook:'Inventory builder produces an instant ballpark. Filters tire-kickers, books high-ticket loads.',  kpi:'INVENTORY → QUOTE',      palette:['#1a2942','#f4a261','#f0eae0']},
+  {file:'v7-food-truck-demo-LOCKED.html',        industry:'Food Truck',        name:'Fuego Mobile',         hook:'Live location, today\'s menu, and book-the-truck CTA in one editorial layout. Catering inquiry → 15 min.', kpi:'LOCATION + MENU + BOOK', palette:['#1a0e0e','#e63946','#f9c74f']},
+  {file:'v7-photography-demo-LOCKED.html',       industry:'Photography',       name:'North Star Photo',     hook:'Editorial portfolio with session booking and deposits in-funnel. The shooter\'s aesthetic is the brand.', kpi:'$500 DEPOSITS IN-FUNNEL', palette:['#0a0a0f','#e8e6e3','#c8a96a']},
+  {file:'v7-risen-clothing-demo-LOCKED.html',    industry:'Streetwear',        name:'RISEN Clothing',       hook:'Drop calendar, full campaign carousels, and 3-tier loyalty. Benchmarked vs Kith / FoG / ALD.',     kpi:'862 LINES, V2 LOCKED',   palette:['#0a0a0a','#d4b483','#7c0a0a']},
+];
+
+/* ─── BUILD LIVING WALL ─────────────────────────── */
+const stage = document.getElementById('pfStage');
+DEMOS.forEach((d, i) => {
+  const f = document.createElement('article');
+  f.className = 'pf-frame';
+  f.dataset.idx = i;
+  f.innerHTML = `
+    <div class="pf-bar"><i></i><i></i><i></i><span class="pf-url">${d.industry.toLowerCase().replace(/\s/g,'-')}.com</span></div>
+    <iframe loading="lazy" data-src="${d.file}" title="${d.name}"></iframe>
+    <div class="pf-meta">
+      <div>
+        <div class="pf-chip">${d.industry}</div>
+        <div class="pf-name">${d.name}</div>
+        <div class="pf-hook">${d.hook}</div>
+      </div>
+      <button class="pf-open" data-idx="${i}">VIEW LIVE →</button>
+    </div>`;
+  stage.appendChild(f);
+});
+
+const frames = [...stage.querySelectorAll('.pf-frame')];
+const total = frames.length;
+let cur = 0, paused = false, autoTimer = null;
+
+function slot(offset){
+  const a = ((offset % total) + total) % total;
+  if (a === 0) return 'front';
+  if (a === 1) return 'right';
+  if (a === total - 1) return 'left';
+  if (a === 2) return 'back-r';
+  if (a === total - 2) return 'back-l';
+  return 'hidden';
+}
+function render(){
+  frames.forEach((f, i) => {
+    const off = (i - cur + total) % total;
+    const s = slot(off);
+    f.dataset.slot = s;
+    f.classList.toggle('is-front', s === 'front');
+    /* lazy-load iframe only when visible (front/left/right) */
+    if (['front','left','right','back-l','back-r'].includes(s)){
+      const iframe = f.querySelector('iframe');
+      if (!iframe.src && iframe.dataset.src) iframe.src = iframe.dataset.src;
+    }
+  });
+  document.getElementById('pfNum').textContent = String(cur+1).padStart(2,'0');
+  document.getElementById('pfTotal').textContent = String(total).padStart(2,'0');
+  document.getElementById('pfLabel').textContent = DEMOS[cur].industry.toUpperCase() + '  //  ' + DEMOS[cur].name;
+  document.querySelectorAll('.pf-dot').forEach((d, i) => d.classList.toggle('is-active', i === cur));
+}
+function next(){ cur = (cur + 1) % total; render(); }
+function prev(){ cur = (cur - 1 + total) % total; render(); }
+function go(i){ cur = i; render(); }
+
+/* dots */
+const dots = document.getElementById('pfDots');
+DEMOS.forEach((_, i) => {
+  const b = document.createElement('button');
+  b.className = 'pf-dot'; b.setAttribute('aria-label', 'Go to '+DEMOS[i].name);
+  b.addEventListener('click', () => { go(i); restart(); });
+  dots.appendChild(b);
+});
+
+/* arrows */
+document.getElementById('pfNext').addEventListener('click', () => { next(); restart(); });
+document.getElementById('pfPrev').addEventListener('click', () => { prev(); restart(); });
+
+/* autoplay */
+function start(){ stop(); if (!paused) autoTimer = setInterval(next, 5200); }
+function stop(){ if (autoTimer) clearInterval(autoTimer); autoTimer = null; }
+function restart(){ start(); }
+const pauseBtn = document.getElementById('pfPause');
+pauseBtn.addEventListener('click', () => {
+  paused = !paused;
+  pauseBtn.classList.toggle('is-paused', paused);
+  document.getElementById('pfPauseLbl').textContent = paused ? 'Paused' : 'Auto';
+  if (paused) stop(); else start();
+});
+stage.addEventListener('mouseenter', stop);
+stage.addEventListener('mouseleave', () => { if (!paused) start(); });
+
+/* click frame → lightbox (only the front one fires) */
+stage.addEventListener('click', e => {
+  const f = e.target.closest('.pf-frame');
+  if (!f) return;
+  if (f.dataset.slot === 'front'){
+    openLightbox(parseInt(f.dataset.idx, 10));
+  } else {
+    go(parseInt(f.dataset.idx, 10)); restart();
+  }
+});
+
+render(); start();
+
+/* ─── INDUSTRY SPREAD ────────────────────────────── */
+const spread = document.getElementById('pfSpread');
+DEMOS.forEach((d, i) => {
+  const row = document.createElement('div');
+  row.className = 'pf-row';
+  row.dataset.idx = i;
+  row.innerHTML = `
+    <div class="pf-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="pf-row-info">
+      <div class="pf-ind">${d.industry}</div>
+      <div class="pf-title">${d.name}</div>
+      <div class="pf-row-hook">${d.hook}</div>
+      <div class="pf-row-meta">
+        <div class="pf-pal">${d.palette.map(c => `<i style="background:${c}"></i>`).join('')}</div>
+        <div class="pf-kpi">${d.kpi}</div>
+      </div>
+    </div>
+    <div class="pf-thumb"><iframe loading="lazy" data-src="${d.file}" title="${d.name} thumbnail"></iframe></div>`;
+  row.addEventListener('click', () => openLightbox(i));
+  spread.appendChild(row);
+});
+
+/* ─── LIGHTBOX ───────────────────────────────────── */
+const lb = document.getElementById('pfLb');
+const lbIframe = document.getElementById('pfLbIframe');
+const lbHandle = document.getElementById('pfLbHandle');
+function openLightbox(i){
+  const d = DEMOS[i];
+  lbHandle.textContent = d.industry.toLowerCase().replace(/\s/g,'-');
+  lbIframe.src = d.file;
+  lb.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  stop();
+}
+function closeLightbox(){
+  lb.classList.remove('is-open');
+  lbIframe.src = '';
+  document.body.style.overflow = '';
+  if (!paused) start();
+}
+document.getElementById('pfLbClose').addEventListener('click', closeLightbox);
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox(); });
+
+/* ─── REVEAL ─────────────────────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('pf-vis'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.pf-pop').forEach(el => io.observe(el));
+
+/* lazy-load thumbnail iframes when row scrolls in */
+const thumbIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting){
+      const f = e.target.querySelector('iframe[data-src]');
+      if (f && !f.src){ f.src = f.dataset.src; }
+      thumbIO.unobserve(e.target);
+    }
+  });
+}, { rootMargin: '300px' });
+document.querySelectorAll('.pf-row').forEach(r => thumbIO.observe(r));
+</script>
+
+</body>
+</html>
