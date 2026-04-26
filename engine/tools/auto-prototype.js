@@ -719,14 +719,17 @@ function buildFromV4Template(lead, photos, compIntel) {
 
   // Replace single brand word (e.g. "Drip" from "DRIP Detail KC", "Fuego" from "Fuego KC")
   // This catches creative uses like "The Full Drip", "Ready to drip?", "@DRIPDETAILKC"
+  // Word-boundary regex with negative lookahead so we don't break asset paths
+  // (e.g. "mirror-finish-kc" stays intact even when brandWord="Mirror").
   if (tmpl.brandWord) {
     const bw = tmpl.brandWord;
     const bizClean = biz.replace(/,?\s*(LLC|Inc\.?|Co\.?|Corp\.?)$/i, '').trim();
     const bizFirst = bizClean.split(' ')[0];
-    // Replace all case forms of the brand word with the lead's first word
-    html = html.split(bw).join(bizFirst);
-    html = html.split(bw.toUpperCase()).join(bizFirst.toUpperCase());
-    html = html.split(bw.toLowerCase()).join(bizFirst.toLowerCase());
+    const bwEsc = escapeRegex(bw);
+    // Match brandWord only when NOT followed by - or alphanumeric (excludes "mirror-finish-kc", "mirrored")
+    html = html.replace(new RegExp(`\\b${bwEsc}(?![-A-Za-z0-9])`, 'g'), bizFirst);
+    html = html.replace(new RegExp(`\\b${bwEsc.toUpperCase()}(?![-A-Z0-9])`, 'g'), bizFirst.toUpperCase());
+    html = html.replace(new RegExp(`\\b${bwEsc.toLowerCase()}(?![-a-z0-9])`, 'g'), bizFirst.toLowerCase());
     console.log(`   ✏️  Brand word: "${bw}" → "${bizFirst}"`);
   }
 

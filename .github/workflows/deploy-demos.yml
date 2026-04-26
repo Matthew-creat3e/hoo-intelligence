@@ -39,6 +39,12 @@ jobs:
           for f in demos/*.html; do
             cp "$f" _site/demos/ 2>/dev/null || true
           done
+          # Copy asset folders demos reference (vehicle silhouettes, mascots, brand logos, etc.)
+          if [ -d demos/assets ]; then
+            mkdir -p _site/demos/assets
+            cp -r demos/assets/* _site/demos/assets/ 2>/dev/null || true
+            echo "Copied $(find _site/demos/assets -type f | wc -l) asset files"
+          fi
           # Copy docs index if exists
           cp docs/index.html _site/index.html 2>/dev/null || true
           # Generate demos index
